@@ -11,7 +11,8 @@
             "mainClass": "com.personal.springlessons.SpringLessonsApplication",
             "projectName": "spring-lessons",
             "vmArgs": "",
-            "preLaunchTask": "prepare-local-environment"
+            "preLaunchTask": "start-local-environment",
+            "postDebugTask": "stop-local-environment"
         },
         {
             "type": "java",
