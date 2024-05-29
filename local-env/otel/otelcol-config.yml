@@ -3,28 +3,38 @@ receivers:
     protocols:
       http:
         endpoint: otelcol:4317
+        cors:
+          allowed_origins:
+          - "http://*"
+          - "https://*"
       grpc:
         endpoint: otelcol:4318
+
 processors:
   batch:
+
 exporters:
-  logging:
-    verbosity: Detailed
+  debug:
+    verbosity: detailed
   otlp:
     endpoint: jaeger:4317
     tls:
       insecure: true
+  prometheus:
+    endpoint: otelcol:8889
+    namespace: local
+  
 service:
   pipelines:
     traces:
       receivers: [otlp]
       processors: [batch]
-      exporters: [logging, otlp]
+      exporters: [debug, otlp]
     metrics:
       receivers: [otlp]
       processors: [batch]
-      exporters: [otlp]
+      exporters: [otlp, prometheus]
     logs:
       receivers: [otlp]
       processors: [batch]
-      exporters: [otlp]
+      exporters: [debug]
