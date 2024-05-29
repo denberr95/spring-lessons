@@ -55,7 +55,7 @@
         {
             "label": "podman-compose-up",
             "type": "shell",
-            "command": "podman-compose --file ./local-env/compose.yaml up --force-recreate --detach",
+            "command": "podman-compose --file ./local-env/compose.yaml up --force-recreate --remove-orphans --detach",
             "group": "build",
         },
         {
