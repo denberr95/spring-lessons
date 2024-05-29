@@ -1,0 +1,22 @@
+FROM maven:3.9.6-eclipse-temurin-17 AS builder
+WORKDIR /app
+COPY src src
+COPY pom.xml pom.xml
+COPY bin bin
+RUN mvn clean package --file pom.xml
+WORKDIR /app/bin
+RUN java -Djarmode=layertools -jar app.jar extract
+
+FROM arm64v8/eclipse-temurin:17-jre-ubi9-minimal AS runtime
+WORKDIR /app
+RUN groupadd --gid 1000 user \
+    && useradd --uid 1000 --gid 1000 --create-home user
+COPY --from=builder /app/bin/dependencies/ ./
+COPY --from=builder /app/bin/spring-boot-loader/ ./
+COPY --from=builder /app/bin/snapshot-dependencies/ ./
+COPY --from=builder /app/bin/application/ ./
+COPY --from=builder /app/bin/java.sh /usr/local/bin/java.sh
+RUN chmod +x /usr/local/bin/java.sh
+RUN chown user:user --recursive /app
+USER user
+ENTRYPOINT ["java.sh"]

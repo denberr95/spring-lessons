@@ -1,0 +1,76 @@
+services:
+  java:
+    annotations:
+    - topology=application
+    - type=ide
+    build:
+      context: ./java
+      dockerfile: Containerfile
+    restart: "no"
+    image: "spring-java:17"
+    container_name: spring
+    user: "developer"
+    ports:
+    - "8080:8080"
+    - "8081:8081"
+    volumes:
+    - "../:/workspace:cached"
+    command: /bin/sh -c "while sleep 1000; do :; done"
+    depends_on:
+    - database
+    networks:
+    - development
+
+  database:
+    annotations:
+    - topology=infrastructure
+    - type=persistence
+    image: "postgres:16.3"
+    restart: "no"
+    container_name: postgres
+    environment:
+    - POSTGRES_USER=admin
+    - POSTGRES_PASSWORD=adminpwd
+    - POSTGRES_DB=spring
+    ports:
+    - "5432"
+    networks:
+    - development
+
+  jaeger:
+    annotations:
+    - topology=infrastructure
+    - type=monitoring
+    image: "jaegertracing/all-in-one:1.57"
+    restart: "no"
+    container_name: jaeger
+    environment:
+    - COLLECTOR_OTLP_ENABLED=true
+    ports:
+    - "16686:16686"
+    - "4317"
+    - "4318"
+    networks:
+    - development
+
+  otelcol:
+    annotations:
+    - topology=infrastructure
+    - type=monitoring
+    image: otel/opentelemetry-collector:latest
+    container_name: otel-col
+    restart: "no"
+    command: [ "--config=/etc/otelcol-config.yml" ]
+    volumes:
+    - ./otel/otelcol-config.yml:/etc/otelcol-config.yml
+    ports:
+    - "4317"
+    - "4318"
+    depends_on:
+    - jaeger
+    networks:
+    - development
+
+networks:
+  development:
+    driver: bridge

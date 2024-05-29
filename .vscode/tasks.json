@@ -1,0 +1,73 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "prepare-local-environment",
+            "type": "shell",
+            "command": "echo Local Environment Preparation !",
+            "group": "build",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "podman-system-prune",
+                "podman-compose-up",
+                "mvn-clean",
+                "mvn-compile"
+            ]
+        },
+        {
+            "label": "prepare-devcontainer-environment",
+            "type": "shell",
+            "command": "echo Local DevContainer Preparation !",
+            "group": "build",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "mvn-clean",
+                "mvn-compile"
+            ]
+        },
+        {
+            "label": "podman-system-prune",
+            "type": "shell",
+            "command": "podman system prune --force --all --volumes",
+            "group": "build"
+        },
+        {
+            "label": "podman-build-jvm-image",
+            "type": "shell",
+            "command": "podman build --file Containerfile.jvm --tag spring-lessons:java-latest .",
+            "group": "build",
+        },
+        {
+            "label": "podman-run-container",
+            "type": "shell",
+            "command": "podman run --name spring-lessons spring-lessons:java-latest",
+            "group": "build",
+        },
+        {
+            "label": "podman-compose-up",
+            "type": "shell",
+            "command": "podman-compose --file compose.yaml up --force-recreate --detach",
+            "group": "build",
+        },
+        {
+            "label": "mvn-clean",
+            "type": "shell",
+            "command": "mvn clean --file pom.xml",
+            "group": "build"
+        },
+        {
+            "label": "mvn-compile",
+            "type": "shell",
+            "command": "mvn compile --file pom.xml",
+            "group": "build",
+        },
+        {
+            "label": "mvn-package",
+            "type": "shell",
+            "command": "mvn package --file pom.xml",
+            "group": "build",
+        }
+    ]
+}

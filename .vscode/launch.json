@@ -1,0 +1,26 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "LocalEnv",
+            "request": "launch",
+            "mainClass": "com.personal.springlessons.SpringLessonsApplication",
+            "projectName": "spring-lessons",
+            "vmArgs": "",
+            "preLaunchTask": "prepare-local-environment"
+        },
+        {
+            "type": "java",
+            "name": "DevContainerEnv",
+            "request": "launch",
+            "mainClass": "com.personal.springlessons.SpringLessonsApplication",
+            "projectName": "spring-lessons",
+            "vmArgs": "",
+            "preLaunchTask": "prepare-devcontainer-environment"
+        }
+    ]
+}
