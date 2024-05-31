@@ -4,14 +4,14 @@ services:
     - topology=infrastructure
     - type=persistence
     image: postgres:16.3
-    restart: no
+    restart: "no"
     container_name: postgres
     environment:
     - POSTGRES_USER=admin
     - POSTGRES_PASSWORD=adminpwd
     - POSTGRES_DB=spring
     ports:
-    - "5432:5432"
+    - "5432:5432" # serve database
     networks:
     - development
 
@@ -20,7 +20,7 @@ services:
     - topology=infrastructure
     - type=monitoring
     image: jaegertracing/all-in-one:latest
-    restart: no
+    restart: "no"
     container_name: jaeger
     environment:
     - COLLECTOR_OTLP_ENABLED=true
@@ -54,9 +54,9 @@ services:
     annotations:
     - topology=infrastructure
     - type=monitoring
-    image: otel/opentelemetry-collector-contrib:latest
+    image: otel/opentelemetry-collector:latest
     container_name: otel-col
-    restart: no
+    restart: "no"
     command: [ "--config=/etc/otelcol-config.yml" ]
     volumes:
     - ./otel/otelcol-config.yml:/etc/otelcol-config.yml
