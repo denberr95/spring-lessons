@@ -15,7 +15,6 @@
     <properties>
         <java.version>17</java.version>
         <micrometer.version>1.13.0</micrometer.version>
-        <io.opentelemetry.version>1.38.0</io.opentelemetry.version>
     </properties>
     <dependencies>
         <dependency>
@@ -26,7 +25,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
             <exclusions>
-                <!-- Exclude the Tomcat dependency -->
                 <exclusion>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-starter-tomcat</artifactId>
@@ -77,20 +75,11 @@
         </dependency>
         <dependency>
             <groupId>io.micrometer</groupId>
-            <artifactId>micrometer-tracing</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.micrometer</groupId>
-            <artifactId>micrometer-observation</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.micrometer</groupId>
             <artifactId>micrometer-registry-prometheus</artifactId>
         </dependency>
         <dependency>
             <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-exporter-otlp</artifactId>
-            <version>${io.opentelemetry.version}</version>
         </dependency>
     </dependencies>
     <dependencyManagement>
