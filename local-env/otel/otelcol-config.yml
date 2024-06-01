@@ -17,7 +17,7 @@ exporters:
   debug:
     verbosity: detailed
   prometheus:
-    endpoint: 0.0.0.0:8889
+    endpoint: otelcol:8889
   otlp:
     endpoint: jaeger:4317
     tls:

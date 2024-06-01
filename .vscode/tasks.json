@@ -9,10 +9,11 @@
             "group": "build",
             "dependsOrder": "sequence",
             "dependsOn": [
-                "podman-system-prune",
+                "podman-container-prune",
+                "podman-volume-prune",
                 "podman-compose-up",
                 "mvn-clean",
-                "mvn-compile"
+                "mvn-compile",
             ]
         },
         {
@@ -22,7 +23,7 @@
             "dependsOrder": "sequence",
             "dependsOn": [
                 "mvn-clean",
-                "mvn-compile"
+                "mvn-compile",
             ]
         },
         {
@@ -31,14 +32,26 @@
             "group": "build",
             "dependsOrder": "sequence",
             "dependsOn": [
-                "podman-compose-stop"
+                "podman-compose-stop",
             ]
+        },
+        {
+            "label": "podman-volume-prune",
+            "type": "shell",
+            "command": "podman volume prune --force",
+            "group": "build",
+        },
+        {
+            "label": "podman-container-prune",
+            "type": "shell",
+            "command": "podman container prune --force",
+            "group": "build",
         },
         {
             "label": "podman-system-prune",
             "type": "shell",
             "command": "podman system prune --force --all --volumes",
-            "group": "build"
+            "group": "build",
         },
         {
             "label": "podman-build-jvm-image",
@@ -68,7 +81,7 @@
             "label": "mvn-clean",
             "type": "shell",
             "command": "mvn clean --file pom.xml",
-            "group": "build"
+            "group": "build",
         },
         {
             "label": "mvn-compile",

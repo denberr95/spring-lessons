@@ -11,8 +11,8 @@ services:
     container_name: spring
     user: "developer"
     ports:
-    - "8080:8080"
-    - "8081:8081"
+    - "8080:8080" # serve undertow
+    - "8081:8081" # serve actuator
     volumes:
     - "../:/workspace:cached"
     command: /bin/sh -c "while sleep 1000; do :; done"
@@ -25,7 +25,7 @@ services:
     annotations:
     - topology=infrastructure
     - type=persistence
-    image: "postgres:16.3"
+    image: postgres:latest
     restart: "no"
     container_name: postgres
     environment:
@@ -41,18 +41,57 @@ services:
     annotations:
     - topology=infrastructure
     - type=monitoring
-    image: "jaegertracing/all-in-one:1.57"
+    image: jaegertracing/all-in-one:latest
     restart: "no"
     container_name: jaeger
     environment:
     - COLLECTOR_OTLP_ENABLED=true
     ports:
-    - "16686:16686"
-    - "4317"
-    - "4318"
+    - "6831" # accept jaeger.thrift over Thrift-compact protocol (used by most SDKs)
+    - "6832" # accept jaeger.thrift over Thrift-binary protocol (used by Node.js SDK)
+    - "5778" # serve configs (sampling, etc.)
+    - "16686:16686" # serve frontend
+    - "4317" # accept OpenTelemetry Protocol (OTLP) over gRPC
+    - "4318" # accept OpenTelemetry Protocol (OTLP) over HTTP
+    - "14268" # accept jaeger.thrift directly from clients
+    - "14250" # accept model.proto
+    - "9411" # Zipkin compatible endpoint (optional)
     networks:
     - development
 
+  prometheus:
+    annotations:
+    - topology=infrastructure
+    - type=monitoring
+    image: prom/prometheus:latest
+    container_name: prometheus
+    restart: "no"
+    command:
+    - --config.file=/etc/prometheus/prometheus.yml
+    volumes:
+    - ../local-env/prometheus/prometheus-config.yml:/etc/prometheus/prometheus.yml
+    ports:
+    - "9090:9090" # serve frontend
+    networks:
+    - development
+
+  grafana:
+    annotations:
+    - topology=infrastructure
+    - type=monitoring
+    image: grafana/grafana:latest
+    container_name: grafana
+    restart: "no"
+    volumes:
+    - ../local-env/grafana/grafana.ini:/etc/grafana/grafana.ini
+    - ../local-env/grafana/provisioning/:/etc/grafana/provisioning/
+    ports:
+    - "3000:3000" # serve frontend
+    networks:
+    - development
+    depends_on:
+    - prometheus
+    
   otelcol:
     annotations:
     - topology=infrastructure
@@ -60,12 +99,18 @@ services:
     image: otel/opentelemetry-collector:latest
     container_name: otel-col
     restart: "no"
-    command: [ "--config=/etc/otelcol-config.yml" ]
+    command:
+    - --config=/etc/otelcol-config.yml
     volumes:
-    - ./otel/otelcol-config.yml:/etc/otelcol-config.yml
+    - ../local-env/otel/otelcol-config.yml:/etc/otelcol-config.yml
     ports:
-    - "4317"
-    - "4318"
+    - "1888" # pprof extension
+    - "8888" # Prometheus metrics exposed by the Collector
+    - "8889" # Prometheus exporter metrics
+    - "13133" # health_check extension
+    - "4317" # OTLP gRPC receiver
+    - "4318" # OTLP http receiver
+    - "55679" # zpages extension
     depends_on:
     - jaeger
     networks:
