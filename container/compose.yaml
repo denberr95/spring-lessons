@@ -91,6 +91,7 @@ services:
     - "55679" # zpages extension
     depends_on:
     - jaeger
+    - loki
     networks:
     - development
 

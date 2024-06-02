@@ -1,6 +1,7 @@
 package com.personal.springlessons;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import com.personal.springlessons.controller.FileSystemController;
 import com.personal.springlessons.service.FileSystemService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +14,9 @@ class SpringLessonsApplicationTests {
     @Autowired
     private ApplicationContext applicationContext;
 
-	@Test
-	void contextLoads() {
+    @Test
+    void contextLoads() {
+        assertNotNull(applicationContext.getBean(FileSystemController.class));
         assertNotNull(applicationContext.getBean(FileSystemService.class));
-	}
+    }
 }

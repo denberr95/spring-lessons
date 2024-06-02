@@ -2,9 +2,10 @@ FROM maven:3.9.6-eclipse-temurin-17 AS builder
 WORKDIR /app
 COPY src src
 COPY pom.xml pom.xml
-COPY bin bin
+COPY .git .git
 RUN mvn clean package --file pom.xml
 WORKDIR /app/bin
+COPY container/java.sh java.sh
 RUN java -Djarmode=layertools -jar app.jar extract
 
 FROM arm64v8/eclipse-temurin:17-jre-ubi9-minimal AS runtime

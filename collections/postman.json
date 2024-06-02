@@ -46,6 +46,26 @@
 			"response": []
 		},
 		{
+			"name": "Get Application Information",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/actuator/info",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"actuator",
+						"info"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Get Free Disk Space",
 			"request": {
 				"method": "GET",

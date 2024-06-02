@@ -19,14 +19,6 @@
         </encoder>
     </appender>
 
-    <appender name="OPEN-TELEMETRY" class="io.opentelemetry.instrumentation.logback.appender.v1_0.OpenTelemetryAppender">
-        <captureExperimentalAttributes>true</captureExperimentalAttributes>
-        <captureLoggerContext>true</captureLoggerContext>
-        <captureKeyValuePairAttributes>true</captureKeyValuePairAttributes>
-        <captureMarkerAttribute>true</captureMarkerAttribute>
-        <captureMdcAttributes>*</captureMdcAttributes>
-    </appender>
-
     <logger name="com.personal.springlessons" level="DEBUG" />
     <logger name="org.springframework" level="ERROR" />
     <logger name="io.undertow" level="ERROR" />
@@ -36,7 +28,6 @@
     <root level="ERROR">
         <appender-ref ref="CONSOLE-TEXT" />
         <appender-ref ref="FILE" />
-        <appender-ref ref="OPEN-TELEMETRY" />
     </root>
 
 </configuration>

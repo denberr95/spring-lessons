@@ -60,12 +60,6 @@
             "group": "build",
         },
         {
-            "label": "podman-run-container",
-            "type": "shell",
-            "command": "podman run --name spring-lessons spring-lessons:java-latest",
-            "group": "build",
-        },
-        {
             "label": "podman-compose-up",
             "type": "shell",
             "command": "podman-compose --file ./container/compose.yaml up --force-recreate --remove-orphans --detach",
