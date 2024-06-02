@@ -15,6 +15,6 @@
 
 ## Links
 
-- [Jaeger UI](http://localhost:16686): Trace & Spans Monitoring
+- [Jaeger UI](http://localhost:16686/search): Trace & Spans Monitoring
 - [Prometheus](http://localhost:9090): Application Metrics
 - [Grafana](http://localhost:3000/grafana): Dashboard & Alert Monitoring
