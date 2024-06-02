@@ -64,6 +64,81 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Get Total Space",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/file-system/total-space",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"file-system",
+						"total-space"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Load File Content",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/file-system/load?fileName=sample.txt",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"file-system",
+						"load"
+					],
+					"query": [
+						{
+							"key": "fileName",
+							"value": "sample.txt"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Store File",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"fileName\": \"sample.txt\",\n\t\"fileContent\": \"AA==\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/file-system/store",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"file-system",
+						"store"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
