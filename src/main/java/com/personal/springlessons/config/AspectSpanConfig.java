@@ -10,7 +10,7 @@ import io.micrometer.tracing.annotation.MethodInvocationProcessor;
 import io.micrometer.tracing.annotation.NewSpanParser;
 import io.micrometer.tracing.annotation.SpanAspect;
 
-@Configuration
+@Configuration(proxyBeanMethods = false)
 public class AspectSpanConfig {
 
     @Bean

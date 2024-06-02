@@ -8,7 +8,9 @@ import java.nio.file.Paths;
 import org.springframework.stereotype.Service;
 import io.micrometer.tracing.Span;
 import io.micrometer.tracing.Tracer;
+import io.micrometer.tracing.annotation.ContinueSpan;
 import io.micrometer.tracing.annotation.NewSpan;
+import io.micrometer.tracing.annotation.SpanTag;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -34,35 +36,42 @@ public class FileSystemService {
         long result = 0L;
         final Span newSpan = tracer.nextSpan(tracer.currentSpan()).name("freeDiskSpaceService");
         try (Tracer.SpanInScope ws = tracer.withSpan(newSpan.start())) {
+            newSpan.event("Free space calculation");
             result = root.toFile().getFreeSpace();
-            newSpan.tag("key", "value");
-            newSpan.event("event");
+            newSpan.tag("free.space", result);
+            newSpan.event("Free space calculated");
         } finally {
             newSpan.end();
         }
         return result;
     }
 
-    @NewSpan(value = "totalSpaceService")
+    @ContinueSpan(log = "total.space.service")
     public long getTotalSpace() {
         return root.toFile().getTotalSpace();
     }
 
-    public byte[] load(final String fileName) {
+    @NewSpan
+    public byte[] load(@SpanTag("fileName") final String fileName) {
         byte[] result = null;
         try {
             result = Files.readAllBytes(root.resolve(fileName));
+            tracer.currentSpan().tag("number.of.bytes", result.length);
         } catch (final IOException e) {
             throw new UncheckedIOException(e);
         }
         return result;
     }
 
-    public void store(final String fileName, final byte[] content) {
+    @NewSpan
+    public void store(@SpanTag("file") final String fileName, final byte[] content) {
+        tracer.currentSpan().event("Storing file");
         try {
-            Files.write(root.resolve(fileName), content);
+            final Path result = Files.write(root.resolve(fileName), content);
+            tracer.currentSpan().tag("file.size", Files.size(result));
         } catch (final IOException e) {
             throw new UncheckedIOException(e);
         }
+        tracer.currentSpan().event("File stored");
     }
 }

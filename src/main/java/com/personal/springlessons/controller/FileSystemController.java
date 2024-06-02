@@ -33,8 +33,6 @@ public class FileSystemController {
         final Span newSpan = tracer.nextSpan().name("freeDiskSpaceController");
         try (Tracer.SpanInScope ws = tracer.withSpan(newSpan.start())) {
             result = fileSystemService.getFreeDiskSpace();
-            newSpan.tag("diskSpaceValue", result);
-            newSpan.event("freeSpaceCalculated");
         } finally {
             newSpan.end();
         }
@@ -42,11 +40,10 @@ public class FileSystemController {
         return ResponseEntity.ok(result);
     }
 
-    @GetMapping(path = "/total-space")
+    @GetMapping(path = "/total-space", name = "sample")
     public ResponseEntity<Long> getTotalSpace() {
         log.info("Start API get total space");
-        final Long result = null;
-        fileSystemService.getTotalSpace();
+        final Long result = fileSystemService.getTotalSpace();
         log.info("End API get total space");
         return ResponseEntity.ok(result);
     }
