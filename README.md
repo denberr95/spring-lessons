@@ -2,16 +2,13 @@
 
 ## Repository Setup
 
-- Visual Studio Code
-- Java 17
-- Git
-- Maven
-- SpringBoot 3
-- PostgreSQL
-- DevContainer
-- Podman
-- Podman Compose
-- Postman
+- [Visual Studio Code](https://code.visualstudio.com/download)
+- [Java 17](https://adoptium.net/en-GB/temurin/releases/)
+- [Git](https://git-scm.com/downloads)
+- [Maven](https://maven.apache.org/download.cgi)
+- [Podman](https://podman.io/docs/installation)
+- [Podman Compose](https://github.com/containers/podman-compose)
+- [Postman](https://www.postman.com/downloads/)
 
 ## Links
 
