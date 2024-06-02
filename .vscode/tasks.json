@@ -68,13 +68,13 @@
         {
             "label": "podman-compose-up",
             "type": "shell",
-            "command": "podman-compose --file ./local-env/compose.yaml up --force-recreate --remove-orphans --detach",
+            "command": "podman-compose --file ./container/compose.yaml up --force-recreate --remove-orphans --detach",
             "group": "build",
         },
         {
             "label": "podman-compose-stop",
             "type": "shell",
-            "command": "podman-compose --file ./local-env/compose.yaml stop",
+            "command": "podman-compose --file ./container/compose.yaml stop",
             "group": "build",
         },
         {
