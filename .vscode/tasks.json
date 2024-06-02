@@ -94,6 +94,18 @@
             "type": "shell",
             "command": "mvn package --file pom.xml",
             "group": "build",
-        }
+        },
+        {
+            "label": "mvn-dependencies",
+            "type": "shell",
+            "command": "mvn dependencies:tree --file pom.xml",
+            "group": "build",
+        },
+        {
+            "label": "mvn-display-versions-updates",
+            "type": "shell",
+            "command": "mvn versions:display-dependency-updates --file pom.xml",
+            "group": "build",
+        },
     ]
 }
