@@ -7,7 +7,7 @@ target/
 /bin/
 .flattend-pom.xml
 *.pid
-*.reports
+*.port
 
 ### STS ###
 .apt_generated
