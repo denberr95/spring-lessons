@@ -5,6 +5,8 @@ import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.concurrent.TimeUnit;
+import com.personal.springlessons.exception.SpringLessonsApplicationException;
 import org.springframework.stereotype.Service;
 import io.micrometer.tracing.Span;
 import io.micrometer.tracing.Tracer;
@@ -48,6 +50,15 @@ public class FileSystemService {
 
     @ContinueSpan(log = "total.space.service")
     public long getTotalSpace() {
+        try {
+            TimeUnit.MILLISECONDS.sleep(5000L);
+            tracer.currentSpan().tag("Sleep", false);
+        } catch (final InterruptedException e) {
+            Thread.currentThread().interrupt();
+            log.error(e.getMessage(), e);
+        } catch (final Exception e) {
+            log.error(e.getMessage(), e);
+        }
         return root.toFile().getTotalSpace();
     }
 
@@ -73,5 +84,10 @@ public class FileSystemService {
             throw new UncheckedIOException(e);
         }
         tracer.currentSpan().event("File stored");
+    }
+
+    @NewSpan
+    public void fileSystemException() {
+        throw new SpringLessonsApplicationException("Sample of span with exception");
     }
 }
