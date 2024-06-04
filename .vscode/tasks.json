@@ -9,8 +9,8 @@
             "group": "build",
             "dependsOrder": "sequence",
             "dependsOn": [
-                "podman-container-prune",
-                "podman-volume-prune",
+                "podman-container-remove",
+                "podman-volume-remove",
                 "podman-compose-up",
                 "mvn-clean",
                 "mvn-compile",
@@ -36,15 +36,15 @@
             ]
         },
         {
-            "label": "podman-volume-prune",
+            "label": "podman-volume-remove",
             "type": "shell",
-            "command": "podman volume prune --force",
+            "command": "podman volume rm --force --all",
             "group": "build",
         },
         {
-            "label": "podman-container-prune",
+            "label": "podman-container-remove",
             "type": "shell",
-            "command": "podman container prune --force",
+            "command": "podman container rm --force --all",
             "group": "build",
         },
         {
