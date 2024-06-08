@@ -10,6 +10,24 @@
         </layout>
     </appender>
 
+    <appender name="CONSOLE-JSON" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.contrib.json.classic.JsonLayout">
+            <jsonFormatter class="ch.qos.logback.contrib.jackson.JacksonJsonFormatter">
+                <prettyPrint>false</prettyPrint>
+            </jsonFormatter>
+            <timestampFormat>yyyy-MM-dd' 'HH:mm:ss.SSS</timestampFormat>
+            <includeLevel>true</includeLevel>
+            <includeLoggerName>true</includeLoggerName>
+            <includeFormattedMessage>true</includeFormattedMessage>
+            <includeMessage>false</includeMessage>
+            <includeMDC>true</includeMDC>
+            <includeThreadName>true</includeThreadName>
+            <includeException>true</includeException>
+            <includeContextName>false</includeContextName>
+            <appendLineSeparator>true</appendLineSeparator>
+        </layout>
+    </appender>
+
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
         <file>./logs/application.log</file>
         <append>true</append>
@@ -26,7 +44,7 @@
     <logger name="io.opentelemetry" level="DEBUG" />
 
     <root level="ERROR">
-        <appender-ref ref="CONSOLE-TEXT" />
+        <appender-ref ref="CONSOLE-JSON" />
         <appender-ref ref="FILE" />
     </root>
 

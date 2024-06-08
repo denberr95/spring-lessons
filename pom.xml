@@ -16,6 +16,7 @@
         <java.version>17</java.version>
         <micrometer.version>1.13.0</micrometer.version>
         <modelmapper.version>3.2.0</modelmapper.version>
+        <logback.contrib.version>0.1.5</logback.contrib.version>
     </properties>
     <dependencies>
         <dependency>
@@ -92,6 +93,16 @@
             <groupId>org.modelmapper</groupId>
             <artifactId>modelmapper</artifactId>
             <version>${modelmapper.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback.contrib</groupId>
+            <artifactId>logback-json-classic</artifactId>
+            <version>${logback.contrib.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback.contrib</groupId>
+            <artifactId>logback-jackson</artifactId>
+            <version>${logback.contrib.version}</version>
         </dependency>
     </dependencies>
     <dependencyManagement>
