@@ -92,7 +92,7 @@
         {
             "label": "mvn-dependencies-tree",
             "type": "shell",
-            "command": "mvn dependencies:tree --file pom.xml",
+            "command": "mvn dependency:tree --file pom.xml",
             "group": "build",
         },
         {
