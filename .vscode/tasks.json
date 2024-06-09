@@ -4,6 +4,17 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "cleanup-environment",
+            "type": "shell",
+            "group": "build",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "podman-container-remove",
+                "podman-volume-remove",
+                "podman-system-prune"
+            ]
+        },
+        {
             "label": "start-local-environment",
             "type": "shell",
             "group": "build",
