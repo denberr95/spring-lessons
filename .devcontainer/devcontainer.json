@@ -7,7 +7,8 @@
         "java:8081",
         "jaeger:16686",
         "prometheus:9090",
-        "grafana:3000"
+        "grafana:3000",
+        "database:5432"
     ],
     "runServices": [
         "java",
@@ -15,7 +16,8 @@
         "jaeger",
         "otelcol",
         "prometheus",
-        "grafana"
+        "grafana",
+        "loki"
     ],
     "runArgs": [
         "--userns=keep-id"

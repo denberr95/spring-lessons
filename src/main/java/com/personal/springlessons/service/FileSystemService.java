@@ -6,7 +6,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
-import com.personal.springlessons.exception.SpringLessonsApplicationException;
 import org.springframework.stereotype.Service;
 import io.micrometer.tracing.Span;
 import io.micrometer.tracing.Tracer;
@@ -84,10 +83,5 @@ public class FileSystemService {
             throw new UncheckedIOException(e);
         }
         tracer.currentSpan().event("File stored");
-    }
-
-    @NewSpan
-    public void fileSystemException() {
-        throw new SpringLessonsApplicationException("Sample of span with exception");
     }
 }

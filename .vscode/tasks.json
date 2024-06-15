@@ -11,7 +11,8 @@
             "dependsOn": [
                 "podman-container-remove",
                 "podman-volume-remove",
-                "podman-system-prune"
+                "podman-system-prune",
+                "shell-cleanup-log-folder"
             ]
         },
         {
@@ -22,6 +23,7 @@
             "dependsOn": [
                 "podman-container-remove",
                 "podman-volume-remove",
+                "shell-cleanup-log-folder",
                 "podman-compose-up",
                 "mvn-clean",
                 "mvn-compile",
@@ -45,6 +47,12 @@
             "dependsOn": [
                 "podman-compose-stop",
             ]
+        },
+        {
+            "label": "shell-cleanup-log-folder",
+            "type": "shell",
+            "command": "rm -rf ./logs",
+            "group": "build",
         },
         {
             "label": "podman-volume-remove",

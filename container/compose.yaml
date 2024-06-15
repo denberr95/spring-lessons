@@ -1,3 +1,4 @@
+#COMPOSE
 services:
   database:
     annotations:
@@ -11,7 +12,7 @@ services:
     - POSTGRES_PASSWORD=adminpwd
     - POSTGRES_DB=spring
     ports:
-    - "5432" # serve database
+    - "5432:5432" # serve database
     networks:
     - development
 
@@ -34,6 +35,20 @@ services:
     - "14268" # accept jaeger.thrift directly from clients
     - "14250" # accept model.proto
     - "9411" # Zipkin compatible endpoint (optional)
+    networks:
+    - development
+
+  loki:
+    annotations:
+    - topology=infrastructure
+    - type=monitoring
+    image: grafana/loki:latest
+    container_name: loki
+    restart: always
+    command: 
+    - --config.file=/etc/loki/local-config.yaml
+    ports:
+    - "3100" # serve agent
     networks:
     - development
 
@@ -69,12 +84,13 @@ services:
     - development
     depends_on:
     - prometheus
+    - loki
 
   otelcol:
     annotations:
     - topology=infrastructure
     - type=monitoring
-    image: otel/opentelemetry-collector:latest
+    image: otel/opentelemetry-collector-contrib:latest
     container_name: otel-col
     restart: always
     command:
@@ -91,7 +107,6 @@ services:
     - "55679" # zpages extension
     depends_on:
     - jaeger
-    - loki
     networks:
     - development
 

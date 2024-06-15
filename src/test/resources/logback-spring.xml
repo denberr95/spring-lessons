@@ -44,6 +44,7 @@
     <logger name="io.opentelemetry" level="DEBUG" />
 
     <root level="ERROR">
+        <!-- <appender-ref ref="CONSOLE-TEXT" /> -->
         <appender-ref ref="CONSOLE-JSON" />
         <appender-ref ref="FILE" />
     </root>

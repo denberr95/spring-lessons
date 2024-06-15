@@ -7,4 +7,12 @@ public class SpringLessonsApplicationException extends RuntimeException {
     public SpringLessonsApplicationException(final String message) {
         super(message);
     }
+
+    public SpringLessonsApplicationException(final Throwable cause) {
+        super(cause);
+    }
+
+    public SpringLessonsApplicationException(final String message, final Throwable cause) {
+        super(message, cause);
+    }
 }

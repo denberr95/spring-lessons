@@ -1,3 +1,4 @@
+#DEV CONTAINER
 services:
   java:
     annotations:
@@ -33,7 +34,7 @@ services:
     - POSTGRES_PASSWORD=adminpwd
     - POSTGRES_DB=spring
     ports:
-    - "5432"
+    - "5432:5432" # serve database
     networks:
     - development
 
@@ -56,6 +57,20 @@ services:
     - "14268" # accept jaeger.thrift directly from clients
     - "14250" # accept model.proto
     - "9411" # Zipkin compatible endpoint (optional)
+    networks:
+    - development
+
+  loki:
+    annotations:
+    - topology=infrastructure
+    - type=monitoring
+    image: grafana/loki:latest
+    container_name: loki
+    restart: "no"
+    command: 
+    - --config.file=/etc/loki/local-config.yaml
+    ports:
+    - "3100" # serve agent
     networks:
     - development
 
@@ -91,6 +106,7 @@ services:
     - development
     depends_on:
     - prometheus
+    - loki
     
   otelcol:
     annotations:
