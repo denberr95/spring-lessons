@@ -3,6 +3,7 @@ package com.personal.springlessons;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import com.personal.springlessons.component.CustomInfoContributor;
 import com.personal.springlessons.config.AspectSpanConfig;
+import com.personal.springlessons.config.OpenTelemetryConfig;
 import com.personal.springlessons.controller.FileSystemController;
 import com.personal.springlessons.service.FileSystemService;
 import org.junit.jupiter.api.Test;
@@ -18,21 +19,22 @@ class SpringLessonsApplicationTests {
 
     @Test
     void contextControllerLoad() {
-        assertNotNull(applicationContext.getBean(FileSystemController.class));
+        assertNotNull(this.applicationContext.getBean(FileSystemController.class));
     }
 
     @Test
     void contextServiceLoad() {
-        assertNotNull(applicationContext.getBean(FileSystemService.class));
+        assertNotNull(this.applicationContext.getBean(FileSystemService.class));
     }
 
     @Test
     void contextComponentLoad() {
-        assertNotNull(applicationContext.getBean(CustomInfoContributor.class));
+        assertNotNull(this.applicationContext.getBean(CustomInfoContributor.class));
     }
 
     @Test
     void contextConfigLoad() {
-        assertNotNull(applicationContext.getBean(AspectSpanConfig.class));
+        assertNotNull(this.applicationContext.getBean(AspectSpanConfig.class));
+        assertNotNull(this.applicationContext.getBean(OpenTelemetryConfig.class));
     }
 }

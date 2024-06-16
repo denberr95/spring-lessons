@@ -52,7 +52,7 @@ public class OpenTelemetryConfig {
     @Bean
     LogRecordProcessor otelLogRecordProcessor() {
         return BatchLogRecordProcessor.builder(
-                OtlpGrpcLogRecordExporter.builder().setEndpoint(otlpGrpcLogRecordExporter).build())
+                OtlpGrpcLogRecordExporter.builder().setEndpoint(this.otlpGrpcLogRecordExporter).build())
                 .build();
     }
 }

@@ -29,9 +29,9 @@ public class FileSystemController {
     public ResponseEntity<Long> getFreeDiskSpace() {
         log.info("Start API get free disk space");
         Long result = null;
-        final Span newSpan = tracer.nextSpan().name("freeDiskSpaceController");
-        try (Tracer.SpanInScope ws = tracer.withSpan(newSpan.start())) {
-            result = fileSystemService.getFreeDiskSpace();
+        final Span newSpan = this.tracer.nextSpan().name("freeDiskSpaceController");
+        try (Tracer.SpanInScope ws = this.tracer.withSpan(newSpan.start())) {
+            result = this.fileSystemService.getFreeDiskSpace();
         } finally {
             newSpan.end();
         }
@@ -42,7 +42,7 @@ public class FileSystemController {
     @GetMapping(path = "/total-space", name = "sample")
     public ResponseEntity<Long> getTotalSpace() {
         log.info("Start API get total space");
-        final Long result = fileSystemService.getTotalSpace();
+        final Long result = this.fileSystemService.getTotalSpace();
         log.info("End API get total space");
         return ResponseEntity.ok(result);
     }
@@ -51,7 +51,7 @@ public class FileSystemController {
     public ResponseEntity<Void> store(
             @RequestBody final FileInformationRequest fileInformationRequest) {
         log.info("Start API store file");
-        fileSystemService.store(fileInformationRequest.getFileName(),
+        this.fileSystemService.store(fileInformationRequest.getFileName(),
                 fileInformationRequest.getFileContent());
         log.info("End API store file");
         return ResponseEntity.noContent().build();
@@ -60,7 +60,7 @@ public class FileSystemController {
     @GetMapping(path = "/load")
     public ResponseEntity<byte[]> load(@RequestParam final String fileName) {
         log.info("Start API load file");
-        final byte[] result = fileSystemService.load(fileName);
+        final byte[] result = this.fileSystemService.load(fileName);
         log.info("End API load file");
         return ResponseEntity.ok(result);
     }

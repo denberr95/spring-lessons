@@ -25,8 +25,8 @@ public class FileSystemService {
         this.tracer = tracer;
         log.debug("Create file system !");
         try {
-            if (!Files.isDirectory(root)) {
-                Files.createDirectories(root);
+            if (!Files.isDirectory(this.root)) {
+                Files.createDirectories(this.root);
             }
         } catch (final IOException e) {
             throw new UncheckedIOException(e);
@@ -35,10 +35,10 @@ public class FileSystemService {
 
     public long getFreeDiskSpace() {
         long result = 0L;
-        final Span newSpan = tracer.nextSpan(tracer.currentSpan()).name("freeDiskSpaceService");
-        try (Tracer.SpanInScope ws = tracer.withSpan(newSpan.start())) {
+        final Span newSpan = this.tracer.nextSpan(this.tracer.currentSpan()).name("freeDiskSpaceService");
+        try (Tracer.SpanInScope ws = this.tracer.withSpan(newSpan.start())) {
             newSpan.event("Free space calculation");
-            result = root.toFile().getFreeSpace();
+            result = this.root.toFile().getFreeSpace();
             newSpan.tag("free.space", result);
             newSpan.event("Free space calculated");
         } finally {
@@ -51,22 +51,22 @@ public class FileSystemService {
     public long getTotalSpace() {
         try {
             TimeUnit.MILLISECONDS.sleep(5000L);
-            tracer.currentSpan().tag("Sleep", false);
+            this.tracer.currentSpan().tag("Sleep", false);
         } catch (final InterruptedException e) {
             Thread.currentThread().interrupt();
             log.error(e.getMessage(), e);
         } catch (final Exception e) {
             log.error(e.getMessage(), e);
         }
-        return root.toFile().getTotalSpace();
+        return this.root.toFile().getTotalSpace();
     }
 
     @NewSpan
     public byte[] load(@SpanTag("fileName") final String fileName) {
         byte[] result = null;
         try {
-            result = Files.readAllBytes(root.resolve(fileName));
-            tracer.currentSpan().tag("number.of.bytes", result.length);
+            result = Files.readAllBytes(this.root.resolve(fileName));
+            this.tracer.currentSpan().tag("number.of.bytes", result.length);
         } catch (final IOException e) {
             throw new UncheckedIOException(e);
         }
@@ -75,13 +75,13 @@ public class FileSystemService {
 
     @NewSpan
     public void store(@SpanTag("file") final String fileName, final byte[] content) {
-        tracer.currentSpan().event("Storing file");
+        this.tracer.currentSpan().event("Storing file");
         try {
-            final Path result = Files.write(root.resolve(fileName), content);
-            tracer.currentSpan().tag("file.size", Files.size(result));
+            final Path result = Files.write(this.root.resolve(fileName), content);
+            this.tracer.currentSpan().tag("file.size", Files.size(result));
         } catch (final IOException e) {
             throw new UncheckedIOException(e);
         }
-        tracer.currentSpan().event("File stored");
+        this.tracer.currentSpan().event("File stored");
     }
 }
