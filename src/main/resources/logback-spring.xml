@@ -6,7 +6,7 @@
     <appender name="CONSOLE-TEXT" class="ch.qos.logback.core.ConsoleAppender">
         <withJansi>false</withJansi>
         <layout class="ch.qos.logback.classic.PatternLayout">
-            <pattern>[%green(%date)] - [%yellow(%thread)] - [%magenta(%logger)] - [%highlight(%level)] - [%white(%message)]%red(%n%throwable)</pattern>
+            <pattern>[%green(%date)] - [%yellow(%thread)] - [%magenta(%logger)] - [%highlight(%level)] - [%blue(%mdc)] - [%white(%message)]%red(%n%throwable)</pattern>
         </layout>
     </appender>
 

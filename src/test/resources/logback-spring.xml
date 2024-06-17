@@ -6,7 +6,7 @@
     <appender name="CONSOLE-TEXT" class="ch.qos.logback.core.ConsoleAppender">
         <withJansi>false</withJansi>
         <layout class="ch.qos.logback.classic.PatternLayout">
-            <pattern>[%green(%date)] - [%yellow(%thread)] - [%magenta(%logger)] - [%highlight(%level)] - [%white(%message)]%red(%n%throwable)</pattern>
+            <pattern>[%green(%date)] - [%yellow(%thread)] - [%magenta(%logger)] - [%highlight(%level)] - [%blue(%mdc)] - [%white(%message)]%red(%n%throwable)</pattern>
         </layout>
     </appender>
 
@@ -37,15 +37,27 @@
         </encoder>
     </appender>
 
+    <appender name="OTEL" class="io.opentelemetry.instrumentation.logback.appender.v1_0.OpenTelemetryAppender">
+        <captureExperimentalAttributes>true</captureExperimentalAttributes>
+        <captureCodeAttributes>false</captureCodeAttributes>
+        <captureMarkerAttribute>true</captureMarkerAttribute>
+        <captureLoggerContext>true</captureLoggerContext>
+        <captureKeyValuePairAttributes>true</captureKeyValuePairAttributes>
+        <captureMdcAttributes>*</captureMdcAttributes>
+        <numLogsCapturedBeforeOtelInstall>1000</numLogsCapturedBeforeOtelInstall>
+    </appender>
+
     <logger name="com.personal.springlessons" level="DEBUG" />
-    <logger name="org.springframework" level="ERROR" />
-    <logger name="io.undertow" level="ERROR" />
-    <logger name="io.micrometer" level="DEBUG" />
-    <logger name="io.opentelemetry" level="DEBUG" />
+    <logger name="org.springframework" level="INFO" />
+    <logger name="io.undertow" level="INFO" />
+    <logger name="io.micrometer" level="INFO" />
+    <logger name="io.opentelemetry" level="INFO" />
+    <logger name="org.flywaydb" level="INFO" />
 
     <root level="ERROR">
-        <!-- <appender-ref ref="CONSOLE-TEXT" /> -->
-        <appender-ref ref="CONSOLE-JSON" />
+        <appender-ref ref="CONSOLE-TEXT" />
+        <!-- <appender-ref ref="CONSOLE-JSON" /> -->
+        <appender-ref ref="OTEL" />
         <appender-ref ref="FILE" />
     </root>
 
