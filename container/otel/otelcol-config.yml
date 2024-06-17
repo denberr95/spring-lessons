@@ -46,4 +46,4 @@ service:
     logs:
       receivers: [otlp]
       processors: [batch]
-      exporters: [debug, loki]
+      exporters: [loki, debug]
