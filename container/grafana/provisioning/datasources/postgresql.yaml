@@ -1,0 +1,19 @@
+apiVersion: 1
+datasources:
+- name: Postgres
+  type: postgres
+  uid: postgres_uid
+  url: database:5432
+  user: grafanareader
+  editable: true
+  isDefault: false
+  secureJsonData:
+    password: 'grafanapassword'
+  jsonData:
+    database: spring
+    sslmode: 'disable'
+    maxOpenConns: 100
+    maxIdleConns: 100
+    maxIdleConnsAuto: true
+    connMaxLifetime: 14400
+    timescaledb: false
