@@ -16,6 +16,21 @@
             ]
         },
         {
+            "label": "test-local-environment",
+            "type": "shell",
+            "group": "build",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "podman-container-remove",
+                "podman-volume-remove",
+                "shell-cleanup-log-folder",
+                "podman-compose-up",
+                "mvn-clean",
+                "mvn-compile",
+                "mvn-test"
+            ]
+        },
+        {
             "label": "start-local-environment",
             "type": "shell",
             "group": "build",
@@ -88,6 +103,12 @@
             "label": "podman-compose-stop",
             "type": "shell",
             "command": "podman-compose --file ./container/compose.yaml stop",
+            "group": "build",
+        },
+        {
+            "label": "mvn-test",
+            "type": "shell",
+            "command": "mvn test --file pom.xml",
             "group": "build",
         },
         {
