@@ -26,7 +26,7 @@ services:
     annotations:
     - topology=infrastructure
     - type=persistence
-    image: postgres:latest
+    image: postgres:16
     restart: "no"
     container_name: postgres
     environment:
@@ -42,7 +42,7 @@ services:
     annotations:
     - topology=infrastructure
     - type=monitoring
-    image: jaegertracing/all-in-one:latest
+    image: jaegertracing/all-in-one:1.58
     restart: "no"
     container_name: jaeger
     environment:
@@ -64,13 +64,16 @@ services:
     annotations:
     - topology=infrastructure
     - type=monitoring
-    image: grafana/loki:latest
+    image: grafana/loki:main
     container_name: loki
     restart: "no"
     command: 
-    - --config.file=/etc/loki/local-config.yaml
+    - -config.file=/etc/loki/local-config.yaml
+    #volumes:
+    #- ./container/loki/local-config.yaml:/etc/loki/local-config.yaml
     ports:
-    - "3100" # serve agent
+    - "3100" # serve http agent
+    - "9096" # serve grpc agent
     networks:
     - development
 
@@ -78,7 +81,7 @@ services:
     annotations:
     - topology=infrastructure
     - type=monitoring
-    image: prom/prometheus:latest
+    image: prom/prometheus:main
     container_name: prometheus
     restart: "no"
     command:
@@ -94,7 +97,7 @@ services:
     annotations:
     - topology=infrastructure
     - type=monitoring
-    image: grafana/grafana:latest
+    image: grafana/grafana:main
     container_name: grafana
     restart: "no"
     volumes:
@@ -112,7 +115,7 @@ services:
     annotations:
     - topology=infrastructure
     - type=monitoring
-    image: otel/opentelemetry-collector:latest
+    image: otel/opentelemetry-collector-contrib:latest
     container_name: otel-col
     restart: "no"
     command:

@@ -6,6 +6,7 @@ datasources:
   url: http://jaeger:16686
   editable: true
   isDefault: false
+  access: proxy
   jsonData:
     timeout: 60
     tracesToLogsV2:

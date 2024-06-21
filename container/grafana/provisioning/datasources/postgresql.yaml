@@ -7,6 +7,7 @@ datasources:
   user: grafanareader
   editable: true
   isDefault: false
+  access: proxy
   secureJsonData:
     password: 'grafanapassword'
   jsonData:

@@ -6,6 +6,7 @@ datasources:
   url: http://prometheus:9090
   editable: true
   isDefault: false
+  access: proxy
   jsonData:
     timeout: 60
     httpMethod: POST
