@@ -54,11 +54,20 @@
     <logger name="io.opentelemetry" level="INFO" />
     <logger name="org.flywaydb" level="INFO" />
 
-    <root level="ERROR">
-        <appender-ref ref="CONSOLE-TEXT" />
-        <!-- <appender-ref ref="CONSOLE-JSON" /> -->
-        <appender-ref ref="OTEL" />
-        <appender-ref ref="FILE" />
-    </root>
+    <springProfile name="default">
+        <root level="ERROR">
+            <appender-ref ref="CONSOLE-TEXT" />
+            <appender-ref ref="OTEL" />
+            <appender-ref ref="FILE" />
+        </root>
+    </springProfile>
+
+    <springProfile name="runtime">
+        <root level="ERROR">
+            <appender-ref ref="CONSOLE-JSON" />
+            <appender-ref ref="OTEL" />
+            <appender-ref ref="FILE" />
+        </root>
+    </springProfile>
 
 </configuration>
