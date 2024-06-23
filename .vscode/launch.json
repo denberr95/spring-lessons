@@ -6,11 +6,21 @@
     "configurations": [
         {
             "type": "java",
-            "name": "LocalEnv",
+            "name": "LocalEnvLinux",
             "request": "launch",
             "mainClass": "com.personal.springlessons.SpringLessonsApplication",
             "projectName": "spring-lessons",
-            "vmArgs": "",
+            "vmArgs": "-Dspring.profiles.active=linux",
+            "preLaunchTask": "start-local-environment",
+            "postDebugTask": "stop-local-environment"
+        },
+        {
+            "type": "java",
+            "name": "LocalEnvWindows",
+            "request": "launch",
+            "mainClass": "com.personal.springlessons.SpringLessonsApplication",
+            "projectName": "spring-lessons",
+            "vmArgs": "-Dspring.profiles.active=windows",
             "preLaunchTask": "start-local-environment",
             "postDebugTask": "stop-local-environment"
         },
