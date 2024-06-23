@@ -2,6 +2,7 @@ package com.personal.springlessons;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import com.personal.springlessons.component.CustomInfoContributor;
+import com.personal.springlessons.config.AppPropertiesConfig;
 import com.personal.springlessons.config.AspectSpanConfig;
 import com.personal.springlessons.config.OpenTelemetryConfig;
 import com.personal.springlessons.controller.FileSystemController;
@@ -36,5 +37,6 @@ class SpringLessonsApplicationTests {
     void contextConfigLoad() {
         assertNotNull(this.applicationContext.getBean(AspectSpanConfig.class));
         assertNotNull(this.applicationContext.getBean(OpenTelemetryConfig.class));
+        assertNotNull(this.applicationContext.getBean(AppPropertiesConfig.class));
     }
 }
