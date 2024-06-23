@@ -18,6 +18,7 @@
         <modelmapper.version>3.2.0</modelmapper.version>
         <logback.contrib.version>0.1.5</logback.contrib.version>
         <opentelemetry.appender.version>1.33.2-alpha</opentelemetry.appender.version>
+        <jacoco.version>0.8.12</jacoco.version>
     </properties>
     <dependencies>
         <dependency>
@@ -154,9 +155,29 @@
                         </goals>
                         <configuration>
                             <additionalProperties>
-                                <springboot.version>3.3.0</springboot.version>
+                                <springboot.version>3.3.1</springboot.version>
                             </additionalProperties>
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco.version}</version>
+                <executions>
+                    <execution>
+                        <id>default-prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>default-report</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>

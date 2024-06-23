@@ -26,8 +26,7 @@
                 "shell-cleanup-log-folder",
                 "podman-compose-up",
                 "mvn-clean",
-                "mvn-compile",
-                "mvn-test"
+                "mvn-package"
             ]
         },
         {
