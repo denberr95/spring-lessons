@@ -10,7 +10,7 @@
             "request": "launch",
             "mainClass": "com.personal.springlessons.SpringLessonsApplication",
             "projectName": "spring-lessons",
-            "vmArgs": "-Dspring.profiles.active=linux",
+            "vmArgs": "-Dspring.profiles.active=default,linux",
             "preLaunchTask": "start-local-environment",
             "postDebugTask": "stop-local-environment"
         },
@@ -20,7 +20,7 @@
             "request": "launch",
             "mainClass": "com.personal.springlessons.SpringLessonsApplication",
             "projectName": "spring-lessons",
-            "vmArgs": "-Dspring.profiles.active=windows",
+            "vmArgs": "-Dspring.profiles.active=default,windows",
             "preLaunchTask": "start-local-environment",
             "postDebugTask": "stop-local-environment"
         },
