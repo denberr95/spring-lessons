@@ -5,12 +5,13 @@ services:
     - topology=infrastructure
     - type=persistence
     image: postgres:16
-    restart: always
+    restart: "no"
     container_name: postgres
     environment:
     - POSTGRES_USER=admin
     - POSTGRES_PASSWORD=adminpwd
     - POSTGRES_DB=spring
+    - TZ=Europe/Rome
     ports:
     - "5432:5432" # serve database
     networks:
@@ -21,10 +22,11 @@ services:
     - topology=infrastructure
     - type=monitoring
     image: jaegertracing/all-in-one:1.58
-    restart: always
+    restart: "no"
     container_name: jaeger
     environment:
     - COLLECTOR_OTLP_ENABLED=true
+    - TZ=Europe/Rome
     ports:
     - "6831" # accept jaeger.thrift over Thrift-compact protocol (used by most SDKs)
     - "6832" # accept jaeger.thrift over Thrift-binary protocol (used by Node.js SDK)
@@ -43,15 +45,17 @@ services:
     - topology=infrastructure
     - type=monitoring
     image: grafana/loki:main
+    restart: "no"
     container_name: loki
-    restart: always
+    environment:
+    - TZ=Europe/Rome
     command: 
     - -config.file=/etc/loki/local-config.yaml
-    #volumes:
-    #- ./loki/local-config.yaml:/etc/loki/local-config.yaml
+    volumes:
+    - ./loki/local-config.yaml:/etc/loki/local-config.yaml
     ports:
-    - "3100" # serve http agent
-    - "9096" # serve grpc agent
+    - "3100" # serve http server
+    - "9096" # serve grpc server
     networks:
     - development
 
@@ -60,8 +64,10 @@ services:
     - topology=infrastructure
     - type=monitoring
     image: prom/prometheus:main
+    restart: "no"
     container_name: prometheus
-    restart: always
+    environment:
+    - TZ=Europe/Rome
     command:
     - --config.file=/etc/prometheus/prometheus.yml
     volumes:
@@ -70,14 +76,18 @@ services:
     - "9090:9090" # serve frontend
     networks:
     - development
+    depends_on:
+    - otelcol
 
   grafana:
     annotations:
     - topology=infrastructure
     - type=monitoring
     image: grafana/grafana:main
+    restart: "no"
     container_name: grafana
-    restart: always
+    environment:
+    - TZ=Europe/Rome
     volumes:
     - ./grafana/grafana.ini:/etc/grafana/grafana.ini
     - ./grafana/provisioning/:/etc/grafana/provisioning/
@@ -94,8 +104,10 @@ services:
     - topology=infrastructure
     - type=monitoring
     image: otel/opentelemetry-collector-contrib:latest
+    restart: "no"
     container_name: otel-col
-    restart: always
+    environment:
+    - TZ=Europe/Rome
     command:
     - --config=/etc/otelcol-config.yml
     volumes:

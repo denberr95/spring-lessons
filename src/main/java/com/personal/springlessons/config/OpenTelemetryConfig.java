@@ -25,6 +25,9 @@ public class OpenTelemetryConfig {
     @Value("${management.otlp.logging.endpoint}")
     private String otlpGrpcLogRecordExporter;
 
+    @Value("${spring.application.name:application}")
+    private String applicationName;
+
     @Bean
     OpenTelemetry openTelemetry(final SdkLoggerProvider sdkLoggerProvider,
             final SdkTracerProvider sdkTracerProvider,
@@ -39,10 +42,8 @@ public class OpenTelemetryConfig {
     @Bean
     SdkLoggerProvider otelSdkLoggerProvider(final Environment environment,
             final ObjectProvider<LogRecordProcessor> logRecordProcessors) {
-        final String applicationName =
-                environment.getProperty("spring.application.name", "application");
-        final Resource springResource =
-                Resource.create(Attributes.of(ResourceAttributes.SERVICE_NAME, applicationName));
+        final Resource springResource = Resource
+                .create(Attributes.of(ResourceAttributes.SERVICE_NAME, this.applicationName));
         final SdkLoggerProviderBuilder builder = SdkLoggerProvider.builder()
                 .setResource(Resource.getDefault().merge(springResource));
         logRecordProcessors.orderedStream().forEach(builder::addLogRecordProcessor);
@@ -51,8 +52,7 @@ public class OpenTelemetryConfig {
 
     @Bean
     LogRecordProcessor otelLogRecordProcessor() {
-        return BatchLogRecordProcessor.builder(
-                OtlpGrpcLogRecordExporter.builder().setEndpoint(this.otlpGrpcLogRecordExporter).build())
-                .build();
+        return BatchLogRecordProcessor.builder(OtlpGrpcLogRecordExporter.builder()
+                .setEndpoint(this.otlpGrpcLogRecordExporter).build()).build();
     }
 }
