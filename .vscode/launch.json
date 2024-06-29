@@ -23,15 +23,6 @@
             "vmArgs": "-Dspring.profiles.active=default,windows",
             "preLaunchTask": "start-local-environment",
             "postDebugTask": "stop-local-environment"
-        },
-        {
-            "type": "java",
-            "name": "DevContainerEnv",
-            "request": "launch",
-            "mainClass": "com.personal.springlessons.SpringLessonsApplication",
-            "projectName": "spring-lessons",
-            "vmArgs": "",
-            "preLaunchTask": "prepare-devcontainer-environment"
         }
     ]
 }

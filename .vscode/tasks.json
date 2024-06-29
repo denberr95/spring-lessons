@@ -44,16 +44,6 @@
             ]
         },
         {
-            "label": "prepare-devcontainer-environment",
-            "type": "shell",
-            "group": "build",
-            "dependsOrder": "sequence",
-            "dependsOn": [
-                "mvn-clean",
-                "mvn-compile",
-            ]
-        },
-        {
             "label": "stop-local-environment",
             "type": "shell",
             "group": "build",
