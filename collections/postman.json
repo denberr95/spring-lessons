@@ -71,13 +71,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/file-system/free-disk-space",
+					"raw": "http://localhost:8080/spring-app/file-system/free-disk-space",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"spring-app",
 						"file-system",
 						"free-disk-space"
 					]
@@ -91,13 +92,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/file-system/total-space",
+					"raw": "http://localhost:8080/spring-app/file-system/total-space",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"spring-app",
 						"file-system",
 						"total-space"
 					]
@@ -111,13 +113,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/file-system/load?fileName=sample.txt",
+					"raw": "http://localhost:8080/spring-app/file-system/load?fileName=sample.txt",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"spring-app",
 						"file-system",
 						"load"
 					],
@@ -146,13 +149,14 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/file-system/store",
+					"raw": "http://localhost:8080/spring-app/file-system/store",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"spring-app",
 						"file-system",
 						"store"
 					]
