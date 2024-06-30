@@ -91,8 +91,22 @@
             "group": "build",
         },
         {
-            "label": "podman-build-jvm-image",
+            "label": "podman-build-jvm-image-linux",
             "type": "shell",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "test-local-environment-linux"
+            ],
+            "command": "podman build --file Containerfile.jvm --tag spring-lessons:java-latest .",
+            "group": "build",
+        },
+        {
+            "label": "podman-build-jvm-image-windows",
+            "type": "shell",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "test-local-environment-windows"
+            ],
             "command": "podman build --file Containerfile.jvm --tag spring-lessons:java-latest .",
             "group": "build",
         },
