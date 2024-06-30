@@ -4,7 +4,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "cleanup-environment",
+            "label": "cleanup-local-environment",
             "type": "shell",
             "group": "build",
             "dependsOrder": "sequence",
@@ -16,7 +16,7 @@
             ]
         },
         {
-            "label": "test-local-environment",
+            "label": "test-local-environment-linux",
             "type": "shell",
             "group": "build",
             "dependsOrder": "sequence",
@@ -26,7 +26,21 @@
                 "shell-cleanup-log-folder",
                 "podman-compose-up",
                 "mvn-clean",
-                "mvn-package"
+                "mvn-package-linux"
+            ]
+        },
+        {
+            "label": "test-local-environment-windows",
+            "type": "shell",
+            "group": "build",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "podman-container-remove",
+                "podman-volume-remove",
+                "shell-cleanup-log-folder",
+                "podman-compose-up",
+                "mvn-clean",
+                "mvn-package-windows"
             ]
         },
         {
@@ -113,9 +127,15 @@
             "group": "build",
         },
         {
-            "label": "mvn-package",
+            "label": "mvn-package-linux",
             "type": "shell",
-            "command": "mvn package --file pom.xml",
+            "command": "mvn package --file pom.xml -Dspring.profiles.active=default,linux",
+            "group": "build",
+        },
+        {
+            "label": "mvn-package-windows",
+            "type": "shell",
+            "command": "mvn package --file pom.xml -Dspring.profiles.active=default,windows",
             "group": "build",
         },
         {

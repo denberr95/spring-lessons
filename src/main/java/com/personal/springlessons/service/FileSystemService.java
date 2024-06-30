@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
+import com.personal.springlessons.config.AppPropertiesConfig;
 import org.springframework.stereotype.Service;
 import io.micrometer.tracing.Span;
 import io.micrometer.tracing.Tracer;
@@ -18,19 +19,23 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class FileSystemService {
 
-    private final Path root = Paths.get("/tmp").resolve("fs");
+    private final AppPropertiesConfig appPropertiesConfig;
     private final Tracer tracer;
+    private Path root = null;
 
     /**
      * Constructor that initializes the file system service and creates the root directory if it
      * does not exist.
      *
      * @param tracer the tracer for managing tracing and spans.
+     * @param appPropertiesConfig the application properties configurations.
      * @throws UncheckedIOException if an error occurs while creating the directory.
      */
-    public FileSystemService(final Tracer tracer) {
+    public FileSystemService(final Tracer tracer, final AppPropertiesConfig appPropertiesConfig) {
         this.tracer = tracer;
+        this.appPropertiesConfig = appPropertiesConfig;
         log.debug("Create file system !");
+        this.root = Paths.get(this.appPropertiesConfig.getDefaultPath());
         try {
             if (!Files.isDirectory(this.root)) {
                 Files.createDirectories(this.root);

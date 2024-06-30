@@ -39,7 +39,7 @@ public class FileSystemController {
         return ResponseEntity.ok(result);
     }
 
-    @GetMapping(path = "/total-space", name = "sample")
+    @GetMapping(path = "/total-space")
     public ResponseEntity<Long> getTotalSpace() {
         log.info("Start API get total space");
         final Long result = this.fileSystemService.getTotalSpace();
