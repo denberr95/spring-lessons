@@ -5,7 +5,6 @@ import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.concurrent.TimeUnit;
 import com.personal.springlessons.config.AppPropertiesConfig;
 import org.springframework.stereotype.Service;
 import io.micrometer.tracing.Span;
@@ -74,19 +73,10 @@ public class FileSystemService {
      * @return the total space in bytes.
      * 
      *         This method can be used to get the total size of the disk of the file system managed
-     *         by this class. It includes a simulated wait of 5 seconds.
+     *         by this class.
      */
     @ContinueSpan(log = "total.space.service")
     public long getTotalSpace() {
-        try {
-            TimeUnit.MILLISECONDS.sleep(5000L);
-            this.tracer.currentSpan().tag("Sleep", false);
-        } catch (final InterruptedException e) {
-            Thread.currentThread().interrupt();
-            log.error(e.getMessage(), e);
-        } catch (final Exception e) {
-            log.error(e.getMessage(), e);
-        }
         return this.root.toFile().getTotalSpace();
     }
 
