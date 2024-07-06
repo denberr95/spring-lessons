@@ -1,4 +1,3 @@
-#COMPOSE
 services:
   database:
     annotations:
@@ -127,4 +126,5 @@ services:
 
 networks:
   development:
+    name: development
     driver: bridge
