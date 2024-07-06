@@ -1,7 +1,7 @@
-FROM maven:3.9.6-eclipse-temurin-17 AS builder
+FROM maven:3.9.8-eclipse-temurin-17 AS builder
 WORKDIR /app
 COPY bin/app.jar app.jar
-COPY container/java.sh java.sh
+COPY deploy/java.sh java.sh
 RUN java -Djarmode=layertools -jar app.jar extract
 
 FROM arm64v8/eclipse-temurin:17-jre-ubi9-minimal AS runtime
