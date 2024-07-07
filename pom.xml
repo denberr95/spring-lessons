@@ -15,7 +15,7 @@
     <properties>
         <java.version>17</java.version>
         <micrometer.version>1.13.0</micrometer.version>
-        <modelmapper.version>3.2.0</modelmapper.version>
+        <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
         <logback.contrib.version>0.1.5</logback.contrib.version>
         <opentelemetry.appender.version>1.33.2-alpha</opentelemetry.appender.version>
         <jacoco.version>0.8.12</jacoco.version>
@@ -85,9 +85,9 @@
             <artifactId>opentelemetry-exporter-otlp</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.modelmapper</groupId>
-            <artifactId>modelmapper</artifactId>
-            <version>${modelmapper.version}</version>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${org.mapstruct.version}</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback.contrib</groupId>
@@ -126,6 +126,19 @@
     </dependencyManagement>
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${org.mapstruct.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>io.github.git-commit-id</groupId>
                 <artifactId>git-commit-id-maven-plugin</artifactId>
