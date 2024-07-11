@@ -12,7 +12,8 @@
                 "podman-container-remove",
                 "podman-volume-remove",
                 "podman-system-prune",
-                "shell-cleanup-log-folder"
+                "shell-cleanup-log-folder",
+                "shell-cleanup-bin-folder",
             ]
         },
         {
@@ -23,6 +24,7 @@
             "dependsOn": [
                 "podman-container-remove",
                 "podman-volume-remove",
+                "shell-cleanup-bin-folder",
                 "shell-cleanup-log-folder",
                 "podman-compose-up",
                 "mvn-clean",
@@ -37,6 +39,7 @@
             "dependsOn": [
                 "podman-container-remove",
                 "podman-volume-remove",
+                "shell-cleanup-bin-folder",
                 "shell-cleanup-log-folder",
                 "podman-compose-up",
                 "mvn-clean",
@@ -51,6 +54,7 @@
             "dependsOn": [
                 "podman-container-remove",
                 "podman-volume-remove",
+                "shell-cleanup-bin-folder",
                 "shell-cleanup-log-folder",
                 "podman-compose-up",
                 "mvn-clean",
@@ -65,6 +69,12 @@
             "dependsOn": [
                 "podman-compose-stop",
             ]
+        },
+        {
+            "label": "shell-cleanup-bin-folder",
+            "type": "shell",
+            "command": "rm -rf ./bin",
+            "group": "build",
         },
         {
             "label": "shell-cleanup-log-folder",
