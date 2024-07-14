@@ -4,7 +4,7 @@ COPY bin/app.jar app.jar
 COPY deploy/java.sh java.sh
 RUN java -Djarmode=layertools -jar app.jar extract
 
-FROM arm64v8/eclipse-temurin:17-jre-ubi9-minimal AS runtime
+FROM eclipse-temurin:17-jre-ubi9-minimal AS runtime
 WORKDIR /app
 RUN groupadd --gid 1000 user \
     && useradd --uid 1000 --gid 1000 --create-home user

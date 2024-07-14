@@ -4,9 +4,9 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "cleanup-local-environment",
+            "label": "cleanup-env",
             "type": "shell",
-            "group": "build",
+            "group": "none",
             "dependsOrder": "sequence",
             "dependsOn": [
                 "podman-container-remove",
@@ -17,97 +17,119 @@
             ]
         },
         {
-            "label": "test-local-environment-linux",
+            "label": "test-env-linux",
             "type": "shell",
-            "group": "build",
+            "group": "test",
             "dependsOrder": "sequence",
             "dependsOn": [
                 "podman-container-remove",
                 "podman-volume-remove",
                 "shell-cleanup-bin-folder",
                 "shell-cleanup-log-folder",
-                "podman-compose-up",
+                "podman-compose-env-up",
                 "mvn-clean",
                 "mvn-package-linux"
             ]
         },
         {
-            "label": "test-local-environment-windows",
+            "label": "test-env-windows",
             "type": "shell",
-            "group": "build",
+            "group": "test",
             "dependsOrder": "sequence",
             "dependsOn": [
                 "podman-container-remove",
                 "podman-volume-remove",
                 "shell-cleanup-bin-folder",
                 "shell-cleanup-log-folder",
-                "podman-compose-up",
+                "podman-compose-env-up",
                 "mvn-clean",
                 "mvn-package-windows"
             ]
         },
         {
-            "label": "start-local-environment",
+            "label": "start-env",
             "type": "shell",
-            "group": "build",
+            "group": "test",
             "dependsOrder": "sequence",
             "dependsOn": [
                 "podman-container-remove",
                 "podman-volume-remove",
                 "shell-cleanup-bin-folder",
                 "shell-cleanup-log-folder",
-                "podman-compose-up",
+                "podman-compose-env-up",
                 "mvn-clean",
                 "mvn-compile",
             ]
         },
         {
-            "label": "stop-local-environment",
+            "label": "stop-env",
             "type": "shell",
-            "group": "build",
+            "group": "test",
             "dependsOrder": "sequence",
             "dependsOn": [
-                "podman-compose-stop",
+                "podman-compose-env-stop",
+            ]
+        },
+        {
+            "label": "start-app",
+            "type": "shell",
+            "group": "none",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "podman-container-remove",
+                "podman-volume-remove",
+                "podman-compose-env-up",
+                "podman-compose-app-up",
+            ]
+        },
+        {
+            "label": "stop-app",
+            "type": "shell",
+            "group": "none",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "podman-compose-app-stop",
+                "podman-compose-env-stop",
             ]
         },
         {
             "label": "shell-cleanup-bin-folder",
             "type": "shell",
             "command": "rm -rf ./bin",
-            "group": "build",
+            "group": "none",
         },
         {
             "label": "shell-cleanup-log-folder",
             "type": "shell",
             "command": "rm -rf ./logs",
-            "group": "build",
+            "group": "none",
         },
         {
             "label": "podman-volume-remove",
             "type": "shell",
             "command": "podman volume rm --force --all",
-            "group": "build",
+            "group": "none",
         },
         {
             "label": "podman-container-remove",
             "type": "shell",
             "command": "podman container rm --force --all",
-            "group": "build",
+            "group": "none",
         },
         {
             "label": "podman-system-prune",
             "type": "shell",
             "command": "podman system prune --force --all --volumes",
-            "group": "build",
+            "group": "none",
         },
         {
             "label": "podman-build-jvm-image-linux",
             "type": "shell",
             "dependsOrder": "sequence",
             "dependsOn": [
-                "test-local-environment-linux"
+                "test-env-linux",
+                "podman-build-jvm-image"
             ],
-            "command": "podman build --file Containerfile.jvm --tag spring-lessons:java-latest .",
             "group": "build",
         },
         {
@@ -115,28 +137,46 @@
             "type": "shell",
             "dependsOrder": "sequence",
             "dependsOn": [
-                "test-local-environment-windows"
+                "test-env-windows",
+                "podman-build-jvm-image"
             ],
+            "group": "build",
+        },
+        {
+            "label": "podman-build-jvm-image",
+            "type": "shell",
             "command": "podman build --file Containerfile.jvm --tag spring-lessons:java-latest .",
             "group": "build",
         },
         {
-            "label": "podman-compose-up",
+            "label": "podman-compose-env-up",
             "type": "shell",
             "command": "podman-compose --file ./container/compose.yaml up --force-recreate --remove-orphans --detach",
-            "group": "build",
+            "group": "test",
         },
         {
-            "label": "podman-compose-stop",
+            "label": "podman-compose-app-up",
+            "type": "shell",
+            "command": "podman-compose --file ./deploy/compose.yaml up --force-recreate --remove-orphans",
+            "group": "test",
+        },
+        {
+            "label": "podman-compose-env-stop",
             "type": "shell",
             "command": "podman-compose --file ./container/compose.yaml stop",
-            "group": "build",
+            "group": "test",
+        },
+        {
+            "label": "podman-compose-app-stop",
+            "type": "shell",
+            "command": "podman-compose --file ./deploy/compose.yaml stop",
+            "group": "test",
         },
         {
             "label": "mvn-test",
             "type": "shell",
             "command": "mvn test --file pom.xml",
-            "group": "build",
+            "group": "test",
         },
         {
             "label": "mvn-clean",
@@ -166,13 +206,13 @@
             "label": "mvn-dependencies-tree",
             "type": "shell",
             "command": "mvn dependency:tree --file pom.xml",
-            "group": "build",
+            "group": "none",
         },
         {
             "label": "mvn-display-versions-updates",
             "type": "shell",
             "command": "mvn versions:display-dependency-updates --file pom.xml",
-            "group": "build",
+            "group": "none",
         },
     ]
 }
