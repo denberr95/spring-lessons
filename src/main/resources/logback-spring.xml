@@ -53,6 +53,7 @@
     <logger name="io.micrometer" level="INFO" />
     <logger name="io.opentelemetry" level="INFO" />
     <logger name="org.flywaydb" level="INFO" />
+    <logger name="org.hibernate" level="ERROR" />
 
     <springProfile name="default">
         <root level="ERROR">

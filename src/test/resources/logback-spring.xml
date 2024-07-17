@@ -35,6 +35,7 @@
     <logger name="io.micrometer" level="INFO" />
     <logger name="io.opentelemetry" level="INFO" />
     <logger name="org.flywaydb" level="INFO" />
+    <logger name="org.hibernate" level="ERROR" />
 
     <root level="ERROR">
         <appender-ref ref="CONSOLE-TEXT" />
