@@ -12,8 +12,7 @@
                 "podman-container-remove",
                 "podman-volume-remove",
                 "podman-system-prune",
-                "shell-cleanup-log-folder",
-                "shell-cleanup-bin-folder",
+                "shell-cleanup-folders",
             ]
         },
         {
@@ -24,8 +23,7 @@
             "dependsOn": [
                 "podman-container-remove",
                 "podman-volume-remove",
-                "shell-cleanup-bin-folder",
-                "shell-cleanup-log-folder",
+                "shell-cleanup-folders",
                 "podman-compose-env-up",
                 "mvn-clean",
                 "mvn-package-linux"
@@ -39,8 +37,7 @@
             "dependsOn": [
                 "podman-container-remove",
                 "podman-volume-remove",
-                "shell-cleanup-bin-folder",
-                "shell-cleanup-log-folder",
+                "shell-cleanup-folders",
                 "podman-compose-env-up",
                 "mvn-clean",
                 "mvn-package-windows"
@@ -54,8 +51,7 @@
             "dependsOn": [
                 "podman-container-remove",
                 "podman-volume-remove",
-                "shell-cleanup-bin-folder",
-                "shell-cleanup-log-folder",
+                "shell-cleanup-folders",
                 "podman-compose-env-up",
                 "mvn-clean",
                 "mvn-compile",
@@ -93,15 +89,9 @@
             ]
         },
         {
-            "label": "shell-cleanup-bin-folder",
+            "label": "shell-cleanup-folders",
             "type": "shell",
-            "command": "rm -rf ./bin",
-            "group": "none",
-        },
-        {
-            "label": "shell-cleanup-log-folder",
-            "type": "shell",
-            "command": "rm -rf ./logs",
+            "command": "rm -rf bin logs",
             "group": "none",
         },
         {
@@ -211,7 +201,7 @@
         {
             "label": "mvn-display-versions-updates",
             "type": "shell",
-            "command": "mvn versions:display-dependency-updates --file pom.xml",
+            "command": "mvn versions:display-dependency-updates --file pom.xml 1> logs/maven.log",
             "group": "none",
         },
     ]
