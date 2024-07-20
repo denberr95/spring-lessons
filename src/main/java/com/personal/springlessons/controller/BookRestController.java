@@ -30,19 +30,24 @@ public class BookRestController {
     @NewSpan
     @GetMapping
     public ResponseEntity<List<BookDTO>> getAll() {
-        List<BookDTO> result = null;
         log.info("Called API to retrieve all books");
-        result = this.bookService.getAll();
-        log.info("Books retrieved !");
-        return ResponseEntity.status(HttpStatus.OK).body(result);
+        List<BookDTO> result = this.bookService.getAll();
+        ResponseEntity<List<BookDTO>> response;
+        if (result.isEmpty()) {
+            log.info("No books retrieved !");
+            response = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        } else {
+            log.info("Books retrieved !");
+            response = ResponseEntity.status(HttpStatus.OK).body(result);
+        }
+        return response;
     }
 
     @NewSpan
     @GetMapping(path = "{id}")
     public ResponseEntity<BookDTO> getById(@PathVariable String id) {
-        BookDTO result = null;
         log.info("Called API to retrieve book: '{}'", id);
-        result = this.bookService.getById(id);
+        BookDTO result = this.bookService.getById(id);
         log.info("Book '{}' retrieved !", result.getId());
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
@@ -50,8 +55,8 @@ public class BookRestController {
     @NewSpan
     @PostMapping
     public ResponseEntity<BookDTO> save(@RequestBody BookDTO bookDTO) {
-        BookDTO result = null;
-        result = this.bookService.save(bookDTO);
+        log.info("Called API to create new book");
+        BookDTO result = this.bookService.save(bookDTO);
         log.info("Book '{}' saved !", result.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }

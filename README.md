@@ -1,6 +1,6 @@
 # Spring Boot Lessons
 
-## Repository Setup
+## Software Requirements
 
 - [Visual Studio Code](https://code.visualstudio.com/download)
 - [Java 17](https://adoptium.net/en-GB/temurin/releases/)
@@ -11,7 +11,7 @@
 - [Postman](https://www.postman.com/downloads/)
 - [Flyway](https://flywaydb.org/)
 
-## Links
+## Environment Links
 
 - [Jaeger UI](http://localhost:16686/search): Trace & Spans Monitoring
 - [Prometheus](http://localhost:9090): Application Metrics

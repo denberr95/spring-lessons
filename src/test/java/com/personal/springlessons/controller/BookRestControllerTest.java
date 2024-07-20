@@ -74,6 +74,15 @@ class BookRestControllerTest {
     }
 
     @Test
+    void givenEmptyBooksCollection_whenGetAllBooks_thenNotContent() {
+        String url = String.format("%s/books", this.basePath);
+        this.tearDown();
+        ResponseEntity<Void> response = this.testRestTemplate.getForEntity(url, Void.class);
+        assertNull(response.getBody());
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+    }
+
+    @Test
     void givenExistingBookId_whenGetById_thenBookAreReturned() {
         String url = String.format("%s/books/%s", this.basePath,
                 this.bookService.getAll().get(0).getId());

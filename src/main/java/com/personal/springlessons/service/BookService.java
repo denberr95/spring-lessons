@@ -9,6 +9,7 @@ import com.personal.springlessons.model.dto.BookDTO;
 import com.personal.springlessons.model.entity.BookEntity;
 import com.personal.springlessons.repository.IBookRepository;
 import org.springframework.stereotype.Service;
+import io.micrometer.tracing.Span;
 import io.micrometer.tracing.Tracer;
 import io.micrometer.tracing.annotation.NewSpan;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +25,11 @@ public class BookService {
     @NewSpan
     public List<BookDTO> getAll() {
         List<BookEntity> bookEntities = this.bookRepository.findAll();
-        this.tracer.currentSpan().tag("total.books", bookEntities.size());
-        this.tracer.currentSpan().event("Books retrieved");
+        Span currentSpan = this.tracer.currentSpan();
+        if (currentSpan != null) {
+            currentSpan.tag("total.books", String.valueOf(bookEntities.size()))
+                    .event("Books retrieved");
+        }
         return this.bookMapper.mapDTO(bookEntities);
     }
 
@@ -33,7 +37,10 @@ public class BookService {
     public BookDTO getById(final String id) {
         BookEntity bookEntity = this.bookRepository.findById(UUID.fromString(id))
                 .orElseThrow(() -> new BookNotFoundException(id));
-        this.tracer.currentSpan().event("Book retrieved");
+        Span currentSpan = this.tracer.currentSpan();
+        if (currentSpan != null) {
+            currentSpan.event("Book retrieved");
+        }
         return this.bookMapper.mapDTO(bookEntity);
     }
 
@@ -47,14 +54,20 @@ public class BookService {
                 });
         BookEntity bookEntity = this.bookMapper.mapEntity(bookDTO);
         BookEntity savedBookEntity = this.bookRepository.save(bookEntity);
-        this.tracer.currentSpan().event("Book created");
-        this.tracer.currentSpan().tag("book.id.created", savedBookEntity.getId().toString());
+        Span currentSpan = this.tracer.currentSpan();
+        if (currentSpan != null) {
+            currentSpan.event("Book created").tag("book.id.created",
+                    savedBookEntity.getId().toString());
+        }
         return this.bookMapper.mapDTO(savedBookEntity);
     }
 
     @NewSpan
     public void delete(final String id) {
         this.bookRepository.deleteById(UUID.fromString(id));
-        this.tracer.currentSpan().event("Book deleted");
+        Span currentSpan = this.tracer.currentSpan();
+        if (currentSpan != null) {
+            currentSpan.event("Book deleted");
+        }
     }
 }
