@@ -135,7 +135,7 @@
         {
             "label": "podman-build-jvm-image",
             "type": "shell",
-            "command": "podman build --file Containerfile.jvm --tag spring-lessons:java-latest .",
+            "command": "podman build --rm=true --file Containerfile.jvm --tag spring-lessons:latest .",
             "group": "build",
         },
         {
