@@ -13,9 +13,9 @@ import lombok.extern.slf4j.Slf4j;
 public class AppPropertiesConfig {
 
     /*
-     * Default path for file system
+     * Application base directory
      */
-    private String defaultPath;
+    private String baseDir;
 
     @PostConstruct
     public void init() {
