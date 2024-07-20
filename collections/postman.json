@@ -15,12 +15,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8081/actuator",
+							"raw": "http://localhost:10001/actuator",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8081",
+							"port": "10001",
 							"path": [
 								"actuator"
 							]
@@ -34,12 +34,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8081/actuator/prometheus",
+							"raw": "http://localhost:10001/actuator/prometheus",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8081",
+							"port": "10001",
 							"path": [
 								"actuator",
 								"prometheus"
@@ -54,12 +54,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8081/actuator/info",
+							"raw": "http://localhost:10001/actuator/info",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8081",
+							"port": "10001",
 							"path": [
 								"actuator",
 								"info"
@@ -74,12 +74,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8081/actuator/env",
+							"raw": "http://localhost:10001/actuator/env",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8081",
+							"port": "10001",
 							"path": [
 								"actuator",
 								"env"
@@ -94,12 +94,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8081/actuator/metrics",
+							"raw": "http://localhost:10001/actuator/metrics",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8081",
+							"port": "10001",
 							"path": [
 								"actuator",
 								"metrics"
@@ -114,12 +114,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8081/actuator/beans",
+							"raw": "http://localhost:10001/actuator/beans",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8081",
+							"port": "10001",
 							"path": [
 								"actuator",
 								"beans"
@@ -134,12 +134,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8081/actuator/health",
+							"raw": "http://localhost:10001/actuator/health",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8081",
+							"port": "10001",
 							"path": [
 								"actuator",
 								"health"
@@ -159,12 +159,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/spring-app/books",
+							"raw": "http://localhost:10000/spring-app/books",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "10000",
 							"path": [
 								"spring-app",
 								"books"
@@ -188,12 +188,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/spring-app/books",
+							"raw": "http://localhost:10000/spring-app/books",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "10000",
 							"path": [
 								"spring-app",
 								"books"
@@ -208,12 +208,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/spring-app/books/:id",
+							"raw": "http://localhost:10000/spring-app/books/:id",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "10000",
 							"path": [
 								"spring-app",
 								"books",
@@ -235,12 +235,12 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/spring-app/books/:id",
+							"raw": "http://localhost:10000/spring-app/books/:id",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "10000",
 							"path": [
 								"spring-app",
 								"books",
