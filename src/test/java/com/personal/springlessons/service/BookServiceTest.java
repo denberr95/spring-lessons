@@ -7,10 +7,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
+import com.personal.springlessons.exception.BookNotFoundException;
 import com.personal.springlessons.exception.DuplicatedBookException;
 import com.personal.springlessons.model.dto.BookDTO;
 import com.personal.springlessons.model.entity.BookEntity;
 import com.personal.springlessons.repository.IBookRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,6 +25,11 @@ class BookServiceTest {
 
     @Autowired
     private IBookRepository bookRepository;
+
+    @AfterEach
+    void tearDown() {
+        this.bookRepository.deleteAll();
+    }
 
     @Test
     void givenExistingBooks_whenGetAll_thenRetrieveBooks() {
@@ -57,6 +64,12 @@ class BookServiceTest {
         assertEquals(result.getName(), bookEntity.getName());
         assertEquals(result.getPublicationDate(), bookEntity.getPublicationDate());
         assertEquals(result.getNumberOfPages(), bookEntity.getNumberOfPages());
+    }
+
+    @Test
+    void givenNonExistingBookId_whenGetById_theThrowBookNotFoundException() {
+        String fakeId = UUID.randomUUID().toString();
+        assertThrows(BookNotFoundException.class, () -> this.bookService.getById(fakeId));
     }
 
     @Test

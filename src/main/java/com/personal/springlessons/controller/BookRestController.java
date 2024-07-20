@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 @Validated
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(path = "/books")
+@RequestMapping(path = "books")
 public class BookRestController {
 
     private final BookService bookService;
@@ -38,7 +38,7 @@ public class BookRestController {
     }
 
     @NewSpan
-    @GetMapping(path = "/{id}")
+    @GetMapping(path = "{id}")
     public ResponseEntity<BookDTO> getById(@PathVariable String id) {
         BookDTO result = null;
         log.info("Called API to retrieve book: '{}'", id);
@@ -57,7 +57,7 @@ public class BookRestController {
     }
 
     @NewSpan
-    @DeleteMapping(path = "/{id}")
+    @DeleteMapping(path = "{id}")
     public ResponseEntity<Void> delete(@SpanTag @PathVariable String id) {
         log.info("Called API to delete book: '{}'", id);
         this.bookService.delete(id);
