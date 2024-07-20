@@ -13,4 +13,4 @@ export JAVA_OPTS="-server \
     -XshowSettings:vm"
 
 #Run process
-exec java $JAVA_OPTIONS $JAVA_OTHER_OPTIONS org.springframework.boot.loader.launch.JarLauncher
+exec java -jar $JAVA_OPTIONS $JAVA_OTHER_OPTIONS app.jar
