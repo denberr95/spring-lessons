@@ -3,6 +3,15 @@
 
     <statusListener class="ch.qos.logback.core.status.NopStatusListener" />
 
+    <variable name="LOG_LEVEL_ROOT" value="${LOG_LEVEL_ROOT:-ERROR}" />
+    <variable name="LOG_LEVEL_COM_PERSONAL_SPRINGLESSONS" value="${LOG_LEVEL_COM_PERSONAL_SPRINGLESSONS:-DEBUG}" />
+    <variable name="LOG_LEVEL_ORG_SPRINGFRAMEWORK" value="${LOG_LEVEL_ORG_SPRINGFRAMEWORK:-INFO}" />
+    <variable name="LOG_LEVEL_IO_UNDERTOW" value="${LOG_LEVEL_IO_UNDERTOW:-INFO}" />
+    <variable name="LOG_LEVEL_IO_MICROMETER" value="${LOG_LEVEL_IO_MICROMETER:-INFO}" />
+    <variable name="LOG_LEVEL_IO_OPENTELEMETRY" value="${LOG_LEVEL_IO_OPENTELEMETRY:-INFO}" />
+    <variable name="LOG_LEVEL_ORG_FLYWAYDB" value="${LOG_LEVEL_ORG_FLYWAYDB:-INFO}" />
+    <variable name="LOG_LEVEL_ORG_HIBERNATE" value="${LOG_LEVEL_ORG_HIBERNATE:-ERROR}" />
+
     <appender name="CONSOLE-TEXT" class="ch.qos.logback.core.ConsoleAppender">
         <withJansi>false</withJansi>
         <layout class="ch.qos.logback.classic.PatternLayout">
@@ -47,16 +56,16 @@
         <numLogsCapturedBeforeOtelInstall>1000</numLogsCapturedBeforeOtelInstall>
     </appender>
 
-    <logger name="com.personal.springlessons" level="DEBUG" />
-    <logger name="org.springframework" level="INFO" />
-    <logger name="io.undertow" level="INFO" />
-    <logger name="io.micrometer" level="INFO" />
-    <logger name="io.opentelemetry" level="INFO" />
-    <logger name="org.flywaydb" level="INFO" />
-    <logger name="org.hibernate" level="ERROR" />
+    <logger name="com.personal.springlessons" level="${LOG_LEVEL_COM_PERSONAL_SPRINGLESSONS}" />
+    <logger name="org.springframework" level="${LOG_LEVEL_ORG_SPRINGFRAMEWORK}" />
+    <logger name="io.undertow" level="${LOG_LEVEL_IO_UNDERTOW}" />
+    <logger name="io.micrometer" level="${LOG_LEVEL_IO_MICROMETER}" />
+    <logger name="io.opentelemetry" level="${LOG_LEVEL_IO_OPENTELEMETRY}" />
+    <logger name="org.flywaydb" level="${LOG_LEVEL_ORG_FLYWAYDB}" />
+    <logger name="org.hibernate" level="${LOG_LEVEL_ORG_HIBERNATE}" />
 
     <springProfile name="default">
-        <root level="ERROR">
+        <root level="${LOG_LEVEL_ROOT}">
             <appender-ref ref="CONSOLE-TEXT" />
             <appender-ref ref="OTEL" />
             <appender-ref ref="FILE" />
@@ -64,7 +73,7 @@
     </springProfile>
 
     <springProfile name="runtime">
-        <root level="ERROR">
+        <root level="${LOG_LEVEL_ROOT}">
             <appender-ref ref="CONSOLE-JSON" />
             <appender-ref ref="OTEL" />
             <appender-ref ref="FILE" />
