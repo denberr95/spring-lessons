@@ -29,7 +29,7 @@
         <numLogsCapturedBeforeOtelInstall>1000</numLogsCapturedBeforeOtelInstall>
     </appender>
 
-    <logger name="com.personal.springlessons" level="DEBUG" />
+    <logger name="com.personal.springlessons" level="TRACE" />
     <logger name="org.springframework" level="INFO" />
     <logger name="io.undertow" level="INFO" />
     <logger name="io.micrometer" level="INFO" />

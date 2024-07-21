@@ -4,7 +4,7 @@
     <statusListener class="ch.qos.logback.core.status.NopStatusListener" />
 
     <variable name="LOG_LEVEL_ROOT" value="${LOG_LEVEL_ROOT:-ERROR}" />
-    <variable name="LOG_LEVEL_COM_PERSONAL_SPRINGLESSONS" value="${LOG_LEVEL_COM_PERSONAL_SPRINGLESSONS:-DEBUG}" />
+    <variable name="LOG_LEVEL_COM_PERSONAL_SPRINGLESSONS" value="${LOG_LEVEL_COM_PERSONAL_SPRINGLESSONS:-TRACE}" />
     <variable name="LOG_LEVEL_ORG_SPRINGFRAMEWORK" value="${LOG_LEVEL_ORG_SPRINGFRAMEWORK:-INFO}" />
     <variable name="LOG_LEVEL_IO_UNDERTOW" value="${LOG_LEVEL_IO_UNDERTOW:-INFO}" />
     <variable name="LOG_LEVEL_IO_MICROMETER" value="${LOG_LEVEL_IO_MICROMETER:-INFO}" />
