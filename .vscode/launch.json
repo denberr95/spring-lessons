@@ -11,8 +11,8 @@
             "mainClass": "com.personal.springlessons.SpringLessonsApplication",
             "projectName": "spring-lessons",
             "vmArgs": "-Dspring.profiles.active=default,linux",
-            "preLaunchTask": "start-env",
-            "postDebugTask": "stop-env"
+            "preLaunchTask": "start-podman-env",
+            "postDebugTask": "stop-podman-env"
         },
         {
             "type": "java",
@@ -21,8 +21,8 @@
             "mainClass": "com.personal.springlessons.SpringLessonsApplication",
             "projectName": "spring-lessons",
             "vmArgs": "-Dspring.profiles.active=default,windows",
-            "preLaunchTask": "start-env",
-            "postDebugTask": "stop-env"
+            "preLaunchTask": "start-podman-env",
+            "postDebugTask": "stop-podman-env"
         }
     ]
 }

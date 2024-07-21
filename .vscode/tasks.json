@@ -44,7 +44,7 @@
             ]
         },
         {
-            "label": "start-env",
+            "label": "start-podman-env",
             "type": "shell",
             "group": "test",
             "dependsOrder": "sequence",
@@ -58,7 +58,7 @@
             ]
         },
         {
-            "label": "stop-env",
+            "label": "stop-podman-env",
             "type": "shell",
             "group": "test",
             "dependsOrder": "sequence",
@@ -67,7 +67,7 @@
             ]
         },
         {
-            "label": "start-app",
+            "label": "start-podman-app",
             "type": "shell",
             "group": "none",
             "dependsOrder": "sequence",
@@ -79,7 +79,7 @@
             ]
         },
         {
-            "label": "stop-app",
+            "label": "stop-podman-app",
             "type": "shell",
             "group": "none",
             "dependsOrder": "sequence",
@@ -115,6 +115,7 @@
         {
             "label": "podman-build-jvm-image-linux",
             "type": "shell",
+            "command": "podman build --rm=true --file Containerfile.jvm --tag spring-lessons:latest .",
             "dependsOrder": "sequence",
             "dependsOn": [
                 "test-env-linux",
@@ -125,17 +126,12 @@
         {
             "label": "podman-build-jvm-image-windows",
             "type": "shell",
+            "command": "podman build --rm=true --file Containerfile.jvm --tag spring-lessons:latest .",
             "dependsOrder": "sequence",
             "dependsOn": [
                 "test-env-windows",
                 "podman-build-jvm-image"
             ],
-            "group": "build",
-        },
-        {
-            "label": "podman-build-jvm-image",
-            "type": "shell",
-            "command": "podman build --rm=true --file Containerfile.jvm --tag spring-lessons:latest .",
             "group": "build",
         },
         {
