@@ -255,6 +255,42 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Update By Id",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Book Name\",\n\t\"numberOfPages\": 1,\n\t\"publicationDate\": \"9000-12-01\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:10000/spring-app/books/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "10000",
+							"path": [
+								"spring-app",
+								"books",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}

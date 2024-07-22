@@ -47,19 +47,18 @@ public class BookService {
     @NewSpan
     public BookDTO save(final BookDTO bookDTO) {
         this.bookRepository
-                .findByNameAndPublicationDate(bookDTO.getName(), bookDTO.getPublicationDate())
+                .findByNameAndPublicationDateAndNumberOfPages(bookDTO.getName(),
+                        bookDTO.getPublicationDate(), bookDTO.getNumberOfPages())
                 .ifPresent(book -> {
-                    throw new DuplicatedBookException(book.getName(), book.getPublicationDate(),
-                            book.getId().toString());
+                    throw new DuplicatedBookException(book.getName(), book.getId().toString());
                 });
         BookEntity bookEntity = this.bookMapper.mapEntity(bookDTO);
-        BookEntity savedBookEntity = this.bookRepository.save(bookEntity);
+        bookEntity = this.bookRepository.saveAndFlush(bookEntity);
         Span currentSpan = this.tracer.currentSpan();
         if (currentSpan != null) {
-            currentSpan.event("Book created").tag("book.id.created",
-                    savedBookEntity.getId().toString());
+            currentSpan.event("Book created").tag("book.id.created", bookEntity.getId().toString());
         }
-        return this.bookMapper.mapDTO(savedBookEntity);
+        return this.bookMapper.mapDTO(bookEntity);
     }
 
     @NewSpan
@@ -69,5 +68,24 @@ public class BookService {
         if (currentSpan != null) {
             currentSpan.event("Book deleted");
         }
+    }
+
+    @NewSpan
+    public BookDTO update(final String id, final BookDTO bookDTO) {
+        BookEntity bookEntity = this.bookRepository.findById(UUID.fromString(id))
+                .orElseThrow(() -> new BookNotFoundException(id));
+        this.bookRepository
+                .findByNameAndPublicationDateAndNumberOfPages(bookDTO.getName(),
+                        bookDTO.getPublicationDate(), bookDTO.getNumberOfPages())
+                .ifPresent(book -> {
+                    throw new DuplicatedBookException(book.getName(), book.getId().toString());
+                });
+        bookEntity = this.bookMapper.update(bookDTO, bookEntity);
+        bookEntity = this.bookRepository.saveAndFlush(bookEntity);
+        Span currentSpan = this.tracer.currentSpan();
+        if (currentSpan != null) {
+            currentSpan.event("Book updated");
+        }
+        return this.bookMapper.mapDTO(bookEntity);
     }
 }

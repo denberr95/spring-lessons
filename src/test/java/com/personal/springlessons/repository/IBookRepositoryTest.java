@@ -3,45 +3,61 @@ package com.personal.springlessons.repository;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.time.LocalDate;
 import java.util.Optional;
 import com.personal.springlessons.model.entity.BookEntity;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
-@Transactional
 class IBookRepositoryTest {
 
     @Autowired
     private IBookRepository bookRepository;
 
+    private static final int TOTAL_BOOKS = 5;
+
+    @BeforeEach
+    void init() {
+        for (int i = 0; i < TOTAL_BOOKS; i++) {
+            BookEntity bookEntity = new BookEntity();
+            bookEntity.setName("Repository-Book-Name-" + i);
+            bookEntity.setPublicationDate(LocalDate.now());
+            bookEntity.setNumberOfPages(i + 1);
+            this.bookRepository.save(bookEntity);
+        }
+    }
+
+    @AfterEach
+    void tearDown() {
+        this.bookRepository.deleteAll();
+    }
+
     @Test
-    void testFindByNameAndPublicationDate() {
-        String name = "Test Book";
+    void givenExistentBook_whenFindByNameAndPubblicationDateAndNumberOfPages_thenBookIsRetrieved() {
+        String name = "Repository-Book-Name-0";
         LocalDate publicationDate = LocalDate.now();
-        BookEntity bookEntity = new BookEntity();
-        bookEntity.setName(name);
-        bookEntity.setPublicationDate(publicationDate);
-        bookEntity.setNumberOfPages(Integer.valueOf(1));
-        this.bookRepository.save(bookEntity);
-        Optional<BookEntity> result =
-                this.bookRepository.findByNameAndPublicationDate(name, publicationDate);
+        Optional<BookEntity> result = this.bookRepository
+                .findByNameAndPublicationDateAndNumberOfPages(name, publicationDate, 1);
         assertTrue(result.isPresent());
         assertNotNull(result.get().getId());
         assertEquals(name, result.get().getName());
         assertEquals(publicationDate, result.get().getPublicationDate());
+        assertNotNull(result.get().getCreatedAt());
+        assertNull(result.get().getUpdatedAt());
     }
 
     @Test
-    void testFindByNameAndPublicationDate_NotFound() {
-        String name = "Nonexistent Book";
+    void givenNonExistentBook_whenFindByNameAndPubblicationDateAndNumberOfPages_thenNotFound() {
+        String name = "Non existent Book";
         LocalDate publicationDate = LocalDate.now();
-        Optional<BookEntity> result =
-                this.bookRepository.findByNameAndPublicationDate(name, publicationDate);
+        Optional<BookEntity> result = this.bookRepository
+                .findByNameAndPublicationDateAndNumberOfPages(name, publicationDate, 0);
         assertFalse(result.isPresent());
     }
 }

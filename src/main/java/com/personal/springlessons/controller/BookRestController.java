@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,7 +46,7 @@ public class BookRestController {
 
     @NewSpan
     @GetMapping(path = "{id}")
-    public ResponseEntity<BookDTO> getById(@PathVariable String id) {
+    public ResponseEntity<BookDTO> getById(@PathVariable final String id) {
         log.info("Called API to retrieve book: '{}'", id);
         BookDTO result = this.bookService.getById(id);
         log.info("Book '{}' retrieved !", result.getId());
@@ -54,7 +55,7 @@ public class BookRestController {
 
     @NewSpan
     @PostMapping
-    public ResponseEntity<BookDTO> save(@RequestBody BookDTO bookDTO) {
+    public ResponseEntity<BookDTO> save(@RequestBody final BookDTO bookDTO) {
         log.info("Called API to create new book");
         BookDTO result = this.bookService.save(bookDTO);
         log.info("Book '{}' saved !", result.getId());
@@ -63,10 +64,20 @@ public class BookRestController {
 
     @NewSpan
     @DeleteMapping(path = "{id}")
-    public ResponseEntity<Void> delete(@SpanTag @PathVariable String id) {
+    public ResponseEntity<Void> delete(@SpanTag @PathVariable final String id) {
         log.info("Called API to delete book: '{}'", id);
         this.bookService.delete(id);
         log.info("Book '{}' deleted !", id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @NewSpan
+    @PutMapping(path = "{id}")
+    public ResponseEntity<BookDTO> update(@SpanTag @PathVariable final String id,
+            @RequestBody final BookDTO bookDTO) {
+        log.info("Calle API to update book: '{}'", id);
+        BookDTO result = this.bookService.update(id, bookDTO);
+        log.info("Book '{}' updated !", id);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 }

@@ -1,10 +1,11 @@
 package com.personal.springlessons.model.entity;
 
+import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.UUID;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -23,6 +24,7 @@ import lombok.NoArgsConstructor;
 @DynamicInsert
 @DynamicUpdate
 @NoArgsConstructor
+@EntityListeners(value = BookEntityListener.class)
 @Table(name = BookEntity.TABLE_NAME, schema = Constants.DB_SCHEMA_SPRING_APP, uniqueConstraints = {
         @UniqueConstraint(columnNames = {"name", "publication_date", "number_of_pages"})})
 public class BookEntity {
@@ -36,11 +38,11 @@ public class BookEntity {
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    private Instant createdAt;
 
     @LastModifiedDate
     @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+    private Instant updatedAt;
 
     @Column(name = "name", nullable = false, length = Constants.LEN_100)
     private String name;
