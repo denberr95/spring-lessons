@@ -13,4 +13,4 @@ export JAVA_OPTS="-server \
     -XshowSettings:vm"
 
 #Run process
-exec java -jar $JAVA_OPTIONS $JAVA_OTHER_OPTIONS app.jar
+exec java -jar $JAVA_OPTS $JAVA_OTHER_OPTIONS app.jar
