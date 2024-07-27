@@ -4,7 +4,7 @@
 export JAVA_OPTS="-server \
     -XX:+UseStringDeduplication \
     -XX:+OptimizeStringConcat \
-    -XX:+UseContainerSupport \    
+    -XX:+UseContainerSupport \
     -XX:InitialRAMPercentage=25.0 \
     -XX:MaxRAMPercentage=50.0 \
     -XX:+PrintFlagsFinal \
