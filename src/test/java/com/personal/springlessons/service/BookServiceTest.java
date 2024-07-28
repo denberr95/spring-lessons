@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.UUID;
 import com.personal.springlessons.exception.BookNotFoundException;
 import com.personal.springlessons.exception.DuplicatedBookException;
+import com.personal.springlessons.exception.InvalidUUIDException;
 import com.personal.springlessons.model.dto.BookDTO;
 import com.personal.springlessons.model.entity.BookEntity;
 import com.personal.springlessons.repository.IBookRepository;
@@ -69,6 +70,11 @@ class BookServiceTest {
     }
 
     @Test
+    void givenInvalidBookId_whenGetById_thenThrowInvalidUUIDException() {
+        assertThrows(InvalidUUIDException.class, () -> this.bookService.getById("fake"));
+    }
+
+    @Test
     void givenNewBookDTO_whenSave_thenCreateBook() {
         BookDTO bookDTO = new BookDTO();
         bookDTO.setName("Service-Book-Name-" + this.bookRepository.count());
@@ -100,8 +106,12 @@ class BookServiceTest {
         BookEntity bookEntity = this.bookRepository.findAll().get(0);
         String id = bookEntity.getId().toString();
         this.bookService.delete(id);
-
         assertFalse(this.bookRepository.findById(UUID.fromString(id)).isPresent());
+    }
+
+    @Test
+    void givenInvalidBookId_whenDelete_thenThrowInvalidUUIDException() {
+        assertThrows(InvalidUUIDException.class, () -> this.bookService.delete("fake"));
     }
 
     @Test
@@ -120,14 +130,14 @@ class BookServiceTest {
     }
 
     @Test
-    void givenExistingBookId_whenUpdate_thenThrowBookNotFoundException() {
+    void givenNonExistingBookId_whenUpdate_thenThrowBookNotFoundException() {
         String id = UUID.randomUUID().toString();
         BookDTO bookDTO = new BookDTO();
         assertThrows(BookNotFoundException.class, () -> this.bookService.update(id, bookDTO));
     }
 
     @Test
-    void givenExistingBookDTO_whenUpdate_thenDuplicatedBookException() {
+    void givenExistingBookDTO_whenUpdate_thenThrowDuplicatedBookException() {
         BookEntity bookEntity = this.bookRepository.findAll().get(0);
         String id = bookEntity.getId().toString();
         BookDTO bookDTO = new BookDTO();
@@ -135,5 +145,10 @@ class BookServiceTest {
         bookDTO.setPublicationDate(LocalDate.now());
         bookDTO.setNumberOfPages(Integer.valueOf(1));
         assertThrows(DuplicatedBookException.class, () -> this.bookService.update(id, bookDTO));
+    }
+
+    @Test
+    void givenInvalidBookId_whenUpdate_thenThrowInvalidUUIDException() {
+        assertThrows(InvalidUUIDException.class, () -> this.bookService.update("fake", null));
     }
 }
