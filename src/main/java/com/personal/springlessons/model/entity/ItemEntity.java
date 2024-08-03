@@ -1,6 +1,6 @@
 package com.personal.springlessons.model.entity;
 
-import java.time.LocalDate;
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 import jakarta.persistence.Column;
@@ -9,6 +9,8 @@ import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import com.personal.springlessons.util.Constants;
@@ -26,12 +28,12 @@ import lombok.NoArgsConstructor;
 @DynamicInsert
 @DynamicUpdate
 @NoArgsConstructor
-@EntityListeners(value = BookEntityListener.class)
-@Table(name = BookEntity.TABLE_NAME, schema = Constants.DB_SCHEMA_SPRING_APP, uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"name", "publication_date", "number_of_pages"})})
-public class BookEntity {
+@EntityListeners(value = ItemEntityListener.class)
+@Table(name = ItemEntity.TABLE_NAME, schema = Constants.DB_SCHEMA_SPRING_APP,
+        uniqueConstraints = {@UniqueConstraint(columnNames = "barcode")})
+public class ItemEntity {
 
-    public static final String TABLE_NAME = "books";
+    public static final String TABLE_NAME = "items";
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -46,12 +48,17 @@ public class BookEntity {
     @Column(name = "updated_at")
     private OffsetDateTime updatedAt;
 
+    @Column(name = "price", precision = Constants.I_VAL_6, scale = Constants.I_VAL_2,
+            nullable = false)
+    private BigDecimal price;
+
     @Column(name = "name", nullable = false, length = Constants.I_VAL_100)
     private String name;
 
-    @Column(name = "publication_date", nullable = false)
-    private LocalDate publicationDate;
+    @Column(name = "barcode", nullable = false, updatable = false, length = Constants.I_VAL_50)
+    private String barcode;
 
-    @Column(name = "number_of_pages", nullable = false)
-    private Integer numberOfPages;
+    @ManyToOne
+    @JoinColumn(name = "fk_id_items_status", referencedColumnName = "id")
+    private ItemStatusEntity itemsStatusEntity;
 }

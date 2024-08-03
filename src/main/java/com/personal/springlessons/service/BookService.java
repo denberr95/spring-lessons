@@ -26,10 +26,8 @@ public class BookService {
     public List<BookDTO> getAll() {
         List<BookEntity> bookEntities = this.bookRepository.findAll();
         Span currentSpan = this.tracer.currentSpan();
-        if (currentSpan != null) {
-            currentSpan.tag("total.books", String.valueOf(bookEntities.size()))
-                    .event("Books retrieved");
-        }
+        currentSpan.tag("total.books", String.valueOf(bookEntities.size()))
+                .event("Books retrieved");
         return this.bookMapper.mapDTO(bookEntities);
     }
 
@@ -38,9 +36,7 @@ public class BookService {
         BookEntity bookEntity = this.bookRepository.findById(Methods.idValidation(id))
                 .orElseThrow(() -> new BookNotFoundException(id));
         Span currentSpan = this.tracer.currentSpan();
-        if (currentSpan != null) {
-            currentSpan.event("Book retrieved");
-        }
+        currentSpan.event("Book retrieved");
         return this.bookMapper.mapDTO(bookEntity);
     }
 
@@ -55,9 +51,7 @@ public class BookService {
         BookEntity bookEntity = this.bookMapper.mapEntity(bookDTO);
         bookEntity = this.bookRepository.saveAndFlush(bookEntity);
         Span currentSpan = this.tracer.currentSpan();
-        if (currentSpan != null) {
-            currentSpan.event("Book created").tag("book.id.created", bookEntity.getId().toString());
-        }
+        currentSpan.tag("book.id.created", bookEntity.getId().toString()).event("Book created");
         return this.bookMapper.mapDTO(bookEntity);
     }
 
@@ -65,9 +59,7 @@ public class BookService {
     public void delete(final String id) {
         this.bookRepository.deleteById(Methods.idValidation(id));
         Span currentSpan = this.tracer.currentSpan();
-        if (currentSpan != null) {
-            currentSpan.event("Book deleted");
-        }
+        currentSpan.event("Book deleted");
     }
 
     @NewSpan
@@ -83,9 +75,7 @@ public class BookService {
         bookEntity = this.bookMapper.update(bookDTO, bookEntity);
         bookEntity = this.bookRepository.saveAndFlush(bookEntity);
         Span currentSpan = this.tracer.currentSpan();
-        if (currentSpan != null) {
-            currentSpan.event("Book updated");
-        }
+        currentSpan.event("Book updated");
         return this.bookMapper.mapDTO(bookEntity);
     }
 }

@@ -5,8 +5,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public enum APICategory {
-    BOOKS("Books"), ND("Not Defined");
+public enum DomainCategory {
+    BOOKS("Books"), ITEMS("Items"), ND("Not Defined");
 
     private String value;
 
@@ -21,8 +21,8 @@ public enum APICategory {
     }
 
     @JsonCreator
-    public static APICategory getValue(String value) {
-        for (APICategory e : APICategory.values()) {
+    public static DomainCategory getValue(String value) {
+        for (DomainCategory e : DomainCategory.values()) {
             if (e.value.equals(value)) {
                 return e;
             }

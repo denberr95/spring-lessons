@@ -46,7 +46,7 @@ public class BookRestController {
 
     @NewSpan
     @GetMapping(path = "{id}")
-    public ResponseEntity<BookDTO> getById(@PathVariable final String id) {
+    public ResponseEntity<BookDTO> getById(@SpanTag @PathVariable final String id) {
         log.info("Called API to retrieve book: '{}'", id);
         BookDTO result = this.bookService.getById(id);
         log.info("Book '{}' retrieved !", result.getId());

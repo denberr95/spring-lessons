@@ -10,7 +10,7 @@ import com.personal.springlessons.model.dto.BookDTO;
 import com.personal.springlessons.model.dto.BookNotFoundResponseDTO;
 import com.personal.springlessons.model.dto.DuplicatedBookResponseDTO;
 import com.personal.springlessons.model.dto.InvalidUUIDResponseDTO;
-import com.personal.springlessons.model.lov.APICategory;
+import com.personal.springlessons.model.lov.DomainCategory;
 import com.personal.springlessons.service.BookService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -111,7 +111,7 @@ class BookRestControllerTest {
         assertNotNull(response.getBody());
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         BookNotFoundResponseDTO responseDTO = response.getBody();
-        assertEquals(APICategory.BOOKS, responseDTO.getCategory());
+        assertEquals(DomainCategory.BOOKS, responseDTO.getCategory());
         assertNotNull(responseDTO.getId());
         assertNotNull(responseDTO.getTimestamp());
         assertNotNull(responseDTO.getMessage());
@@ -126,7 +126,7 @@ class BookRestControllerTest {
         InvalidUUIDResponseDTO responseDTO = response.getBody();
         assertNotNull(responseDTO);
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals(APICategory.BOOKS, responseDTO.getCategory());
+        assertEquals(DomainCategory.BOOKS, responseDTO.getCategory());
         assertNotNull(responseDTO.getTimestamp());
         assertNotNull(responseDTO.getMessage());
         assertNotNull(responseDTO.getAdditionalData());
@@ -174,7 +174,7 @@ class BookRestControllerTest {
         assertNotNull(secondResponse.getBody());
         assertEquals(HttpStatus.CONFLICT, secondResponse.getStatusCode());
         DuplicatedBookResponseDTO responseDTO = secondResponse.getBody();
-        assertEquals(APICategory.BOOKS, responseDTO.getCategory());
+        assertEquals(DomainCategory.BOOKS, responseDTO.getCategory());
         assertNotNull(responseDTO.getTimestamp());
         assertNotNull(responseDTO.getMessage());
         assertNotNull(responseDTO.getAdditionalData());
@@ -200,7 +200,7 @@ class BookRestControllerTest {
         InvalidUUIDResponseDTO responseDTO = response.getBody();
         assertNotNull(responseDTO);
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals(APICategory.BOOKS, responseDTO.getCategory());
+        assertEquals(DomainCategory.BOOKS, responseDTO.getCategory());
         assertNotNull(responseDTO.getTimestamp());
         assertNotNull(responseDTO.getMessage());
         assertNotNull(responseDTO.getAdditionalData());
@@ -234,7 +234,7 @@ class BookRestControllerTest {
         BookNotFoundResponseDTO responseDTO = response.getBody();
         assertNotNull(responseDTO);
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        assertEquals(APICategory.BOOKS, responseDTO.getCategory());
+        assertEquals(DomainCategory.BOOKS, responseDTO.getCategory());
         assertNotNull(responseDTO.getId());
         assertNotNull(responseDTO.getTimestamp());
         assertNotNull(responseDTO.getMessage());
@@ -250,7 +250,7 @@ class BookRestControllerTest {
         DuplicatedBookResponseDTO responseDTO = response.getBody();
         assertNotNull(responseDTO);
         assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
-        assertEquals(APICategory.BOOKS, responseDTO.getCategory());
+        assertEquals(DomainCategory.BOOKS, responseDTO.getCategory());
         assertNotNull(responseDTO.getTimestamp());
         assertNotNull(responseDTO.getMessage());
         assertNotNull(responseDTO.getAdditionalData());
@@ -268,7 +268,7 @@ class BookRestControllerTest {
         InvalidUUIDResponseDTO responseDTO = response.getBody();
         assertNotNull(responseDTO);
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals(APICategory.BOOKS, responseDTO.getCategory());
+        assertEquals(DomainCategory.BOOKS, responseDTO.getCategory());
         assertNotNull(responseDTO.getTimestamp());
         assertNotNull(responseDTO.getMessage());
         assertNotNull(responseDTO.getAdditionalData());

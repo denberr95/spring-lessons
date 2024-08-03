@@ -1,5 +1,6 @@
 package com.personal.springlessons.model.dto;
 
+import com.personal.springlessons.model.lov.ItemStatus;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -9,13 +10,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = false)
-public class DuplicatedBookResponseDTO extends BaseErrorResponseDTO {
+public class KafkaMessagetItemDTO extends ItemDTO {
 
-    private Details additionalData;
-
-    @Data
-    @NoArgsConstructor
-    public class Details {
-        private String orinalId;
-    }
+    private ItemStatus itemStatus;
 }

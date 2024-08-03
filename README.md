@@ -1,6 +1,6 @@
 # Spring Boot Lessons
 
-## Software Requirements
+## Software
 
 - [Visual Studio Code](https://code.visualstudio.com/download)
 - [Java 17](https://adoptium.net/en-GB/temurin/releases/)
@@ -10,6 +10,7 @@
 - [Podman Compose](https://github.com/containers/podman-compose)
 - [Postman](https://www.postman.com/downloads/)
 - [Flyway](https://flywaydb.org/)
+- [Kafka](https://kafka.apache.org/)
 
 ## Environment Links
 
@@ -17,3 +18,4 @@
 - [Prometheus](http://localhost:9090): Application Metrics
 - [Grafana](http://localhost:3000/grafana): Dashboard & Alert Monitoring
 - [PostgreSQL](jdbc:postgresql://localhost:5432/spring): PostgreSQL Database
+- [Kafka Kroker](localhost:9092): Kafka Bootstrap Server

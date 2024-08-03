@@ -20,11 +20,11 @@ class IBookRepositoryTest {
     @Autowired
     private IBookRepository bookRepository;
 
-    private static final int TOTAL_BOOKS = 5;
+    private static final int TOTAL = 5;
 
     @BeforeEach
     void init() {
-        for (int i = 0; i < TOTAL_BOOKS; i++) {
+        for (int i = 0; i < TOTAL; i++) {
             BookEntity bookEntity = new BookEntity();
             bookEntity.setName("Repository-Book-Name-" + i);
             bookEntity.setPublicationDate(LocalDate.now());
