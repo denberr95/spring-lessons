@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.time.LocalDate;
 import java.util.Optional;
-import com.personal.springlessons.model.entity.BookEntity;
+import com.personal.springlessons.model.entity.BooksEntity;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,17 +15,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class IBookRepositoryTest {
+class IBooksRepositoryTest {
 
     @Autowired
-    private IBookRepository bookRepository;
+    private IBooksRepository bookRepository;
 
     private static final int TOTAL = 5;
 
     @BeforeEach
     void init() {
         for (int i = 0; i < TOTAL; i++) {
-            BookEntity bookEntity = new BookEntity();
+            BooksEntity bookEntity = new BooksEntity();
             bookEntity.setName("Repository-Book-Name-" + i);
             bookEntity.setPublicationDate(LocalDate.now());
             bookEntity.setNumberOfPages(i + 1);
@@ -42,7 +42,7 @@ class IBookRepositoryTest {
     void givenExistentBook_whenFindByNameAndPubblicationDateAndNumberOfPages_thenBookIsRetrieved() {
         String name = "Repository-Book-Name-0";
         LocalDate publicationDate = LocalDate.now();
-        Optional<BookEntity> result = this.bookRepository
+        Optional<BooksEntity> result = this.bookRepository
                 .findByNameAndPublicationDateAndNumberOfPages(name, publicationDate, 1);
         assertTrue(result.isPresent());
         assertNotNull(result.get().getId());
@@ -56,7 +56,7 @@ class IBookRepositoryTest {
     void givenNonExistentBook_whenFindByNameAndPubblicationDateAndNumberOfPages_thenNotFound() {
         String name = "Non existent Book";
         LocalDate publicationDate = LocalDate.now();
-        Optional<BookEntity> result = this.bookRepository
+        Optional<BooksEntity> result = this.bookRepository
                 .findByNameAndPublicationDateAndNumberOfPages(name, publicationDate, 0);
         assertFalse(result.isPresent());
     }

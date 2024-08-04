@@ -28,10 +28,10 @@ import lombok.NoArgsConstructor;
 @DynamicInsert
 @DynamicUpdate
 @NoArgsConstructor
-@EntityListeners(value = ItemEntityListener.class)
-@Table(name = ItemEntity.TABLE_NAME, schema = Constants.DB_SCHEMA_SPRING_APP,
+@EntityListeners(value = ItemsEntityListener.class)
+@Table(name = ItemsEntity.TABLE_NAME, schema = Constants.DB_SCHEMA_SPRING_APP,
         uniqueConstraints = {@UniqueConstraint(columnNames = "barcode")})
-public class ItemEntity {
+public class ItemsEntity {
 
     public static final String TABLE_NAME = "items";
 
@@ -59,6 +59,6 @@ public class ItemEntity {
     private String barcode;
 
     @ManyToOne
-    @JoinColumn(name = "fk_id_items_status", referencedColumnName = "id")
-    private ItemStatusEntity itemsStatusEntity;
+    @JoinColumn(name = "fk_order_items_id", referencedColumnName = "id")
+    private OrderItemsEntity itemsStatusEntity;
 }

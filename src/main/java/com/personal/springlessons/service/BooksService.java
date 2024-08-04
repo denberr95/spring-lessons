@@ -1,12 +1,12 @@
 package com.personal.springlessons.service;
 
 import java.util.List;
-import com.personal.springlessons.component.mapper.IBookMapper;
+import com.personal.springlessons.component.mapper.IBooksMapper;
 import com.personal.springlessons.exception.BookNotFoundException;
 import com.personal.springlessons.exception.DuplicatedBookException;
 import com.personal.springlessons.model.dto.BookDTO;
-import com.personal.springlessons.model.entity.BookEntity;
-import com.personal.springlessons.repository.IBookRepository;
+import com.personal.springlessons.model.entity.BooksEntity;
+import com.personal.springlessons.repository.IBooksRepository;
 import com.personal.springlessons.util.Methods;
 import org.springframework.stereotype.Service;
 import io.micrometer.tracing.Span;
@@ -16,15 +16,15 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class BookService {
+public class BooksService {
 
-    private final IBookRepository bookRepository;
-    private final IBookMapper bookMapper;
+    private final IBooksRepository bookRepository;
+    private final IBooksMapper bookMapper;
     private final Tracer tracer;
 
     @NewSpan
     public List<BookDTO> getAll() {
-        List<BookEntity> bookEntities = this.bookRepository.findAll();
+        List<BooksEntity> bookEntities = this.bookRepository.findAll();
         Span currentSpan = this.tracer.currentSpan();
         currentSpan.tag("total.books", String.valueOf(bookEntities.size()))
                 .event("Books retrieved");
@@ -33,7 +33,7 @@ public class BookService {
 
     @NewSpan
     public BookDTO getById(final String id) {
-        BookEntity bookEntity = this.bookRepository.findById(Methods.idValidation(id))
+        BooksEntity bookEntity = this.bookRepository.findById(Methods.idValidation(id))
                 .orElseThrow(() -> new BookNotFoundException(id));
         Span currentSpan = this.tracer.currentSpan();
         currentSpan.event("Book retrieved");
@@ -48,7 +48,7 @@ public class BookService {
                 .ifPresent(book -> {
                     throw new DuplicatedBookException(book.getName(), book.getId().toString());
                 });
-        BookEntity bookEntity = this.bookMapper.mapEntity(bookDTO);
+        BooksEntity bookEntity = this.bookMapper.mapEntity(bookDTO);
         bookEntity = this.bookRepository.saveAndFlush(bookEntity);
         Span currentSpan = this.tracer.currentSpan();
         currentSpan.tag("book.id.created", bookEntity.getId().toString()).event("Book created");
@@ -64,7 +64,7 @@ public class BookService {
 
     @NewSpan
     public BookDTO update(final String id, final BookDTO bookDTO) {
-        BookEntity bookEntity = this.bookRepository.findById(Methods.idValidation(id))
+        BooksEntity bookEntity = this.bookRepository.findById(Methods.idValidation(id))
                 .orElseThrow(() -> new BookNotFoundException(id));
         this.bookRepository
                 .findByNameAndPublicationDateAndNumberOfPages(bookDTO.getName(),

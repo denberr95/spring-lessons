@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@RestControllerAdvice(assignableTypes = BookRestController.class)
-public class BookRestControllerAdvice {
+@RestControllerAdvice(assignableTypes = BooksRestController.class)
+public class BooksRestControllerAdvice {
 
     @ExceptionHandler(value = {BookNotFoundException.class})
     public ResponseEntity<BookNotFoundResponseDTO> handleBookNotFoundException(

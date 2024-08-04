@@ -10,40 +10,40 @@ import jakarta.persistence.PreUpdate;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class BookEntityListener {
+public class BooksEntityListener {
 
     @PostLoad
-    private void postLoad(BookEntity entity) {
+    private void postLoad(BooksEntity entity) {
         log.trace("postLoad book entity: '{}'", entity);
     }
 
     @PreUpdate
-    private void preUpdate(BookEntity entity) {
+    private void preUpdate(BooksEntity entity) {
         log.trace("preUpdate book entity: '{}'", entity);
     }
 
     @PostUpdate
-    private void postUpdate(BookEntity entity) {
+    private void postUpdate(BooksEntity entity) {
         log.trace("postUpdate book entity: '{}'", entity);
     }
 
     @PrePersist
-    private void prePersist(BookEntity entity) {
+    private void prePersist(BooksEntity entity) {
         log.trace("prePersist book entity: '{}'", entity);
     }
 
     @PostPersist
-    private void postPersist(BookEntity entity) {
+    private void postPersist(BooksEntity entity) {
         log.trace("postPersist book entity: '{}'", entity);
     }
 
     @PreRemove
-    private void preRemove(BookEntity entity) {
+    private void preRemove(BooksEntity entity) {
         log.trace("preRemove book entity: '{}'", entity);
     }
 
     @PostRemove
-    private void postRemove(BookEntity entity) {
+    private void postRemove(BooksEntity entity) {
         log.trace("postRemove book entity: '{}'", entity);
     }
 }

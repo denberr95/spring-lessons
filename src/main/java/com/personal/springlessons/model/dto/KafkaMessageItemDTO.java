@@ -10,7 +10,9 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = false)
-public class KafkaMessagetItemDTO extends ItemDTO {
+public class KafkaMessageItemDTO extends ItemDTO {
 
+    private String idOrderItems;
+    
     private ItemStatus itemStatus;
 }

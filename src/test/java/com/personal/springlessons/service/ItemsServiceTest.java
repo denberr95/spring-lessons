@@ -1,9 +1,9 @@
-package com.personal.springlessons.controller;
+package com.personal.springlessons.service;
 
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ItemRestControllerTest {
+class ItemsServiceTest {
 
     // TODO
 }

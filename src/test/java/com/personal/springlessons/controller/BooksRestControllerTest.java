@@ -11,7 +11,7 @@ import com.personal.springlessons.model.dto.BookNotFoundResponseDTO;
 import com.personal.springlessons.model.dto.DuplicatedBookResponseDTO;
 import com.personal.springlessons.model.dto.InvalidUUIDResponseDTO;
 import com.personal.springlessons.model.lov.DomainCategory;
-import com.personal.springlessons.service.BookService;
+import com.personal.springlessons.service.BooksService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,13 +26,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-class BookRestControllerTest {
+class BooksRestControllerTest {
 
     @Autowired
     private TestRestTemplate testRestTemplate;
 
     @Autowired
-    private BookService bookService;
+    private BooksService bookService;
 
     @Value("${spring.mvc.servlet.path}")
     private String basePath;

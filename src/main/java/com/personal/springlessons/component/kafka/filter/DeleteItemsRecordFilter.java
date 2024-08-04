@@ -1,6 +1,6 @@
 package com.personal.springlessons.component.kafka.filter;
 
-import com.personal.springlessons.model.dto.KafkaMessagetItemDTO;
+import com.personal.springlessons.model.dto.KafkaMessageItemDTO;
 import com.personal.springlessons.model.lov.ItemStatus;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.listener.adapter.RecordFilterStrategy;
@@ -15,7 +15,7 @@ public class DeleteItemsRecordFilter<K, V> implements RecordFilterStrategy<K, V>
     public boolean filter(ConsumerRecord<K, V> consumerRecord) {
         boolean result = false;
         if (null != consumerRecord) {
-            KafkaMessagetItemDTO message = (KafkaMessagetItemDTO) consumerRecord.value();
+            KafkaMessageItemDTO message = (KafkaMessageItemDTO) consumerRecord.value();
             if (!ItemStatus.DELETE.equals(message.getItemStatus())) {
                 result = true;
                 log.debug(

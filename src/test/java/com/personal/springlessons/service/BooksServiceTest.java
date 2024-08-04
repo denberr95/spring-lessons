@@ -11,8 +11,8 @@ import com.personal.springlessons.exception.BookNotFoundException;
 import com.personal.springlessons.exception.DuplicatedBookException;
 import com.personal.springlessons.exception.InvalidUUIDException;
 import com.personal.springlessons.model.dto.BookDTO;
-import com.personal.springlessons.model.entity.BookEntity;
-import com.personal.springlessons.repository.IBookRepository;
+import com.personal.springlessons.model.entity.BooksEntity;
+import com.personal.springlessons.repository.IBooksRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,20 +20,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class BookServiceTest {
+class BooksServiceTest {
 
     @Autowired
-    private BookService bookService;
+    private BooksService bookService;
 
     @Autowired
-    private IBookRepository bookRepository;
+    private IBooksRepository bookRepository;
 
     private static final int TOTAL_BOOKS = 5;
 
     @BeforeEach
     void init() {
         for (int i = 0; i < TOTAL_BOOKS; i++) {
-            BookEntity bookEntity = new BookEntity();
+            BooksEntity bookEntity = new BooksEntity();
             bookEntity.setName("Service-Book-Name-" + i);
             bookEntity.setPublicationDate(LocalDate.now());
             bookEntity.setNumberOfPages(i + 1);
@@ -54,7 +54,7 @@ class BookServiceTest {
 
     @Test
     void givenExistingBookId_whenGetById_theRetrieveBook() {
-        BookEntity bookEntity = this.bookRepository.findAll().get(0);
+        BooksEntity bookEntity = this.bookRepository.findAll().get(0);
         BookDTO result = this.bookService.getById(bookEntity.getId().toString());
         assertNotNull(result);
         assertEquals(result.getId(), bookEntity.getId().toString());
@@ -103,7 +103,7 @@ class BookServiceTest {
 
     @Test
     void givenValidBookId_whenDelete_thenDeleteBook() {
-        BookEntity bookEntity = this.bookRepository.findAll().get(0);
+        BooksEntity bookEntity = this.bookRepository.findAll().get(0);
         String id = bookEntity.getId().toString();
         this.bookService.delete(id);
         assertFalse(this.bookRepository.findById(UUID.fromString(id)).isPresent());
@@ -116,7 +116,7 @@ class BookServiceTest {
 
     @Test
     void givenValidBookId_whenUpdate_thenUpdateBook() {
-        BookEntity bookEntity = this.bookRepository.findAll().get(0);
+        BooksEntity bookEntity = this.bookRepository.findAll().get(0);
         BookDTO bookDTO = new BookDTO();
         bookDTO.setName("Service-Book-Name-" + (this.bookRepository.count() + 1));
         bookDTO.setPublicationDate(LocalDate.now());
@@ -138,7 +138,7 @@ class BookServiceTest {
 
     @Test
     void givenExistingBookDTO_whenUpdate_thenThrowDuplicatedBookException() {
-        BookEntity bookEntity = this.bookRepository.findAll().get(0);
+        BooksEntity bookEntity = this.bookRepository.findAll().get(0);
         String id = bookEntity.getId().toString();
         BookDTO bookDTO = new BookDTO();
         bookDTO.setName("Service-Book-Name-0");

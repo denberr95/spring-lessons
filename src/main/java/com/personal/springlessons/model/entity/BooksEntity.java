@@ -1,17 +1,16 @@
 package com.personal.springlessons.model.entity;
 
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import com.personal.springlessons.model.lov.ItemStatus;
+import jakarta.persistence.UniqueConstraint;
 import com.personal.springlessons.util.Constants;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.CurrentTimestamp;
@@ -27,11 +26,12 @@ import lombok.NoArgsConstructor;
 @DynamicInsert
 @DynamicUpdate
 @NoArgsConstructor
-@EntityListeners(value = ItemEntityListener.class)
-@Table(name = ItemStatusEntity.TABLE_NAME, schema = Constants.DB_SCHEMA_SPRING_APP)
-public class ItemStatusEntity {
+@EntityListeners(value = BooksEntityListener.class)
+@Table(name = BooksEntity.TABLE_NAME, schema = Constants.DB_SCHEMA_SPRING_APP, uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"name", "publication_date", "number_of_pages"})})
+public class BooksEntity {
 
-    public static final String TABLE_NAME = "items_status";
+    public static final String TABLE_NAME = "books";
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -46,10 +46,12 @@ public class ItemStatusEntity {
     @Column(name = "updated_at")
     private OffsetDateTime updatedAt;
 
-    @Column(name = "quantity", nullable = false)
-    private Integer quantity;
+    @Column(name = "name", nullable = false, length = Constants.I_VAL_100)
+    private String name;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
-    private ItemStatus status;
+    @Column(name = "publication_date", nullable = false)
+    private LocalDate publicationDate;
+
+    @Column(name = "number_of_pages", nullable = false)
+    private Integer numberOfPages;
 }

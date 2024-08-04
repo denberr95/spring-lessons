@@ -2,7 +2,7 @@ package com.personal.springlessons.controller;
 
 import java.util.List;
 import com.personal.springlessons.model.dto.BookDTO;
-import com.personal.springlessons.service.BookService;
+import com.personal.springlessons.service.BooksService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -24,9 +24,9 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "books")
-public class BookRestController {
+public class BooksRestController {
 
-    private final BookService bookService;
+    private final BooksService bookService;
 
     @NewSpan
     @GetMapping

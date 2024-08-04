@@ -10,40 +10,40 @@ import jakarta.persistence.PreUpdate;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class ItemStatusEntityListener {
+public class OrderItemsEntityListener {
 
     @PostLoad
-    private void postLoad(ItemStatusEntity entity) {
+    private void postLoad(OrderItemsEntity entity) {
         log.trace("postLoad item status entity: '{}'", entity);
     }
 
     @PreUpdate
-    private void preUpdate(ItemStatusEntity entity) {
+    private void preUpdate(OrderItemsEntity entity) {
         log.trace("preUpdate item status entity: '{}'", entity);
     }
 
     @PostUpdate
-    private void postUpdate(ItemStatusEntity entity) {
+    private void postUpdate(OrderItemsEntity entity) {
         log.trace("postUpdate item status entity: '{}'", entity);
     }
 
     @PrePersist
-    private void prePersist(ItemStatusEntity entity) {
+    private void prePersist(OrderItemsEntity entity) {
         log.trace("prePersist item status entity: '{}'", entity);
     }
 
     @PostPersist
-    private void postPersist(ItemStatusEntity entity) {
+    private void postPersist(OrderItemsEntity entity) {
         log.trace("postPersist item status entity: '{}'", entity);
     }
 
     @PreRemove
-    private void preRemove(ItemStatusEntity entity) {
+    private void preRemove(OrderItemsEntity entity) {
         log.trace("preRemove item status entity: '{}'", entity);
     }
 
     @PostRemove
-    private void postRemove(ItemStatusEntity entity) {
+    private void postRemove(OrderItemsEntity entity) {
         log.trace("postRemove item status entity: '{}'", entity);
     }
 }
