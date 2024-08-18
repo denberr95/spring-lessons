@@ -15,7 +15,7 @@
     <properties>
         <java.version>17</java.version>
         <micrometer.version>1.13.2</micrometer.version>
-        <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
+        <org.mapstruct.version>1.6.0</org.mapstruct.version>
         <logback.contrib.version>0.1.5</logback.contrib.version>
         <opentelemetry.appender.version>1.33.4-alpha</opentelemetry.appender.version>
         <jacoco.version>0.8.12</jacoco.version>
