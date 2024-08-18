@@ -11,7 +11,7 @@ public class Constants {
     public static final String DB_SCHEMA_SPRING_APP = "SPRING_APP";
 
     // Kafka Topics
-    public static final String TOPIC_ITEMS = "topic_items";
+    public static final String TOPIC_ITEMS = "topic-items";
 
     // Error Messages
     public static final String ERROR_MSG_LEN_VALIDATION =

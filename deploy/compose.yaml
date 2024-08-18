@@ -64,9 +64,9 @@ services:
     - "10000:10000" # serve web server
     - "10001:10001" # serve actuator
     networks:
-    - development
+    - spring-lessons-dev
     
 networks:
-  development:
-    name: development
+  spring-lessons-dev:
+    name: spring-lessons-dev
     driver: bridge

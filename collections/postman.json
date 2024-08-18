@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "228816bb-34fb-4a66-824f-b9195bbb5263",
+		"_postman_id": "64499679-c24e-488c-83b6-9ce3a60e1963",
 		"name": "Spring Lessons",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "4578942"
@@ -287,6 +287,69 @@
 									"key": "id",
 									"value": ""
 								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Items",
+			"item": [
+				{
+					"name": "Upload",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n\t{\n\t\t\"price\": 9999.99,\n\t\t\"name\": \"item-1\",\n\t\t\"barcode\": \"barcode-1\"\n\t},\n\t{\n\t\t\"price\": 9999.99,\n\t\t\"name\": \"item-2\",\n\t\t\"barcode\": \"barcode-2\"\n\t},\n\t{\n\t\t\"price\": 9999.99,\n\t\t\"name\": \"item-3\",\n\t\t\"barcode\": \"barcode-3\"\n\t},\n\t{\n\t\t\"price\": 9999.99,\n\t\t\"name\": \"item-4\",\n\t\t\"barcode\": \"barcode-4\"\n\t}\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:10000/spring-app/items",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "10000",
+							"path": [
+								"spring-app",
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n\t{\n\t\t\"id\": \"\",\n\t\t\"price\": 9999.99,\n\t\t\"name\": \"item-1\",\n\t\t\"barcode\": \"barcode-1\"\n\t},\n\t{\n\t\t\"id\": \"\",\n\t\t\"price\": 9999.99,\n\t\t\"name\": \"item-2\",\n\t\t\"barcode\": \"barcode-2\"\n\t},\n\t{\n\t\t\"id\": \"\",\n\t\t\"price\": 9999.99,\n\t\t\"name\": \"item-3\",\n\t\t\"barcode\": \"barcode-3\"\n\t},\n\t{\n\t\t\"id\": \"\",\n\t\t\"price\": 9999.99,\n\t\t\"name\": \"item-4\",\n\t\t\"barcode\": \"barcode-4\"\n\t}\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:10000/spring-app/items",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "10000",
+							"path": [
+								"spring-app",
+								"items"
 							]
 						}
 					},

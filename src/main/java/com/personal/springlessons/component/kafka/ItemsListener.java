@@ -6,6 +6,7 @@ import com.personal.springlessons.model.dto.KafkaMessageItemDTO;
 import com.personal.springlessons.model.entity.ItemsEntity;
 import com.personal.springlessons.repository.IItemsRepository;
 import com.personal.springlessons.util.Constants;
+import com.personal.springlessons.util.Methods;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,7 @@ public class ItemsListener {
     private final IItemsMapper itemMapper;
 
     @KafkaListener(groupId = "upload-items.group", topics = Constants.TOPIC_ITEMS,
-            filter = "uploadItemsFilter", concurrency = Constants.S_VAL_3)
+            filter = "uploadItemsRecordFilter", concurrency = Constants.S_VAL_3)
     public void upload(KafkaMessageItemDTO message) {
         log.info("Received item to upload: '{}'", message.toString());
 
@@ -32,8 +33,9 @@ public class ItemsListener {
     }
 
     @KafkaListener(groupId = "delete-items.group", topics = Constants.TOPIC_ITEMS,
-            filter = "deleteItemsFilter", concurrency = Constants.S_VAL_3)
+            filter = "deleteItemsRecordFilter", concurrency = Constants.S_VAL_3)
     public void delete(KafkaMessageItemDTO message) {
         log.info("Received item to delete: '{}'", message);
+        this.itemRepository.deleteById(Methods.idValidation(message.getId()));
     }
 }

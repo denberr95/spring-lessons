@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Component(value = "deleteItemsFilter")
+@Component
 public class DeleteItemsRecordFilter<K, V> implements RecordFilterStrategy<K, V> {
 
     @Override

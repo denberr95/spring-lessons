@@ -4,6 +4,7 @@ import com.personal.springlessons.model.dto.ItemDTO;
 import com.personal.springlessons.model.dto.KafkaMessageItemDTO;
 import com.personal.springlessons.model.entity.ItemsEntity;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(config = ICustomMapperConfig.class)
@@ -13,6 +14,6 @@ public interface IItemsMapper {
 
     KafkaMessageItemDTO mapMessage(ItemDTO itemDTO);
 
+    @Mapping(source = "idOrderItems", target = "itemsStatusEntity.id")
     ItemsEntity mapMessageToEntity(KafkaMessageItemDTO kafkaMessageItemDTO);
-
 }

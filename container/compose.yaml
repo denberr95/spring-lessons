@@ -14,7 +14,7 @@ services:
     ports:
     - "5432:5432" # serve database
     networks:
-    - development
+    - spring-lessons-dev
 
   jaeger:
     annotations:
@@ -37,7 +37,7 @@ services:
     - "14250" # accept model.proto
     - "9411" # Zipkin compatible endpoint (optional)
     networks:
-    - development
+    - spring-lessons-dev
 
   loki:
     annotations:
@@ -56,7 +56,7 @@ services:
     - "3100" # serve http server
     - "9096" # serve grpc server
     networks:
-    - development
+    - spring-lessons-dev
 
   prometheus:
     annotations:
@@ -74,7 +74,7 @@ services:
     ports:
     - "9090:9090" # serve frontend
     networks:
-    - development
+    - spring-lessons-dev
     depends_on:
     - otelcol
 
@@ -93,7 +93,7 @@ services:
     ports:
     - "3000:3000" # serve frontend
     networks:
-    - development
+    - spring-lessons-dev
     depends_on:
     - prometheus
     - loki
@@ -122,7 +122,7 @@ services:
     depends_on:
     - jaeger
     networks:
-    - development
+    - spring-lessons-dev
 
   zookeeper:
     image: bitnami/zookeeper:3.7
@@ -134,7 +134,7 @@ services:
     ports:
       - "2181:2181" # serve zookeeper
     networks:
-      - development
+      - spring-lessons-dev
 
   kafka:
     annotations:
@@ -155,9 +155,9 @@ services:
     depends_on:
     - zookeeper
     networks:
-    - development
+    - spring-lessons-dev
 
 networks:
-  development:
-    name: development
+  spring-lessons-dev:
+    name: spring-lessons-dev
     driver: bridge
