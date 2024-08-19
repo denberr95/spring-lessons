@@ -47,7 +47,7 @@ class IItemsRepositoryTest {
     }
 
     @Test
-    void givenExistentItem_whenFindByBarcode_thenItemIsRetrieved() {
+    void givenExistentItem_whenFindByBarcode_thenItemRetrieved() {
         String barcode = "Reposity-Item-Barcode-0";
         Optional<ItemsEntity> result = this.itemRepository.findByBarcode(barcode);
         assertTrue(result.isPresent());
@@ -55,7 +55,7 @@ class IItemsRepositoryTest {
     }
 
     @Test
-    void givenExistentItem_whenFindByBarcode_thenNotFound() {
+    void givenNonExistentItem_whenFindByBarcode_thenNotFound() {
         String barcode = "Reposity-Item-Barcode";
         Optional<ItemsEntity> result = this.itemRepository.findByBarcode(barcode);
         assertTrue(result.isEmpty());
