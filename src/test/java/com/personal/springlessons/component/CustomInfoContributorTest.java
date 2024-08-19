@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.Map;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.info.Info;
@@ -18,7 +17,6 @@ class CustomInfoContributorTest {
     private CustomInfoContributor customInfoContributor;
 
     @Test
-    @DisplayName("Test author key is created")
     void testCustomInfoContributorDetails() {
         assertNotNull(this.customInfoContributor);
 
