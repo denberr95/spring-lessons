@@ -34,7 +34,7 @@ class IItemsRepositoryTest {
             ItemsEntity itemEntity = new ItemsEntity();
             itemEntity.setName("Repository-Item-Name-" + i);
             itemEntity.setBarcode("Reposity-Item-Barcode-" + i);
-            itemEntity.setPrice(new BigDecimal(9999.99));
+            itemEntity.setPrice(new BigDecimal(9_999.99));
             itemEntity.setItemsStatusEntity(orderItemsEntity);
             this.itemRepository.save(itemEntity);
         }
@@ -56,8 +56,7 @@ class IItemsRepositoryTest {
 
     @Test
     void givenNonExistentItem_whenFindByBarcode_thenNotFound() {
-        String barcode = "Reposity-Item-Barcode";
-        Optional<ItemsEntity> result = this.itemRepository.findByBarcode(barcode);
+        Optional<ItemsEntity> result = this.itemRepository.findByBarcode("Reposity-Item-Barcode");
         assertTrue(result.isEmpty());
     }
 }
