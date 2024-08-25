@@ -37,7 +37,7 @@ class BooksRestControllerTest {
     @Value("${spring.mvc.servlet.path}")
     private String basePath;
 
-    private static final int TOTAL_BOOKS = 5;
+    private static final int TOTAL = 5;
 
     private String buildUrl(String path) {
         return String.format("%s%s", this.basePath, path);
@@ -45,7 +45,7 @@ class BooksRestControllerTest {
 
     @BeforeEach
     void init() {
-        for (int i = 0; i < TOTAL_BOOKS; i++) {
+        for (int i = 0; i < TOTAL; i++) {
             BookDTO bookDTO = new BookDTO();
             bookDTO.setName("Controller-Book-Name-" + i);
             bookDTO.setPublicationDate(LocalDate.now());
@@ -68,8 +68,8 @@ class BooksRestControllerTest {
                 this.testRestTemplate.exchange(url, HttpMethod.GET, null, BookDTO[].class);
         assertNotNull(response.getBody());
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(TOTAL_BOOKS, response.getBody().length);
-        for (int i = 0; i < TOTAL_BOOKS; i++) {
+        assertEquals(TOTAL, response.getBody().length);
+        for (int i = 0; i < TOTAL; i++) {
             BookDTO bookDTO = response.getBody()[i];
             assertNotNull(bookDTO.getId());
             assertNotNull(bookDTO.getName());
@@ -137,7 +137,7 @@ class BooksRestControllerTest {
     void givenNewBook_whenSave_thenBookIsCreated() {
         String url = String.format("%s/books", this.basePath);
         BookDTO bookRequest = new BookDTO();
-        bookRequest.setName("Controller-Book-Name-" + TOTAL_BOOKS);
+        bookRequest.setName("Controller-Book-Name-" + TOTAL);
         bookRequest.setNumberOfPages(1);
         bookRequest.setPublicationDate(LocalDate.now());
         ResponseEntity<BookDTO> response =
