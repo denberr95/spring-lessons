@@ -5,6 +5,7 @@ import com.personal.springlessons.model.dto.BookDTO;
 import com.personal.springlessons.service.BooksService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +31,7 @@ public class BooksRestController {
 
     @NewSpan
     @GetMapping
+    @PreAuthorize("hasAuthority('SCOPE_books:read')")
     public ResponseEntity<List<BookDTO>> getAll() {
         log.info("Called API to retrieve all books");
         List<BookDTO> result = this.bookService.getAll();
@@ -46,6 +48,7 @@ public class BooksRestController {
 
     @NewSpan
     @GetMapping(path = "{id}")
+    @PreAuthorize("hasAuthority('SCOPE_books:read')")
     public ResponseEntity<BookDTO> getById(@SpanTag @PathVariable final String id) {
         log.info("Called API to retrieve book: '{}'", id);
         BookDTO result = this.bookService.getById(id);
@@ -55,6 +58,7 @@ public class BooksRestController {
 
     @NewSpan
     @PostMapping
+    @PreAuthorize("hasAuthority('SCOPE_books:write')")
     public ResponseEntity<BookDTO> save(@RequestBody final BookDTO bookDTO) {
         log.info("Called API to create new book");
         BookDTO result = this.bookService.save(bookDTO);
@@ -64,6 +68,7 @@ public class BooksRestController {
 
     @NewSpan
     @DeleteMapping(path = "{id}")
+    @PreAuthorize("hasAuthority('SCOPE_books:write')")
     public ResponseEntity<Void> delete(@SpanTag @PathVariable final String id) {
         log.info("Called API to delete book: '{}'", id);
         this.bookService.delete(id);
@@ -73,9 +78,10 @@ public class BooksRestController {
 
     @NewSpan
     @PutMapping(path = "{id}")
+    @PreAuthorize("hasAuthority('SCOPE_books:write')")
     public ResponseEntity<BookDTO> update(@SpanTag @PathVariable final String id,
             @RequestBody final BookDTO bookDTO) {
-        log.info("Calle API to update book: '{}'", id);
+        log.info("Called API to update book: '{}'", id);
         BookDTO result = this.bookService.update(id, bookDTO);
         log.info("Book '{}' updated !", id);
         return ResponseEntity.status(HttpStatus.OK).body(result);

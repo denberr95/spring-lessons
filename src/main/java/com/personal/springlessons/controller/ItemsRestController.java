@@ -5,6 +5,7 @@ import com.personal.springlessons.model.dto.ItemDTO;
 import com.personal.springlessons.service.ItemsService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,6 +27,7 @@ public class ItemsRestController {
 
     @NewSpan
     @PostMapping
+    @PreAuthorize("hasAuthority('SCOPE_items:write')")
     public ResponseEntity<Void> upload(@RequestBody List<ItemDTO> items) {
         log.info("Called API to upload items");
         this.itemService.upload(items);
@@ -35,6 +37,7 @@ public class ItemsRestController {
 
     @NewSpan
     @DeleteMapping
+    @PreAuthorize("hasAuthority('SCOPE_items:write')")
     public ResponseEntity<Void> delete(@RequestBody List<ItemDTO> items) {
         log.info("Called API to delete items");
         this.itemService.delete(items);

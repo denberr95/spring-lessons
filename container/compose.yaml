@@ -1,11 +1,9 @@
 services:
-  database:
-    annotations:
-    - topology=infrastructure
-    - type=persistence
+
+  springdb:
     image: postgres:16
     restart: "no"
-    container_name: postgres
+    container_name: spring-db
     environment:
     - POSTGRES_USER=admin
     - POSTGRES_PASSWORD=adminpwd
@@ -17,10 +15,7 @@ services:
     - spring-lessons-dev
 
   jaeger:
-    annotations:
-    - topology=infrastructure
-    - type=monitoring
-    image: jaegertracing/all-in-one:1.58
+    image: jaegertracing/all-in-one:1.60
     restart: "no"
     container_name: jaeger
     environment:
@@ -40,9 +35,6 @@ services:
     - spring-lessons-dev
 
   loki:
-    annotations:
-    - topology=infrastructure
-    - type=monitoring
     image: grafana/loki:main
     restart: "no"
     container_name: loki
@@ -59,9 +51,6 @@ services:
     - spring-lessons-dev
 
   prometheus:
-    annotations:
-    - topology=infrastructure
-    - type=monitoring
     image: prom/prometheus:main
     restart: "no"
     container_name: prometheus
@@ -79,9 +68,6 @@ services:
     - otelcol
 
   grafana:
-    annotations:
-    - topology=infrastructure
-    - type=monitoring
     image: grafana/grafana:main
     restart: "no"
     container_name: grafana
@@ -99,9 +85,6 @@ services:
     - loki
 
   otelcol:
-    annotations:
-    - topology=infrastructure
-    - type=monitoring
     image: otel/opentelemetry-collector-contrib:latest
     restart: "no"
     container_name: otel-col
@@ -129,17 +112,14 @@ services:
     restart: "no"
     container_name: zookeeper
     environment:
-      - TZ=Europe/Rome
-      - ALLOW_ANONYMOUS_LOGIN=yes
+    - TZ=Europe/Rome
+    - ALLOW_ANONYMOUS_LOGIN=yes
     ports:
-      - "2181:2181" # serve zookeeper
+    - "2181:2181" # serve zookeeper
     networks:
-      - spring-lessons-dev
+    - spring-lessons-dev
 
   kafka:
-    annotations:
-    - topology=infrastructure
-    - type=messaging
     image: bitnami/kafka:3.7
     restart: "no"
     container_name: kafka
@@ -157,10 +137,21 @@ services:
     networks:
     - spring-lessons-dev
 
-  keycloack:
-    annotations:
-    - topology=infrastructure
-    - type=security
+  keycloakdb:
+    image: postgres:16
+    restart: "no"
+    container_name: keycloak-db
+    environment:
+    - POSTGRES_USER=admin
+    - POSTGRES_PASSWORD=adminpwd
+    - POSTGRES_DB=keycloak
+    - TZ=Europe/Rome
+    ports:
+    - "5435:5432" # serve database
+    networks:
+    - spring-lessons-dev
+
+  keycloak:
     image: quay.io/keycloak/keycloak:latest
     restart: "no"
     container_name: auth-server
@@ -171,14 +162,19 @@ services:
     command:
     - start-dev
     - --import-realm
+    - --db=postgres
+    - --db-username=admin
+    - --db-password=adminpwd
+    - --db-url=jdbc:postgresql://keycloak-db:5432/keycloak
     volumes:
-    - ./container/keycloack/:/opt/keycloak/data/import
+    - ./keycloak/config:/opt/keycloak/data/import
     ports:
     - "8080:8080" # serve web server
+    depends_on:
+    - keycloak-db
     networks:
     - spring-lessons-dev
 
 networks:
   spring-lessons-dev:
-    name: spring-lessons-dev
     driver: bridge

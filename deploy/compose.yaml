@@ -1,8 +1,5 @@
 services:
   app:
-    annotations:
-    - topology=application
-    - type=spring-boot
     image: spring-lessons:latest
     restart: "no"
     container_name: spring-lessons
@@ -37,7 +34,7 @@ services:
     - MANAGEMENT_OTLP_LOGGING_ENDPOINT=http://otel-col:4317
     - MANAGEMENT_TRACING_SAMPLING_PROBABILITY=1.0
     - MANAGEMENT_METRICS_TAGS_ENV=runtime
-    - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/spring
+    - SPRING_DATASOURCE_URL=jdbc:postgresql://spring-db:5432/spring
     - SPRING_DATASOURCE_USERNAME=admin
     - SPRING_DATASOURCE_PASSWORD=adminpwd
     - SPRING_JPA_HIBERNATE_DDL_AUTO=none
@@ -48,7 +45,7 @@ services:
     - SPRING_FLYWAY_ENABLED=true
     - SPRING_FLYWAY_CONNECT_RETRIES=3
     - SPRING_FLYWAY_CONNECT_RETRIES_INTERVAL=10s
-    - SPRING_FLYWAY_VALUDATE_ON_MIGRATE=true
+    - SPRING_FLYWAY_VALIDATE_ON_MIGRATE=true
     - SPRING_FLYWAY_DEFAULT_SCHEMA=flyway
     - APP_CONFIG_BASE_DIR=/tmp/fs
     - JAVA_OTHER_OPTIONS=-Dspring.profiles.active=runtime
@@ -63,10 +60,14 @@ services:
     ports:
     - "10000:10000" # serve web server
     - "10001:10001" # serve actuator
+    depends_on:
+    - keycloak
+    - springdb
+    - kafka
+    - otelcol
     networks:
     - spring-lessons-dev
     
 networks:
   spring-lessons-dev:
-    name: spring-lessons-dev
     driver: bridge

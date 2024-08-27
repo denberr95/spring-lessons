@@ -8,10 +8,8 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
 @EnableKafka
-@EnableWebSecurity
 @EnableMethodSecurity(jsr250Enabled = false, prePostEnabled = true, securedEnabled = true)
 @SpringBootApplication
 @EnableJpaRepositories

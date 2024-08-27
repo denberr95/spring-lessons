@@ -3,7 +3,7 @@ datasources:
 - name: Postgres
   type: postgres
   uid: postgres_uid
-  url: database:5432
+  url: springdb:5432
   user: grafanareader
   editable: true
   isDefault: false
