@@ -17,7 +17,7 @@
 - [Jaeger UI](http://localhost:16686/search): Trace & Spans Monitoring
 - [Prometheus](http://localhost:9090): Application Metrics
 - [Grafana](http://localhost:3000/grafana): Dashboard & Alert Monitoring
-- [Database Spring](jdbc:postgresql://localhost:5432/spring): PostgreSQL Database Spring App
-- [Database keycloak](jdbc:postgresql://localhost:5435/keycloak): PostgreSQL Database keycloak
-- [Kafka Kroker](localhost:9092): Kafka Bootstrap Server
+- [Database Spring](jdbc:postgresql://localhost:5432/spring): PostgreSQL Database Spring Application
+- [Database Keycloak](jdbc:postgresql://localhost:5435/keycloak): PostgreSQL Database Keycloak
+- [Kafka Broker](localhost:9092): Kafka Bootstrap Server
 - [keycloak](http://localhost:8080): keycloak Administration Console
