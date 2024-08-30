@@ -182,6 +182,30 @@
             "group": "test",
         },
         {
+            "label": "podman-machine-init",
+            "type": "shell",
+            "command": "podman machine init podman-machine-spring-lessons",
+            "group": "none",
+        },
+        {
+            "label": "podman-machine-start",
+            "type": "shell",
+            "command": "podman machine start podman-machine-spring-lessons",
+            "group": "none",
+        },
+        {
+            "label": "podman-machine-stop",
+            "type": "shell",
+            "command": "podman machine stop podman-machine-spring-lessons",
+            "group": "none",
+        },
+        {
+            "label": "podman-machine-remove",
+            "type": "shell",
+            "command": "podman machine rm podman-machine-spring-lessons --force",
+            "group": "none",
+        },
+        {
             "label": "mvn-test",
             "type": "shell",
             "command": "mvn test --file pom.xml",
