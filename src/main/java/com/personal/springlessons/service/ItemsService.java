@@ -60,6 +60,15 @@ public class ItemsService {
         });
     }
 
+    @NewSpan
+    public List<ItemDTO> getAll() {
+        List<OrderItemsEntity> orderItemsEntities = this.orderItemsRepository.findAll();
+        Span currentSpan = this.tracer.currentSpan();
+        currentSpan.tag("total.items", String.valueOf(orderItemsEntities.size()))
+                .event("Items retrieved");
+        return this.itemMapper.mapDTO(orderItemsEntities);
+    }
+
     private void notifyKafkaItems(KafkaMessageItemDTO message, String topic) {
         Span span = this.tracer.nextSpan().name("notifyKafkaItems");
         try (Tracer.SpanInScope ws = this.tracer.withSpan(span.start())) {

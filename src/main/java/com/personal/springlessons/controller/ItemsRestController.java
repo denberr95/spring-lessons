@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,5 +44,22 @@ public class ItemsRestController {
         this.itemService.delete(items);
         log.info("Kafka message to delete items sent");
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @NewSpan
+    @GetMapping
+    @PreAuthorize(value = "hasAuthority('SCOPE_items:get')")
+    public ResponseEntity<List<ItemDTO>> getAll() {
+        log.info("Called API to retrieve all items");
+        List<ItemDTO> result =this.itemService.getAll();
+        ResponseEntity<List<ItemDTO>> response;
+        if (result.isEmpty()) {
+            log.info("No items retrieved !");
+            response = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        } else {
+            log.info("Items retrieved !");
+            response = ResponseEntity.status(HttpStatus.OK).body(result);
+        }
+        return response;
     }
 }
