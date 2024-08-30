@@ -27,7 +27,7 @@ public class ItemsRestController {
 
     @NewSpan
     @PostMapping
-    @PreAuthorize("hasAuthority('SCOPE_items:write')")
+    @PreAuthorize(value = "hasAuthority('SCOPE_items:upload')")
     public ResponseEntity<Void> upload(@RequestBody List<ItemDTO> items) {
         log.info("Called API to upload items");
         this.itemService.upload(items);
@@ -37,7 +37,7 @@ public class ItemsRestController {
 
     @NewSpan
     @DeleteMapping
-    @PreAuthorize("hasAuthority('SCOPE_items:write')")
+    @PreAuthorize(value = "hasAuthority('SCOPE_items:delete')")
     public ResponseEntity<Void> delete(@RequestBody List<ItemDTO> items) {
         log.info("Called API to delete items");
         this.itemService.delete(items);
