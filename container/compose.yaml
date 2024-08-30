@@ -137,41 +137,20 @@ services:
     networks:
     - spring-lessons-dev
 
-  keycloakdb:
-    image: postgres:16
-    restart: "no"
-    container_name: keycloak-db
-    environment:
-    - POSTGRES_USER=admin
-    - POSTGRES_PASSWORD=adminpwd
-    - POSTGRES_DB=keycloak
-    - TZ=Europe/Rome
-    ports:
-    - "5435:5432" # serve database
-    networks:
-    - spring-lessons-dev
-
   keycloak:
     image: quay.io/keycloak/keycloak:latest
     restart: "no"
-    container_name: auth-server
+    container_name: keycloak
     environment:
     - TZ=Europe/Rome
     - KEYCLOAK_ADMIN=admin
     - KEYCLOAK_ADMIN_PASSWORD=adminpwd
     command:
     - start-dev
-    - --import-realm
-    - --db=postgres
-    - --db-username=admin
-    - --db-password=adminpwd
-    - --db-url=jdbc:postgresql://keycloak-db:5432/keycloak
     volumes:
-    - ./keycloak/config:/opt/keycloak/data/import
+    - ./keycloak:/opt/keycloak/data
     ports:
     - "8080:8080" # serve web server
-    depends_on:
-    - keycloak-db
     networks:
     - spring-lessons-dev
 

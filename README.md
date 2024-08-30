@@ -37,7 +37,6 @@
 | Prometheus | System Metrics | <http://localhost:9090> |
 | Grafana | Dashboard & Alert Monitoring | <http://localhost:3000/grafana> |
 | Database Spring | PostgreSQL Database Spring Application | jdbc:postgresql://localhost:5432/spring |
-| Database Keycloak | PostgreSQL Database Keycloak | jdbc:postgresql://localhost:5435/keycloak |
 | Kafka Broker | Kafka Bootstrap Server | localhost:9092 |
 | Keycloak | Keycloak Administration Console | <http://localhost:8080> |
 | Spring Lessons | Spring Application Web Server | <http://localhost:10000> |
@@ -45,9 +44,9 @@
 
 ## VSCode Launcher
 
-| | **Start Env** | **Stop Env** |
+| | **TODO** | **TODO** |
 | :-: | :-: | :-: |
-| **Name** | X | X |
+| TODO | X | X |
 
 ## API Security
 

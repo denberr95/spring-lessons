@@ -63,7 +63,6 @@
             "group": "test",
             "dependsOrder": "sequence",
             "dependsOn": [
-                "shell-backup-keycloak-realm",
                 "podman-compose-env-stop",
             ]
         },
@@ -93,28 +92,6 @@
             "label": "shell-cleanup-folders",
             "type": "shell",
             "command": "rm -rf bin logs",
-            "group": "none",
-        },
-        {
-            "label": "shell-backup-keycloak-realm",
-            "type": "shell",
-            "group": "none",
-            "dependsOrder": "sequence",
-            "dependsOn": [
-                "shell-keycloak-grant-scripts",
-                "shell-keycloak-export-realm"
-            ]
-        },
-        {
-            "label": "shell-keycloak-grant-scripts",
-            "type": "shell",
-            "command": "chmod +x ./container/keycloak/export-config.sh",
-            "group": "none",
-        },
-        {
-            "label": "shell-keycloak-export-realm",
-            "type": "shell",
-            "command": "./container/keycloak/export-config.sh",
             "group": "none",
         },
         {
