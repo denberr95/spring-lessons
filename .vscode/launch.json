@@ -6,7 +6,7 @@
     "configurations": [
         {
             "type": "java",
-            "name": "LinuxLauncher",
+            "name": "Spring Lessons Linux",
             "request": "launch",
             "mainClass": "com.personal.springlessons.SpringLessonsApplication",
             "projectName": "spring-lessons",
@@ -16,7 +16,7 @@
         },
         {
             "type": "java",
-            "name": "WindowsLauncher",
+            "name": "Spring Lessons Windows",
             "request": "launch",
             "mainClass": "com.personal.springlessons.SpringLessonsApplication",
             "projectName": "spring-lessons",
