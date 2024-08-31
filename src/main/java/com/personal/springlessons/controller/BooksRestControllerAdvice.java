@@ -18,24 +18,22 @@ public class BooksRestControllerAdvice {
 
     @ExceptionHandler(value = {BookNotFoundException.class})
     public ResponseEntity<BookNotFoundResponseDTO> handleBookNotFoundException(
-            final BookNotFoundException exception) {
+            BookNotFoundException exception) {
         log.error(exception.getMessage(), exception);
         BookNotFoundResponseDTO result = new BookNotFoundResponseDTO();
         result.setId(exception.getId());
         result.setCategory(DomainCategory.BOOKS);
-        result.setMessage(exception.getMessage());
         result.setTimestamp(LocalDateTime.now());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(result);
     }
 
     @ExceptionHandler(value = {DuplicatedBookException.class})
     public ResponseEntity<DuplicatedBookResponseDTO> handleDuplicatedBookException(
-            final DuplicatedBookException exception) {
+            DuplicatedBookException exception) {
         log.error(exception.getMessage(), exception);
         DuplicatedBookResponseDTO result = new DuplicatedBookResponseDTO();
         DuplicatedBookResponseDTO.Details details = result.new Details();
         result.setCategory(DomainCategory.BOOKS);
-        result.setTimestamp(LocalDateTime.now());
         result.setMessage(exception.getMessage());
         details.setOrinalId(exception.getId());
         result.setAdditionalData(details);
