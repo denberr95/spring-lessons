@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class BaseErrorResponseDTO {
 
-    private LocalDateTime timestamp;
+    private LocalDateTime timestamp = LocalDateTime.now();
 
     private DomainCategory category;
     
