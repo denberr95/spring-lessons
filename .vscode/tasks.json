@@ -183,6 +183,12 @@
             "group": "none",
         },
         {
+            "label": "podman-machine-list",
+            "type": "shell",
+            "command": "podman machine list",
+            "group": "none",
+        },
+        {
             "label": "mvn-test",
             "type": "shell",
             "command": "mvn test --file pom.xml",
