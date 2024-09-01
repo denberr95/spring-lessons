@@ -7,6 +7,7 @@
   - [Roles](#roles)
   - [Scopes](#scopes)
   - [Matrix Permissions](#matrix-permissions)
+  - [Client Applications](#client-applications)
 
 ## Software
 
@@ -51,56 +52,77 @@
 
 ### Roles
 
-#### Role Books API
+- #### Role Books API
 
-| **Role** | **Read** | **Write** | **Delete** |
-| :-: | :-: | :-: | :-: |
-| api-books-admin | X | X | X |
-| api-books-writer | X | X | |
-| api-books-reader | X | | |
+    | **Role** | **Read** | **Write** | **Delete** |
+    | :-: | :-: | :-: | :-: |
+    | api-books-admin | X | X | X |
+    | api-books-writer | X | X | |
+    | api-books-reader | X | | |
 
-#### Role Items API
+- #### Role Items API
 
-| **Role** | **Read** | **Write** | **Delete** |
-| :-: | :-: | :-: | :-: |
-| api-items-admin | X | X | X |
-| api-items-writer | X | X | |
-| api-items-reader | X | | |
+    | **Role** | **Read** | **Write** | **Delete** |
+    | :-: | :-: | :-: | :-: |
+    | api-items-admin | X | X | X |
+    | api-items-writer | X | X | |
+    | api-items-reader | X | | |
 
 ### Scopes
 
-#### Scope Books API
+- #### Scope Books API
 
-| **Scope** | **Read** | **Write** | **Delete** |
-| :-: | :-: | :-: | :-: |
-| books:get | X | | |
-| books:save | | X | |
-| books:delete | | | X |
-| books:update | | X | |
+    | **Scope** | **Read** | **Write** | **Delete** |
+    | :-: | :-: | :-: | :-: |
+    | books:get | X | | |
+    | books:save | | X | |
+    | books:delete | | | X |
+    | books:update | | X | |
 
-#### Scope Items API
+- #### Scope Items API
 
-| **Scope** | **Read** | **Write** | **Delete** |
-| :-: | :-: | :-: | :-: |
-| items:get | X | | |
-| items:upload | | X | |
-| items:delete | | | X |
+    | **Scope** | **Read** | **Write** | **Delete** |
+    | :-: | :-: | :-: | :-: |
+    | items:get | X | | |
+    | items:upload | | X | |
+    | items:delete | | | X |
 
 ### Matrix Permissions
 
-#### Books API Mapping
+- #### Books API Mapping Scopes-Role
 
-| | **api-books-admin** | **api-books-reader** | **api-books-writer** |
-| :- | :-: | :-: | :-: |
-| books:get | X | X | X |
-| books:save | X | | X |
-| books:delete | X | | |
-| books:update | X | | X |
+    | | **api-books-admin** | **api-books-reader** | **api-books-writer** |
+    | :- | :-: | :-: | :-: |
+    | books:get | X | X | X |
+    | books:save | X | | X |
+    | books:delete | X | | |
+    | books:update | X | | X |
 
-#### Items API Mapping
+- #### Items API Mapping Scopes-Role
 
-| | **api-items-admin** | **api-items-reader** | **api-items-writer** |
-| :- | :-: | :-: | :-: |
-| items:get | X | X | X |
-| items:upload | X | | X |
-| items:delete | X | | |
+    | | **api-items-admin** | **api-items-reader** | **api-items-writer** |
+    | :- | :-: | :-: | :-: |
+    | items:get | X | X | X |
+    | items:upload | X | | X |
+    | items:delete | X | | |
+
+### Client Applications
+
+- #### Scopes Books Client Applications
+
+    | | **client-id-books-admin** | **client-id-books-reader** | **client-id-books-writer** |
+    | :- | :-: | :-: | :-: |
+    | books:get | X | X | X |
+    | books:save | X | | X |
+    | books:delete | X | | |
+    | books:update | X | | X |
+    | roles | X | X | X |
+
+- #### Scopes Items Client Applications
+
+    | | **client-id-items-admin** | **client-id-items-reader** | **client-id-items-writer** |
+    | :- | :-: | :-: | :-: |
+    | items:get | X | X | X |
+    | items:upload | X | | X |
+    | items:delete | X | | |
+    | roles | X | X | X |
