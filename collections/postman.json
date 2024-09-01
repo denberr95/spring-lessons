@@ -301,12 +301,12 @@
 						"oauth2": [
 							{
 								"key": "clientSecret",
-								"value": "NA",
+								"value": "{{clientSecretAdminBooks}}",
 								"type": "string"
 							},
 							{
 								"key": "clientId",
-								"value": "NA",
+								"value": "{{clientIdAdminBooks}}",
 								"type": "string"
 							},
 							{
@@ -480,18 +480,18 @@
 						"type": "oauth2",
 						"oauth2": [
 							{
-								"key": "tokenName",
-								"value": "writer-book-token",
-								"type": "string"
-							},
-							{
 								"key": "clientSecret",
-								"value": "NA",
+								"value": "{{clientSecretWriterBooks}}",
 								"type": "string"
 							},
 							{
 								"key": "clientId",
-								"value": "NA",
+								"value": "{{clientIdWriterBooks}}",
+								"type": "string"
+							},
+							{
+								"key": "tokenName",
+								"value": "writer-book-token",
 								"type": "string"
 							},
 							{
@@ -545,9 +545,6 @@
 						{
 							"name": "Get All",
 							"request": {
-								"auth": {
-									"type": "noauth"
-								},
 								"method": "GET",
 								"header": [],
 								"url": {
@@ -597,13 +594,13 @@
 						"type": "oauth2",
 						"oauth2": [
 							{
-								"key": "clientId",
-								"value": "NA",
+								"key": "clientSecret",
+								"value": "{{clientSecretReaderBooks}}",
 								"type": "string"
 							},
 							{
-								"key": "clientSecret",
-								"value": "NA",
+								"key": "clientId",
+								"value": "{{clientIdReaderBooks}}",
 								"type": "string"
 							},
 							{
@@ -743,12 +740,12 @@
 						"oauth2": [
 							{
 								"key": "clientSecret",
-								"value": "NA",
+								"value": "{{clientSecretAdminItems}}",
 								"type": "string"
 							},
 							{
 								"key": "clientId",
-								"value": "NA",
+								"value": "{{clientIdAdminItems}}",
 								"type": "string"
 							},
 							{
@@ -854,12 +851,12 @@
 						"oauth2": [
 							{
 								"key": "clientSecret",
-								"value": "NA",
+								"value": "{{clientSecretWriterItems}}",
 								"type": "string"
 							},
 							{
 								"key": "clientId",
-								"value": "NA",
+								"value": "{{clientIdWriterItems}}",
 								"type": "string"
 							},
 							{
@@ -935,6 +932,16 @@
 						"type": "oauth2",
 						"oauth2": [
 							{
+								"key": "clientSecret",
+								"value": "{{clientSecretReaderItems}}",
+								"type": "string"
+							},
+							{
+								"key": "clientId",
+								"value": "{{clientIdReaderItems}}",
+								"type": "string"
+							},
+							{
 								"key": "tokenName",
 								"value": "reader-item-token",
 								"type": "string"
@@ -942,16 +949,6 @@
 							{
 								"key": "accessTokenUrl",
 								"value": "{{authorizationServer}}",
-								"type": "string"
-							},
-							{
-								"key": "clientSecret",
-								"value": "NA",
-								"type": "string"
-							},
-							{
-								"key": "clientId",
-								"value": "NA",
 								"type": "string"
 							},
 							{
@@ -1019,6 +1016,56 @@
 			"key": "authorizationServer",
 			"value": "http://localhost:8080/realms/spring-lessons/protocol/openid-connect/token",
 			"type": "string"
+		},
+		{
+			"key": "clientIdAdminBooks",
+			"value": "client-id-books-admin"
+		},
+		{
+			"key": "clientSecretAdminBooks",
+			"value": "IThFMjQqOnzlBtR37I37XicklxY9N3Kt"
+		},
+		{
+			"key": "clientIdWriterBooks",
+			"value": "client-id-books-writer",
+			"type": "string"
+		},
+		{
+			"key": "clientSecretWriterBooks",
+			"value": "6hmhKlP2faQ6TkTKGsasiIk0m8OHX7XY",
+			"type": "string"
+		},
+		{
+			"key": "clientIdReaderBooks",
+			"value": "client-id-books-reader"
+		},
+		{
+			"key": "clientSecretReaderBooks",
+			"value": "SBNsiqDKFnirIf5fb37BURr4wNQYL1LJ"
+		},
+		{
+			"key": "clientIdAdminItems",
+			"value": "client-id-items-reader"
+		},
+		{
+			"key": "clientSecretAdminItems",
+			"value": "GNlekbSxQTbDm963eRMaXGeDlKsTXPYQ"
+		},
+		{
+			"key": "clientIdWriterItems",
+			"value": "client-id-items-writer"
+		},
+		{
+			"key": "clientSecretWriterItems",
+			"value": "JYxdfsCGQdid8oq6hg6Crhbyx6FEHypw"
+		},
+		{
+			"key": "clientIdReaderItems",
+			"value": "client-id-items-reader"
+		},
+		{
+			"key": "clientSecretReaderItems",
+			"value": "0gpFsIetlStQu58jB36RFyKKrEMTj4W0"
 		}
 	]
 }
