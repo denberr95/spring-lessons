@@ -1,6 +1,6 @@
 package com.personal.springlessons.util;
 
-public class Constants {
+public final class Constants {
 
     private Constants() {
         throw new UnsupportedOperationException(
@@ -27,5 +27,18 @@ public class Constants {
     public static final int I_VAL_100 = 100;
 
     // String Values
+    public static final String S_VAL_1 = "1";
     public static final String S_VAL_3 = "3";
+    
+    // Other
+    public static final String SEMICOLON = ";";
+    public static final String UNDERSCORE = "_";
+    public static final String DOT = ".";
+    public static final String CSV = "csv";
+
+    // File System
+    public static final String CSV_EXT = DOT + CSV;
+
+    // Date Time Format
+    public static final String DATE_TIME_FORMAT_1 = "yyyyMMddHHmmss";
 }

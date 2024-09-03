@@ -1,12 +1,14 @@
 package com.personal.springlessons.util;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 import com.personal.springlessons.exception.InvalidUUIDException;
 import com.personal.springlessons.model.lov.DomainCategory;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class Methods {
+public final class Methods {
 
     private Methods() {
         throw new UnsupportedOperationException(
@@ -22,6 +24,15 @@ public class Methods {
             throw new InvalidUUIDException(id);
         }
         log.debug("UUID: '{}' is valid", id);
+        return result;
+    }
+
+    public static String dateTimeFormatter(String format, LocalDateTime localDateTime) {
+        log.debug("DateTime to format: '{}' with format: '{}'", localDateTime, format);
+        String result = null;
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(format);
+        result = dtf.format(localDateTime);
+        log.debug("DateTime formatted: '{}'", result);
         return result;
     }
 

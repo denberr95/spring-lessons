@@ -1,6 +1,7 @@
 package com.personal.springlessons.component.mapper;
 
 import java.util.List;
+import com.personal.springlessons.model.csv.DiscardedItem;
 import com.personal.springlessons.model.dto.ItemDTO;
 import com.personal.springlessons.model.dto.KafkaMessageItemDTO;
 import com.personal.springlessons.model.entity.ItemsEntity;
@@ -20,4 +21,7 @@ public interface IItemsMapper {
 
     @Mapping(source = "idOrderItems", target = "itemsStatusEntity.id")
     ItemsEntity mapMessageToEntity(KafkaMessageItemDTO kafkaMessageItemDTO);
+
+    @Mapping(source = "id", target = "idItem")
+    DiscardedItem mapCsv(KafkaMessageItemDTO kafkaMessageItemDTO);
 }
