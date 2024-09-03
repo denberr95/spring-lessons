@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class DiscardedItem {
+public class DiscardedItemCsv {
 
     @CsvBindByName
     private String idOrderItems;
