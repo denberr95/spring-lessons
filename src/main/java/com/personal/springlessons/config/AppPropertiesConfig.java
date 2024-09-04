@@ -12,11 +12,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Configuration(proxyBeanMethods = false)
 @ConfigurationProperties(prefix = "app-config", ignoreUnknownFields = true)
-public class AppPropertiesConfig {
+public final class AppPropertiesConfig {
 
     private String baseDir;
-    private String csvColumnSeparator = Constants.SEMICOLON;
     private String csvDir;
+    private char csvColumnSeparator = Constants.SEMICOLON;
+    private char quoteCharacter = Constants.APOSTROPHE;
 
     @PostConstruct
     public void init() {

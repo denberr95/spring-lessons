@@ -2,6 +2,7 @@ package com.personal.springlessons.component.kafka;
 
 import com.personal.springlessons.component.mapper.IItemsMapper;
 import com.personal.springlessons.exception.DuplicatedBarcodeException;
+import com.personal.springlessons.model.csv.DiscardedItemCsv;
 import com.personal.springlessons.model.dto.KafkaMessageItemDTO;
 import com.personal.springlessons.model.entity.ItemsEntity;
 import com.personal.springlessons.repository.IItemsRepository;
@@ -31,7 +32,14 @@ public class ItemsListener {
         log.info("Received item to upload: '{}'", message.toString());
         this.itemRepository.findByBarcode(message.getBarcode()).ifPresent(item -> {
             log.warn("Barcode: '{}' already exists", item.getBarcode());
-            this.applicationEventPublisher.publishEvent(message);
+            DiscardedItemCsv event = new DiscardedItemCsv();
+            event.setBarcode(item.getBarcode());
+            event.setIdItem(item.getId().toString());
+            event.setIdOrderItems(message.getIdOrderItems());
+            event.setIdOrderItemsOriginal(item.getItemsStatusEntity().getId().toString());
+            event.setName(message.getName());
+            event.setPrice(message.getPrice());
+            this.applicationEventPublisher.publishEvent(event);
             throw new DuplicatedBarcodeException(message.getBarcode(), item.getId().toString());
         });
         ItemsEntity data = this.itemMapper.mapMessageToEntity(message);

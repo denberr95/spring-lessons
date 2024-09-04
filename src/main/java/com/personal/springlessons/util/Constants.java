@@ -31,9 +31,10 @@ public final class Constants {
     public static final String S_VAL_3 = "3";
     
     // Other
-    public static final String SEMICOLON = ";";
-    public static final String UNDERSCORE = "_";
-    public static final String DOT = ".";
+    public static final char SEMICOLON = ';';
+    public static final char UNDERSCORE = '_';
+    public static final char DOT = '.';
+    public static final char APOSTROPHE = '\'';
     public static final String CSV = "csv";
 
     // File System
