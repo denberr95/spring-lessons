@@ -5,7 +5,9 @@ import com.personal.springlessons.exception.DuplicatedBarcodeException;
 import com.personal.springlessons.model.csv.DiscardedItemCsv;
 import com.personal.springlessons.model.dto.KafkaMessageItemDTO;
 import com.personal.springlessons.model.entity.ItemsEntity;
+import com.personal.springlessons.model.lov.ItemStatus;
 import com.personal.springlessons.repository.IItemsRepository;
+import com.personal.springlessons.repository.IOrderItemsRepository;
 import com.personal.springlessons.util.Constants;
 import com.personal.springlessons.util.Methods;
 import org.springframework.context.ApplicationEventPublisher;
@@ -23,6 +25,7 @@ public class ItemsListener {
 
     private final ApplicationEventPublisher applicationEventPublisher;
     private final IItemsRepository itemRepository;
+    private final IOrderItemsRepository orderItemsRepository;
     private final IItemsMapper itemMapper;
 
     @RetryableTopic(attempts = Constants.S_VAL_1, dltStrategy = DltStrategy.NO_DLT)
@@ -40,6 +43,8 @@ public class ItemsListener {
             event.setName(message.getName());
             event.setPrice(message.getPrice());
             this.applicationEventPublisher.publishEvent(event);
+            this.orderItemsRepository.updateStatusById(ItemStatus.DISCARDED,
+                    Methods.idValidation(message.getIdOrderItems()));
             throw new DuplicatedBarcodeException(message.getBarcode(), item.getId().toString());
         });
         ItemsEntity data = this.itemMapper.mapMessageToEntity(message);

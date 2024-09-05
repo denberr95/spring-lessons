@@ -39,7 +39,7 @@ class IBooksRepositoryTest {
     }
 
     @Test
-    void givenExistentBook_whenFindByNameAndPubblicationDateAndNumberOfPages_thenBookIsRetrieved() {
+    void givenExistentBook_whenFindByNameAndPublicationDateAndNumberOfPages_thenBookIsRetrieved() {
         String name = "Repository-Book-Name-0";
         LocalDate publicationDate = LocalDate.now();
         Optional<BooksEntity> result = this.bookRepository
@@ -53,7 +53,7 @@ class IBooksRepositoryTest {
     }
 
     @Test
-    void givenNonExistentBook_whenFindByNameAndPubblicationDateAndNumberOfPages_thenNotFound() {
+    void givenNonExistentBook_whenFindByNameAndPublicationDateAndNumberOfPages_thenNotFound() {
         String name = "Non existent Book";
         LocalDate publicationDate = LocalDate.now();
         Optional<BooksEntity> result = this.bookRepository
