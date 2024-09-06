@@ -11,8 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface IOrderItemsRepository extends JpaRepository<OrderItemsEntity, UUID> {
 
-    @Modifying(clearAutomatically = true)
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Transactional
     @Query("UPDATE OrderItemsEntity u SET u.status = :status WHERE u.id = :id")
-    void updateStatusById(@Param(value = "status") ItemStatus status, @Param(value = "id") UUID id);
+    int updateStatusById(@Param(value = "status") ItemStatus status, @Param(value = "id") UUID id);
 }

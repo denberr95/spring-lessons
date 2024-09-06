@@ -8,7 +8,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @SpringBootTest
 class IOrderItemsRepositoryTest {
 
@@ -35,8 +37,9 @@ class IOrderItemsRepositoryTest {
     @Test
     void givenExistingOrderItemsId_whenUpdateStatus_thenStatusUpdated() {
         OrderItemsEntity row = this.orderItemsRepository.findAll().get(0);
-        this.orderItemsRepository.updateStatusById(ItemStatus.DISCARDED, row.getId());
-        OrderItemsEntity actual = this.orderItemsRepository.findAll().get(0);
+        int totalRowsUpdated = this.orderItemsRepository.updateStatusById(ItemStatus.DISCARDED, row.getId());
+        assertEquals(1, totalRowsUpdated);
+        OrderItemsEntity actual = this.orderItemsRepository.findById(row.getId()).get();
         assertEquals(ItemStatus.DISCARDED, actual.getStatus());
     }
 }
