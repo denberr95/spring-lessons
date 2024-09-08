@@ -1,6 +1,5 @@
 package com.personal.springlessons.controller;
 
-import java.time.LocalDateTime;
 import com.personal.springlessons.exception.BookNotFoundException;
 import com.personal.springlessons.exception.DuplicatedBookException;
 import com.personal.springlessons.model.dto.BookNotFoundResponseDTO;
@@ -23,7 +22,7 @@ public class BooksRestControllerAdvice {
         BookNotFoundResponseDTO result = new BookNotFoundResponseDTO();
         result.setId(exception.getId());
         result.setCategory(DomainCategory.BOOKS);
-        result.setTimestamp(LocalDateTime.now());
+        result.setMessage(exception.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(result);
     }
 
