@@ -1,6 +1,6 @@
 package com.personal.springlessons.model.dto;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import com.personal.springlessons.model.lov.DomainCategory;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class BaseErrorResponseDTO {
 
-    private LocalDateTime timestamp = LocalDateTime.now();
+    private OffsetDateTime timestamp = OffsetDateTime.now();
 
     private DomainCategory category;
     
