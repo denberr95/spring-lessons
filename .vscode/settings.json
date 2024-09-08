@@ -1,0 +1,16 @@
+{
+    "java.test.config": [
+        {
+            "name": "linux",
+            "vmargs": [
+                "-Dspring.profiles.active=default,linux"
+            ],
+        },
+        {
+            "name": "windows",
+            "vmargs": [
+                "-Dspring.profiles.active=default,windows"
+            ]
+        }
+    ]
+}
