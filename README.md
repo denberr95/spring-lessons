@@ -2,7 +2,7 @@
 
 - [Software](#software)
 - [Environment](#environment)
-- [VSCode Launcher](#vscode-launcher)
+- [VSCode Configuration files](#vscode-configuration-files)
 - [API Security](#api-security)
   - [Roles](#roles)
   - [Scopes](#scopes)
@@ -42,11 +42,13 @@
 | Spring Lessons | Spring Application Web Server | <http://localhost:10000> |
 | Spring Lessons | Spring Application Actuator | <http://localhost:10001> |
 
-## VSCode Launcher
+## VSCode Configuration files
 
-| | **TODO** | **TODO** |
+| **Name** | **Description** | **Link** |
 | :-: | :-: | :-: |
-| TODO | X | X |
+| Application Runner | Configuration file for run application | [Launcher](.vscode/launch.json) |
+| Settings | Configuration VS Code | [VS Code Settings](.vscode/settings.json) |
+| Automation Tasks | Configuration script task | [Tasks](.vscode/tasks.json) |
 
 ## API Security
 
@@ -116,7 +118,6 @@
     | books:save | X | | X |
     | books:delete | X | | |
     | books:update | X | | X |
-    | roles | X | X | X |
 
 - #### Scopes Items Client Applications
 
@@ -125,4 +126,3 @@
     | items:get | X | X | X |
     | items:upload | X | | X |
     | items:delete | X | | |
-    | roles | X | X | X |
