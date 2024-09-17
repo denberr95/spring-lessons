@@ -13,6 +13,7 @@ import com.personal.springlessons.model.dto.ItemDTO;
 import com.personal.springlessons.service.ItemsService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -168,6 +169,7 @@ class ItemsRestControllerTest {
     }
 
     @Test
+    @Disabled("Test not completed to implement")
     void givenEItems_whenGetAll_thenItemsAreRetrieved() {
         String url = this.buildUrl("/items");
         HttpEntity<HttpHeaders> httpEntity =

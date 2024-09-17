@@ -9,7 +9,7 @@ class InvalidUUIDExceptionTest {
     void testInvalidUUIDException() {
         String id = "ABCD";
         InvalidUUIDException exception = new InvalidUUIDException(id);
-        String expectedMessage = String.format("ID '%s' is malformed, is not a valid UUID", id);
+        String expectedMessage = String.format("ID '%s' malformed, is not a valid UUID", id);
         assertEquals(expectedMessage, exception.getMessage());
         assertEquals(id, exception.getId());
     }

@@ -4,15 +4,15 @@ public class SpringLessonsApplicationException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
 
-    public SpringLessonsApplicationException(final String message) {
+    public SpringLessonsApplicationException(String message) {
         super(message);
     }
 
-    public SpringLessonsApplicationException(final Throwable cause) {
+    public SpringLessonsApplicationException(Throwable cause) {
         super(cause);
     }
 
-    public SpringLessonsApplicationException(final String message, final Throwable cause) {
+    public SpringLessonsApplicationException(String message, Throwable cause) {
         super(message, cause);
     }
 }

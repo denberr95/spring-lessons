@@ -9,7 +9,7 @@ public class DuplicatedBarcodeException extends SpringLessonsApplicationExceptio
     private final String barcode;
     private final String id;
 
-    public DuplicatedBarcodeException(final String barcode, final String id) {
+    public DuplicatedBarcodeException(String barcode, String id) {
         super(String.format("Item '%s' already registered with id '%s'", barcode, id));
         this.barcode = barcode;
         this.id = id;

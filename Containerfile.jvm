@@ -1,7 +1,7 @@
 FROM eclipse-temurin:17-jre-ubi9-minimal AS runtime
 WORKDIR /spring-app
 COPY bin/app.jar app.jar
-COPY deploy/java-entrypoint.sh /usr/local/bin/java-entrypoint.sh
+COPY java-entrypoint.sh /usr/local/bin/java-entrypoint.sh
 RUN groupadd --gid 1000 appgroup \
     && useradd --uid 1000 --gid 1000 --create-home appuser
 RUN chmod +x /usr/local/bin/java-entrypoint.sh

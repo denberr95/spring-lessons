@@ -31,7 +31,6 @@
 | :-: | :-: | :-: |
 | Environment Compose | Compose file to generate environment | [compose-env.yaml](./container/compose.yaml) |
 | Application Containerfile | Containerfile to build Spring Application in jvm version | [Containerfile.jvm](Containerfile.jvm) |
-| Application Compose | Compose file to run Spring Application in environment | [compose-app.yaml](./deploy/compose.yaml) |
 | Postman Collection | Collection for testing API | [postman.json](./collections/postman.json) |
 | Jaeger UI | Trace & Spans Monitoring | <http://localhost:16686/search> |
 | Prometheus | System & Application Metrics | <http://localhost:9090> |
