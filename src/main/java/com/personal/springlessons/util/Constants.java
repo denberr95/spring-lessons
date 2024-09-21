@@ -7,6 +7,15 @@ public final class Constants {
                 "This is a utility class and cannot be instantiated");
     }
 
+    // Span Key Tag
+    public static final String TOTAL_ORDERS = "total.orders";
+    public static final String TOTAL_ITEMS = "total.items";
+    public static final String OPERATION_TYPE = "operation.type";
+    public static final String BARCODE = "barcode";
+    public static final String NUMBER_ITEMS_TO_UPLOAD = "number.items.to.upload";
+    public static final String NUMBER_ITEMS_TO_DELETE = "number.items.to.delete";
+    public static final String ID_ORDER_ITEMS = "id.order.items";
+
     // Database schemas
     public static final String DB_SCHEMA_SPRING_APP = "SPRING_APP";
 
@@ -37,7 +46,7 @@ public final class Constants {
     public static final char APOSTROPHE = '\'';
     public static final String CSV = "csv";
 
-    // File System
+    // File System Extension
     public static final String CSV_EXT = DOT + CSV;
 
     // Date Time Format

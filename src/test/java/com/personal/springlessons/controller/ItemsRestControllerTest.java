@@ -10,10 +10,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import com.personal.springlessons.model.dto.ItemDTO;
-import com.personal.springlessons.service.ItemsService;
+import com.personal.springlessons.model.entity.ItemsEntity;
+import com.personal.springlessons.model.entity.OrderItemsEntity;
+import com.personal.springlessons.model.lov.ItemStatus;
+import com.personal.springlessons.repository.IItemsRepository;
+import com.personal.springlessons.repository.IOrderItemsRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,7 +40,10 @@ class ItemsRestControllerTest {
     private TestRestTemplate testRestTemplate;
 
     @Autowired
-    private ItemsService itemsService;
+    private IOrderItemsRepository orderItemsRepository;
+
+    @Autowired
+    private IItemsRepository itemsRepository;
 
     @Value("${spring.mvc.servlet.path}")
     private String basePath;
@@ -100,14 +106,43 @@ class ItemsRestControllerTest {
         return result;
     }
 
+    private void cleanupData() {
+        this.data.clear();
+    }
+
+    private void cleanupItems() {
+        this.itemsRepository.deleteAll();
+    }
+
+    private void cleanupOrders() {
+        this.orderItemsRepository.deleteAll();
+    }
+
     @BeforeEach
     void init() {
+        OrderItemsEntity orderItemsEntity = new OrderItemsEntity();
+        orderItemsEntity.setQuantity(TOTAL);
+        orderItemsEntity.setStatus(ItemStatus.NA);
+        orderItemsEntity = this.orderItemsRepository.saveAndFlush(orderItemsEntity);
+
         for (int i = 0; i < TOTAL; i++) {
+            String name = "Controller-Item-Name-" + i;
+            String barcode = "Controller-Barcode-" + i;
+            BigDecimal price = new BigDecimal(9_999);
+
             ItemDTO itemDTO = new ItemDTO();
-            itemDTO.setName("Controller-Item-Name-" + i);
-            itemDTO.setBarcode("Controller-Barcode-" + i);
-            itemDTO.setPrice(new BigDecimal(9_999));
+            itemDTO.setName(name);
+            itemDTO.setBarcode(barcode);
+            itemDTO.setPrice(price);
             this.data.add(itemDTO);
+
+            ItemsEntity itemsEntity = new ItemsEntity();
+            itemsEntity.setName(name);
+            itemsEntity.setBarcode(barcode);
+            itemsEntity.setPrice(price);
+            itemsEntity.setItemsStatusEntity(orderItemsEntity);
+            this.itemsRepository.saveAndFlush(itemsEntity);
+
         }
         this.validToken = this.retrieveAccessToken(this.clientIdFullPermission,
                 this.clientSecretFullPermission);
@@ -117,7 +152,9 @@ class ItemsRestControllerTest {
 
     @AfterEach
     void tearDown() {
-        this.data.clear();
+        this.cleanupData();
+        this.cleanupItems();
+        this.cleanupOrders();
     }
 
     @Test
@@ -157,27 +194,61 @@ class ItemsRestControllerTest {
     }
 
     @Test
-    void givenEmptyCollection_whenGetAll_thenItemsAreRetrieved() {
+    void givenItems_whenUpload_thenNoContent() {
+        this.cleanupItems();
+        this.cleanupOrders();
+        String url = this.buildUrl("/items");
+        HttpHeaders httpHeaders = this.retrieveHttpHeaders(this.validToken);
+        HttpEntity<List<ItemDTO>> httpEntity = new HttpEntity<>(this.data, httpHeaders);
+
+        ResponseEntity<Void> response =
+                this.testRestTemplate.exchange(url, HttpMethod.POST, httpEntity, Void.class);
+        assertNull(response.getBody());
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+        assertEquals(1, this.orderItemsRepository.count());
+        assertEquals(ItemStatus.UPLOAD, this.orderItemsRepository.findAll().get(0).getStatus());
+        assertEquals(TOTAL, this.orderItemsRepository.findAll().get(0).getQuantity());
+    }
+
+    @Test
+    void givenItems_whenDelete_thenNoContent() {
+        this.cleanupItems();
+        this.cleanupOrders();
+        String url = this.buildUrl("/items");
+        HttpHeaders httpHeaders = this.retrieveHttpHeaders(this.validToken);
+        HttpEntity<List<ItemDTO>> httpEntity = new HttpEntity<>(this.data, httpHeaders);
+
+        ResponseEntity<Void> response =
+                this.testRestTemplate.exchange(url, HttpMethod.DELETE, httpEntity, Void.class);
+        assertNull(response.getBody());
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+        assertEquals(1, this.orderItemsRepository.count());
+        assertEquals(ItemStatus.DELETE, this.orderItemsRepository.findAll().get(0).getStatus());
+        assertEquals(TOTAL, this.orderItemsRepository.findAll().get(0).getQuantity());
+    }
+
+    @Test
+    void givenEmptyCollection_whenGetAll_thenNoContent() {
+        this.tearDown();
         String url = this.buildUrl("/items");
         HttpEntity<HttpHeaders> httpEntity =
                 new HttpEntity<>(this.retrieveHttpHeaders(this.validToken));
 
-        ResponseEntity<ItemDTO[]> response =
-                this.testRestTemplate.exchange(url, HttpMethod.GET, httpEntity, ItemDTO[].class);
+        ResponseEntity<Void> response =
+                this.testRestTemplate.exchange(url, HttpMethod.GET, httpEntity, Void.class);
         assertNull(response.getBody());
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
     }
 
     @Test
-    @Disabled("Test not completed to implement")
-    void givenEItems_whenGetAll_thenItemsAreRetrieved() {
+    void givenItems_whenGetAll_thenItemsRetrieved() {
         String url = this.buildUrl("/items");
         HttpEntity<HttpHeaders> httpEntity =
                 new HttpEntity<>(this.retrieveHttpHeaders(this.validToken));
-                
+
         ResponseEntity<ItemDTO[]> response =
                 this.testRestTemplate.exchange(url, HttpMethod.GET, httpEntity, ItemDTO[].class);
-        assertNull(response.getBody());
+        assertNotNull(response.getBody());
         assertEquals(HttpStatus.OK, response.getStatusCode());
         for (int i = 0; i < TOTAL; i++) {
             ItemDTO itemDTO = response.getBody()[i];

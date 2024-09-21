@@ -4,7 +4,6 @@ import java.util.List;
 import com.personal.springlessons.model.dto.ItemDTO;
 import com.personal.springlessons.model.dto.KafkaMessageItemDTO;
 import com.personal.springlessons.model.entity.ItemsEntity;
-import com.personal.springlessons.model.entity.OrderItemsEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -16,7 +15,7 @@ public interface IItemsMapper {
 
     KafkaMessageItemDTO mapMessage(ItemDTO itemDTO);
 
-    List<ItemDTO> mapDTO(List<OrderItemsEntity> orderItemsEntities);
+    List<ItemDTO> mapDTO(List<ItemsEntity> itemsEntities);
 
     @Mapping(source = "idOrderItems", target = "itemsStatusEntity.id")
     ItemsEntity mapMessageToEntity(KafkaMessageItemDTO kafkaMessageItemDTO);
