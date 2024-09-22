@@ -11,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 @Data
 @Slf4j
 @Configuration(proxyBeanMethods = false)
-@ConfigurationProperties(prefix = "app-config", ignoreUnknownFields = true)
+@ConfigurationProperties(prefix = "app-config")
 public final class AppPropertiesConfig {
 
     private String baseDir;
