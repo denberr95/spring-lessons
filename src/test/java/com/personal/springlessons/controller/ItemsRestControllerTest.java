@@ -241,6 +241,18 @@ class ItemsRestControllerTest {
     }
 
     @Test
+    void givenPartialEmptyCollection_whenGetAll_thenNoContent() {
+        this.cleanupItems();
+        String url = this.buildUrl("/items");
+        HttpEntity<HttpHeaders> httpEntity =
+                new HttpEntity<>(this.retrieveHttpHeaders(this.validToken));
+        ResponseEntity<Void> responseWithoutData =
+                this.testRestTemplate.exchange(url, HttpMethod.GET, httpEntity, Void.class);
+        assertNull(responseWithoutData.getBody());
+        assertEquals(HttpStatus.NO_CONTENT, responseWithoutData.getStatusCode());
+    }
+
+    @Test
     void givenItems_whenGetAll_thenItemsRetrieved() {
         String url = this.buildUrl("/items");
         HttpEntity<HttpHeaders> httpEntity =

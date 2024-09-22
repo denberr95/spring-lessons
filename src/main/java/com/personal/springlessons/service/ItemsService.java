@@ -23,21 +23,21 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ItemsService {
 
-    private final KafkaTemplate<String, KafkaMessageItemDTO> kafkaTemplate;
     private final Tracer tracer;
     private final IItemsMapper itemMapper;
-    private final IOrderItemsRepository orderItemsRepository;
     private final IItemsRepository itemsRepository;
+    private final IOrderItemsRepository orderItemsRepository;
+    private final KafkaTemplate<String, KafkaMessageItemDTO> kafkaTemplate;
 
     @NewSpan
     public void upload(List<ItemDTO> items) {
         Span currentSpan = this.tracer.currentSpan();
         currentSpan.tag(Constants.NUMBER_ITEMS_TO_UPLOAD, items.size());
 
-        OrderItemsEntity orderItemsEntity = new OrderItemsEntity();
-        orderItemsEntity.setQuantity(items.size());
-        orderItemsEntity.setStatus(ItemStatus.UPLOAD);
-        OrderItemsEntity row = this.orderItemsRepository.saveAndFlush(orderItemsEntity);
+        OrderItemsEntity data = new OrderItemsEntity();
+        data.setQuantity(items.size());
+        data.setStatus(ItemStatus.UPLOAD);
+        OrderItemsEntity row = this.orderItemsRepository.saveAndFlush(data);
 
         items.forEach(i -> {
             KafkaMessageItemDTO message = this.itemMapper.mapMessage(i);
@@ -52,10 +52,10 @@ public class ItemsService {
         Span currentSpan = this.tracer.currentSpan();
         currentSpan.tag(Constants.NUMBER_ITEMS_TO_DELETE, items.size());
 
-        OrderItemsEntity orderItemsEntity = new OrderItemsEntity();
-        orderItemsEntity.setQuantity(items.size());
-        orderItemsEntity.setStatus(ItemStatus.DELETE);
-        OrderItemsEntity row = this.orderItemsRepository.saveAndFlush(orderItemsEntity);
+        OrderItemsEntity data = new OrderItemsEntity();
+        data.setQuantity(items.size());
+        data.setStatus(ItemStatus.DELETE);
+        OrderItemsEntity row = this.orderItemsRepository.saveAndFlush(data);
 
         items.forEach(i -> {
             KafkaMessageItemDTO message = this.itemMapper.mapMessage(i);
@@ -68,16 +68,18 @@ public class ItemsService {
     @NewSpan
     public List<ItemDTO> getAll() {
         List<ItemsEntity> data = new ArrayList<>();
-        List<OrderItemsEntity> orderItemsEntities = this.orderItemsRepository.findAll();
         Span currentSpan = this.tracer.currentSpan();
-        currentSpan.tag(Constants.TOTAL_ORDERS, String.valueOf(orderItemsEntities.size()))
+        List<OrderItemsEntity> ordersData = this.orderItemsRepository.findAll();
+        currentSpan.tag(Constants.TOTAL_ORDERS, String.valueOf(ordersData.size()))
                 .event("Orders retrieved");
 
-        orderItemsEntities.forEach(x -> {
-            currentSpan.tag(Constants.ID_ORDER_ITEMS, x.getId().toString());
-            Optional<List<ItemsEntity>> rows = this.itemsRepository.findByItemsStatusEntity(x);
-            if (!rows.isEmpty()) {
-                data.addAll(rows.get());
+        ordersData.forEach(i -> {
+            currentSpan.tag(Constants.ID_ORDER_ITEMS, i.getId().toString());
+            Optional<List<ItemsEntity>> itemsData = this.itemsRepository.findByItemsStatusEntity(i);
+            if (!itemsData.get().isEmpty()) {
+                data.addAll(itemsData.get());
+                currentSpan.tag(Constants.COLLECTED_ITEMS, itemsData.get().size())
+                        .event("Items collected");
             }
         });
         currentSpan.tag(Constants.TOTAL_ITEMS, data.size());

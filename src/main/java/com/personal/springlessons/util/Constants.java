@@ -15,6 +15,7 @@ public final class Constants {
     public static final String NUMBER_ITEMS_TO_UPLOAD = "number.items.to.upload";
     public static final String NUMBER_ITEMS_TO_DELETE = "number.items.to.delete";
     public static final String ID_ORDER_ITEMS = "id.order.items";
+    public static final String COLLECTED_ITEMS = "collected.items";
 
     // Database schemas
     public static final String DB_SCHEMA_SPRING_APP = "SPRING_APP";
@@ -38,7 +39,7 @@ public final class Constants {
     // String Values
     public static final String S_VAL_1 = "1";
     public static final String S_VAL_3 = "3";
-    
+
     // Other
     public static final char SEMICOLON = ';';
     public static final char UNDERSCORE = '_';
