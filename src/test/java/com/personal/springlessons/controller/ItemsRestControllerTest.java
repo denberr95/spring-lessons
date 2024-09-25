@@ -128,7 +128,7 @@ class ItemsRestControllerTest {
         for (int i = 0; i < TOTAL; i++) {
             String name = "Controller-Item-Name-" + i;
             String barcode = "Controller-Barcode-" + i;
-            BigDecimal price = new BigDecimal(9_999);
+            BigDecimal price = new BigDecimal("9999.99");
 
             ItemDTO itemDTO = new ItemDTO();
             itemDTO.setName(name);
