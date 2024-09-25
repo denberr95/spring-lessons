@@ -35,6 +35,7 @@ public class ItemsListener {
         log.info("Received item to upload: '{}'", message.toString());
         this.itemRepository.findByBarcode(message.getBarcode()).ifPresent(item -> {
             log.warn("Barcode: '{}' already exists", item.getBarcode());
+
             DiscardedItemCsv event = new DiscardedItemCsv();
             event.setBarcode(item.getBarcode());
             event.setIdItem(item.getId().toString());
@@ -43,6 +44,7 @@ public class ItemsListener {
             event.setName(message.getName());
             event.setPrice(message.getPrice());
             this.applicationEventPublisher.publishEvent(event);
+            
             this.orderItemsRepository.updateStatusById(ItemStatus.DISCARDED,
                     Methods.idValidation(message.getIdOrderItems()));
             throw new DuplicatedBarcodeException(message.getBarcode(), item.getId().toString());
