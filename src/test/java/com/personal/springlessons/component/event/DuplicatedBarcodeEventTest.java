@@ -29,11 +29,11 @@ class DuplicatedBarcodeEventTest {
     private DiscardedItemCsv data;
 
     @BeforeEach
-    void initAll() {
+    void init() {
         this.data = new DiscardedItemCsv();
         this.data.setIdOrderItems("id-order-item");
         this.data.setIdOrderItemsOriginal("id-order-items-original");
-        this.data.setPrice(new BigDecimal(9_999));
+        this.data.setPrice(new BigDecimal("9999.99"));
         this.data.setIdItem("id-item");
         this.data.setBarcode("barcode");
         this.data.setName("name");
