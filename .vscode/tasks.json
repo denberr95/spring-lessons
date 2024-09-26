@@ -115,7 +115,7 @@
         {
             "label": "podman-compose-env-up",
             "type": "shell",
-            "command": "podman-compose --project vscode-dev --file ./container/compose.yaml up --force-recreate --remove-orphans --detach",
+            "command": "podman-compose --project vscode-spring-dev --file ./container/compose.yaml up --force-recreate --remove-orphans --detach",
             "group": "test",
         },
         {
@@ -127,25 +127,25 @@
         {
             "label": "podman-machine-init",
             "type": "shell",
-            "command": "podman machine init podman-machine-spring-lessons",
+            "command": "podman machine init podman-machine-default",
             "group": "none",
         },
         {
             "label": "podman-machine-start",
             "type": "shell",
-            "command": "podman machine start podman-machine-spring-lessons",
+            "command": "podman machine start podman-machine-default",
             "group": "none",
         },
         {
             "label": "podman-machine-stop",
             "type": "shell",
-            "command": "podman machine stop podman-machine-spring-lessons",
+            "command": "podman machine stop podman-machine-default",
             "group": "none",
         },
         {
             "label": "podman-machine-remove",
             "type": "shell",
-            "command": "podman machine rm podman-machine-spring-lessons --force",
+            "command": "podman machine rm podman-machine-default --force",
             "group": "none",
         },
         {
