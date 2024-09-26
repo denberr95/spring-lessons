@@ -15,7 +15,7 @@ services:
     - spring-lessons-dev
 
   jaeger:
-    image: jaegertracing/all-in-one:1.60
+    image: jaegertracing/all-in-one:latest
     restart: "no"
     container_name: jaeger
     environment:
