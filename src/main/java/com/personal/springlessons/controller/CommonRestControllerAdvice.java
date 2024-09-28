@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 public class CommonRestControllerAdvice {
 
     @ExceptionHandler(value = {InvalidUUIDException.class})
-    public ResponseEntity<InvalidUUIDResponseDTO> handleIllegalArgumentException(
+    public ResponseEntity<InvalidUUIDResponseDTO> handleInvalidUUIDException(
             InvalidUUIDException exception, WebRequest webRequest) {
         log.error(exception.getMessage(), exception);
         InvalidUUIDResponseDTO result = new InvalidUUIDResponseDTO();
