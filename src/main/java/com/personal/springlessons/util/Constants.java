@@ -8,14 +8,16 @@ public final class Constants {
     }
 
     // Span Key Tag
-    public static final String TOTAL_ORDERS = "total.orders";
-    public static final String TOTAL_ITEMS = "total.items";
-    public static final String OPERATION_TYPE = "operation.type";
-    public static final String BARCODE = "barcode";
-    public static final String NUMBER_ITEMS_TO_UPLOAD = "number.items.to.upload";
-    public static final String NUMBER_ITEMS_TO_DELETE = "number.items.to.delete";
-    public static final String ID_ORDER_ITEMS = "id.order.items";
-    public static final String COLLECTED_ITEMS = "collected.items";
+    public static final String SPAN_KEY_TOTAL_ORDERS = "total.orders";
+    public static final String SPAN_KEY_TOTAL_ITEMS = "total.items";
+    public static final String SPAN_KEY_TOTAL_BOOKS = "total.books";
+    public static final String SPAN_KEY_OPERATION_TYPE = "operation.type";
+    public static final String SPAN_KEY_BARCODE = "barcode";
+    public static final String SPAN_KEY_NUMBER_ITEMS_TO_UPLOAD = "number.items.to.upload";
+    public static final String SPAN_KEY_NUMBER_ITEMS_TO_DELETE = "number.items.to.delete";
+    public static final String SPAN_KEY_ID_ORDER_ITEMS = "id.order.items";
+    public static final String SPAN_KEY_ID_BOOKS = "id.books";
+    public static final String SPAN_KEY_COLLECTED_ITEMS = "collected.items";
 
     // Database schemas
     public static final String DB_SCHEMA_SPRING_APP = "SPRING_APP";

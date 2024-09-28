@@ -32,7 +32,7 @@ public class ItemsService {
     @NewSpan
     public void upload(List<ItemDTO> items) {
         Span currentSpan = this.tracer.currentSpan();
-        currentSpan.tag(Constants.NUMBER_ITEMS_TO_UPLOAD, items.size());
+        currentSpan.tag(Constants.SPAN_KEY_NUMBER_ITEMS_TO_UPLOAD, items.size());
 
         OrderItemsEntity data = new OrderItemsEntity();
         data.setQuantity(items.size());
@@ -50,7 +50,7 @@ public class ItemsService {
     @NewSpan
     public void delete(List<ItemDTO> items) {
         Span currentSpan = this.tracer.currentSpan();
-        currentSpan.tag(Constants.NUMBER_ITEMS_TO_DELETE, items.size());
+        currentSpan.tag(Constants.SPAN_KEY_NUMBER_ITEMS_TO_DELETE, items.size());
 
         OrderItemsEntity data = new OrderItemsEntity();
         data.setQuantity(items.size());
@@ -70,19 +70,19 @@ public class ItemsService {
         List<ItemsEntity> data = new ArrayList<>();
         Span currentSpan = this.tracer.currentSpan();
         List<OrderItemsEntity> ordersData = this.orderItemsRepository.findAll();
-        currentSpan.tag(Constants.TOTAL_ORDERS, String.valueOf(ordersData.size()))
+        currentSpan.tag(Constants.SPAN_KEY_TOTAL_ORDERS, String.valueOf(ordersData.size()))
                 .event("Orders retrieved");
 
         ordersData.forEach(i -> {
-            currentSpan.tag(Constants.ID_ORDER_ITEMS, i.getId().toString());
+            currentSpan.tag(Constants.SPAN_KEY_ID_ORDER_ITEMS, i.getId().toString());
             Optional<List<ItemsEntity>> itemsData = this.itemsRepository.findByItemsStatusEntity(i);
             if (!itemsData.get().isEmpty()) {
                 data.addAll(itemsData.get());
-                currentSpan.tag(Constants.COLLECTED_ITEMS, itemsData.get().size())
+                currentSpan.tag(Constants.SPAN_KEY_COLLECTED_ITEMS, itemsData.get().size())
                         .event("Items collected");
             }
         });
-        currentSpan.tag(Constants.TOTAL_ITEMS, data.size());
+        currentSpan.tag(Constants.SPAN_KEY_TOTAL_ITEMS, data.size());
         return this.itemMapper.mapDTO(data);
     }
 
@@ -90,9 +90,9 @@ public class ItemsService {
         Span span = this.tracer.nextSpan().name("notifyKafkaItems");
         try (Tracer.SpanInScope ws = this.tracer.withSpan(span.start())) {
             this.kafkaTemplate.send(topic, message);
-            span.tag(Constants.OPERATION_TYPE, message.getItemStatus().name());
-            span.tag(Constants.ID_ORDER_ITEMS, message.getIdOrderItems());
-            span.tag(Constants.BARCODE, message.getBarcode());
+            span.tag(Constants.SPAN_KEY_OPERATION_TYPE, message.getItemStatus().name());
+            span.tag(Constants.SPAN_KEY_ID_ORDER_ITEMS, message.getIdOrderItems());
+            span.tag(Constants.SPAN_KEY_BARCODE, message.getBarcode());
             span.event("Kafka message sent");
         } finally {
             span.end();

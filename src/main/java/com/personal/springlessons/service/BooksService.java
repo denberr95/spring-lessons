@@ -7,6 +7,7 @@ import com.personal.springlessons.exception.DuplicatedBookException;
 import com.personal.springlessons.model.dto.BookDTO;
 import com.personal.springlessons.model.entity.BooksEntity;
 import com.personal.springlessons.repository.IBooksRepository;
+import com.personal.springlessons.util.Constants;
 import com.personal.springlessons.util.Methods;
 import org.springframework.stereotype.Service;
 import io.micrometer.tracing.Span;
@@ -26,7 +27,7 @@ public class BooksService {
     public List<BookDTO> getAll() {
         List<BooksEntity> bookEntities = this.bookRepository.findAll();
         Span currentSpan = this.tracer.currentSpan();
-        currentSpan.tag("total.books", String.valueOf(bookEntities.size()))
+        currentSpan.tag(Constants.SPAN_KEY_TOTAL_BOOKS, String.valueOf(bookEntities.size()))
                 .event("Books retrieved");
         return this.bookMapper.mapDTO(bookEntities);
     }
@@ -51,7 +52,7 @@ public class BooksService {
         BooksEntity bookEntity = this.bookMapper.mapEntity(bookDTO);
         bookEntity = this.bookRepository.saveAndFlush(bookEntity);
         Span currentSpan = this.tracer.currentSpan();
-        currentSpan.tag("book.id.created", bookEntity.getId().toString()).event("Book created");
+        currentSpan.tag(Constants.SPAN_KEY_ID_BOOKS, bookEntity.getId().toString()).event("Book created");
         return this.bookMapper.mapDTO(bookEntity);
     }
 
