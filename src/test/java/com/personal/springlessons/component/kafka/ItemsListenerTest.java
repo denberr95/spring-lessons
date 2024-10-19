@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import com.personal.springlessons.model.dto.ItemDTO;
-import com.personal.springlessons.model.entity.ItemsEntity;
-import com.personal.springlessons.model.entity.OrderItemsEntity;
+import com.personal.springlessons.model.entity.items.ItemsEntity;
+import com.personal.springlessons.model.entity.orderitems.OrderItemsEntity;
 import com.personal.springlessons.repository.IItemsRepository;
 import com.personal.springlessons.repository.IOrderItemsRepository;
 import com.personal.springlessons.service.ItemsService;
@@ -68,7 +68,7 @@ class ItemsListenerTest {
         await().timeout(10L, TimeUnit.SECONDS).until(() -> this.itemsRepository.findAll().size(),
                 equalTo(TOTAL));
         List<ItemsEntity> itemsEntity =
-                this.itemsRepository.findByItemsStatusEntity(orderItemsEntity).get();
+                this.itemsRepository.findByorderItemsEntity(orderItemsEntity).get();
 
         for (int i = 0; i < TOTAL; i++) {
             ItemsEntity element = itemsEntity.get(i);

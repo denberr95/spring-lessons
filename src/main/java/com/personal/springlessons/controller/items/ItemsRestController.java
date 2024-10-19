@@ -1,4 +1,4 @@
-package com.personal.springlessons.controller;
+package com.personal.springlessons.controller.items;
 
 import java.util.List;
 import com.personal.springlessons.model.dto.ItemDTO;
@@ -14,10 +14,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import io.micrometer.tracing.annotation.NewSpan;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@Tag(name = "Items")
 @Validated
 @RestController
 @RequiredArgsConstructor
@@ -51,7 +53,7 @@ public class ItemsRestController {
     @PreAuthorize(value = "hasAuthority('SCOPE_items:get')")
     public ResponseEntity<List<ItemDTO>> getAll() {
         log.info("Called API to retrieve all items");
-        List<ItemDTO> result =this.itemService.getAll();
+        List<ItemDTO> result = this.itemService.getAll();
         ResponseEntity<List<ItemDTO>> response;
         if (result.isEmpty()) {
             log.info("No items retrieved !");

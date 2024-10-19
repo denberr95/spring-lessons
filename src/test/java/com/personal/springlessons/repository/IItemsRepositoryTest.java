@@ -4,8 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.math.BigDecimal;
 import java.util.Optional;
-import com.personal.springlessons.model.entity.ItemsEntity;
-import com.personal.springlessons.model.entity.OrderItemsEntity;
+import com.personal.springlessons.model.entity.items.ItemsEntity;
+import com.personal.springlessons.model.entity.orderitems.OrderItemsEntity;
 import com.personal.springlessons.model.lov.ItemStatus;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,7 +35,7 @@ class IItemsRepositoryTest {
             itemEntity.setName("Repository-Item-Name-" + i);
             itemEntity.setBarcode("Reposity-Item-Barcode-" + i);
             itemEntity.setPrice(new BigDecimal("9999.99"));
-            itemEntity.setItemsStatusEntity(orderItemsEntity);
+            itemEntity.setOrderItemsEntity(orderItemsEntity);
             this.itemRepository.save(itemEntity);
         }
     }

@@ -3,7 +3,7 @@ package com.personal.springlessons.exception;
 import lombok.Getter;
 
 @Getter
-public class BookNotFoundException extends SpringLessonsApplicationException {
+public class BookNotFoundException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
     private final String id;

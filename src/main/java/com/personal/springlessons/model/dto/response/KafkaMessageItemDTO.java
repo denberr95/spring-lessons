@@ -1,5 +1,6 @@
-package com.personal.springlessons.model.dto;
+package com.personal.springlessons.model.dto.response;
 
+import com.personal.springlessons.model.dto.ItemDTO;
 import com.personal.springlessons.model.lov.ItemStatus;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

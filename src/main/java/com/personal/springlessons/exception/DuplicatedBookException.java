@@ -3,7 +3,7 @@ package com.personal.springlessons.exception;
 import lombok.Getter;
 
 @Getter
-public class DuplicatedBookException extends SpringLessonsApplicationException {
+public class DuplicatedBookException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
     private final String name;

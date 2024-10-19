@@ -19,6 +19,7 @@
         <opentelemetry.appender.version>1.33.4-alpha</opentelemetry.appender.version>
         <jacoco.version>0.8.12</jacoco.version>
         <opencsv.version>5.9</opencsv.version>
+        <org.springdoc.version>2.6.0</org.springdoc.version>
     </properties>
     <dependencies>
         <dependency>
@@ -144,6 +145,16 @@
             <artifactId>awaitility</artifactId>
             <version>${awaitility.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-api</artifactId>
+            <version>${org.springdoc.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>${org.springdoc.version}</version>
         </dependency>
     </dependencies>
     <dependencyManagement>

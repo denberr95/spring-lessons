@@ -1,6 +1,6 @@
 package com.personal.springlessons.component.kafka.filter;
 
-import com.personal.springlessons.model.dto.KafkaMessageItemDTO;
+import com.personal.springlessons.model.dto.response.KafkaMessageItemDTO;
 import com.personal.springlessons.model.lov.ItemStatus;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.listener.adapter.RecordFilterStrategy;

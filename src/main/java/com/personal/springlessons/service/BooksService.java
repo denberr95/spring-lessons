@@ -5,7 +5,7 @@ import com.personal.springlessons.component.mapper.IBooksMapper;
 import com.personal.springlessons.exception.BookNotFoundException;
 import com.personal.springlessons.exception.DuplicatedBookException;
 import com.personal.springlessons.model.dto.BookDTO;
-import com.personal.springlessons.model.entity.BooksEntity;
+import com.personal.springlessons.model.entity.books.BooksEntity;
 import com.personal.springlessons.repository.IBooksRepository;
 import com.personal.springlessons.util.Constants;
 import com.personal.springlessons.util.Methods;
@@ -52,7 +52,8 @@ public class BooksService {
         BooksEntity bookEntity = this.bookMapper.mapEntity(bookDTO);
         bookEntity = this.bookRepository.saveAndFlush(bookEntity);
         Span currentSpan = this.tracer.currentSpan();
-        currentSpan.tag(Constants.SPAN_KEY_ID_BOOKS, bookEntity.getId().toString()).event("Book created");
+        currentSpan.tag(Constants.SPAN_KEY_ID_BOOKS, bookEntity.getId().toString())
+                .event("Book created");
         return this.bookMapper.mapDTO(bookEntity);
     }
 

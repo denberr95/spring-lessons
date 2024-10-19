@@ -1,9 +1,9 @@
-package com.personal.springlessons.controller;
+package com.personal.springlessons.controller.books;
 
 import com.personal.springlessons.exception.BookNotFoundException;
 import com.personal.springlessons.exception.DuplicatedBookException;
-import com.personal.springlessons.model.dto.BookNotFoundResponseDTO;
-import com.personal.springlessons.model.dto.DuplicatedBookResponseDTO;
+import com.personal.springlessons.model.dto.response.BookNotFoundResponseDTO;
+import com.personal.springlessons.model.dto.response.DuplicatedBookResponseDTO;
 import com.personal.springlessons.model.lov.DomainCategory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

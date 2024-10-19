@@ -3,8 +3,8 @@ package com.personal.springlessons.component.kafka;
 import com.personal.springlessons.component.mapper.IItemsMapper;
 import com.personal.springlessons.exception.DuplicatedBarcodeException;
 import com.personal.springlessons.model.csv.DiscardedItemCsv;
-import com.personal.springlessons.model.dto.KafkaMessageItemDTO;
-import com.personal.springlessons.model.entity.ItemsEntity;
+import com.personal.springlessons.model.dto.response.KafkaMessageItemDTO;
+import com.personal.springlessons.model.entity.items.ItemsEntity;
 import com.personal.springlessons.model.lov.ItemStatus;
 import com.personal.springlessons.repository.IItemsRepository;
 import com.personal.springlessons.repository.IOrderItemsRepository;
@@ -21,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class ItemsListener {
+public class ItemsKafkaListener {
 
     private final ApplicationEventPublisher applicationEventPublisher;
     private final IItemsRepository itemRepository;
@@ -40,7 +40,7 @@ public class ItemsListener {
             event.setBarcode(item.getBarcode());
             event.setIdItem(item.getId().toString());
             event.setIdOrderItems(message.getIdOrderItems());
-            event.setIdOrderItemsOriginal(item.getItemsStatusEntity().getId().toString());
+            event.setIdOrderItemsOriginal(item.getOrderItemsEntity().getId().toString());
             event.setName(message.getName());
             event.setPrice(message.getPrice());
             this.applicationEventPublisher.publishEvent(event);

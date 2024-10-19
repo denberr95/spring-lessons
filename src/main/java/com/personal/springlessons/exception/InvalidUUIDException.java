@@ -3,7 +3,7 @@ package com.personal.springlessons.exception;
 import lombok.Getter;
 
 @Getter
-public class InvalidUUIDException extends SpringLessonsApplicationException {
+public class InvalidUUIDException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
     private final String id;

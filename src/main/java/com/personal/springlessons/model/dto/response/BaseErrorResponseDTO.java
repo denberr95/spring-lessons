@@ -1,4 +1,4 @@
-package com.personal.springlessons.model.dto;
+package com.personal.springlessons.model.dto.response;
 
 import java.time.OffsetDateTime;
 import com.personal.springlessons.model.lov.DomainCategory;

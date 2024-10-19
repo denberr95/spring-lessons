@@ -1,7 +1,7 @@
 package com.personal.springlessons.repository;
 
 import java.util.UUID;
-import com.personal.springlessons.model.entity.OrderItemsEntity;
+import com.personal.springlessons.model.entity.orderitems.OrderItemsEntity;
 import com.personal.springlessons.model.lov.ItemStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

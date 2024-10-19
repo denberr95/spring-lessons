@@ -9,7 +9,7 @@ datasources:
   isDefault: false
   access: proxy
   secureJsonData:
-    password: 'grafanapassword'
+    password: ''
   jsonData:
     database: spring
     sslmode: 'disable'

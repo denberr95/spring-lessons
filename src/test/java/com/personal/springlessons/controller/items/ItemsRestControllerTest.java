@@ -1,4 +1,4 @@
-package com.personal.springlessons.controller;
+package com.personal.springlessons.controller.items;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import com.personal.springlessons.model.dto.ItemDTO;
-import com.personal.springlessons.model.entity.ItemsEntity;
-import com.personal.springlessons.model.entity.OrderItemsEntity;
+import com.personal.springlessons.model.entity.items.ItemsEntity;
+import com.personal.springlessons.model.entity.orderitems.OrderItemsEntity;
 import com.personal.springlessons.model.lov.ItemStatus;
 import com.personal.springlessons.repository.IItemsRepository;
 import com.personal.springlessons.repository.IOrderItemsRepository;
@@ -140,7 +140,7 @@ class ItemsRestControllerTest {
             itemsEntity.setName(name);
             itemsEntity.setBarcode(barcode);
             itemsEntity.setPrice(price);
-            itemsEntity.setItemsStatusEntity(orderItemsEntity);
+            itemsEntity.setOrderItemsEntity(orderItemsEntity);
             this.itemsRepository.saveAndFlush(itemsEntity);
 
         }
@@ -153,8 +153,8 @@ class ItemsRestControllerTest {
     @AfterEach
     void tearDown() {
         this.cleanupData();
-        this.cleanupItems();
         this.cleanupOrders();
+        this.cleanupItems();
     }
 
     @Test
@@ -242,7 +242,7 @@ class ItemsRestControllerTest {
 
     @Test
     void givenPartialEmptyCollection_whenGetAll_thenNoContent() {
-        this.cleanupItems();
+        this.cleanupOrders();
         String url = this.buildUrl("/items");
         HttpEntity<HttpHeaders> httpEntity =
                 new HttpEntity<>(this.retrieveHttpHeaders(this.validToken));

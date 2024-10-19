@@ -1,4 +1,4 @@
-package com.personal.springlessons.controller;
+package com.personal.springlessons.controller.books;
 
 import java.util.List;
 import com.personal.springlessons.model.dto.BookDTO;
@@ -17,10 +17,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import io.micrometer.tracing.annotation.NewSpan;
 import io.micrometer.tracing.annotation.SpanTag;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@Tag(name = "Books")
 @Validated
 @RestController
 @RequiredArgsConstructor

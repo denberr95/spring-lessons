@@ -1,7 +1,7 @@
 package com.personal.springlessons.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import com.personal.springlessons.model.entity.OrderItemsEntity;
+import com.personal.springlessons.model.entity.orderitems.OrderItemsEntity;
 import com.personal.springlessons.model.lov.ItemStatus;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

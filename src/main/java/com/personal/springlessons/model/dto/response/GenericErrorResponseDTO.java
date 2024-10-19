@@ -1,4 +1,4 @@
-package com.personal.springlessons.model.dto;
+package com.personal.springlessons.model.dto.response;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -9,13 +9,14 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = false)
-public class UnauthorizedResponseDTO extends BaseErrorResponseDTO {
+public class GenericErrorResponseDTO extends BaseErrorResponseDTO {
     
     private Details additionalData;
 
     @Data
     @NoArgsConstructor
     public class Details {
-        private String resource;
+        private String exceptionName;
+        private String exceptionMessage;
     }
 }

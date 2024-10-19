@@ -1,4 +1,4 @@
-package com.personal.springlessons.controller;
+package com.personal.springlessons.controller.books;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -9,9 +9,9 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import com.personal.springlessons.model.dto.BookDTO;
-import com.personal.springlessons.model.dto.BookNotFoundResponseDTO;
-import com.personal.springlessons.model.dto.DuplicatedBookResponseDTO;
-import com.personal.springlessons.model.dto.InvalidUUIDResponseDTO;
+import com.personal.springlessons.model.dto.response.BookNotFoundResponseDTO;
+import com.personal.springlessons.model.dto.response.DuplicatedBookResponseDTO;
+import com.personal.springlessons.model.dto.response.InvalidUUIDResponseDTO;
 import com.personal.springlessons.model.lov.DomainCategory;
 import com.personal.springlessons.service.BooksService;
 import org.junit.jupiter.api.AfterEach;

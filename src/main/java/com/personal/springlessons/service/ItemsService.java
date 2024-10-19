@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Optional;
 import com.personal.springlessons.component.mapper.IItemsMapper;
 import com.personal.springlessons.model.dto.ItemDTO;
-import com.personal.springlessons.model.dto.KafkaMessageItemDTO;
-import com.personal.springlessons.model.entity.ItemsEntity;
-import com.personal.springlessons.model.entity.OrderItemsEntity;
+import com.personal.springlessons.model.dto.response.KafkaMessageItemDTO;
+import com.personal.springlessons.model.entity.items.ItemsEntity;
+import com.personal.springlessons.model.entity.orderitems.OrderItemsEntity;
 import com.personal.springlessons.model.lov.ItemStatus;
 import com.personal.springlessons.repository.IItemsRepository;
 import com.personal.springlessons.repository.IOrderItemsRepository;
@@ -75,7 +75,7 @@ public class ItemsService {
 
         ordersData.forEach(i -> {
             currentSpan.tag(Constants.SPAN_KEY_ID_ORDER_ITEMS, i.getId().toString());
-            Optional<List<ItemsEntity>> itemsData = this.itemsRepository.findByItemsStatusEntity(i);
+            Optional<List<ItemsEntity>> itemsData = this.itemsRepository.findByorderItemsEntity(i);
             if (!itemsData.get().isEmpty()) {
                 data.addAll(itemsData.get());
                 currentSpan.tag(Constants.SPAN_KEY_COLLECTED_ITEMS, itemsData.get().size())

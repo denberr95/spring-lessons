@@ -1,4 +1,4 @@
-package com.personal.springlessons.model.entity;
+package com.personal.springlessons.model.entity.items;
 
 import jakarta.persistence.PostLoad;
 import jakarta.persistence.PostPersist;
@@ -14,36 +14,36 @@ public class ItemsEntityListener {
 
     @PostLoad
     private void postLoad(ItemsEntity entity) {
-        log.trace("postLoad item entity: '{}'", entity);
+        log.trace("postLoad: '{}' entity: '{}'", entity.getClass().getName(), entity);
     }
 
     @PreUpdate
     private void preUpdate(ItemsEntity entity) {
-        log.trace("preUpdate item entity: '{}'", entity);
+        log.trace("preUpdate: '{}' entity: '{}'", entity.getClass().getName(), entity);
     }
 
     @PostUpdate
     private void postUpdate(ItemsEntity entity) {
-        log.trace("postUpdate item entity: '{}'", entity);
+        log.trace("postUpdate: '{}' entity: '{}'", entity.getClass().getName(), entity);
     }
 
     @PrePersist
     private void prePersist(ItemsEntity entity) {
-        log.trace("prePersist item entity: '{}'", entity);
+        log.trace("prePersist: '{}' entity: '{}'", entity.getClass().getName(), entity);
     }
 
     @PostPersist
     private void postPersist(ItemsEntity entity) {
-        log.trace("postPersist item entity: '{}'", entity);
+        log.trace("postPersist: '{}' entity: '{}'", entity.getClass().getName(), entity);
     }
 
     @PreRemove
     private void preRemove(ItemsEntity entity) {
-        log.trace("preRemove item entity: '{}'", entity);
+        log.trace("preRemove: '{}' entity: '{}'", entity.getClass().getName(), entity);
     }
 
     @PostRemove
     private void postRemove(ItemsEntity entity) {
-        log.trace("postRemove item entity: '{}'", entity);
+        log.trace("postRemove: '{}' entity: '{}'", entity.getClass().getName(), entity);
     }
 }

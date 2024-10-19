@@ -1,4 +1,4 @@
-package com.personal.springlessons.model.entity;
+package com.personal.springlessons.model.entity.orderitems;
 
 import jakarta.persistence.PostLoad;
 import jakarta.persistence.PostPersist;

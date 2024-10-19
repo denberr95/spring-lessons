@@ -1,13 +1,13 @@
 services:
 
   springdb:
-    image: postgres:16
+    image: postgres:latest
     restart: "no"
-    container_name: spring-db
     environment:
     - POSTGRES_USER=admin
-    - POSTGRES_PASSWORD=adminpwd
+    - POSTGRES_PASSWORD=
     - POSTGRES_DB=spring
+    - POSTGRES_HOST_AUTH_METHOD=trust
     - TZ=Europe/Rome
     ports:
     - "5432:5432" # serve database
@@ -17,7 +17,6 @@ services:
   jaeger:
     image: jaegertracing/all-in-one:latest
     restart: "no"
-    container_name: jaeger
     environment:
     - COLLECTOR_OTLP_ENABLED=true
     - TZ=Europe/Rome
@@ -37,7 +36,6 @@ services:
   loki:
     image: grafana/loki:main
     restart: "no"
-    container_name: loki
     environment:
     - TZ=Europe/Rome
     command: 
@@ -53,7 +51,6 @@ services:
   prometheus:
     image: prom/prometheus:main
     restart: "no"
-    container_name: prometheus
     environment:
     - TZ=Europe/Rome
     command:
@@ -70,7 +67,6 @@ services:
   grafana:
     image: grafana/grafana:main
     restart: "no"
-    container_name: grafana
     environment:
     - TZ=Europe/Rome
     volumes:
@@ -83,11 +79,11 @@ services:
     depends_on:
     - prometheus
     - loki
+    - jaeger
 
   otelcol:
     image: otel/opentelemetry-collector-contrib:latest
     restart: "no"
-    container_name: otel-col
     environment:
     - TZ=Europe/Rome
     command:
@@ -108,9 +104,8 @@ services:
     - spring-lessons-dev
 
   zookeeper:
-    image: bitnami/zookeeper:3.7
+    image: bitnami/zookeeper:latest
     restart: "no"
-    container_name: zookeeper
     environment:
     - TZ=Europe/Rome
     - ALLOW_ANONYMOUS_LOGIN=yes
@@ -120,9 +115,8 @@ services:
     - spring-lessons-dev
 
   kafka:
-    image: bitnami/kafka:3.7
+    image: bitnami/kafka:latest
     restart: "no"
-    container_name: kafka
     environment:
     - TZ=Europe/Rome
     - KAFKA_CFG_NODE_ID=0
@@ -140,7 +134,6 @@ services:
   keycloak:
     image: quay.io/keycloak/keycloak:latest
     restart: "no"
-    container_name: keycloak
     environment:
     - TZ=Europe/Rome
     - KEYCLOAK_ADMIN=admin
@@ -151,6 +144,18 @@ services:
     - ./keycloak:/opt/keycloak/data
     ports:
     - "8080:8080" # serve web server
+    networks:
+    - spring-lessons-dev
+
+  wiremock:
+    image: wiremock/wiremock:latest
+    entrypoint: ["/docker-entrypoint.sh", "--global-response-templating", "--disable-gzip", "--verbose"]
+    volumes:
+    - ./wiremock/extensions:/var/wiremock/extensions
+    - ./wiremock/__files:/home/wiremock/__files
+    - ./wiremock/mappings:/home/wiremock/mappings
+    ports:
+    - "9999:8080" # serve web server
     networks:
     - spring-lessons-dev
 

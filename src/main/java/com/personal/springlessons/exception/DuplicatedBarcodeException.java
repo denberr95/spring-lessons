@@ -3,7 +3,7 @@ package com.personal.springlessons.exception;
 import lombok.Getter;
 
 @Getter
-public class DuplicatedBarcodeException extends SpringLessonsApplicationException {
+public class DuplicatedBarcodeException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
     private final String barcode;

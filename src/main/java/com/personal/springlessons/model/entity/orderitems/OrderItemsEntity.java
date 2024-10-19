@@ -1,7 +1,9 @@
-package com.personal.springlessons.model.entity;
+package com.personal.springlessons.model.entity.orderitems;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.UUID;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -10,7 +12,9 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import com.personal.springlessons.model.entity.items.ItemsEntity;
 import com.personal.springlessons.model.lov.ItemStatus;
 import com.personal.springlessons.util.Constants;
 import org.hibernate.annotations.CreationTimestamp;
@@ -46,5 +50,7 @@ public class OrderItemsEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private ItemStatus status;
-    
+
+    @OneToMany(mappedBy = "orderItemsEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ItemsEntity> items;
 }
