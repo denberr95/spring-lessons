@@ -26,6 +26,7 @@
 | OpenTelemetry | Observability framework and toolkit | <https://opentelemetry.io/> |
 | Prometheus | Metrics | <https://prometheus.io/> |
 | Grafana | Central Monitoring Dashboard | <https://grafana.com/> |
+| Wiremock | Tool for API mock | <https://wiremock.org/> |
 
 ## Environment
 
@@ -43,6 +44,7 @@
 | Spring Lessons | Spring Application Web Server | <http://localhost:10000> |
 | Spring Lessons | Spring Application Actuator | <http://localhost:10001> |
 | Swagger UI | Open API Documentation | <http://localhost:10000/spring-app/swagger-ui/index.html> |
+| Wiremock | Admin API | <http://localhost:9999/__admin/> |
 
 ## VSCode Configuration files
 
