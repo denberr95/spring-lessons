@@ -1,12 +1,13 @@
 package com.personal.springlessons.component.event;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.awaitility.Awaitility.await;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import com.personal.springlessons.config.AppPropertiesConfig;
 import com.personal.springlessons.model.csv.DiscardedItemCsv;
@@ -49,14 +50,12 @@ class DuplicatedBarcodeEventTest {
     }
 
     @Test
-    void givenEvent_whenDuplicatedBarcodeEvent_thenCreateFile() throws IOException {
+    void givenEvent_whenDuplicatedBarcodeEvent_thenCreateFile() {
         this.eventPublisher.publishEvent(this.data);
         String baseName = this.data.getIdOrderItems() + "_" + this.data.getBarcode() + "_";
         Path path = Paths.get(this.appPropertiesConfig.getCsvDir());
-        Files.list(path).forEach(i -> {
-            String actual = i.getFileName().toString();
-            assertTrue(actual.startsWith(baseName));
-            assertTrue(actual.endsWith(".csv"));
-        });
+        await().atMost(10, TimeUnit.SECONDS).until(
+                () -> Files.list(path).anyMatch(p -> p.getFileName().toString().startsWith(baseName)
+                        && p.getFileName().toString().endsWith(".csv")));
     }
 }
