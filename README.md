@@ -11,40 +11,40 @@
 
 ## Software
 
-| **Name** | **Description** | **Link** |
-| :-: | :-: | :-: |
-| Visual Studio Code | IDE | <https://code.visualstudio.com> |
-| Java 17 | Program Language | <https://adoptium.net/en-GB/temurin/releases/> |
-| Git | Source Control Manager | <https://git-scm.com> |
-| Maven | Java Development Tool | <https://maven.apache.org> |
-| Podman | Container Runtime | <https://podman.io> |
-| Podman Compose | Container Runtime Tool | <https://github.com/containers/podman-compose> |
-| Postman | API Testing Tool | <https://www.postman.com> |
-| Flyway | Database Development Tool | <https://flywaydb.org/> |
-| Apache Kafka | Message Broker | <https://kafka.apache.org/> |
-| Keycloak | Identity and Access Management | <https://www.keycloak.org/> |
-| OpenTelemetry | Observability framework and toolkit | <https://opentelemetry.io/> |
-| Prometheus | Metrics | <https://prometheus.io/> |
-| Grafana | Central Monitoring Dashboard | <https://grafana.com/> |
-| Wiremock | Tool for API mock | <https://wiremock.org/> |
+| **Name** | **Link** |
+| :-: | :-: |
+| Visual Studio Code | <https://code.visualstudio.com> |
+| Java 17 | <https://adoptium.net/en-GB/temurin/releases/> |
+| Git  | <https://git-scm.com> |
+| Maven | <https://maven.apache.org> |
+| Podman | <https://podman.io> |
+| Podman Compose | <https://github.com/containers/podman-compose> |
+| Postman | <https://www.postman.com> |
+| Flyway | <https://flywaydb.org/> |
+| Apache Kafka| <https://kafka.apache.org/> |
+| Keycloak  | <https://www.keycloak.org/> |
+| OpenTelemetry | <https://opentelemetry.io/> |
+| Prometheus | <https://prometheus.io/> |
+| Grafana | <https://grafana.com/> |
+| Wiremock | <https://wiremock.org/> |
 
 ## Environment
 
-| **Name** | **Description** | **Link** |
-| :-: | :-: | :-: |
-| Environment Compose | Compose file to generate environment | [compose.yaml](./container/compose.yaml) |
-| Application Containerfile | Containerfile to build Spring Application in jvm version | [Containerfile.jvm](Containerfile.jvm) |
-| Postman Collection | Collection for testing API | [postman.json](./collections/postman.json) |
-| Jaeger UI | Trace & Spans Monitoring | <http://localhost:16686/search> |
-| Prometheus | System & Application Metrics | <http://localhost:9090> |
-| Grafana | Dashboard & Alert Monitoring | <http://localhost:3000/grafana> |
-| Database Spring | PostgreSQL Database Spring Application | jdbc:postgresql://localhost:5432/spring |
-| Kafka Broker | Kafka Bootstrap Server | localhost:9092 |
-| Keycloak | Keycloak Administration Console | <http://localhost:8080> |
-| Spring Lessons | Spring Application Web Server | <http://localhost:10000> |
-| Spring Lessons | Spring Application Actuator | <http://localhost:10001> |
-| Swagger UI | Open API Documentation | <http://localhost:10000/spring-app/swagger-ui/index.html> |
-| Wiremock | Admin API | <http://localhost:9999/__admin/> |
+| **Name** | **Link** |
+| :-: | :-: |
+| Environment Compose | [compose.yaml](./collections/compose.yaml) |
+| Application Containerfile | [Containerfile.jvm](Containerfile.jvm) |
+| Postman Collection | [postman.json](./collections/postman.json) |
+| Jaeger UI | <http://localhost:16686/search> |
+| Prometheus | <http://localhost:9090> |
+| Grafana | <http://localhost:3000/grafana> |
+| Database Spring | jdbc:postgresql://localhost:5432/spring |
+| Kafka Broker | localhost:9092 |
+| Keycloak | <http://localhost:8080> |
+| Spring Lessons | <http://localhost:10000> |
+| Spring Lessons | <http://localhost:10001> |
+| Swagger UI | <http://localhost:10000/spring-app/swagger-ui/index.html> |
+| Wiremock | <http://localhost:9999/__admin/> |
 
 ## VSCode Configuration files
 
