@@ -149,6 +149,9 @@ services:
 
   wiremock:
     image: wiremock/wiremock:latest
+    restart: "no"
+    environment:
+    - TZ=Europe/Rome
     entrypoint: ["/docker-entrypoint.sh", "--global-response-templating", "--disable-gzip", "--verbose"]
     volumes:
     - ./wiremock/extensions:/var/wiremock/extensions
