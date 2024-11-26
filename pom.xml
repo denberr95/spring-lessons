@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.5</version>
+        <version>3.4.0</version>
         <relativePath />
     </parent>
     <groupId>com.personal</groupId>
@@ -14,12 +14,12 @@
     <name>spring-lessons</name>
     <properties>
         <java.version>17</java.version>
-        <org.mapstruct.version>1.6.2</org.mapstruct.version>
+        <org.mapstruct.version>1.6.3</org.mapstruct.version>
         <logback.contrib.version>0.1.5</logback.contrib.version>
-        <opentelemetry.appender.version>1.33.4-alpha</opentelemetry.appender.version>
+        <opentelemetry.appender.version>1.33.6-alpha</opentelemetry.appender.version>
         <jacoco.version>0.8.12</jacoco.version>
         <opencsv.version>5.9</opencsv.version>
-        <org.springdoc.version>2.6.0</org.springdoc.version>
+        <org.springdoc.version>2.7.0</org.springdoc.version>
     </properties>
     <dependencies>
         <dependency>
