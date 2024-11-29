@@ -10,13 +10,13 @@ import org.springframework.security.config.annotation.web.configurers.CsrfConfig
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
-import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.DefaultSecurityFilterChain;
 
 @Configuration(proxyBeanMethods = false)
 public class SecurityConfig {
 
     @Bean
-    SecurityFilterChain configure(HttpSecurity http,
+    DefaultSecurityFilterChain configure(HttpSecurity http,
             CustomAccessDeniedHandler customAccessDeniedHandler,
             CustomAuthenticationEntryPoint customAuthenticationEntryPoint) throws Exception {
         http.exceptionHandling(exceptionHandling -> exceptionHandling

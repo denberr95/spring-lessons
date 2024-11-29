@@ -14,12 +14,12 @@ import io.micrometer.tracing.annotation.SpanAspect;
 public class AspectSpanConfig {
 
     @Bean
-    NewSpanParser newSpanParser() {
+    DefaultNewSpanParser newSpanParser() {
         return new DefaultNewSpanParser();
     }
 
     @Bean
-    MethodInvocationProcessor methodInvocationProcessor(final NewSpanParser newSpanParser,
+    ImperativeMethodInvocationProcessor methodInvocationProcessor(final NewSpanParser newSpanParser,
             final Tracer tracer, final BeanFactory beanFactory) {
         return new ImperativeMethodInvocationProcessor(newSpanParser, tracer, beanFactory::getBean,
                 beanFactory::getBean);
