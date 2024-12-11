@@ -4,7 +4,7 @@ COPY bin/app.jar app.jar
 COPY java-entrypoint.sh /usr/local/bin/java-entrypoint.sh
 RUN groupadd --gid 1000 appgroup \
     && useradd --uid 1000 --gid 1000 --create-home appuser
-RUN chmod +x /usr/local/bin/java-entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
 RUN chown appuser:appgroup --recursive /spring-app
 USER appuser
-ENTRYPOINT ["java-entrypoint.sh"]
+ENTRYPOINT ["entrypoint.sh"]
