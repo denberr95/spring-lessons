@@ -36,6 +36,7 @@ public class HttpServerLoggingFilter extends OncePerRequestFilter {
 
     private void logRequest(ContentCachingRequestWrapper request) throws IOException {
         log.info("Http Server Request URI: '{}'", request.getRequestURI());
+        log.info("Http Server Request Method: '{}'", request.getMethod());
         log.info("Http Server Request Headers: {}", this.getHeadersAsString(
                 Collections.list(request.getHeaderNames()), request::getHeader));
         if (this.isMultipart(request.getContentType())) {

@@ -12,6 +12,7 @@ import com.personal.springlessons.model.lov.ItemStatus;
 import com.personal.springlessons.repository.IItemsRepository;
 import com.personal.springlessons.repository.IOrderItemsRepository;
 import com.personal.springlessons.util.Constants;
+import com.personal.springlessons.util.Methods;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import io.micrometer.tracing.Span;
@@ -89,7 +90,7 @@ public class ItemsService {
     private void notifyKafkaItems(KafkaMessageItemDTO message, String topic) {
         Span span = this.tracer.nextSpan().name("notifyKafkaItems");
         try (Tracer.SpanInScope ws = this.tracer.withSpan(span.start())) {
-            this.kafkaTemplate.send(topic, message);
+            this.kafkaTemplate.send(Methods.createKafkaMessage(message, topic));
             span.tag(Constants.SPAN_KEY_OPERATION_TYPE, message.getItemStatus().name());
             span.tag(Constants.SPAN_KEY_ID_ORDER_ITEMS, message.getIdOrderItems());
             span.tag(Constants.SPAN_KEY_BARCODE, message.getBarcode());

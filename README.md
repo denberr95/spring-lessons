@@ -14,7 +14,7 @@
 | **Name** | **Link** |
 | :-: | :-: |
 | Visual Studio Code | <https://code.visualstudio.com> |
-| Java 17 | <https://adoptium.net/en-GB/temurin/releases/> |
+| Java 21 | <https://adoptium.net/en-GB/temurin/releases/> |
 | Git  | <https://git-scm.com> |
 | Maven | <https://maven.apache.org> |
 | Podman | <https://podman.io> |
@@ -41,8 +41,8 @@
 | Database Spring | jdbc:postgresql://localhost:5432/spring |
 | Kafka Broker | localhost:9092 |
 | Keycloak | <http://localhost:8080> |
-| Spring Lessons | <http://localhost:10000> |
-| Spring Lessons | <http://localhost:10001> |
+| Spring Lessons APIs | <http://localhost:10000> |
+| Spring Lessons Actuator | <http://localhost:10001> |
 | Swagger UI | <http://localhost:10000/spring-app/swagger-ui/index.html> |
 | Wiremock | <http://localhost:9999/__admin/> |
 

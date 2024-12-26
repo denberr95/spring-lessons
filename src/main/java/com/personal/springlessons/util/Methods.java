@@ -5,6 +5,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 import com.personal.springlessons.exception.InvalidUUIDException;
 import com.personal.springlessons.model.lov.DomainCategory;
+import org.springframework.kafka.support.KafkaHeaders;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.support.MessageBuilder;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -45,6 +48,14 @@ public final class Methods {
             }
         }
         log.debug("Domain Category retrieved: '{}'", result);
+        return result;
+    }
+
+    public static Message<Object> createKafkaMessage(Object payload, String topic) {
+        Message<Object> result = null;
+        log.debug("Generate kafka message: '{}' to send at topic: '{}'", payload, topic);
+        result = MessageBuilder.withPayload(payload).setHeader(KafkaHeaders.TOPIC, topic).build();
+        log.debug("Kafka Message generated: '{}'", result.toString());
         return result;
     }
 }

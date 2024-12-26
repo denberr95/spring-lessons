@@ -14,6 +14,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.annotation.RetryableTopic;
 import org.springframework.kafka.retrytopic.DltStrategy;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,8 +32,9 @@ public class ItemsKafkaListener {
     @RetryableTopic(attempts = Constants.S_VAL_1, dltStrategy = DltStrategy.NO_DLT)
     @KafkaListener(groupId = "upload-items.group", topics = Constants.TOPIC_ITEMS,
             filter = "uploadItemsRecordFilter", concurrency = Constants.S_VAL_3)
-    public void upload(KafkaMessageItemDTO message) {
+    public void upload(@Payload KafkaMessageItemDTO message) {
         log.info("Received item to upload: '{}'", message.toString());
+
         this.itemRepository.findByBarcode(message.getBarcode()).ifPresent(item -> {
             log.warn("Barcode: '{}' already exists", item.getBarcode());
 
@@ -44,7 +46,7 @@ public class ItemsKafkaListener {
             event.setName(message.getName());
             event.setPrice(message.getPrice());
             this.applicationEventPublisher.publishEvent(event);
-            
+
             this.orderItemsRepository.updateStatusById(ItemStatus.DISCARDED,
                     Methods.idValidation(message.getIdOrderItems()));
             throw new DuplicatedBarcodeException(message.getBarcode(), item.getId().toString());
