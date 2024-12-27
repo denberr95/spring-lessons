@@ -2,8 +2,10 @@ package com.personal.springlessons.controller.items;
 
 import java.util.List;
 import com.personal.springlessons.model.dto.ItemDTO;
+import com.personal.springlessons.model.dto.response.GenericErrorResponseDTO;
 import com.personal.springlessons.service.ItemsService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -14,6 +16,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import io.micrometer.tracing.annotation.NewSpan;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +38,12 @@ public class ItemsRestController {
     @NewSpan
     @PostMapping
     @PreAuthorize(value = "hasAuthority('SCOPE_items:upload')")
+    @Operation(summary = "Upload items", operationId = "uploadItems")
+    @ApiResponse(responseCode = "204", description = "No Content",
+            content = {@Content(schema = @Schema(implementation = Void.class))})
+    @ApiResponse(responseCode = "500", description = "Internal Server Error",
+            content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                    schema = @Schema(implementation = GenericErrorResponseDTO.class))})
     public ResponseEntity<Void> upload(@RequestBody List<ItemDTO> items) {
         log.info("Called API to upload items");
         this.itemService.upload(items);
@@ -41,6 +54,12 @@ public class ItemsRestController {
     @NewSpan
     @DeleteMapping
     @PreAuthorize(value = "hasAuthority('SCOPE_items:delete')")
+    @Operation(summary = "Delete items", operationId = "deleteItems")
+    @ApiResponse(responseCode = "204", description = "No Content",
+            content = {@Content(schema = @Schema(implementation = Void.class))})
+    @ApiResponse(responseCode = "500", description = "Internal Server Error",
+            content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                    schema = @Schema(implementation = GenericErrorResponseDTO.class))})
     public ResponseEntity<Void> delete(@RequestBody List<ItemDTO> items) {
         log.info("Called API to delete items");
         this.itemService.delete(items);
@@ -51,6 +70,15 @@ public class ItemsRestController {
     @NewSpan
     @GetMapping
     @PreAuthorize(value = "hasAuthority('SCOPE_items:get')")
+    @Operation(summary = "Get all items", operationId = "getAllItems")
+    @ApiResponse(responseCode = "200", description = "OK",
+            content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                    array = @ArraySchema(schema = @Schema(implementation = ItemDTO.class)))})
+    @ApiResponse(responseCode = "204", description = "No Content",
+            content = {@Content(schema = @Schema(implementation = Void.class))})
+    @ApiResponse(responseCode = "500", description = "Internal Server Error",
+            content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                    schema = @Schema(implementation = GenericErrorResponseDTO.class))})
     public ResponseEntity<List<ItemDTO>> getAll() {
         log.info("Called API to retrieve all items");
         List<ItemDTO> result = this.itemService.getAll();

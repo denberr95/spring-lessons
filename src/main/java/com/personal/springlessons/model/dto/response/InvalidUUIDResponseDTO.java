@@ -1,5 +1,6 @@
 package com.personal.springlessons.model.dto.response;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,7 @@ public class InvalidUUIDResponseDTO extends BaseErrorResponseDTO {
 
     @Data
     @NoArgsConstructor
+    @Schema(name = "InvalidUUIAdditionalDetailsDTO")
     public class Details {
         private String invalidId;
     }

@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 import com.personal.springlessons.exception.InvalidUUIDException;
 import com.personal.springlessons.model.lov.DomainCategory;
+import org.springframework.boot.info.GitProperties;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
@@ -57,5 +58,9 @@ public final class Methods {
         result = MessageBuilder.withPayload(payload).setHeader(KafkaHeaders.TOPIC, topic).build();
         log.debug("Kafka Message generated: '{}'", result.toString());
         return result;
+    }
+
+    public static String getApplicationVersion(GitProperties gitProperties) {
+        return "v%s".formatted(gitProperties.get("build.version"));
     }
 }

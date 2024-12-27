@@ -4,11 +4,13 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 
+@Schema(enumAsRef = true)
 @AllArgsConstructor
 public enum DomainCategory {
-    BOOKS("Books"), ITEMS("Items"), ND("Not Defined"), AUTHORIZATION("Authorization");
+    BOOKS("Books"), ITEMS("Items"), ND("Not Defined");
 
     private final String value;
 
