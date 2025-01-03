@@ -1,11 +1,13 @@
 package com.personal.springlessons.controller.books;
 
 import java.util.List;
+import jakarta.validation.Valid;
 import com.personal.springlessons.model.dto.BookDTO;
 import com.personal.springlessons.model.dto.response.BookNotFoundResponseDTO;
 import com.personal.springlessons.model.dto.response.DuplicatedBookResponseDTO;
 import com.personal.springlessons.model.dto.response.GenericErrorResponseDTO;
 import com.personal.springlessons.model.dto.response.InvalidUUIDResponseDTO;
+import com.personal.springlessons.model.dto.response.ValidationRequestErrorResponseDTO;
 import com.personal.springlessons.service.BooksService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -42,17 +44,16 @@ public class BooksRestController {
     private final BooksService bookService;
 
     @NewSpan
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(value = "hasAuthority('SCOPE_books:get')")
     @Operation(summary = "Get all books", operationId = "getAllBooks")
     @ApiResponse(responseCode = "200", description = "OK",
-            content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+            content = {@Content(
                     array = @ArraySchema(schema = @Schema(implementation = BookDTO.class)))})
     @ApiResponse(responseCode = "204", description = "No Content",
             content = {@Content(schema = @Schema(implementation = Void.class))})
     @ApiResponse(responseCode = "500", description = "Internal Server Error",
-            content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                    schema = @Schema(implementation = GenericErrorResponseDTO.class))})
+            content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
     public ResponseEntity<List<BookDTO>> getAll() {
         log.info("Called API to retrieve all books");
         List<BookDTO> result = this.bookService.getAll();
@@ -68,21 +69,17 @@ public class BooksRestController {
     }
 
     @NewSpan
-    @GetMapping(path = "{id}")
+    @GetMapping(path = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(value = "hasAuthority('SCOPE_books:get')")
     @Operation(summary = "Get a book by id", operationId = "getBookById")
     @ApiResponse(responseCode = "200", description = "OK",
-            content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                    schema = @Schema(implementation = BookDTO.class))})
+            content = {@Content(schema = @Schema(implementation = BookDTO.class))})
     @ApiResponse(responseCode = "400", description = "Invalid UUID",
-            content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                    schema = @Schema(implementation = InvalidUUIDResponseDTO.class))})
+            content = {@Content(schema = @Schema(implementation = InvalidUUIDResponseDTO.class))})
     @ApiResponse(responseCode = "404", description = "Book not found",
-            content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                    schema = @Schema(implementation = BookNotFoundResponseDTO.class))})
+            content = {@Content(schema = @Schema(implementation = BookNotFoundResponseDTO.class))})
     @ApiResponse(responseCode = "500", description = "Internal Server Error",
-            content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                    schema = @Schema(implementation = GenericErrorResponseDTO.class))})
+            content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
     public ResponseEntity<BookDTO> getById(@SpanTag @PathVariable final String id) {
         log.info("Called API to retrieve book: '{}'", id);
         BookDTO result = this.bookService.getById(id);
@@ -91,22 +88,20 @@ public class BooksRestController {
     }
 
     @NewSpan
-    @PostMapping
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(value = "hasAuthority('SCOPE_books:save')")
     @Operation(summary = "Create a new book", operationId = "createBook")
     @ApiResponse(responseCode = "201", description = "Created",
-            content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                    schema = @Schema(implementation = BookDTO.class))})
-    @ApiResponse(responseCode = "400", description = "Invalid UUID",
-            content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                    schema = @Schema(implementation = InvalidUUIDResponseDTO.class))})
+            content = {@Content(schema = @Schema(implementation = BookDTO.class))})
+    @ApiResponse(responseCode = "400", description = "Bad Request",
+            content = {@Content(schema = @Schema(oneOf = {InvalidUUIDResponseDTO.class,
+                    ValidationRequestErrorResponseDTO.class}))})
     @ApiResponse(responseCode = "409", description = "Book already exists",
-            content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                    schema = @Schema(implementation = DuplicatedBookResponseDTO.class))})
+            content = {
+                    @Content(schema = @Schema(implementation = DuplicatedBookResponseDTO.class))})
     @ApiResponse(responseCode = "500", description = "Internal Server Error",
-            content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                    schema = @Schema(implementation = GenericErrorResponseDTO.class))})
-    public ResponseEntity<BookDTO> save(@RequestBody final BookDTO bookDTO) {
+            content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
+    public ResponseEntity<BookDTO> save(@Valid @RequestBody final BookDTO bookDTO) {
         log.info("Called API to create new book");
         BookDTO result = this.bookService.save(bookDTO);
         log.info("Book '{}' saved !", result.getId());
@@ -114,20 +109,17 @@ public class BooksRestController {
     }
 
     @NewSpan
-    @DeleteMapping(path = "{id}")
+    @DeleteMapping(path = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(value = "hasAuthority('SCOPE_books:delete')")
     @Operation(summary = "Delete a book", operationId = "deleteBook")
     @ApiResponse(responseCode = "204", description = "No Content",
             content = {@Content(schema = @Schema(implementation = Void.class))})
     @ApiResponse(responseCode = "400", description = "Invalid UUID",
-            content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                    schema = @Schema(implementation = InvalidUUIDResponseDTO.class))})
+            content = {@Content(schema = @Schema(implementation = InvalidUUIDResponseDTO.class))})
     @ApiResponse(responseCode = "404", description = "Book not found",
-            content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                    schema = @Schema(implementation = BookNotFoundResponseDTO.class))})
+            content = {@Content(schema = @Schema(implementation = BookNotFoundResponseDTO.class))})
     @ApiResponse(responseCode = "500", description = "Internal Server Error",
-            content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                    schema = @Schema(implementation = GenericErrorResponseDTO.class))})
+            content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
     public ResponseEntity<Void> delete(@SpanTag @PathVariable final String id) {
         log.info("Called API to delete book: '{}'", id);
         this.bookService.delete(id);
@@ -136,26 +128,23 @@ public class BooksRestController {
     }
 
     @NewSpan
-    @PutMapping(path = "{id}")
+    @PutMapping(path = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(value = "hasAuthority('SCOPE_books:update')")
     @Operation(summary = "Delete a book", operationId = "updateBook")
     @ApiResponse(responseCode = "200", description = "OK",
-            content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                    schema = @Schema(implementation = BookDTO.class))})
-    @ApiResponse(responseCode = "400", description = "Invalid UUID",
-            content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                    schema = @Schema(implementation = InvalidUUIDResponseDTO.class))})
+            content = {@Content(schema = @Schema(implementation = BookDTO.class))})
+    @ApiResponse(responseCode = "400", description = "Bad Request",
+            content = {@Content(schema = @Schema(oneOf = {InvalidUUIDResponseDTO.class,
+                    ValidationRequestErrorResponseDTO.class}))})
     @ApiResponse(responseCode = "404", description = "Book not found",
-            content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                    schema = @Schema(implementation = BookNotFoundResponseDTO.class))})
+            content = {@Content(schema = @Schema(implementation = BookNotFoundResponseDTO.class))})
     @ApiResponse(responseCode = "409", description = "Book already exists",
-            content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                    schema = @Schema(implementation = DuplicatedBookResponseDTO.class))})
+            content = {
+                    @Content(schema = @Schema(implementation = DuplicatedBookResponseDTO.class))})
     @ApiResponse(responseCode = "500", description = "Internal Server Error",
-            content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                    schema = @Schema(implementation = GenericErrorResponseDTO.class))})
+            content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
     public ResponseEntity<BookDTO> update(@SpanTag @PathVariable final String id,
-            @RequestBody final BookDTO bookDTO) {
+            @Valid @RequestBody final BookDTO bookDTO) {
         log.info("Called API to update book: '{}'", id);
         BookDTO result = this.bookService.update(id, bookDTO);
         log.info("Book '{}' updated !", id);

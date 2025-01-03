@@ -70,10 +70,9 @@ public class OpenAPIConfig {
     }
 
     @Bean
-    OAuthFlow oAuthFlow(Scopes scopes) {
+    OAuthFlow oAuthFlow(Scopes scopes, AppPropertiesConfig appPropertiesConfig) {
         OAuthFlow oAuthFlow = new OAuthFlow();
-        oAuthFlow.setTokenUrl(
-                "http://localhost:8080/realms/spring-lessons/protocol/openid-connect/token");
+        oAuthFlow.setTokenUrl(appPropertiesConfig.getApiDocumentation().getTokenUrl());
         oAuthFlow.setScopes(scopes);
         return oAuthFlow;
     }

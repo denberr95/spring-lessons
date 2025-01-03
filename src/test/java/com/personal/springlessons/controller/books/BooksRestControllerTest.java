@@ -240,7 +240,7 @@ class BooksRestControllerTest {
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         BookNotFoundResponseDTO responseDTO = response.getBody();
         assertEquals(DomainCategory.BOOKS, responseDTO.getCategory());
-        assertNotNull(responseDTO.getId());
+        assertNotNull(responseDTO.getAdditionalData().getId());
         assertNotNull(responseDTO.getTimestamp());
         assertNotNull(responseDTO.getMessage());
     }
@@ -387,7 +387,7 @@ class BooksRestControllerTest {
         assertNotNull(responseDTO);
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         assertEquals(DomainCategory.BOOKS, responseDTO.getCategory());
-        assertNotNull(responseDTO.getId());
+        assertNotNull(responseDTO.getAdditionalData().getId());
         assertNotNull(responseDTO.getTimestamp());
         assertNotNull(responseDTO.getMessage());
     }

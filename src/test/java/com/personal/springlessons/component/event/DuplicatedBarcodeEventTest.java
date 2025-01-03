@@ -8,7 +8,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 import com.personal.springlessons.config.AppPropertiesConfig;
 import com.personal.springlessons.model.csv.DiscardedItemCsv;
 import org.junit.jupiter.api.AfterEach;
@@ -42,8 +41,8 @@ class DuplicatedBarcodeEventTest {
 
     @AfterEach
     void tearDown() throws IOException {
-        List<Path> list = Files.list(Paths.get(this.appPropertiesConfig.getCsvDir()))
-                .collect(Collectors.toList());
+        List<Path> list = Files.list(Paths.get(this.appPropertiesConfig.getCsvMetadata().getCsvDir()))
+                .toList();
         for (Path p : list) {
             Files.delete(p);
         }
@@ -53,7 +52,7 @@ class DuplicatedBarcodeEventTest {
     void givenEvent_whenDuplicatedBarcodeEvent_thenCreateFile() {
         this.eventPublisher.publishEvent(this.data);
         String baseName = this.data.getIdOrderItems() + "_" + this.data.getBarcode() + "_";
-        Path path = Paths.get(this.appPropertiesConfig.getCsvDir());
+        Path path = Paths.get(this.appPropertiesConfig.getCsvMetadata().getCsvDir());
         await().atMost(10, TimeUnit.SECONDS).until(
                 () -> Files.list(path).anyMatch(p -> p.getFileName().toString().startsWith(baseName)
                         && p.getFileName().toString().endsWith(".csv")));

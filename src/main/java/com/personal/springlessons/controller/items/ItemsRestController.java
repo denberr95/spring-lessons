@@ -1,8 +1,10 @@
 package com.personal.springlessons.controller.items;
 
 import java.util.List;
+import jakarta.validation.Valid;
 import com.personal.springlessons.model.dto.ItemDTO;
 import com.personal.springlessons.model.dto.response.GenericErrorResponseDTO;
+import com.personal.springlessons.model.dto.response.ValidationRequestErrorResponseDTO;
 import com.personal.springlessons.service.ItemsService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -36,15 +38,17 @@ public class ItemsRestController {
     private final ItemsService itemService;
 
     @NewSpan
-    @PostMapping
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(value = "hasAuthority('SCOPE_items:upload')")
     @Operation(summary = "Upload items", operationId = "uploadItems")
     @ApiResponse(responseCode = "204", description = "No Content",
             content = {@Content(schema = @Schema(implementation = Void.class))})
+    @ApiResponse(responseCode = "400", description = "Validation Request",
+            content = {@Content(
+                    schema = @Schema(implementation = ValidationRequestErrorResponseDTO.class))})
     @ApiResponse(responseCode = "500", description = "Internal Server Error",
-            content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                    schema = @Schema(implementation = GenericErrorResponseDTO.class))})
-    public ResponseEntity<Void> upload(@RequestBody List<ItemDTO> items) {
+            content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
+    public ResponseEntity<Void> upload(@Valid @RequestBody List<ItemDTO> items) {
         log.info("Called API to upload items");
         this.itemService.upload(items);
         log.info("Kafka message to upload items sent");
@@ -52,15 +56,17 @@ public class ItemsRestController {
     }
 
     @NewSpan
-    @DeleteMapping
+    @DeleteMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(value = "hasAuthority('SCOPE_items:delete')")
     @Operation(summary = "Delete items", operationId = "deleteItems")
     @ApiResponse(responseCode = "204", description = "No Content",
             content = {@Content(schema = @Schema(implementation = Void.class))})
+    @ApiResponse(responseCode = "400", description = "Validation Request",
+            content = {@Content(
+                    schema = @Schema(implementation = ValidationRequestErrorResponseDTO.class))})
     @ApiResponse(responseCode = "500", description = "Internal Server Error",
-            content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                    schema = @Schema(implementation = GenericErrorResponseDTO.class))})
-    public ResponseEntity<Void> delete(@RequestBody List<ItemDTO> items) {
+            content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
+    public ResponseEntity<Void> delete(@Valid @RequestBody List<ItemDTO> items) {
         log.info("Called API to delete items");
         this.itemService.delete(items);
         log.info("Kafka message to delete items sent");
@@ -68,17 +74,16 @@ public class ItemsRestController {
     }
 
     @NewSpan
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(value = "hasAuthority('SCOPE_items:get')")
     @Operation(summary = "Get all items", operationId = "getAllItems")
     @ApiResponse(responseCode = "200", description = "OK",
-            content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+            content = {@Content(
                     array = @ArraySchema(schema = @Schema(implementation = ItemDTO.class)))})
     @ApiResponse(responseCode = "204", description = "No Content",
             content = {@Content(schema = @Schema(implementation = Void.class))})
     @ApiResponse(responseCode = "500", description = "Internal Server Error",
-            content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                    schema = @Schema(implementation = GenericErrorResponseDTO.class))})
+            content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
     public ResponseEntity<List<ItemDTO>> getAll() {
         log.info("Called API to retrieve all items");
         List<ItemDTO> result = this.itemService.getAll();

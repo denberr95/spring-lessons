@@ -39,8 +39,10 @@ public class DuplicatedBarcodeEvent {
             strategy.setType(DiscardedItemCsv.class);
             StatefulBeanToCsv<DiscardedItemCsv> beanToCsv =
                     new StatefulBeanToCsvBuilder<DiscardedItemCsv>(writer)
-                            .withSeparator(this.appPropertiesConfig.getCsvColumnSeparator())
-                            .withQuotechar(this.appPropertiesConfig.getQuoteCharacter())
+                            .withSeparator(
+                                    this.appPropertiesConfig.getCsvMetadata().getColumnSeparator())
+                            .withQuotechar(
+                                    this.appPropertiesConfig.getCsvMetadata().getQuoteCharacter())
                             .withMappingStrategy(strategy).build();
             beanToCsv.write(List.of(discardedItemCsv));
         }
@@ -51,7 +53,7 @@ public class DuplicatedBarcodeEvent {
         String tms = Methods.dateTimeFormatter(Constants.DATE_TIME_FORMAT_1, LocalDateTime.now());
         String fileName = discardedItemCsv.getIdOrderItems() + Constants.UNDERSCORE
                 + discardedItemCsv.getBarcode() + Constants.UNDERSCORE + tms + Constants.CSV_EXT;
-        Path filePath = Paths.get(this.appPropertiesConfig.getCsvDir(), fileName);
+        Path filePath = Paths.get(this.appPropertiesConfig.getCsvMetadata().getCsvDir(), fileName);
         Files.createDirectories(filePath.getParent());
         return Files.createFile(filePath).toString();
     }

@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 
-@Schema(enumAsRef = true)
+@Schema(enumAsRef = true, name = "Category")
 @AllArgsConstructor
 public enum DomainCategory {
     BOOKS("Books"), ITEMS("Items"), ND("Not Defined");

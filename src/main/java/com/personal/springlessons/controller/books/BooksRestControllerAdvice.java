@@ -20,9 +20,11 @@ public class BooksRestControllerAdvice {
             BookNotFoundException exception) {
         log.error(exception.getMessage(), exception);
         BookNotFoundResponseDTO result = new BookNotFoundResponseDTO();
-        result.setId(exception.getId());
+        BookNotFoundResponseDTO.Details details = result.new Details();
+        details.setId(exception.getId());
         result.setCategory(DomainCategory.BOOKS);
         result.setMessage(exception.getMessage());
+        result.setAdditionalData(details);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(result);
     }
 

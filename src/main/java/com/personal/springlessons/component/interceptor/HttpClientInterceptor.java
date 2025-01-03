@@ -26,28 +26,33 @@ public class HttpClientInterceptor implements ClientHttpRequestInterceptor {
     }
 
     private void logRequest(HttpRequest request, byte[] body) throws IOException {
-        log.info("Http Client Request URI: '{}'", request.getURI());
-        log.info("Http Client Request Method: '{}'", request.getMethod());
-        log.info("Http Client Request Headers: '{}'", request.getHeaders());
+        log.info("--- HTTP Client Request ---");
+        log.info("URI: '{}'", request.getURI());
+        log.info("Method: '{}'", request.getMethod());
+        log.info("Headers: '{}'", request.getHeaders());
 
         if (this.isMultipartData(request.getHeaders())) {
             this.logMultipartDetails(request.getHeaders());
         } else {
-            log.info("Http Client Request Body: '{}'", new String(body, StandardCharsets.UTF_8));
+            String requestBody = new String(body, StandardCharsets.UTF_8).replaceAll("\\s+", " ");
+            log.info("Body: '{}'", requestBody);
         }
+        log.info("--- HTTP Client Request ---");
     }
 
     private void logResponse(ClientHttpResponse response) throws IOException {
-        log.info("Http Client Response Status Code: '{}'", response.getStatusCode());
-        log.info("Http Client Response Headers: '{}'", response.getHeaders());
+        log.info("--- HTTP Client Response ---");
+        log.info("Status Code: '{}'", response.getStatusCode());
+        log.info("Headers: '{}'", response.getHeaders());
 
         if (this.isMultipartData(response.getHeaders())) {
             this.logMultipartDetails(response.getHeaders());
         } else {
             String responseBody =
                     StreamUtils.copyToString(response.getBody(), StandardCharsets.UTF_8);
-            log.info("Http Client Response Body: '{}'", responseBody);
+            log.info("Body: '{}'", responseBody);
         }
+        log.info("--- HTTP Client Response ---");
     }
 
     private boolean isMultipartData(HttpHeaders headers) {
@@ -60,8 +65,8 @@ public class HttpClientInterceptor implements ClientHttpRequestInterceptor {
             if (HttpHeaders.CONTENT_DISPOSITION.equalsIgnoreCase(headerName)) {
                 String fileName = headerValues.stream().filter(value -> value.contains("filename"))
                         .map(value -> value.split("filename=")[1].replace("\"", "")).findFirst()
-                        .orElse("Nome file non specificato");
-                log.info("Http Client Multipart File Name: '{}'", fileName);
+                        .orElse("Unknown Filename");
+                log.info("File Name: '{}'", fileName);
             }
         });
     }

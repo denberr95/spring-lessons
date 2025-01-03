@@ -1,7 +1,11 @@
 package com.personal.springlessons.util;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Base64;
 import java.util.UUID;
 import com.personal.springlessons.exception.InvalidUUIDException;
 import com.personal.springlessons.model.lov.DomainCategory;
@@ -62,5 +66,15 @@ public final class Methods {
 
     public static String getApplicationVersion(GitProperties gitProperties) {
         return "v%s".formatted(gitProperties.get("build.version"));
+    }
+
+    public static String calculateETag(String id, OffsetDateTime lastModifiedTime)
+            throws NoSuchAlgorithmException {
+        String result = null;
+        String baseString = "%s-%s".formatted(id, lastModifiedTime);
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] hash = digest.digest(baseString.getBytes());
+        result = "\"" + Base64.getEncoder().encodeToString(hash) + "\"";
+        return result;
     }
 }

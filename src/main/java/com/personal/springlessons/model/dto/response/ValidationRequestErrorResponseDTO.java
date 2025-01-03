@@ -1,5 +1,6 @@
 package com.personal.springlessons.model.dto.response;
 
+import java.util.List;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -10,14 +11,15 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = false)
-public class BookNotFoundResponseDTO extends BaseErrorResponseDTO {
+public class ValidationRequestErrorResponseDTO extends BaseErrorResponseDTO {
 
-    private Details additionalData;
+    private List<Details> additionalData;
 
     @Data
     @NoArgsConstructor
-    @Schema(name = "BookNotFoundAdditionalDetailsDTO")
+    @Schema(name = "ValidationRequestAdditionalDetailsDTO")
     public class Details {
-        private String id;
+        private String field;
+        private String message;
     }
 }

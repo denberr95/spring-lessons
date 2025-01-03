@@ -1,13 +1,17 @@
 package com.personal.springlessons.controller;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import com.personal.springlessons.exception.InvalidUUIDException;
 import com.personal.springlessons.exception.SpringLessonsApplicationException;
 import com.personal.springlessons.model.dto.response.GenericErrorResponseDTO;
 import com.personal.springlessons.model.dto.response.InvalidUUIDResponseDTO;
+import com.personal.springlessons.model.dto.response.ValidationRequestErrorResponseDTO;
 import com.personal.springlessons.util.Methods;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
@@ -42,5 +46,23 @@ public class CommonRestControllerAdvice {
         details.setExceptionName(exception.getClass().getName());
         result.setAdditionalData(details);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(result);
+    }
+
+    @ExceptionHandler(value = {MethodArgumentNotValidException.class})
+    public ResponseEntity<ValidationRequestErrorResponseDTO> handleMethodArgumentNotValidException(
+            MethodArgumentNotValidException exception, WebRequest webRequest) {
+        log.error(exception.getMessage(), exception);
+        ValidationRequestErrorResponseDTO result = new ValidationRequestErrorResponseDTO();
+        List<ValidationRequestErrorResponseDTO.Details> details = new ArrayList<>();
+        result.setCategory(Methods.retrieveDomainCategory(webRequest.getDescription(false)));
+        result.setMessage("Validation request exception !");
+        exception.getBindingResult().getFieldErrors().forEach(fieldError -> {
+            ValidationRequestErrorResponseDTO.Details detail = result.new Details();
+            detail.setField(fieldError.getField());
+            detail.setMessage(fieldError.getDefaultMessage());
+            details.add(detail);
+        });
+        result.setAdditionalData(details);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
     }
 }

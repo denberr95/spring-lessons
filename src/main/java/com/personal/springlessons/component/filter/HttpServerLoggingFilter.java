@@ -10,12 +10,11 @@ import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.ContentCachingResponseWrapper;
 import lombok.extern.slf4j.Slf4j;
@@ -34,40 +33,44 @@ public class HttpServerLoggingFilter extends OncePerRequestFilter {
         this.logResponse(responseWrapper);
     }
 
-    private void logRequest(ContentCachingRequestWrapper request) throws IOException {
-        log.info("Http Server Request URI: '{}'", request.getRequestURI());
-        log.info("Http Server Request Method: '{}'", request.getMethod());
-        log.info("Http Server Request Headers: {}", this.getHeadersAsString(
-                Collections.list(request.getHeaderNames()), request::getHeader));
+    private void logRequest(ContentCachingRequestWrapper request)
+            throws ServletException, IOException {
+        log.info("--- HTTP Server Request ---");
+        log.info("URI: '{}'", request.getRequestURI());
+        log.info("Method: '{}'", request.getMethod());
+        log.info("Headers: {}", this.getHeadersAsString(Collections.list(request.getHeaderNames()),
+                request::getHeader));
         if (this.isMultipart(request.getContentType())) {
             this.logMultipartFiles(request);
         } else {
-            log.info("Http Server Request Body: '{}'", new String(request.getContentAsByteArray()));
+            log.info("Body: '{}'", new String(request.getContentAsByteArray()));
         }
+        log.info("--- HTTP Server Request ---");
     }
 
     private void logResponse(ContentCachingResponseWrapper response) throws IOException {
-        log.info("Http Server Response Status Code: '{}'", response.getStatus());
-        log.info("Http Server Response Headers: {}",
+        log.info("--- HTTP Server Response ---");
+        log.info("Status Code: '{}'", response.getStatus());
+        log.info("Headers: {}",
                 this.getHeadersAsString(response.getHeaderNames(), response::getHeader));
         if (this.isMultipart(response.getContentType())) {
             this.logDownloadFile(response);
         } else {
-            log.info("Http Server Response Body: '{}'",
-                    new String(response.getContentAsByteArray()));
+            log.info("Body: '{}'", new String(response.getContentAsByteArray()));
         }
         response.copyBodyToResponse();
+        log.info("--- HTTP Server Response ---");
     }
 
     private boolean isMultipart(String contentType) {
         return contentType != null && contentType.startsWith(MediaType.MULTIPART_FORM_DATA_VALUE);
     }
 
-    private void logMultipartFiles(HttpServletRequest request) {
-        if (request instanceof MultipartHttpServletRequest multipartRequest) {
-            for (MultipartFile file : multipartRequest.getFileMap().values()) {
-                log.info("Http Server Request File Name: '{}'", file.getOriginalFilename());
-            }
+    private void logMultipartFiles(HttpServletRequest request)
+            throws ServletException, IOException {
+        for (Part p : request.getParts()) {
+            log.info("Uploaded File Name: '{}'", p.getSubmittedFileName());
+            log.info("Content Type: '{}'", p.getContentType());
         }
     }
 
@@ -76,7 +79,7 @@ public class HttpServerLoggingFilter extends OncePerRequestFilter {
         if (contentDisposition != null && contentDisposition.contains("attachment")) {
             String fileName = contentDisposition
                     .substring(contentDisposition.indexOf("filename=") + 9).replace("\"", "");
-            log.info("Http Server Response File Name: '{}'", fileName);
+            log.info("Downloaded File Name: '{}'", fileName);
         }
     }
 
