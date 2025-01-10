@@ -11,16 +11,16 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = false)
-public class ValidationRequestErrorResponseDTO extends BaseErrorResponseDTO {
+public class InvalidArgumentTypeResponseDTO extends BaseErrorResponseDTO {
 
-    private List<Details> additionalData;
+    private Details additionalData;
 
     @Data
     @NoArgsConstructor
-    @Schema(name = "ValidationRequestAdditionalDetailsDTO")
+    @Schema(name = "InvalidArgumentTypeAdditionalDetailsDTO")
     public class Details {
         private String field;
-        private String message;
         private String value;
+        private List<String> pickList;
     }
 }

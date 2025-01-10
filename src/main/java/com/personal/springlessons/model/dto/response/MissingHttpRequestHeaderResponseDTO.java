@@ -1,6 +1,5 @@
 package com.personal.springlessons.model.dto.response;
 
-import java.util.List;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -11,16 +10,14 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = false)
-public class ValidationRequestErrorResponseDTO extends BaseErrorResponseDTO {
+public class MissingHttpRequestHeaderResponseDTO extends BaseErrorResponseDTO {
 
-    private List<Details> additionalData;
+    private Details additionalData;
 
     @Data
     @NoArgsConstructor
-    @Schema(name = "ValidationRequestAdditionalDetailsDTO")
+    @Schema(name = "MissingHttpRequestHeaderAdditionalDetailsDTO")
     public class Details {
-        private String field;
-        private String message;
-        private String value;
+        private String header;
     }
 }

@@ -2,6 +2,7 @@ package com.personal.springlessons.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import com.personal.springlessons.model.entity.orderitems.OrderItemsEntity;
+import com.personal.springlessons.model.lov.Channel;
 import com.personal.springlessons.model.lov.ItemStatus;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,6 +26,7 @@ class IOrderItemsRepositoryTest {
             OrderItemsEntity entity = new OrderItemsEntity();
             entity.setQuantity(9_999);
             entity.setStatus(ItemStatus.NA);
+            entity.setChannel(Channel.NA);
             this.orderItemsRepository.save(entity);
         }
     }

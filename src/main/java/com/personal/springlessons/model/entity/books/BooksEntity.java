@@ -6,11 +6,15 @@ import java.util.UUID;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import com.personal.springlessons.model.lov.Channel;
+import com.personal.springlessons.model.lov.Genre;
 import com.personal.springlessons.util.Constants;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.CurrentTimestamp;
@@ -54,4 +58,12 @@ public class BooksEntity {
 
     @Column(name = "number_of_pages", nullable = false)
     private Integer numberOfPages;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "channel", nullable = false)
+    private Channel channel;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "genre", nullable = false)
+    private Genre genre;
 }

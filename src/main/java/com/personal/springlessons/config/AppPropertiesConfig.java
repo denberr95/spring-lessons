@@ -27,8 +27,8 @@ public final class AppPropertiesConfig {
     @Data
     public static class CsvMetadata {
         private String csvDir;
-        private char columnSeparator = Constants.SEMICOLON;
-        private char quoteCharacter = Constants.APOSTROPHE;
+        private char columnSeparator = Constants.C_SEMICOLON;
+        private char quoteCharacter = Constants.C_APOSTROPHE;
     }
 
     @Data
@@ -51,6 +51,6 @@ public final class AppPropertiesConfig {
     }
 
     void initCsvDir() {
-        this.csvMetadata.csvDir = Paths.get(this.baseDir, Constants.CSV).toString();
+        this.csvMetadata.csvDir = Paths.get(this.baseDir, Constants.S_CSV).toString();
     }
 }

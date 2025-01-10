@@ -6,6 +6,7 @@ import com.personal.springlessons.exception.BookNotFoundException;
 import com.personal.springlessons.exception.DuplicatedBookException;
 import com.personal.springlessons.model.dto.BookDTO;
 import com.personal.springlessons.model.entity.books.BooksEntity;
+import com.personal.springlessons.model.lov.Channel;
 import com.personal.springlessons.repository.IBooksRepository;
 import com.personal.springlessons.util.Constants;
 import com.personal.springlessons.util.Methods;
@@ -42,14 +43,14 @@ public class BooksService {
     }
 
     @NewSpan
-    public BookDTO save(final BookDTO bookDTO) {
+    public BookDTO save(final BookDTO bookDTO, final Channel channel) {
         this.bookRepository
                 .findByNameAndPublicationDateAndNumberOfPages(bookDTO.getName(),
                         bookDTO.getPublicationDate(), bookDTO.getNumberOfPages())
                 .ifPresent(book -> {
                     throw new DuplicatedBookException(book.getName(), book.getId().toString());
                 });
-        BooksEntity bookEntity = this.bookMapper.mapEntity(bookDTO);
+        BooksEntity bookEntity = this.bookMapper.mapEntity(bookDTO, channel);
         bookEntity = this.bookRepository.saveAndFlush(bookEntity);
         Span currentSpan = this.tracer.currentSpan();
         currentSpan.tag(Constants.SPAN_KEY_ID_BOOKS, bookEntity.getId().toString())
@@ -65,7 +66,7 @@ public class BooksService {
     }
 
     @NewSpan
-    public BookDTO update(final String id, final BookDTO bookDTO) {
+    public BookDTO update(final String id, final BookDTO bookDTO, final Channel channel) {
         BooksEntity bookEntity = this.bookRepository.findById(Methods.idValidation(id))
                 .orElseThrow(() -> new BookNotFoundException(id));
         this.bookRepository
@@ -74,7 +75,7 @@ public class BooksService {
                 .ifPresent(book -> {
                     throw new DuplicatedBookException(book.getName(), book.getId().toString());
                 });
-        bookEntity = this.bookMapper.update(bookDTO, bookEntity);
+        bookEntity = this.bookMapper.update(bookDTO, channel, bookEntity);
         bookEntity = this.bookRepository.saveAndFlush(bookEntity);
         Span currentSpan = this.tracer.currentSpan();
         currentSpan.event("Book updated");

@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 import com.personal.springlessons.model.dto.ItemDTO;
 import com.personal.springlessons.model.entity.items.ItemsEntity;
 import com.personal.springlessons.model.entity.orderitems.OrderItemsEntity;
+import com.personal.springlessons.model.lov.Channel;
 import com.personal.springlessons.repository.IItemsRepository;
 import com.personal.springlessons.repository.IOrderItemsRepository;
 import com.personal.springlessons.service.ItemsService;
@@ -59,7 +60,7 @@ class ItemsListenerTest {
 
     @Test
     void givenNewItems_whenUploadItems_thenItemsShouldBeSaved() {
-        this.itemsService.upload(this.data);
+        this.itemsService.upload(this.data, Channel.NA);
 
         await().timeout(2L, TimeUnit.SECONDS).until(() -> this.orderItemsRepository.count(),
                 equalTo(1L));

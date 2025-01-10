@@ -8,6 +8,7 @@ import com.personal.springlessons.model.dto.ItemDTO;
 import com.personal.springlessons.model.dto.response.KafkaMessageItemDTO;
 import com.personal.springlessons.model.entity.items.ItemsEntity;
 import com.personal.springlessons.model.entity.orderitems.OrderItemsEntity;
+import com.personal.springlessons.model.lov.Channel;
 import com.personal.springlessons.model.lov.ItemStatus;
 import com.personal.springlessons.repository.IItemsRepository;
 import com.personal.springlessons.repository.IOrderItemsRepository;
@@ -31,13 +32,14 @@ public class ItemsService {
     private final KafkaTemplate<String, KafkaMessageItemDTO> kafkaTemplate;
 
     @NewSpan
-    public void upload(List<ItemDTO> items) {
+    public void upload(final List<ItemDTO> items, final Channel channel) {
         Span currentSpan = this.tracer.currentSpan();
         currentSpan.tag(Constants.SPAN_KEY_NUMBER_ITEMS_TO_UPLOAD, items.size());
 
         OrderItemsEntity data = new OrderItemsEntity();
         data.setQuantity(items.size());
         data.setStatus(ItemStatus.UPLOAD);
+        data.setChannel(channel);
         OrderItemsEntity row = this.orderItemsRepository.saveAndFlush(data);
 
         items.forEach(i -> {
@@ -49,13 +51,14 @@ public class ItemsService {
     }
 
     @NewSpan
-    public void delete(List<ItemDTO> items) {
+    public void delete(final List<ItemDTO> items, final Channel channel) {
         Span currentSpan = this.tracer.currentSpan();
         currentSpan.tag(Constants.SPAN_KEY_NUMBER_ITEMS_TO_DELETE, items.size());
 
         OrderItemsEntity data = new OrderItemsEntity();
         data.setQuantity(items.size());
         data.setStatus(ItemStatus.DELETE);
+        data.setChannel(channel);
         OrderItemsEntity row = this.orderItemsRepository.saveAndFlush(data);
 
         items.forEach(i -> {

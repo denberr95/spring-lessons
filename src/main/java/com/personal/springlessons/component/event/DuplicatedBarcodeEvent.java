@@ -50,9 +50,9 @@ public class DuplicatedBarcodeEvent {
     }
 
     private String createFile(DiscardedItemCsv discardedItemCsv) throws IOException {
-        String tms = Methods.dateTimeFormatter(Constants.DATE_TIME_FORMAT_1, LocalDateTime.now());
-        String fileName = discardedItemCsv.getIdOrderItems() + Constants.UNDERSCORE
-                + discardedItemCsv.getBarcode() + Constants.UNDERSCORE + tms + Constants.CSV_EXT;
+        String tms = Methods.dateTimeFormatter(Constants.S_DATE_TIME_FORMAT_1, LocalDateTime.now());
+        String fileName = discardedItemCsv.getIdOrderItems() + Constants.C_UNDERSCORE
+                + discardedItemCsv.getBarcode() + Constants.C_UNDERSCORE + tms + Constants.CSV_EXT;
         Path filePath = Paths.get(this.appPropertiesConfig.getCsvMetadata().getCsvDir(), fileName);
         Files.createDirectories(filePath.getParent());
         return Files.createFile(filePath).toString();

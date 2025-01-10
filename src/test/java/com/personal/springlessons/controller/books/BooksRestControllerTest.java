@@ -12,7 +12,9 @@ import com.personal.springlessons.model.dto.BookDTO;
 import com.personal.springlessons.model.dto.response.BookNotFoundResponseDTO;
 import com.personal.springlessons.model.dto.response.DuplicatedBookResponseDTO;
 import com.personal.springlessons.model.dto.response.InvalidUUIDResponseDTO;
+import com.personal.springlessons.model.lov.Channel;
 import com.personal.springlessons.model.lov.DomainCategory;
+import com.personal.springlessons.model.lov.Genre;
 import com.personal.springlessons.service.BooksService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -68,6 +70,8 @@ class BooksRestControllerTest {
 
     private RestClient restClient;
 
+    UUID fakeId = UUID.randomUUID();
+
     private static final int TOTAL = 5;
 
     private String buildUrl(String path) {
@@ -97,6 +101,7 @@ class BooksRestControllerTest {
     private HttpHeaders retrieveHttpHeaders(String token) {
         HttpHeaders result = new HttpHeaders();
         result.add("Authorization", "Bearer " + token);
+        result.add("channel", Channel.NA.toString());
         return result;
     }
 
@@ -107,7 +112,7 @@ class BooksRestControllerTest {
             bookDTO.setName("Controller-Book-Name-" + i);
             bookDTO.setPublicationDate(LocalDate.now());
             bookDTO.setNumberOfPages(i + 1);
-            this.bookService.save(bookDTO);
+            this.bookService.save(bookDTO, Channel.NA);
         }
         this.validToken = this.retrieveAccessToken(this.clientIdFullPermission,
                 this.clientSecretFullPermission);
@@ -125,10 +130,17 @@ class BooksRestControllerTest {
     @Test
     void givenInvalidAccessToken_whenCallAPI_thenReturnForbidden() {
         ResponseEntity<?> response = null;
+
+        BookDTO bookRequest = new BookDTO();
+        bookRequest.setName("Controller-Book-Name-" + TOTAL);
+        bookRequest.setNumberOfPages(1);
+        bookRequest.setPublicationDate(LocalDate.now());
+        bookRequest.setGenre(Genre.NA);
+
         HttpHeaders httpHeaders = this.retrieveHttpHeaders(this.invalidToken);
-        HttpEntity<BookDTO> httpEntity = new HttpEntity<>(new BookDTO(), httpHeaders);
+        HttpEntity<BookDTO> httpEntity = new HttpEntity<>(bookRequest, httpHeaders);
         String urlBase = this.buildUrl("/books");
-        String urlWithResource = this.buildUrl("/books/fakeId");
+        String urlWithResource = this.buildUrl("/books/" + this.fakeId);
 
         response = this.testRestTemplate.exchange(urlBase, HttpMethod.GET,
                 new HttpEntity<>(httpHeaders), Object.class);
@@ -154,9 +166,17 @@ class BooksRestControllerTest {
     @Test
     void givenWithoutAccessToken_whenCallAPI_thenReturnUnauthorized() {
         ResponseEntity<?> response = null;
-        HttpEntity<BookDTO> httpEntity = new HttpEntity<>(new BookDTO());
+
+        BookDTO bookRequest = new BookDTO();
+        bookRequest.setName("Controller-Book-Name-" + TOTAL);
+        bookRequest.setNumberOfPages(1);
+        bookRequest.setPublicationDate(LocalDate.now());
+        bookRequest.setGenre(Genre.NA);
+
+        HttpHeaders httpHeaders = this.retrieveHttpHeaders(null);
+        HttpEntity<BookDTO> httpEntity = new HttpEntity<>(bookRequest, httpHeaders);
         String urlBase = this.buildUrl("/books");
-        String urlWithResource = this.buildUrl("/books/fakeId");
+        String urlWithResource = this.buildUrl("/books/" + this.fakeId);
 
         response = this.testRestTemplate.exchange(urlBase, HttpMethod.GET, null, Object.class);
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
@@ -247,8 +267,7 @@ class BooksRestControllerTest {
 
     @Test
     void givenInvalidId_whenGetById_thenReturnInvalidUUID() {
-        String fakeId = "fakeId";
-        String url = this.buildUrl("/books/" + fakeId);
+        String url = this.buildUrl("/books/getFakeId");
 
         HttpEntity<HttpHeaders> httpEntity =
                 new HttpEntity<>(this.retrieveHttpHeaders(this.validToken));
@@ -272,6 +291,7 @@ class BooksRestControllerTest {
         bookRequest.setName("Controller-Book-Name-" + TOTAL);
         bookRequest.setNumberOfPages(1);
         bookRequest.setPublicationDate(LocalDate.now());
+        bookRequest.setGenre(Genre.NA);
 
         HttpEntity<BookDTO> httpEntity =
                 new HttpEntity<>(bookRequest, this.retrieveHttpHeaders(this.validToken));
@@ -294,6 +314,7 @@ class BooksRestControllerTest {
         bookRequest.setName("Controller-Book-Name-Duplicated");
         bookRequest.setNumberOfPages(1);
         bookRequest.setPublicationDate(LocalDate.now());
+        bookRequest.setGenre(Genre.NA);
 
         HttpEntity<BookDTO> httpEntity =
                 new HttpEntity<>(bookRequest, this.retrieveHttpHeaders(this.validToken));
@@ -335,8 +356,7 @@ class BooksRestControllerTest {
 
     @Test
     void givenInvalidId_whenDelete_thenReturnInvalidUUID() {
-        String fakeId = "fakeId";
-        String url = this.buildUrl("/books/" + fakeId);
+        String url = this.buildUrl("/books/deleteFakeId");
 
         HttpEntity<HttpHeaders> httpEntity =
                 new HttpEntity<>(this.retrieveHttpHeaders(this.validToken));
@@ -360,6 +380,7 @@ class BooksRestControllerTest {
         bookOld.setName("Controller-Book-Name-0");
         bookOld.setNumberOfPages(10);
         bookOld.setPublicationDate(LocalDate.now());
+        bookOld.setGenre(Genre.NA);
 
         HttpEntity<BookDTO> httpEntity =
                 new HttpEntity<>(bookOld, this.retrieveHttpHeaders(this.validToken));
@@ -374,12 +395,15 @@ class BooksRestControllerTest {
 
     @Test
     void givenNonExistingId_whenUpdate_thenReturnBookNotFound() {
-        String id = UUID.randomUUID().toString();
-        String url = this.buildUrl("/books/" + id);
-        BookDTO body = new BookDTO();
+        String url = this.buildUrl("/books/" + this.fakeId);
+        BookDTO bookRequest = new BookDTO();
+        bookRequest.setName("Controller-Book-Name-" + TOTAL);
+        bookRequest.setNumberOfPages(1);
+        bookRequest.setPublicationDate(LocalDate.now());
+        bookRequest.setGenre(Genre.NA);
 
         HttpEntity<BookDTO> httpEntity =
-                new HttpEntity<>(body, this.retrieveHttpHeaders(this.validToken));
+                new HttpEntity<>(bookRequest, this.retrieveHttpHeaders(this.validToken));
 
         ResponseEntity<BookNotFoundResponseDTO> response = this.testRestTemplate.exchange(url,
                 HttpMethod.PUT, httpEntity, BookNotFoundResponseDTO.class);
@@ -415,8 +439,7 @@ class BooksRestControllerTest {
     @Test
     void givenInvalidBookId_whenUpdate_thenReturnInvalidUUID() {
         BookDTO bookOld = this.bookService.getAll().get(0);
-        String fakeId = "fakeId";
-        String url = this.buildUrl("/books/" + fakeId);
+        String url = this.buildUrl("/books/updateFakeId");
 
         HttpEntity<BookDTO> httpEntity =
                 new HttpEntity<>(bookOld, this.retrieveHttpHeaders(this.validToken));

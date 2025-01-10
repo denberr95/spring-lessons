@@ -94,7 +94,7 @@ class MethodsTest {
     @Test
     void givenInvalidUri_whenRetrieveDomainCategory_thenReturnDefaultDomainCategory() {
         DomainCategory actual = Methods.retrieveDomainCategory("/fake-uri");
-        assertEquals(DomainCategory.ND, actual);
+        assertEquals(DomainCategory.NA, actual);
     }
 
     @Test

@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.time.LocalDate;
 import java.util.Optional;
 import com.personal.springlessons.model.entity.books.BooksEntity;
+import com.personal.springlessons.model.lov.Channel;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,6 +30,7 @@ class IBooksRepositoryTest {
             bookEntity.setName("Repository-Book-Name-" + i);
             bookEntity.setPublicationDate(LocalDate.now());
             bookEntity.setNumberOfPages(i + 1);
+            bookEntity.setChannel(Channel.NA);
             this.bookRepository.save(bookEntity);
         }
     }

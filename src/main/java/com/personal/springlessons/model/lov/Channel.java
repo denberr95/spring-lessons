@@ -7,16 +7,16 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 
-@Schema(enumAsRef = true, name = "Category")
+@Schema(enumAsRef = true)
 @AllArgsConstructor
-public enum DomainCategory {
-    BOOKS("Books"), ITEMS("Items"), NA("Not Available");
+public enum Channel {
+    POSTMAN("Postman"), INSOMNIA("Insomnia"), SOAPUI("SoapUI"), NA("Not Available");
 
     private final String value;
 
     @Override
     public String toString() {
-        return String.valueOf(this.value);
+        return this.value;
     }
 
     @JsonValue
@@ -25,12 +25,12 @@ public enum DomainCategory {
     }
 
     @JsonCreator
-    public static DomainCategory fromString(String value) {
-        return Arrays.stream(DomainCategory.values())
-                .filter(domain -> domain.value.equalsIgnoreCase(value)).findFirst()
+    public static Channel fromString(String value) {
+        return Arrays.stream(Channel.values())
+                .filter(channel -> channel.value.equalsIgnoreCase(value)).findFirst()
                 .orElseThrow(() -> new IllegalArgumentException(
                         String.format("Invalid value '%s'. Allowed values are: %s", value,
-                                Arrays.stream(DomainCategory.values()).map(DomainCategory::getValue)
+                                Arrays.stream(Channel.values()).map(Channel::getValue)
                                         .collect(Collectors.joining(", ")))));
     }
 }

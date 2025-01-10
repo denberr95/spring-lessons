@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import com.personal.springlessons.model.lov.Genre;
 import com.personal.springlessons.util.Constants;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,4 +27,7 @@ public class BookDTO {
 
     @NotNull(message = Constants.ERROR_MSG_NOT_BLANK)
     private LocalDate publicationDate;
+
+    @NotNull(message = Constants.ERROR_MSG_NOT_BLANK)
+    private Genre genre;
 }

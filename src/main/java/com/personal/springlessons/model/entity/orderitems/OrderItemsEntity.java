@@ -15,6 +15,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import com.personal.springlessons.model.entity.items.ItemsEntity;
+import com.personal.springlessons.model.lov.Channel;
 import com.personal.springlessons.model.lov.ItemStatus;
 import com.personal.springlessons.util.Constants;
 import org.hibernate.annotations.CreationTimestamp;
@@ -50,6 +51,10 @@ public class OrderItemsEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private ItemStatus status;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "channel", nullable = false)
+    private Channel channel;
 
     @OneToMany(mappedBy = "orderItemsEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ItemsEntity> items;

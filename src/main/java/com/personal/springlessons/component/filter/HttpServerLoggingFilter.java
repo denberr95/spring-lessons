@@ -11,6 +11,7 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -23,14 +24,19 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class HttpServerLoggingFilter extends OncePerRequestFilter {
 
+    @Value("${management.server.base-path:/actuator}")
+    private String managementServerBasePath;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
             FilterChain filterChain) throws ServletException, IOException {
         ContentCachingRequestWrapper requestWrapper = this.requestWrapper(request);
         ContentCachingResponseWrapper responseWrapper = this.responseWrapper(response);
-        this.logRequest(requestWrapper);
-        filterChain.doFilter(requestWrapper, responseWrapper);
-        this.logResponse(responseWrapper);
+        if (!request.getRequestURI().startsWith(this.managementServerBasePath)) {
+            this.logRequest(requestWrapper);
+            filterChain.doFilter(requestWrapper, responseWrapper);
+            this.logResponse(responseWrapper);
+        }
     }
 
     private void logRequest(ContentCachingRequestWrapper request)

@@ -6,8 +6,11 @@ import com.personal.springlessons.model.dto.BookDTO;
 import com.personal.springlessons.model.dto.response.BookNotFoundResponseDTO;
 import com.personal.springlessons.model.dto.response.DuplicatedBookResponseDTO;
 import com.personal.springlessons.model.dto.response.GenericErrorResponseDTO;
+import com.personal.springlessons.model.dto.response.InvalidArgumentTypeResponseDTO;
 import com.personal.springlessons.model.dto.response.InvalidUUIDResponseDTO;
+import com.personal.springlessons.model.dto.response.MissingHttpRequestHeaderResponseDTO;
 import com.personal.springlessons.model.dto.response.ValidationRequestErrorResponseDTO;
+import com.personal.springlessons.model.lov.Channel;
 import com.personal.springlessons.service.BooksService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import io.micrometer.tracing.annotation.NewSpan;
@@ -74,9 +78,9 @@ public class BooksRestController {
     @Operation(summary = "Get a book by id", operationId = "getBookById")
     @ApiResponse(responseCode = "200", description = "OK",
             content = {@Content(schema = @Schema(implementation = BookDTO.class))})
-    @ApiResponse(responseCode = "400", description = "Invalid UUID",
+    @ApiResponse(responseCode = "400", description = "Bad Request",
             content = {@Content(schema = @Schema(implementation = InvalidUUIDResponseDTO.class))})
-    @ApiResponse(responseCode = "404", description = "Book not found",
+    @ApiResponse(responseCode = "404", description = "Not Found",
             content = {@Content(schema = @Schema(implementation = BookNotFoundResponseDTO.class))})
     @ApiResponse(responseCode = "500", description = "Internal Server Error",
             content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
@@ -95,15 +99,17 @@ public class BooksRestController {
             content = {@Content(schema = @Schema(implementation = BookDTO.class))})
     @ApiResponse(responseCode = "400", description = "Bad Request",
             content = {@Content(schema = @Schema(oneOf = {InvalidUUIDResponseDTO.class,
+                    MissingHttpRequestHeaderResponseDTO.class, InvalidArgumentTypeResponseDTO.class,
                     ValidationRequestErrorResponseDTO.class}))})
     @ApiResponse(responseCode = "409", description = "Book already exists",
             content = {
                     @Content(schema = @Schema(implementation = DuplicatedBookResponseDTO.class))})
     @ApiResponse(responseCode = "500", description = "Internal Server Error",
             content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
-    public ResponseEntity<BookDTO> save(@Valid @RequestBody final BookDTO bookDTO) {
+    public ResponseEntity<BookDTO> save(@Valid @RequestBody final BookDTO bookDTO,
+            @RequestHeader final Channel channel) {
         log.info("Called API to create new book");
-        BookDTO result = this.bookService.save(bookDTO);
+        BookDTO result = this.bookService.save(bookDTO, channel);
         log.info("Book '{}' saved !", result.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
@@ -114,9 +120,9 @@ public class BooksRestController {
     @Operation(summary = "Delete a book", operationId = "deleteBook")
     @ApiResponse(responseCode = "204", description = "No Content",
             content = {@Content(schema = @Schema(implementation = Void.class))})
-    @ApiResponse(responseCode = "400", description = "Invalid UUID",
+    @ApiResponse(responseCode = "400", description = "Bad Request",
             content = {@Content(schema = @Schema(implementation = InvalidUUIDResponseDTO.class))})
-    @ApiResponse(responseCode = "404", description = "Book not found",
+    @ApiResponse(responseCode = "404", description = "Not Found",
             content = {@Content(schema = @Schema(implementation = BookNotFoundResponseDTO.class))})
     @ApiResponse(responseCode = "500", description = "Internal Server Error",
             content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
@@ -135,18 +141,19 @@ public class BooksRestController {
             content = {@Content(schema = @Schema(implementation = BookDTO.class))})
     @ApiResponse(responseCode = "400", description = "Bad Request",
             content = {@Content(schema = @Schema(oneOf = {InvalidUUIDResponseDTO.class,
+                    MissingHttpRequestHeaderResponseDTO.class, InvalidArgumentTypeResponseDTO.class,
                     ValidationRequestErrorResponseDTO.class}))})
-    @ApiResponse(responseCode = "404", description = "Book not found",
+    @ApiResponse(responseCode = "404", description = "Not Found",
             content = {@Content(schema = @Schema(implementation = BookNotFoundResponseDTO.class))})
-    @ApiResponse(responseCode = "409", description = "Book already exists",
+    @ApiResponse(responseCode = "409", description = "Conflict",
             content = {
                     @Content(schema = @Schema(implementation = DuplicatedBookResponseDTO.class))})
     @ApiResponse(responseCode = "500", description = "Internal Server Error",
             content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
     public ResponseEntity<BookDTO> update(@SpanTag @PathVariable final String id,
-            @Valid @RequestBody final BookDTO bookDTO) {
+            @Valid @RequestBody final BookDTO bookDTO, @RequestHeader final Channel channel) {
         log.info("Called API to update book: '{}'", id);
-        BookDTO result = this.bookService.update(id, bookDTO);
+        BookDTO result = this.bookService.update(id, bookDTO, channel);
         log.info("Book '{}' updated !", id);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }

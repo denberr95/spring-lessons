@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import com.personal.springlessons.model.dto.ItemDTO;
 import com.personal.springlessons.model.entity.items.ItemsEntity;
 import com.personal.springlessons.model.entity.orderitems.OrderItemsEntity;
+import com.personal.springlessons.model.lov.Channel;
 import com.personal.springlessons.model.lov.ItemStatus;
 import com.personal.springlessons.repository.IItemsRepository;
 import com.personal.springlessons.repository.IOrderItemsRepository;
@@ -103,6 +104,7 @@ class ItemsRestControllerTest {
     private HttpHeaders retrieveHttpHeaders(String token) {
         HttpHeaders result = new HttpHeaders();
         result.add("Authorization", "Bearer " + token);
+        result.add("channel", Channel.NA.toString());
         return result;
     }
 
@@ -179,7 +181,8 @@ class ItemsRestControllerTest {
     @Test
     void givenWithoutAccessToken_whenCallAPI_thenReturnUnauthorized() {
         ResponseEntity<?> response = null;
-        HttpEntity<List<ItemDTO>> httpEntity = new HttpEntity<>(this.data);
+        HttpHeaders httpHeaders = this.retrieveHttpHeaders(null);
+        HttpEntity<List<ItemDTO>> httpEntity = new HttpEntity<>(this.data, httpHeaders);
         String urlBase = this.buildUrl("/items");
 
         response = this.testRestTemplate.exchange(urlBase, HttpMethod.GET, null, Object.class);

@@ -30,6 +30,8 @@ public final class Constants {
             "Must be between {min} and {max} characters long";
     public static final String ERROR_MSG_MIN_VALUE = "Must be greater than or equal to {value}";
     public static final String ERROR_MSG_NOT_BLANK = "Cannot be null or empty";
+    public static final String ERROR_MSG_POSITIVE_VALUE = "Must be a positive value";
+    public static final String ERROR_MSG_MAX_VALUE = "Must be less than or equal to {value}";
 
     // Int Values
     public static final int I_VAL_1 = 1;
@@ -41,17 +43,18 @@ public final class Constants {
     // String Values
     public static final String S_VAL_1 = "1";
     public static final String S_VAL_3 = "3";
+    public static final String S_VAL_9999_99 = "9999.99";
 
     // Other
-    public static final char SEMICOLON = ';';
-    public static final char UNDERSCORE = '_';
-    public static final char DOT = '.';
-    public static final char APOSTROPHE = '\'';
-    public static final String CSV = "csv";
+    public static final char C_SEMICOLON = ';';
+    public static final char C_UNDERSCORE = '_';
+    public static final String S_DOT = ".";
+    public static final char C_APOSTROPHE = '\'';
+    public static final String S_CSV = "csv";
 
     // File System Extension
-    public static final String CSV_EXT = DOT + CSV;
+    public static final String CSV_EXT = S_DOT + S_CSV;
 
     // Date Time Format
-    public static final String DATE_TIME_FORMAT_1 = "yyyyMMddHHmmss";
+    public static final String S_DATE_TIME_FORMAT_1 = "yyyyMMddHHmmss";
 }

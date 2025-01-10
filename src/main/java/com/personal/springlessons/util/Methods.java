@@ -46,7 +46,7 @@ public final class Methods {
 
     public static DomainCategory retrieveDomainCategory(String uri) {
         log.debug("Check Domain Category from uri: '{}'", uri);
-        DomainCategory result = DomainCategory.ND;
+        DomainCategory result = DomainCategory.NA;
         for (DomainCategory e : DomainCategory.values()) {
             if (uri.toLowerCase().contains(e.getValue().toLowerCase())) {
                 result = e;

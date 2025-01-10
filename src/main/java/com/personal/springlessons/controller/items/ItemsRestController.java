@@ -4,7 +4,9 @@ import java.util.List;
 import jakarta.validation.Valid;
 import com.personal.springlessons.model.dto.ItemDTO;
 import com.personal.springlessons.model.dto.response.GenericErrorResponseDTO;
+import com.personal.springlessons.model.dto.response.InvalidArgumentTypeResponseDTO;
 import com.personal.springlessons.model.dto.response.ValidationRequestErrorResponseDTO;
+import com.personal.springlessons.model.lov.Channel;
 import com.personal.springlessons.service.ItemsService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import io.micrometer.tracing.annotation.NewSpan;
@@ -43,14 +46,15 @@ public class ItemsRestController {
     @Operation(summary = "Upload items", operationId = "uploadItems")
     @ApiResponse(responseCode = "204", description = "No Content",
             content = {@Content(schema = @Schema(implementation = Void.class))})
-    @ApiResponse(responseCode = "400", description = "Validation Request",
-            content = {@Content(
-                    schema = @Schema(implementation = ValidationRequestErrorResponseDTO.class))})
+    @ApiResponse(responseCode = "400", description = "Bad Request",
+            content = {@Content(schema = @Schema(oneOf = {ValidationRequestErrorResponseDTO.class,
+                    InvalidArgumentTypeResponseDTO.class}))})
     @ApiResponse(responseCode = "500", description = "Internal Server Error",
             content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
-    public ResponseEntity<Void> upload(@Valid @RequestBody List<ItemDTO> items) {
+    public ResponseEntity<Void> upload(@Valid @RequestBody final List<ItemDTO> items,
+            @RequestHeader final Channel channel) {
         log.info("Called API to upload items");
-        this.itemService.upload(items);
+        this.itemService.upload(items, channel);
         log.info("Kafka message to upload items sent");
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
@@ -61,14 +65,15 @@ public class ItemsRestController {
     @Operation(summary = "Delete items", operationId = "deleteItems")
     @ApiResponse(responseCode = "204", description = "No Content",
             content = {@Content(schema = @Schema(implementation = Void.class))})
-    @ApiResponse(responseCode = "400", description = "Validation Request",
-            content = {@Content(
-                    schema = @Schema(implementation = ValidationRequestErrorResponseDTO.class))})
+    @ApiResponse(responseCode = "400", description = "Bad Request",
+            content = {@Content(schema = @Schema(oneOf = {ValidationRequestErrorResponseDTO.class,
+                    InvalidArgumentTypeResponseDTO.class}))})
     @ApiResponse(responseCode = "500", description = "Internal Server Error",
             content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
-    public ResponseEntity<Void> delete(@Valid @RequestBody List<ItemDTO> items) {
+    public ResponseEntity<Void> delete(@Valid @RequestBody final List<ItemDTO> items,
+            @RequestHeader final Channel channel) {
         log.info("Called API to delete items");
-        this.itemService.delete(items);
+        this.itemService.delete(items, channel);
         log.info("Kafka message to delete items sent");
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
