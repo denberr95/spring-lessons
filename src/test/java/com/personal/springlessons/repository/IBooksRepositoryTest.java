@@ -6,9 +6,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import com.personal.springlessons.model.entity.books.BooksEntity;
 import com.personal.springlessons.model.lov.Channel;
+import com.personal.springlessons.model.lov.Genre;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,14 +28,17 @@ class IBooksRepositoryTest {
 
     @BeforeEach
     void init() {
+        List<BooksEntity> bookEntities = new ArrayList<>(TOTAL);
         for (int i = 0; i < TOTAL; i++) {
             BooksEntity bookEntity = new BooksEntity();
             bookEntity.setName("Repository-Book-Name-" + i);
             bookEntity.setPublicationDate(LocalDate.now());
             bookEntity.setNumberOfPages(i + 1);
             bookEntity.setChannel(Channel.NA);
-            this.bookRepository.save(bookEntity);
+            bookEntity.setGenre(Genre.NA);
+            bookEntities.add(bookEntity);
         }
+        this.bookRepository.saveAllAndFlush(bookEntities);
     }
 
     @AfterEach

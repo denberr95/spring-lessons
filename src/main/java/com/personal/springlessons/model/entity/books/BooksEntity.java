@@ -16,7 +16,6 @@ import jakarta.persistence.UniqueConstraint;
 import com.personal.springlessons.model.lov.Channel;
 import com.personal.springlessons.model.lov.Genre;
 import com.personal.springlessons.util.Constants;
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.CurrentTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -42,11 +41,11 @@ public class BooksEntity {
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
-    @CreationTimestamp(source = SourceType.DB)
+    @CurrentTimestamp(source = SourceType.DB, event = EventType.INSERT)
     @Column(name = "created_at", nullable = false, updatable = false)
     private OffsetDateTime createdAt;
 
-    @CurrentTimestamp(event = EventType.UPDATE)
+    @CurrentTimestamp(source = SourceType.VM, event = EventType.UPDATE)
     @Column(name = "updated_at")
     private OffsetDateTime updatedAt;
 
