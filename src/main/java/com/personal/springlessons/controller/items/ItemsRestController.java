@@ -5,6 +5,7 @@ import jakarta.validation.Valid;
 import com.personal.springlessons.model.dto.ItemDTO;
 import com.personal.springlessons.model.dto.response.GenericErrorResponseDTO;
 import com.personal.springlessons.model.dto.response.InvalidArgumentTypeResponseDTO;
+import com.personal.springlessons.model.dto.response.NotReadableBodyRequestResponseDTO;
 import com.personal.springlessons.model.dto.response.ValidationRequestErrorResponseDTO;
 import com.personal.springlessons.model.lov.Channel;
 import com.personal.springlessons.service.ItemsService;
@@ -48,7 +49,8 @@ public class ItemsRestController {
             content = {@Content(schema = @Schema(implementation = Void.class))})
     @ApiResponse(responseCode = "400", description = "Bad Request",
             content = {@Content(schema = @Schema(oneOf = {ValidationRequestErrorResponseDTO.class,
-                    InvalidArgumentTypeResponseDTO.class}))})
+                    InvalidArgumentTypeResponseDTO.class,
+                    NotReadableBodyRequestResponseDTO.class}))})
     @ApiResponse(responseCode = "500", description = "Internal Server Error",
             content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
     public ResponseEntity<Void> upload(@Valid @RequestBody final List<ItemDTO> items,
@@ -67,7 +69,8 @@ public class ItemsRestController {
             content = {@Content(schema = @Schema(implementation = Void.class))})
     @ApiResponse(responseCode = "400", description = "Bad Request",
             content = {@Content(schema = @Schema(oneOf = {ValidationRequestErrorResponseDTO.class,
-                    InvalidArgumentTypeResponseDTO.class}))})
+                    InvalidArgumentTypeResponseDTO.class,
+                    NotReadableBodyRequestResponseDTO.class}))})
     @ApiResponse(responseCode = "500", description = "Internal Server Error",
             content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
     public ResponseEntity<Void> delete(@Valid @RequestBody final List<ItemDTO> items,

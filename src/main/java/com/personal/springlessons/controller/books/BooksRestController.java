@@ -9,6 +9,7 @@ import com.personal.springlessons.model.dto.response.GenericErrorResponseDTO;
 import com.personal.springlessons.model.dto.response.InvalidArgumentTypeResponseDTO;
 import com.personal.springlessons.model.dto.response.InvalidUUIDResponseDTO;
 import com.personal.springlessons.model.dto.response.MissingHttpRequestHeaderResponseDTO;
+import com.personal.springlessons.model.dto.response.NotReadableBodyRequestResponseDTO;
 import com.personal.springlessons.model.dto.response.ValidationRequestErrorResponseDTO;
 import com.personal.springlessons.model.lov.Channel;
 import com.personal.springlessons.service.BooksService;
@@ -100,7 +101,7 @@ public class BooksRestController {
     @ApiResponse(responseCode = "400", description = "Bad Request",
             content = {@Content(schema = @Schema(oneOf = {InvalidUUIDResponseDTO.class,
                     MissingHttpRequestHeaderResponseDTO.class, InvalidArgumentTypeResponseDTO.class,
-                    ValidationRequestErrorResponseDTO.class}))})
+                    ValidationRequestErrorResponseDTO.class, NotReadableBodyRequestResponseDTO.class}))})
     @ApiResponse(responseCode = "409", description = "Book already exists",
             content = {
                     @Content(schema = @Schema(implementation = DuplicatedBookResponseDTO.class))})
@@ -142,7 +143,7 @@ public class BooksRestController {
     @ApiResponse(responseCode = "400", description = "Bad Request",
             content = {@Content(schema = @Schema(oneOf = {InvalidUUIDResponseDTO.class,
                     MissingHttpRequestHeaderResponseDTO.class, InvalidArgumentTypeResponseDTO.class,
-                    ValidationRequestErrorResponseDTO.class}))})
+                    ValidationRequestErrorResponseDTO.class, NotReadableBodyRequestResponseDTO.class}))})
     @ApiResponse(responseCode = "404", description = "Not Found",
             content = {@Content(schema = @Schema(implementation = BookNotFoundResponseDTO.class))})
     @ApiResponse(responseCode = "409", description = "Conflict",
