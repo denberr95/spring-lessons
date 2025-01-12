@@ -84,6 +84,8 @@
     | books:save | | X | |
     | books:delete | | | X |
     | books:update | | X | |
+    | books:dowload | X | | |
+    | books:upload | | X | |
 
 - #### Scope Items API
 
@@ -103,6 +105,8 @@
     | books:save | X | | X |
     | books:delete | X | | |
     | books:update | X | | X |
+    | books:dowload | X | X | X |
+    | books:upload | X | | X |
 
 - #### Items API Mapping Scopes-Role
 
@@ -122,6 +126,8 @@
     | books:save | X | | X |
     | books:delete | X | | |
     | books:update | X | | X |
+    | books:download | X | X | X |
+    | books:upload | X | | X |
 
 - #### Scopes Items Client Applications
 
