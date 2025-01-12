@@ -214,7 +214,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"name\": \"Book Name\",\n\t\"numberOfPages\": 1,\n\t\"publicationDate\": \"9000-12-01\"\n}",
+									"raw": "{\n\t\"name\": \"Book Name\",\n\t\"numberOfPages\": 1,\n\t\"publicationDate\": \"9000-12-01\",\n\t\"genre\": \"Noir\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -303,7 +303,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"name\": \"Book Name\",\n\t\"numberOfPages\": 1,\n\t\"publicationDate\": \"9000-12-01\"\n}",
+									"raw": "{\n\t\"name\": \"Book Name\",\n\t\"numberOfPages\": 1,\n\t\"publicationDate\": \"9000-12-01\",\n\t\"genre\": \"Noir\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -327,6 +327,27 @@
 											"key": "id",
 											"value": ""
 										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Download",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:10000/spring-app/books/download",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "10000",
+									"path": [
+										"spring-app",
+										"books",
+										"download"
 									]
 								}
 							},
@@ -432,7 +453,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"name\": \"Book Name\",\n\t\"numberOfPages\": 1,\n\t\"publicationDate\": \"9000-12-01\"\n}",
+									"raw": "{\n\t\"name\": \"Book Name\",\n\t\"numberOfPages\": 1,\n\t\"publicationDate\": \"9000-12-01\",\n\t\"genre\": \"Noir\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -494,7 +515,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"name\": \"Book Name\",\n\t\"numberOfPages\": 1,\n\t\"publicationDate\": \"9000-12-01\"\n}",
+									"raw": "{\n\t\"name\": \"Book Name\",\n\t\"numberOfPages\": 1,\n\t\"publicationDate\": \"9000-12-01\",\n\t\"genre\": \"Noir\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -518,6 +539,27 @@
 											"key": "id",
 											"value": ""
 										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Download",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:10000/spring-app/books/download",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "10000",
+									"path": [
+										"spring-app",
+										"books",
+										"download"
 									]
 								}
 							},
@@ -637,6 +679,27 @@
 											"key": "id",
 											"value": ""
 										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Download",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:10000/spring-app/books/download",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "10000",
+									"path": [
+										"spring-app",
+										"books",
+										"download"
 									]
 								}
 							},
