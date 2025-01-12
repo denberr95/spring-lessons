@@ -11,6 +11,7 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
+import com.personal.springlessons.util.Constants;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -59,7 +60,7 @@ public class HttpServerLoggingFilter extends OncePerRequestFilter {
         log.info("Status Code: '{}'", response.getStatus());
         log.info("Headers: {}",
                 this.getHeadersAsString(response.getHeaderNames(), response::getHeader));
-        if (this.isMultipart(response.getContentType())) {
+        if (this.downloadedFile(response)) {
             this.logDownloadFile(response);
         } else {
             log.info("Body: '{}'", new String(response.getContentAsByteArray()));
@@ -72,6 +73,11 @@ public class HttpServerLoggingFilter extends OncePerRequestFilter {
         return contentType != null && contentType.startsWith(MediaType.MULTIPART_FORM_DATA_VALUE);
     }
 
+    private boolean downloadedFile(ContentCachingResponseWrapper response) {
+        return response.getHeader(HttpHeaders.CONTENT_DISPOSITION) != null
+                && response.getHeader(HttpHeaders.CONTENT_DISPOSITION).contains("attachment");
+    }
+
     private void logMultipartFiles(HttpServletRequest request)
             throws ServletException, IOException {
         for (Part p : request.getParts()) {
@@ -82,11 +88,9 @@ public class HttpServerLoggingFilter extends OncePerRequestFilter {
 
     private void logDownloadFile(ContentCachingResponseWrapper response) {
         String contentDisposition = response.getHeader(HttpHeaders.CONTENT_DISPOSITION);
-        if (contentDisposition != null && contentDisposition.contains("attachment")) {
-            String fileName = contentDisposition
-                    .substring(contentDisposition.indexOf("filename=") + 9).replace("\"", "");
-            log.info("Downloaded File Name: '{}'", fileName);
-        }
+        String fileName = contentDisposition.substring(contentDisposition.indexOf("filename=") + 9)
+                .replace(Constants.S_DOUBLE_QUOTE, Constants.S_EMPTY);
+        log.info("Downloaded File Name: '{}'", fileName);
     }
 
     private String getHeadersAsString(Collection<String> headerNames,

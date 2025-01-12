@@ -45,12 +45,14 @@ public final class Constants {
     public static final String S_VAL_3 = "3";
     public static final String S_VAL_9999_99 = "9999.99";
 
-    // Other
+    // Other Values
+    public static final String S_EMPTY = "";
+    public static final String S_DOT = ".";
+    public static final String S_DOUBLE_QUOTE = "\"";
+    public static final String S_CSV = "csv";
     public static final char C_SEMICOLON = ';';
     public static final char C_UNDERSCORE = '_';
-    public static final String S_DOT = ".";
     public static final char C_APOSTROPHE = '\'';
-    public static final String S_CSV = "csv";
 
     // File System Extension
     public static final String CSV_EXT = S_DOT + S_CSV;

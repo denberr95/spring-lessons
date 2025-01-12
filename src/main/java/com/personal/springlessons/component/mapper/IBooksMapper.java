@@ -1,6 +1,7 @@
 package com.personal.springlessons.component.mapper;
 
 import java.util.List;
+import com.personal.springlessons.model.csv.BookCsv;
 import com.personal.springlessons.model.dto.BookDTO;
 import com.personal.springlessons.model.entity.books.BooksEntity;
 import com.personal.springlessons.model.lov.Channel;
@@ -23,4 +24,7 @@ public interface IBooksMapper {
     @Mapping(target = "channel", source = "channel")
     BooksEntity update(BookDTO source, Channel channel, @MappingTarget BooksEntity target);
 
+    BookCsv mapCsv(BooksEntity bookEntity);
+
+    List<BookCsv> mapCsv(List<BooksEntity> bookEntity);
 }

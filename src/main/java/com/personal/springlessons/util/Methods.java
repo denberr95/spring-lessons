@@ -1,5 +1,9 @@
 package com.personal.springlessons.util;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
@@ -70,11 +74,48 @@ public final class Methods {
 
     public static String calculateETag(String id, OffsetDateTime lastModifiedTime)
             throws NoSuchAlgorithmException {
+        log.debug("Calculate ETag for id: '{}' and lastModifiedTime: '{}'", id, lastModifiedTime);
         String result = null;
         String baseString = "%s-%s".formatted(id, lastModifiedTime);
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         byte[] hash = digest.digest(baseString.getBytes());
-        result = "\"" + Base64.getEncoder().encodeToString(hash) + "\"";
+        result = Constants.S_DOUBLE_QUOTE + Base64.getEncoder().encodeToString(hash)
+                + Constants.S_DOUBLE_QUOTE;
+        log.debug("ETag calculated: '{}'", result);
         return result;
+    }
+
+    public static String createFile(String folder, String name, String fileExtension,
+            boolean useTimestamp) throws IOException {
+        log.debug("Create file with name: '{}', extension: '{}', timestamp: '{}'", name,
+                fileExtension, useTimestamp);
+        String fileName = generateFileName(name, fileExtension, useTimestamp);
+        Path filePath = createFilePath(folder, fileName);
+        String file = createFile(filePath);
+        log.debug("File created: '{}'", file);
+        return file;
+    }
+
+    public static String generateFileName(String name, String fileExtension, boolean useTimestamp) {
+        String result = null;
+        String tms = useTimestamp
+                ? Methods.dateTimeFormatter(Constants.S_DATE_TIME_FORMAT_1, LocalDateTime.now())
+                : null;
+        if (null == tms) {
+            result = name + fileExtension;
+        } else {
+            result = name + Constants.C_UNDERSCORE + tms + fileExtension;
+        }
+        return result;
+    }
+
+    private static Path createFilePath(String folder, String fileName) throws IOException {
+        Path filePath = Paths.get(folder, fileName);
+        Files.createDirectories(filePath.getParent());
+        return filePath;
+    }
+
+    private static String createFile(Path filePath) throws IOException {
+        return Files.createFile(filePath).toString();
     }
 }

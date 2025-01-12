@@ -2,6 +2,7 @@ package com.personal.springlessons.component.interceptor;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import com.personal.springlessons.util.Constants;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.MediaType;
@@ -63,9 +64,11 @@ public class HttpClientInterceptor implements ClientHttpRequestInterceptor {
     private void logMultipartDetails(HttpHeaders headers) {
         headers.forEach((headerName, headerValues) -> {
             if (HttpHeaders.CONTENT_DISPOSITION.equalsIgnoreCase(headerName)) {
-                String fileName = headerValues.stream().filter(value -> value.contains("filename"))
-                        .map(value -> value.split("filename=")[1].replace("\"", "")).findFirst()
-                        .orElse("Unknown Filename");
+                String fileName =
+                        headerValues.stream().filter(value -> value.contains("filename"))
+                                .map(value -> value.split("filename=")[1]
+                                        .replace(Constants.S_DOUBLE_QUOTE, ""))
+                                .findFirst().orElse("Unknown Filename");
                 log.info("File Name: '{}'", fileName);
             }
         });

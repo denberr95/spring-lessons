@@ -1,12 +1,7 @@
 package com.personal.springlessons.component.event;
 
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.Writer;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.LocalDateTime;
 import java.util.List;
 import com.opencsv.bean.HeaderColumnNameMappingStrategy;
 import com.opencsv.bean.StatefulBeanToCsv;
@@ -32,7 +27,10 @@ public class DuplicatedBarcodeEvent {
     @EventListener
     public void duplicatedBarcodeHandler(DiscardedItemCsv discardedItemCsv) throws Exception {
         log.info("Received event for duplicated barcode: '{}'", discardedItemCsv.getBarcode());
-        String file = this.createFile(discardedItemCsv);
+        String baseName = discardedItemCsv.getIdOrderItems() + Constants.C_UNDERSCORE
+                + discardedItemCsv.getBarcode();
+        String file = Methods.createFile(this.appPropertiesConfig.getCsvMetadata().getCsvDir(),
+                baseName, Constants.CSV_EXT, true);
         try (Writer writer = new FileWriter(file)) {
             HeaderColumnNameMappingStrategy<DiscardedItemCsv> strategy =
                     new HeaderColumnNameMappingStrategy<>();
@@ -47,14 +45,5 @@ public class DuplicatedBarcodeEvent {
             beanToCsv.write(List.of(discardedItemCsv));
         }
         log.info("Event handled and wrote csv: '{}'", file);
-    }
-
-    private String createFile(DiscardedItemCsv discardedItemCsv) throws IOException {
-        String tms = Methods.dateTimeFormatter(Constants.S_DATE_TIME_FORMAT_1, LocalDateTime.now());
-        String fileName = discardedItemCsv.getIdOrderItems() + Constants.C_UNDERSCORE
-                + discardedItemCsv.getBarcode() + Constants.C_UNDERSCORE + tms + Constants.CSV_EXT;
-        Path filePath = Paths.get(this.appPropertiesConfig.getCsvMetadata().getCsvDir(), fileName);
-        Files.createDirectories(filePath.getParent());
-        return Files.createFile(filePath).toString();
     }
 }

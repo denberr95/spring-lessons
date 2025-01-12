@@ -3,6 +3,7 @@ package com.personal.springlessons.controller.books;
 import java.util.List;
 import jakarta.validation.Valid;
 import com.personal.springlessons.model.dto.BookDTO;
+import com.personal.springlessons.model.dto.DownloadBooksDTO;
 import com.personal.springlessons.model.dto.response.BookNotFoundResponseDTO;
 import com.personal.springlessons.model.dto.response.DuplicatedBookResponseDTO;
 import com.personal.springlessons.model.dto.response.GenericErrorResponseDTO;
@@ -13,6 +14,8 @@ import com.personal.springlessons.model.dto.response.NotReadableBodyRequestRespo
 import com.personal.springlessons.model.dto.response.ValidationRequestErrorResponseDTO;
 import com.personal.springlessons.model.lov.Channel;
 import com.personal.springlessons.service.BooksService;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -101,7 +104,8 @@ public class BooksRestController {
     @ApiResponse(responseCode = "400", description = "Bad Request",
             content = {@Content(schema = @Schema(oneOf = {InvalidUUIDResponseDTO.class,
                     MissingHttpRequestHeaderResponseDTO.class, InvalidArgumentTypeResponseDTO.class,
-                    ValidationRequestErrorResponseDTO.class, NotReadableBodyRequestResponseDTO.class}))})
+                    ValidationRequestErrorResponseDTO.class,
+                    NotReadableBodyRequestResponseDTO.class}))})
     @ApiResponse(responseCode = "409", description = "Book already exists",
             content = {
                     @Content(schema = @Schema(implementation = DuplicatedBookResponseDTO.class))})
@@ -143,7 +147,8 @@ public class BooksRestController {
     @ApiResponse(responseCode = "400", description = "Bad Request",
             content = {@Content(schema = @Schema(oneOf = {InvalidUUIDResponseDTO.class,
                     MissingHttpRequestHeaderResponseDTO.class, InvalidArgumentTypeResponseDTO.class,
-                    ValidationRequestErrorResponseDTO.class, NotReadableBodyRequestResponseDTO.class}))})
+                    ValidationRequestErrorResponseDTO.class,
+                    NotReadableBodyRequestResponseDTO.class}))})
     @ApiResponse(responseCode = "404", description = "Not Found",
             content = {@Content(schema = @Schema(implementation = BookNotFoundResponseDTO.class))})
     @ApiResponse(responseCode = "409", description = "Conflict",
@@ -157,5 +162,25 @@ public class BooksRestController {
         BookDTO result = this.bookService.update(id, bookDTO, channel);
         log.info("Book '{}' updated !", id);
         return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+    @NewSpan
+    @GetMapping(path = "download")
+    @PreAuthorize(value = "hasAuthority('SCOPE_books:download')")
+    @Operation(summary = "Download books in a csv file", operationId = "downloadBooks")
+    @ApiResponse(responseCode = "200", description = "OK",
+            content = {@Content(schema = @Schema(implementation = byte.class),
+                    mediaType = MediaType.APPLICATION_OCTET_STREAM_VALUE)})
+    @ApiResponse(responseCode = "500", description = "Internal Server Error",
+            content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class),
+                    mediaType = MediaType.APPLICATION_JSON_VALUE)})
+    public ResponseEntity<byte[]> download() {
+        log.info("Called API to download books");
+        DownloadBooksDTO result = this.bookService.download();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentDisposition(
+                ContentDisposition.builder("attachment").filename(result.getFileName()).build());
+        log.info("Books csv file '{}' created !", result.getFileName());
+        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(result.getContent());
     }
 }

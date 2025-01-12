@@ -41,7 +41,8 @@ class MethodsTest {
         String baseString = "%s-%s".formatted(id, lastModifiedTime);
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         byte[] hash = digest.digest(baseString.getBytes());
-        String expectedETag = "\"" + Base64.getEncoder().encodeToString(hash) + "\"";
+        String expectedETag = Constants.S_DOUBLE_QUOTE + Base64.getEncoder().encodeToString(hash)
+                + Constants.S_DOUBLE_QUOTE;
 
         String actualETag = Methods.calculateETag(id, lastModifiedTime);
 

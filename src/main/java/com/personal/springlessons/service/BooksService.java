@@ -1,10 +1,20 @@
 package com.personal.springlessons.service;
 
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.List;
+import com.opencsv.bean.HeaderColumnNameMappingStrategy;
+import com.opencsv.bean.StatefulBeanToCsv;
+import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import com.personal.springlessons.component.mapper.IBooksMapper;
+import com.personal.springlessons.config.AppPropertiesConfig;
 import com.personal.springlessons.exception.BookNotFoundException;
 import com.personal.springlessons.exception.DuplicatedBookException;
+import com.personal.springlessons.exception.SpringLessonsApplicationException;
+import com.personal.springlessons.model.csv.BookCsv;
 import com.personal.springlessons.model.dto.BookDTO;
+import com.personal.springlessons.model.dto.DownloadBooksDTO;
 import com.personal.springlessons.model.entity.books.BooksEntity;
 import com.personal.springlessons.model.lov.Channel;
 import com.personal.springlessons.repository.IBooksRepository;
@@ -20,6 +30,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class BooksService {
 
+    private final AppPropertiesConfig appPropertiesConfig;
     private final IBooksRepository bookRepository;
     private final IBooksMapper bookMapper;
     private final Tracer tracer;
@@ -80,5 +91,30 @@ public class BooksService {
         Span currentSpan = this.tracer.currentSpan();
         currentSpan.event("Book updated");
         return this.bookMapper.mapDTO(bookEntity);
+    }
+
+    @NewSpan
+    public DownloadBooksDTO download() {
+        DownloadBooksDTO result = new DownloadBooksDTO();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        try (Writer writer = new OutputStreamWriter(byteArrayOutputStream)) {
+            List<BooksEntity> dbData = this.bookRepository.findAll();
+            List<BookCsv> csvData = this.bookMapper.mapCsv(dbData);
+            String file = Methods.generateFileName("books", Constants.CSV_EXT, true);
+            HeaderColumnNameMappingStrategy<BookCsv> strategy =
+                    new HeaderColumnNameMappingStrategy<>();
+            strategy.setType(BookCsv.class);
+            StatefulBeanToCsv<BookCsv> beanToCsv = new StatefulBeanToCsvBuilder<BookCsv>(writer)
+                    .withSeparator(this.appPropertiesConfig.getCsvMetadata().getColumnSeparator())
+                    .withQuotechar(this.appPropertiesConfig.getCsvMetadata().getQuoteCharacter())
+                    .withMappingStrategy(strategy).build();
+            beanToCsv.write(csvData);
+            writer.flush();
+            result.setFileName(file);
+            result.setContent(byteArrayOutputStream.toByteArray());
+        } catch (Exception e) {
+            throw new SpringLessonsApplicationException(e);
+        }
+        return result;
     }
 }
