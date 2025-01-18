@@ -10,21 +10,24 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 
-@Mapper(config = ICustomMapperConfig.class)
+@Mapper(config = ICustomMapperConfig.class, uses = MappingUtils.class)
 public interface IBooksMapper {
 
     IBooksMapper INSTANCE = Mappers.getMapper(IBooksMapper.class);
 
-    BookDTO mapDTO(BooksEntity bookEntity);
+    BooksEntity mapEntity(BookDTO source, Channel channel);
 
-    List<BookDTO> mapDTO(List<BooksEntity> bookEntity);
+    BookDTO mapDTO(BooksEntity source);
 
-    BooksEntity mapEntity(BookDTO bookDTO, Channel channel);
+    List<BookDTO> mapDTO(List<BooksEntity> source);
 
-    @Mapping(target = "channel", source = "channel")
+    @Mapping(source = "channel", target = "channel")
     BooksEntity update(BookDTO source, Channel channel, @MappingTarget BooksEntity target);
 
-    BookCsv mapCsv(BooksEntity bookEntity);
+    List<BookCsv> mapCsv(List<BooksEntity> source);
 
-    List<BookCsv> mapCsv(List<BooksEntity> bookEntity);
+    @Mapping(target = "publicationDate", qualifiedByName = "stringToLocalDate")
+    @Mapping(target = "numberOfPages", qualifiedByName = "stringToInteger")
+    @Mapping(target = "genre", qualifiedByName = "stringToGenre")
+    BookDTO mapDTO(BookCsv source);
 }

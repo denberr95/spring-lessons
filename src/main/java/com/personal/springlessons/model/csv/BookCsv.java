@@ -1,28 +1,20 @@
 package com.personal.springlessons.model.csv;
 
-import java.time.LocalDate;
 import com.opencsv.bean.CsvBindByName;
-import com.personal.springlessons.model.lov.Genre;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class BookCsv {
 
-    @CsvBindByName
+    @CsvBindByName(column = "name")
     private String name;
 
-    @CsvBindByName
-    private Integer numberOfPages;
+    @CsvBindByName(column = "number_of_pages")
+    private String numberOfPages;
 
-    @CsvBindByName
-    private LocalDate publicationDate;
+    @CsvBindByName(column = "publication_date")
+    private String publicationDate;
 
-    @CsvBindByName
-    private Genre genre;
+    @CsvBindByName(column = "genre")
+    private String genre;
 }

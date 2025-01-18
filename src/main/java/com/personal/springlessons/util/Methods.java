@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Base64;
+import java.util.List;
 import java.util.UUID;
 import com.personal.springlessons.exception.InvalidUUIDException;
 import com.personal.springlessons.model.lov.DomainCategory;
@@ -106,6 +107,19 @@ public final class Methods {
         } else {
             result = name + Constants.C_UNDERSCORE + tms + fileExtension;
         }
+        return result;
+    }
+
+    public static boolean isValidFileType(String fileName, List<String> fileTypes) {
+        log.debug("Check if file: '{}' is valid respect to available file types: '{}'", fileName, fileTypes);
+        boolean result = false;
+        for (String fileType : fileTypes) {
+            if (fileName.endsWith(fileType)) {
+                result = true;
+                break;
+            }
+        }
+        log.debug("File is valid: '{}'", result);
         return result;
     }
 

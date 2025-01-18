@@ -29,6 +29,9 @@ public final class AppPropertiesConfig {
         private String csvDir;
         private char columnSeparator = Constants.C_SEMICOLON;
         private char quoteCharacter = Constants.C_APOSTROPHE;
+        private boolean ignoreEmptyLines = true;
+        private boolean strictQuote = true;
+        private boolean applyAllQuotes = false;
     }
 
     @Data

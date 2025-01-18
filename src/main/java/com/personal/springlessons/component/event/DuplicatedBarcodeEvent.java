@@ -3,7 +3,6 @@ package com.personal.springlessons.component.event;
 import java.io.FileWriter;
 import java.io.Writer;
 import java.util.List;
-import com.opencsv.bean.HeaderColumnNameMappingStrategy;
 import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import com.personal.springlessons.config.AppPropertiesConfig;
@@ -32,16 +31,16 @@ public class DuplicatedBarcodeEvent {
         String file = Methods.createFile(this.appPropertiesConfig.getCsvMetadata().getCsvDir(),
                 baseName, Constants.CSV_EXT, true);
         try (Writer writer = new FileWriter(file)) {
-            HeaderColumnNameMappingStrategy<DiscardedItemCsv> strategy =
-                    new HeaderColumnNameMappingStrategy<>();
-            strategy.setType(DiscardedItemCsv.class);
             StatefulBeanToCsv<DiscardedItemCsv> beanToCsv =
                     new StatefulBeanToCsvBuilder<DiscardedItemCsv>(writer)
+                            .withOrderedResults(true)
+                            .withApplyQuotesToAll(this.appPropertiesConfig.getCsvMetadata().isApplyAllQuotes())
+                            .withLineEnd(System.lineSeparator())
                             .withSeparator(
                                     this.appPropertiesConfig.getCsvMetadata().getColumnSeparator())
                             .withQuotechar(
                                     this.appPropertiesConfig.getCsvMetadata().getQuoteCharacter())
-                            .withMappingStrategy(strategy).build();
+                            .build();
             beanToCsv.write(List.of(discardedItemCsv));
         }
         log.info("Event handled and wrote csv: '{}'", file);

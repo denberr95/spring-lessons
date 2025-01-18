@@ -8,9 +8,13 @@ public final class Constants {
     }
 
     // Span Key Tag
+    public static final String SPAN_KEY_FILE_NAME = "file.name";
     public static final String SPAN_KEY_TOTAL_ORDERS = "total.orders";
     public static final String SPAN_KEY_TOTAL_ITEMS = "total.items";
     public static final String SPAN_KEY_TOTAL_BOOKS = "total.books";
+    public static final String SPAN_KEY_TOTAL_ROWS = "total.rows";
+    public static final String SPAN_KEY_TOTAL_INVALID_ROWS = "total.invalid.rows";
+    public static final String SPAN_KEY_BOOKS_NAME = "books.name";
     public static final String SPAN_KEY_OPERATION_TYPE = "operation.type";
     public static final String SPAN_KEY_BARCODE = "barcode";
     public static final String SPAN_KEY_NUMBER_ITEMS_TO_UPLOAD = "number.items.to.upload";
@@ -59,4 +63,5 @@ public final class Constants {
 
     // Date Time Format
     public static final String S_DATE_TIME_FORMAT_1 = "yyyyMMddHHmmss";
+    public static final String S_DATE_FORMAT_1 = "yyyy-MM-dd";
 }

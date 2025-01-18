@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class DownloadBooksDTO {
+public class DownloadFileDTO {
     
     private String fileName;
 

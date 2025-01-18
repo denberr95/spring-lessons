@@ -82,6 +82,7 @@ public class HttpServerLoggingFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         for (Part p : request.getParts()) {
             log.info("Uploaded File Name: '{}'", p.getSubmittedFileName());
+            log.info("File Size: '{}'", p.getSize());
             log.info("Content Type: '{}'", p.getContentType());
         }
     }

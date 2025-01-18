@@ -3,11 +3,13 @@ package com.personal.springlessons.controller.books;
 import java.util.List;
 import jakarta.validation.Valid;
 import com.personal.springlessons.model.dto.BookDTO;
-import com.personal.springlessons.model.dto.DownloadBooksDTO;
+import com.personal.springlessons.model.dto.DownloadFileDTO;
 import com.personal.springlessons.model.dto.response.BookNotFoundResponseDTO;
 import com.personal.springlessons.model.dto.response.DuplicatedBookResponseDTO;
 import com.personal.springlessons.model.dto.response.GenericErrorResponseDTO;
 import com.personal.springlessons.model.dto.response.InvalidArgumentTypeResponseDTO;
+import com.personal.springlessons.model.dto.response.InvalidCSVContentResponseDTO;
+import com.personal.springlessons.model.dto.response.InvalidFileTypeResponseDTO;
 import com.personal.springlessons.model.dto.response.InvalidUUIDResponseDTO;
 import com.personal.springlessons.model.dto.response.MissingHttpRequestHeaderResponseDTO;
 import com.personal.springlessons.model.dto.response.NotReadableBodyRequestResponseDTO;
@@ -29,7 +31,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import io.micrometer.tracing.annotation.NewSpan;
 import io.micrometer.tracing.annotation.SpanTag;
 import io.swagger.v3.oas.annotations.Operation;
@@ -176,11 +180,31 @@ public class BooksRestController {
                     mediaType = MediaType.APPLICATION_JSON_VALUE)})
     public ResponseEntity<byte[]> download() {
         log.info("Called API to download books");
-        DownloadBooksDTO result = this.bookService.download();
+        DownloadFileDTO result = this.bookService.download();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentDisposition(
                 ContentDisposition.builder("attachment").filename(result.getFileName()).build());
         log.info("Books csv file '{}' created !", result.getFileName());
         return ResponseEntity.status(HttpStatus.OK).headers(headers).body(result.getContent());
+    }
+
+    @NewSpan
+    @PostMapping(path = "upload", produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize(value = "hasAuthority('SCOPE_books:upload')")
+    @Operation(summary = "Upload books from a csv file", operationId = "uploadBooks")
+    @ApiResponse(responseCode = "204", description = "No Content",
+            content = {@Content(schema = @Schema(implementation = Void.class))})
+    @ApiResponse(responseCode = "400", description = "Bad Request",
+            content = {@Content(schema = @Schema(oneOf = {InvalidFileTypeResponseDTO.class,
+                    InvalidCSVContentResponseDTO.class}))})
+    @ApiResponse(responseCode = "500", description = "Internal Server Error",
+            content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
+    public ResponseEntity<Void> upload(@RequestHeader final Channel channel,
+            @RequestPart(name = "file") MultipartFile multipartFile) {
+        log.info("Called API to upload csv books: '{}'", multipartFile.getOriginalFilename());
+        this.bookService.upload(channel, multipartFile);
+        log.info("Upload csv file: '{}' completed |", multipartFile.getOriginalFilename());
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

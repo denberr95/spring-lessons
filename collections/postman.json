@@ -333,6 +333,43 @@
 							"response": []
 						},
 						{
+							"name": "Upload",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "channel",
+										"value": "Postman",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": []
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:10000/spring-app/books/upload",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "10000",
+									"path": [
+										"spring-app",
+										"books",
+										"upload"
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "Download",
 							"request": {
 								"method": "GET",
@@ -560,6 +597,43 @@
 										"spring-app",
 										"books",
 										"download"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Upload",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "channel",
+										"value": "Postman",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": []
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:10000/spring-app/books/upload",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "10000",
+									"path": [
+										"spring-app",
+										"books",
+										"upload"
 									]
 								}
 							},
