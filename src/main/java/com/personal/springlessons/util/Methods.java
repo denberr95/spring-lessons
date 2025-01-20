@@ -4,12 +4,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 import com.personal.springlessons.exception.InvalidUUIDException;
@@ -71,19 +67,6 @@ public final class Methods {
 
     public static String getApplicationVersion(GitProperties gitProperties) {
         return "v%s".formatted(gitProperties.get("build.version"));
-    }
-
-    public static String calculateETag(String id, OffsetDateTime lastModifiedTime)
-            throws NoSuchAlgorithmException {
-        log.debug("Calculate ETag for id: '{}' and lastModifiedTime: '{}'", id, lastModifiedTime);
-        String result = null;
-        String baseString = "%s-%s".formatted(id, lastModifiedTime);
-        MessageDigest digest = MessageDigest.getInstance("SHA-256");
-        byte[] hash = digest.digest(baseString.getBytes());
-        result = Constants.S_DOUBLE_QUOTE + Base64.getEncoder().encodeToString(hash)
-                + Constants.S_DOUBLE_QUOTE;
-        log.debug("ETag calculated: '{}'", result);
-        return result;
     }
 
     public static String createFile(String folder, String name, String fileExtension,
