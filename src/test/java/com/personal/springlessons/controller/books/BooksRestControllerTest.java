@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.time.LocalDate;
 import java.util.Map;
 import java.util.UUID;
@@ -11,6 +12,8 @@ import java.util.stream.Collectors;
 import com.personal.springlessons.model.dto.BookDTO;
 import com.personal.springlessons.model.dto.response.BookNotFoundResponseDTO;
 import com.personal.springlessons.model.dto.response.DuplicatedBookResponseDTO;
+import com.personal.springlessons.model.dto.response.InvalidCSVContentResponseDTO;
+import com.personal.springlessons.model.dto.response.InvalidFileTypeResponseDTO;
 import com.personal.springlessons.model.dto.response.InvalidUUIDResponseDTO;
 import com.personal.springlessons.model.lov.Channel;
 import com.personal.springlessons.model.lov.DomainCategory;
@@ -24,6 +27,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -64,19 +68,25 @@ class BooksRestControllerTest {
     @Value("${test.access.grant-type}")
     private String grantType;
 
+    @Value("classpath:books/valid-file-content.csv")
+    private Resource validFileContent;
+
+    @Value("classpath:books/invalid-file-content.csv")
+    private Resource invalidFileContent;
+
+    @Value("classpath:books/invalid-file-type.txt")
+    private Resource invalidFileType;
+
+    private UUID fakeId = UUID.randomUUID();
+    private String downloadUrl;
+    private String uploadUrl;
+    private String baseUrl;
+    private String resourceUrl;
+    private String fakeResourceUrl;
     private String validToken;
-
     private String invalidToken;
-
     private RestClient restClient;
-
-    UUID fakeId = UUID.randomUUID();
-
     private static final int TOTAL = 5;
-
-    private String buildUrl(String path) {
-        return String.format("%s%s", this.basePath, path);
-    }
 
     private String retrieveAccessToken(String clientId, String clientSecret) {
         this.restClient = RestClient.builder().baseUrl(this.idpUrl).build();
@@ -118,6 +128,11 @@ class BooksRestControllerTest {
                 this.clientSecretFullPermission);
         this.invalidToken =
                 this.retrieveAccessToken(this.clientIdNoPermission, this.clientSecretNoPermission);
+        this.downloadUrl = this.basePath + "/books/download";
+        this.uploadUrl = this.basePath + "/books/upload";
+        this.baseUrl = this.basePath + "/books";
+        this.resourceUrl = this.basePath + "/books/%s";
+        this.fakeResourceUrl = String.format(this.resourceUrl, this.fakeId);
     }
 
     @AfterEach
@@ -138,28 +153,36 @@ class BooksRestControllerTest {
         bookRequest.setGenre(Genre.NA);
 
         HttpHeaders httpHeaders = this.retrieveHttpHeaders(this.invalidToken);
-        HttpEntity<BookDTO> httpEntity = new HttpEntity<>(bookRequest, httpHeaders);
-        String urlBase = this.buildUrl("/books");
-        String urlWithResource = this.buildUrl("/books/" + this.fakeId);
+        LinkedMultiValueMap<String, Object> parameters = new LinkedMultiValueMap<String, Object>();
+        parameters.add("file", this.validFileContent);
 
-        response = this.testRestTemplate.exchange(urlBase, HttpMethod.GET,
+        response = this.testRestTemplate.exchange(this.baseUrl, HttpMethod.GET,
                 new HttpEntity<>(httpHeaders), Object.class);
         assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
 
-        response =
-                this.testRestTemplate.exchange(urlBase, HttpMethod.POST, httpEntity, Object.class);
+        response = this.testRestTemplate.exchange(this.baseUrl, HttpMethod.POST,
+                new HttpEntity<>(bookRequest, httpHeaders), Object.class);
         assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
 
-        response = this.testRestTemplate.exchange(urlWithResource, HttpMethod.DELETE, httpEntity,
-                Object.class);
+        response = this.testRestTemplate.exchange(this.fakeResourceUrl, HttpMethod.DELETE,
+                new HttpEntity<>(bookRequest, httpHeaders), Object.class);
         assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
 
-        response = this.testRestTemplate.exchange(urlWithResource, HttpMethod.GET,
+        response = this.testRestTemplate.exchange(this.fakeResourceUrl, HttpMethod.GET,
                 new HttpEntity<>(httpHeaders), Object.class);
         assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
 
-        response = this.testRestTemplate.exchange(urlWithResource, HttpMethod.PUT, httpEntity,
-                Object.class);
+        response = this.testRestTemplate.exchange(this.fakeResourceUrl, HttpMethod.PUT,
+                new HttpEntity<>(bookRequest, httpHeaders), Object.class);
+        assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
+
+        response = this.testRestTemplate.exchange(this.downloadUrl, HttpMethod.GET,
+                new HttpEntity<>(httpHeaders), Object.class);
+        assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
+
+        httpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
+        response = this.testRestTemplate.exchange(this.uploadUrl, HttpMethod.POST,
+                new HttpEntity<>(parameters, httpHeaders), Object.class);
         assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
     }
 
@@ -175,38 +198,42 @@ class BooksRestControllerTest {
 
         HttpHeaders httpHeaders = this.retrieveHttpHeaders(null);
         HttpEntity<BookDTO> httpEntity = new HttpEntity<>(bookRequest, httpHeaders);
-        String urlBase = this.buildUrl("/books");
-        String urlWithResource = this.buildUrl("/books/" + this.fakeId);
 
-        response = this.testRestTemplate.exchange(urlBase, HttpMethod.GET, null, Object.class);
+        response = this.testRestTemplate.exchange(this.baseUrl, HttpMethod.GET, null, Object.class);
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
 
-        response =
-                this.testRestTemplate.exchange(urlBase, HttpMethod.POST, httpEntity, Object.class);
-        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
-
-        response = this.testRestTemplate.exchange(urlWithResource, HttpMethod.DELETE, httpEntity,
+        response = this.testRestTemplate.exchange(this.baseUrl, HttpMethod.POST, httpEntity,
                 Object.class);
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
 
-        response =
-                this.testRestTemplate.exchange(urlWithResource, HttpMethod.GET, null, Object.class);
+        response = this.testRestTemplate.exchange(this.fakeResourceUrl, HttpMethod.DELETE,
+                httpEntity, Object.class);
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
 
-        response = this.testRestTemplate.exchange(urlWithResource, HttpMethod.PUT, httpEntity,
+        response = this.testRestTemplate.exchange(this.fakeResourceUrl, HttpMethod.GET, null,
                 Object.class);
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+
+        response = this.testRestTemplate.exchange(this.fakeResourceUrl, HttpMethod.PUT, httpEntity,
+                Object.class);
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+
+        response = this.testRestTemplate.exchange(this.downloadUrl, HttpMethod.GET,
+                new HttpEntity<>(httpHeaders), Object.class);
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+
+        response = this.testRestTemplate.exchange(this.uploadUrl, HttpMethod.POST,
+                new HttpEntity<>(httpHeaders), Object.class);
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
     }
 
     @Test
     void givenBooks_whenGetAll_thenBooksAreReturned() {
-        String url = this.buildUrl("/books");
-
         HttpEntity<HttpHeaders> httpEntity =
                 new HttpEntity<>(this.retrieveHttpHeaders(this.validToken));
 
-        ResponseEntity<BookDTO[]> response =
-                this.testRestTemplate.exchange(url, HttpMethod.GET, httpEntity, BookDTO[].class);
+        ResponseEntity<BookDTO[]> response = this.testRestTemplate.exchange(this.baseUrl,
+                HttpMethod.GET, httpEntity, BookDTO[].class);
         assertNotNull(response.getBody());
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(TOTAL, response.getBody().length);
@@ -221,21 +248,18 @@ class BooksRestControllerTest {
 
     @Test
     void givenEmptyCollection_whenGetAll_thenNoContent() {
-        String url = this.buildUrl("/books");
         this.tearDown();
-
         HttpEntity<HttpHeaders> httpEntity =
                 new HttpEntity<>(this.retrieveHttpHeaders(this.validToken));
-        ResponseEntity<Void> response =
-                this.testRestTemplate.exchange(url, HttpMethod.GET, httpEntity, Void.class);
+        ResponseEntity<Void> response = this.testRestTemplate.exchange(this.baseUrl, HttpMethod.GET,
+                httpEntity, Void.class);
         assertNull(response.getBody());
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
     }
 
     @Test
     void givenExistingId_whenGetById_thenBookAreReturned() {
-        String url = String.format("%s/books/%s", this.basePath,
-                this.bookService.getAll().get(0).getId());
+        String url = String.format(this.resourceUrl, this.bookService.getAll().get(0).getId());
         HttpEntity<HttpHeaders> httpEntity =
                 new HttpEntity<>(this.retrieveHttpHeaders(this.validToken));
         ResponseEntity<BookDTO> response =
@@ -251,7 +275,7 @@ class BooksRestControllerTest {
 
     @Test
     void givenNonExistingId_whenGetById_thenReturnBookNotFound() {
-        String url = String.format("%s/books/%s", this.basePath, UUID.randomUUID().toString());
+        String url = String.format(this.resourceUrl, UUID.randomUUID().toString());
         HttpEntity<HttpHeaders> httpEntity =
                 new HttpEntity<>(this.retrieveHttpHeaders(this.validToken));
         ResponseEntity<BookNotFoundResponseDTO> response = this.testRestTemplate.exchange(url,
@@ -267,8 +291,7 @@ class BooksRestControllerTest {
 
     @Test
     void givenInvalidId_whenGetById_thenReturnInvalidUUID() {
-        String url = this.buildUrl("/books/getFakeId");
-
+        String url = String.format(this.resourceUrl, "getFakeId");
         HttpEntity<HttpHeaders> httpEntity =
                 new HttpEntity<>(this.retrieveHttpHeaders(this.validToken));
 
@@ -286,7 +309,6 @@ class BooksRestControllerTest {
 
     @Test
     void givenNewBook_whenSave_thenBookIsCreated() {
-        String url = this.buildUrl("/books");
         BookDTO bookRequest = new BookDTO();
         bookRequest.setName("Controller-Book-Name-" + TOTAL);
         bookRequest.setNumberOfPages(1);
@@ -296,8 +318,8 @@ class BooksRestControllerTest {
         HttpEntity<BookDTO> httpEntity =
                 new HttpEntity<>(bookRequest, this.retrieveHttpHeaders(this.validToken));
 
-        ResponseEntity<BookDTO> response =
-                this.testRestTemplate.exchange(url, HttpMethod.POST, httpEntity, BookDTO.class);
+        ResponseEntity<BookDTO> response = this.testRestTemplate.exchange(this.baseUrl,
+                HttpMethod.POST, httpEntity, BookDTO.class);
         assertNotNull(response.getBody());
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         BookDTO bookDTO = response.getBody();
@@ -309,7 +331,6 @@ class BooksRestControllerTest {
 
     @Test
     void givenExistingBook_whenSave_thenReturnDuplicatedBook() {
-        String url = this.buildUrl("/books");
         BookDTO bookRequest = new BookDTO();
         bookRequest.setName("Controller-Book-Name-Duplicated");
         bookRequest.setNumberOfPages(1);
@@ -319,8 +340,8 @@ class BooksRestControllerTest {
         HttpEntity<BookDTO> httpEntity =
                 new HttpEntity<>(bookRequest, this.retrieveHttpHeaders(this.validToken));
 
-        ResponseEntity<BookDTO> firstResponse =
-                this.testRestTemplate.exchange(url, HttpMethod.POST, httpEntity, BookDTO.class);
+        ResponseEntity<BookDTO> firstResponse = this.testRestTemplate.exchange(this.baseUrl,
+                HttpMethod.POST, httpEntity, BookDTO.class);
         assertNotNull(firstResponse.getBody());
         assertEquals(HttpStatus.CREATED, firstResponse.getStatusCode());
         BookDTO bookDTO = firstResponse.getBody();
@@ -329,8 +350,8 @@ class BooksRestControllerTest {
         assertNotNull(bookDTO.getPublicationDate());
         assertThat(bookDTO.getNumberOfPages()).isPositive();
 
-        ResponseEntity<DuplicatedBookResponseDTO> secondResponse = this.testRestTemplate
-                .exchange(url, HttpMethod.POST, httpEntity, DuplicatedBookResponseDTO.class);
+        ResponseEntity<DuplicatedBookResponseDTO> secondResponse = this.testRestTemplate.exchange(
+                this.baseUrl, HttpMethod.POST, httpEntity, DuplicatedBookResponseDTO.class);
         assertNotNull(secondResponse.getBody());
         assertEquals(HttpStatus.CONFLICT, secondResponse.getStatusCode());
         DuplicatedBookResponseDTO responseDTO = secondResponse.getBody();
@@ -343,9 +364,7 @@ class BooksRestControllerTest {
 
     @Test
     void givenExistingId_whenDelete_thenBookIsDeleted() {
-        String url = String.format("%s/books/%s", this.basePath,
-                this.bookService.getAll().get(0).getId());
-
+        String url = String.format(this.resourceUrl, this.bookService.getAll().get(0).getId());
         HttpEntity<HttpHeaders> httpEntity =
                 new HttpEntity<>(this.retrieveHttpHeaders(this.validToken));
         ResponseEntity<Void> response =
@@ -356,11 +375,9 @@ class BooksRestControllerTest {
 
     @Test
     void givenInvalidId_whenDelete_thenReturnInvalidUUID() {
-        String url = this.buildUrl("/books/deleteFakeId");
-
+        String url = String.format(this.resourceUrl, "deleteFakeId");
         HttpEntity<HttpHeaders> httpEntity =
                 new HttpEntity<>(this.retrieveHttpHeaders(this.validToken));
-
         ResponseEntity<InvalidUUIDResponseDTO> response = this.testRestTemplate.exchange(url,
                 HttpMethod.DELETE, httpEntity, InvalidUUIDResponseDTO.class);
         InvalidUUIDResponseDTO responseDTO = response.getBody();
@@ -376,15 +393,13 @@ class BooksRestControllerTest {
     @Test
     void givenExistingId_whenUpdate_thenBookIsUpdated() {
         BookDTO bookOld = this.bookService.getAll().get(0);
-        String url = this.buildUrl("/books/" + bookOld.getId());
+        String url = String.format(this.resourceUrl, bookOld.getId());
         bookOld.setName("Controller-Book-Name-0");
         bookOld.setNumberOfPages(10);
         bookOld.setPublicationDate(LocalDate.now());
         bookOld.setGenre(Genre.NA);
-
         HttpEntity<BookDTO> httpEntity =
                 new HttpEntity<>(bookOld, this.retrieveHttpHeaders(this.validToken));
-
         ResponseEntity<BookDTO> response =
                 this.testRestTemplate.exchange(url, HttpMethod.PUT, httpEntity, BookDTO.class);
         BookDTO bookNew = response.getBody();
@@ -395,18 +410,15 @@ class BooksRestControllerTest {
 
     @Test
     void givenNonExistingId_whenUpdate_thenReturnBookNotFound() {
-        String url = this.buildUrl("/books/" + this.fakeId);
         BookDTO bookRequest = new BookDTO();
         bookRequest.setName("Controller-Book-Name-" + TOTAL);
         bookRequest.setNumberOfPages(1);
         bookRequest.setPublicationDate(LocalDate.now());
         bookRequest.setGenre(Genre.NA);
-
         HttpEntity<BookDTO> httpEntity =
                 new HttpEntity<>(bookRequest, this.retrieveHttpHeaders(this.validToken));
-
-        ResponseEntity<BookNotFoundResponseDTO> response = this.testRestTemplate.exchange(url,
-                HttpMethod.PUT, httpEntity, BookNotFoundResponseDTO.class);
+        ResponseEntity<BookNotFoundResponseDTO> response = this.testRestTemplate.exchange(
+                this.fakeResourceUrl, HttpMethod.PUT, httpEntity, BookNotFoundResponseDTO.class);
         BookNotFoundResponseDTO responseDTO = response.getBody();
         assertNotNull(responseDTO);
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
@@ -419,11 +431,9 @@ class BooksRestControllerTest {
     @Test
     void givenExistingBook_whenUpdate_thenReturnDuplicatedBook() {
         BookDTO bookOld = this.bookService.getAll().get(0);
-        String url = this.buildUrl("/books/" + bookOld.getId());
-
+        String url = String.format(this.resourceUrl, bookOld.getId());
         HttpEntity<BookDTO> httpEntity =
                 new HttpEntity<>(bookOld, this.retrieveHttpHeaders(this.validToken));
-
         ResponseEntity<DuplicatedBookResponseDTO> response = this.testRestTemplate.exchange(url,
                 HttpMethod.PUT, httpEntity, DuplicatedBookResponseDTO.class);
         DuplicatedBookResponseDTO responseDTO = response.getBody();
@@ -439,8 +449,7 @@ class BooksRestControllerTest {
     @Test
     void givenInvalidBookId_whenUpdate_thenReturnInvalidUUID() {
         BookDTO bookOld = this.bookService.getAll().get(0);
-        String url = this.buildUrl("/books/updateFakeId");
-
+        String url = String.format(this.resourceUrl, "updateFakeId");
         HttpEntity<BookDTO> httpEntity =
                 new HttpEntity<>(bookOld, this.retrieveHttpHeaders(this.validToken));
 
@@ -454,5 +463,64 @@ class BooksRestControllerTest {
         assertNotNull(responseDTO.getMessage());
         assertNotNull(responseDTO.getAdditionalData());
         assertNotNull(responseDTO.getAdditionalData().getInvalidId());
+    }
+
+    @Test
+    void whenDownloadFile_thenReturnCSV() {
+        HttpEntity<BookDTO> httpEntity =
+                new HttpEntity<>(this.retrieveHttpHeaders(this.validToken));
+        ResponseEntity<Resource> response = this.testRestTemplate.exchange(this.downloadUrl,
+                HttpMethod.GET, httpEntity, Resource.class);
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertTrue(response.getHeaders().getContentDisposition().isAttachment());
+    }
+
+    @Test
+    void givenUploadCsv_whenUpload_thenNoContent() {
+        HttpHeaders httpHeaders = this.retrieveHttpHeaders(this.validToken);
+        httpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        LinkedMultiValueMap<String, Object> parameters = new LinkedMultiValueMap<String, Object>();
+        parameters.add("file", this.validFileContent);
+
+        ResponseEntity<Void> response = this.testRestTemplate.exchange(this.uploadUrl,
+                HttpMethod.POST, new HttpEntity<>(parameters, httpHeaders), Void.class);
+        assertNull(response.getBody());
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+    }
+
+    @Test
+    void givenInvalidFileType_whenUpload_thenReturnInvalidFileType() {
+        HttpHeaders httpHeaders = this.retrieveHttpHeaders(this.validToken);
+        httpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        LinkedMultiValueMap<String, Object> parameters = new LinkedMultiValueMap<String, Object>();
+        parameters.add("file", this.invalidFileType);
+
+        HttpEntity<LinkedMultiValueMap<String, Object>> httpEntity =
+                new HttpEntity<>(parameters, httpHeaders);
+
+        ResponseEntity<InvalidFileTypeResponseDTO> response = this.testRestTemplate.exchange(
+                this.uploadUrl, HttpMethod.POST, httpEntity, InvalidFileTypeResponseDTO.class);
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+    }
+
+    @Test
+    void givenCsvContentMalformed_whenUpload_thenReturnInvalidCSVContent() {
+        HttpHeaders httpHeaders = this.retrieveHttpHeaders(this.validToken);
+        httpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        LinkedMultiValueMap<String, Object> parameters = new LinkedMultiValueMap<String, Object>();
+        parameters.add("file", this.invalidFileContent);
+
+        HttpEntity<LinkedMultiValueMap<String, Object>> httpEntity =
+                new HttpEntity<>(parameters, httpHeaders);
+
+        ResponseEntity<InvalidCSVContentResponseDTO> response = this.testRestTemplate.exchange(
+                this.uploadUrl, HttpMethod.POST, httpEntity, InvalidCSVContentResponseDTO.class);
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
     }
 }

@@ -101,6 +101,7 @@ class MethodsTest {
     @MethodSource("provideFileNameData")
     void testGenerateFileName(String name, String fileExtension, boolean useTimestamp,
             String expectedResult) {
-        assertEquals(expectedResult, Methods.generateFileName(name, fileExtension, useTimestamp));
+        String result = Methods.generateFileName(name, fileExtension, useTimestamp);
+        assertEquals(expectedResult, result);
     }
 }

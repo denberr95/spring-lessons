@@ -161,7 +161,7 @@
             "group": "none",
         },
         {
-            "label": "mvn-display-versions-updates",
+            "label": "mvn-display-dependency-updates",
             "type": "shell",
             "command": "mvn versions:display-dependency-updates --file pom.xml --settings settings.xml 1> logs/maven-dependency-updates.log",
             "group": "none",

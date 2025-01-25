@@ -16,8 +16,6 @@ class ConstantsTest {
         } catch (NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
-        assertThrows(InvocationTargetException.class, () -> {
-            constructor.newInstance();
-        });
+        assertThrows(InvocationTargetException.class, constructor::newInstance);
     }
 }

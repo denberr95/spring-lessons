@@ -61,7 +61,7 @@ public class BooksRestControllerAdvice {
     }
 
     @ExceptionHandler(value = {CSVContentValidationException.class})
-    public ResponseEntity<InvalidCSVContentResponseDTO> handleCSVValidationException(
+    public ResponseEntity<InvalidCSVContentResponseDTO> handleCSVContentValidationException(
             CSVContentValidationException exception, WebRequest webRequest) {
         log.error(exception.getMessage(), exception);
         InvalidCSVContentResponseDTO result = new InvalidCSVContentResponseDTO();
