@@ -18,13 +18,10 @@ jvm() {
     exec java $JAVA_OPTS $JAVA_OTHER_OPTIONS -jar app.jar
 }
 
-# Validate input
-if [ -z "$1" ]; then
-    echo "Error: Required 'mode' in input with value: 'jvm'"
-    exit 1
-fi
+# Default mode if not provided
+MODE=${1:-jvm}
 
-case "$1" in
+case "$MODE" in
     jvm)
         jvm
         ;;
