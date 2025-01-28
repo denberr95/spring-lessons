@@ -1,0 +1,32 @@
+# Ignore Maven and Gradle build directories
+target/
+build/
+
+# Ignore Java Source Code
+src/
+
+# Ignore Other files
+collections/
+
+# Ignore temporary files
+*.tmp
+*.swp
+*.swo
+
+# Ignore logs
+*.log
+
+# Ignore IDE specific files
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+*.code-workspace
+
+# Ignore OS generated files
+.DS_Store
+Thumbs.db
+
+# Ignore Containerfile.jvm
+Containerfile.jvm
