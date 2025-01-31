@@ -16,7 +16,7 @@
             ]
         },
         {
-            "label": "test-env-linux",
+            "label": "test-env",
             "type": "shell",
             "group": "test",
             "dependsOrder": "sequence",
@@ -26,21 +26,7 @@
                 "shell-cleanup-folders",
                 "podman-compose-env-up",
                 "mvn-clean",
-                "mvn-package-linux"
-            ]
-        },
-        {
-            "label": "test-env-windows",
-            "type": "shell",
-            "group": "test",
-            "dependsOrder": "sequence",
-            "dependsOn": [
-                "podman-container-remove",
-                "podman-volume-remove",
-                "shell-cleanup-folders",
-                "podman-compose-env-up",
-                "mvn-clean",
-                "mvn-package-windows"
+                "mvn-package"
             ]
         },
         {
@@ -70,6 +56,9 @@
             "label": "shell-cleanup-folders",
             "type": "shell",
             "command": "rm -rf bin logs",
+            "windows": {
+                "command": "rmdir /s /q bin logs"
+            },
             "group": "none",
         },
         {
@@ -97,24 +86,12 @@
             "group": "none",
         },
         {
-            "label": "podman-build-jvm-image-linux",
+            "label": "podman-build-jvm-image",
             "type": "shell",
             "command": "podman build --rm=true --file Containerfile.jvm --tag spring-lessons:latest .",
             "dependsOrder": "sequence",
             "dependsOn": [
-                "test-env-linux",
-                "podman-build-jvm-image"
-            ],
-            "group": "build",
-        },
-        {
-            "label": "podman-build-jvm-image-windows",
-            "type": "shell",
-            "command": "podman build --rm=true --file Containerfile.jvm --tag spring-lessons:latest .",
-            "dependsOrder": "sequence",
-            "dependsOn": [
-                "test-env-windows",
-                "podman-build-jvm-image"
+                "test-env",
             ],
             "group": "build",
         },
@@ -149,22 +126,22 @@
             "group": "build",
         },
         {
-            "label": "mvn-package-linux",
+            "label": "mvn-package",
             "type": "shell",
             "command": "mvn package --file pom.xml --settings settings.xml -Dspring.profiles.active=default,linux",
-            "group": "build",
-        },
-        {
-            "label": "mvn-package-windows",
-            "type": "shell",
-            "command": "mvn package --file pom.xml --settings settings.xml -Dspring.profiles.active=default,windows",
+            "windows": {
+                "command": "mvn package --file pom.xml --settings settings.xml -Dspring.profiles.active=default,windows"
+            },
             "group": "build",
         },
         {
             "label": "mvn-dependencies-tree",
             "type": "shell",
             "command": "mvn dependency:tree --file pom.xml --settings settings.xml 1> logs/maven-dependency-tree.log",
-            "group": "none",
+            "windows": {
+                "command": "mvn dependency:tree --file pom.xml --settings settings.xml > logs\\maven-dependency-tree.log"
+            },
+            "group": "build",
             "dependsOrder": "sequence",
             "dependsOn": [
                 "shell-create-folders"
@@ -174,7 +151,10 @@
             "label": "mvn-display-dependency-updates",
             "type": "shell",
             "command": "mvn versions:display-dependency-updates --file pom.xml --settings settings.xml 1> logs/maven-dependency-updates.log",
-            "group": "none",
+            "windows": {
+                "command": "mvn versions:display-dependency-updates --file pom.xml --settings settings.xml > logs\\maven-dependency-updates.log"
+            },
+            "group": "build",
             "dependsOrder": "sequence",
             "dependsOn": [
                 "shell-create-folders"
