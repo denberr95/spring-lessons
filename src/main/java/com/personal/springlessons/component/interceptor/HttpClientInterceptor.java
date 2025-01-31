@@ -67,7 +67,7 @@ public class HttpClientInterceptor implements ClientHttpRequestInterceptor {
                 String fileName =
                         headerValues.stream().filter(value -> value.contains("filename"))
                                 .map(value -> value.split("filename=")[1]
-                                        .replace(Constants.S_DOUBLE_QUOTE, ""))
+                                        .replace(Constants.S_DOUBLE_QUOTE, Constants.S_EMPTY))
                                 .findFirst().orElse("Unknown Filename");
                 log.info("File Name: '{}'", fileName);
             }
