@@ -46,16 +46,6 @@
         </encoder>
     </appender>
 
-    <appender name="OTEL" class="io.opentelemetry.instrumentation.logback.appender.v1_0.OpenTelemetryAppender">
-        <captureExperimentalAttributes>true</captureExperimentalAttributes>
-        <captureCodeAttributes>false</captureCodeAttributes>
-        <captureMarkerAttribute>true</captureMarkerAttribute>
-        <captureLoggerContext>true</captureLoggerContext>
-        <captureKeyValuePairAttributes>true</captureKeyValuePairAttributes>
-        <captureMdcAttributes>*</captureMdcAttributes>
-        <numLogsCapturedBeforeOtelInstall>1000</numLogsCapturedBeforeOtelInstall>
-    </appender>
-
     <logger name="com.personal.springlessons" level="${LOG_LEVEL_COM_PERSONAL_SPRINGLESSONS}" />
     <logger name="org.springframework" level="${LOG_LEVEL_ORG_SPRINGFRAMEWORK}" />
     <logger name="io.undertow" level="${LOG_LEVEL_IO_UNDERTOW}" />
@@ -67,7 +57,6 @@
     <springProfile name="default">
         <root level="${LOG_LEVEL_ROOT}">
             <appender-ref ref="CONSOLE-TEXT" />
-            <appender-ref ref="OTEL" />
             <appender-ref ref="FILE" />
         </root>
     </springProfile>
@@ -75,7 +64,6 @@
     <springProfile name="runtime">
         <root level="${LOG_LEVEL_ROOT}">
             <appender-ref ref="CONSOLE-JSON" />
-            <appender-ref ref="OTEL" />
             <appender-ref ref="FILE" />
         </root>
     </springProfile>
