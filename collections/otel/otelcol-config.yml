@@ -23,7 +23,7 @@ exporters:
     tls:
       insecure: true
   otlphttp/loki:
-    endpoint: http://loki:3100/loki/api/v1/push
+    endpoint: http://loki:3100/otlp/v1/logs
 
 extensions:
   health_check:
