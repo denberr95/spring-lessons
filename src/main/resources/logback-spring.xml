@@ -50,8 +50,10 @@
         <captureExperimentalAttributes>true</captureExperimentalAttributes>
         <captureCodeAttributes>false</captureCodeAttributes>
         <captureMarkerAttribute>true</captureMarkerAttribute>
-        <captureLoggerContext>true</captureLoggerContext>
         <captureKeyValuePairAttributes>true</captureKeyValuePairAttributes>
+        <captureLoggerContext>true</captureLoggerContext>
+        <captureArguments>false</captureArguments>
+        <captureLogstashAttributes>false</captureLogstashAttributes>
         <captureMdcAttributes>*</captureMdcAttributes>
         <numLogsCapturedBeforeOtelInstall>1000</numLogsCapturedBeforeOtelInstall>
     </appender>
