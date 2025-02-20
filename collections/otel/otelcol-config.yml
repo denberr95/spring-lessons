@@ -22,8 +22,11 @@ exporters:
     endpoint: jaeger:4317
     tls:
       insecure: true
-  otlphttp/loki:
-    endpoint: http://loki:3100/otlp/v1/logs
+  otlphttp:
+    endpoint: http://loki:3100/otlp
+    compression: none
+    tls:
+      insecure: true
 
 extensions:
   health_check:
@@ -44,4 +47,4 @@ service:
     logs:
       receivers: [otlp]
       processors: [batch]
-      exporters: [otlphttp/loki, debug]
+      exporters: [otlphttp, debug]
