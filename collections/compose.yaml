@@ -11,7 +11,7 @@ services:
     ports:
     - "5432:5432" # serve database
     networks:
-    - spring-lessons-dev
+    - vscode-spring-dev
 
   jaeger:
     image: jaegertracing/all-in-one:latest
@@ -30,7 +30,7 @@ services:
     - "14250" # accept model.proto
     - "9411" # Zipkin compatible endpoint (optional)
     networks:
-    - spring-lessons-dev
+    - vscode-spring-dev
 
   loki:
     image: grafana/loki:main
@@ -45,7 +45,7 @@ services:
     - "3100" # serve http server
     - "9096" # serve grpc server
     networks:
-    - spring-lessons-dev
+    - vscode-spring-dev
 
   prometheus:
     image: prom/prometheus:main
@@ -59,7 +59,7 @@ services:
     ports:
     - "9090:9090" # serve frontend
     networks:
-    - spring-lessons-dev
+    - vscode-spring-dev
     depends_on:
     - otelcol
 
@@ -74,7 +74,7 @@ services:
     ports:
     - "3000:3000" # serve frontend
     networks:
-    - spring-lessons-dev
+    - vscode-spring-dev
     depends_on:
     - prometheus
     - loki
@@ -100,7 +100,7 @@ services:
     depends_on:
     - jaeger
     networks:
-    - spring-lessons-dev
+    - vscode-spring-dev
 
   zookeeper:
     image: bitnami/zookeeper:latest
@@ -111,7 +111,7 @@ services:
     ports:
     - "2181:2181" # serve zookeeper
     networks:
-    - spring-lessons-dev
+    - vscode-spring-dev
 
   kafka:
     image: bitnami/kafka:latest
@@ -128,15 +128,16 @@ services:
     depends_on:
     - zookeeper
     networks:
-    - spring-lessons-dev
+    - vscode-spring-dev
 
   keycloak:
     image: quay.io/keycloak/keycloak:latest
     restart: "no"
     environment:
       TZ: Europe/Rome
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: adminpwd
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: adminpwd
+      JAVA_OPTS_KC_HEAP: '-XX:MaxRAMPercentage=70 -XX:MinRAMPercentage=70 -XX:InitialRAMPercentage=50'
     command:
     - start-dev
     volumes:
@@ -144,7 +145,7 @@ services:
     ports:
     - "8080:8080" # serve web server
     networks:
-    - spring-lessons-dev
+    - vscode-spring-dev
 
   wiremock:
     image: wiremock/wiremock:latest
@@ -159,8 +160,8 @@ services:
     ports:
     - "9999:8080" # serve web server
     networks:
-    - spring-lessons-dev
+    - vscode-spring-dev
 
 networks:
-  spring-lessons-dev:
+  vscode-spring-dev:
     driver: bridge
