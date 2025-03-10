@@ -34,7 +34,7 @@ public class DuplicatedBarcodeEvent {
             StatefulBeanToCsv<DiscardedItemCsv> beanToCsv =
                     new StatefulBeanToCsvBuilder<DiscardedItemCsv>(writer)
                             .withOrderedResults(true)
-                            .withApplyQuotesToAll(this.appPropertiesConfig.getCsvMetadata().isApplyAllQuotes())
+                            .withApplyQuotesToAll(this.appPropertiesConfig.getCsvMetadata().getApplyAllQuotes())
                             .withLineEnd(System.lineSeparator())
                             .withSeparator(
                                     this.appPropertiesConfig.getCsvMetadata().getColumnSeparator())

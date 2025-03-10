@@ -128,7 +128,7 @@ public class BooksService {
                     .withMappingStrategy(strategy)
                     .withQuotechar(this.appPropertiesConfig.getCsvMetadata().getQuoteCharacter())
                     .withApplyQuotesToAll(
-                            this.appPropertiesConfig.getCsvMetadata().isApplyAllQuotes())
+                            this.appPropertiesConfig.getCsvMetadata().getApplyAllQuotes())
                     .build();
             beanToCsv.write(csvData);
             writer.flush();
@@ -158,9 +158,9 @@ public class BooksService {
 
             CsvToBean<BookCsv> csvToBean = new CsvToBeanBuilder<BookCsv>(reader)
                     .withOrderedResults(true).withMappingStrategy(strategy)
-                    .withStrictQuotes(this.appPropertiesConfig.getCsvMetadata().isStrictQuote())
+                    .withStrictQuotes(this.appPropertiesConfig.getCsvMetadata().getStrictQuote())
                     .withIgnoreEmptyLine(
-                            this.appPropertiesConfig.getCsvMetadata().isIgnoreEmptyLines())
+                            this.appPropertiesConfig.getCsvMetadata().getIgnoreEmptyLines())
                     .withSeparator(this.appPropertiesConfig.getCsvMetadata().getColumnSeparator())
                     .withQuoteChar(this.appPropertiesConfig.getCsvMetadata().getQuoteCharacter())
                     .withSkipLines(1).build();
