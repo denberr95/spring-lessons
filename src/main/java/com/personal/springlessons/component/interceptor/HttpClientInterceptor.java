@@ -34,24 +34,25 @@ public class HttpClientInterceptor implements ClientHttpRequestInterceptor {
 
         if (this.isMultipartData(request.getHeaders())) {
             this.logMultipartDetails(request.getHeaders());
-        } else {
-            String requestBody = new String(body, StandardCharsets.UTF_8).replaceAll("\\s+", " ");
-            log.info("Body: '{}'", requestBody);
+        }
+        if (body.length > 0) {
+            log.info("Body: '{}'", new String(body, StandardCharsets.UTF_8)
+                    .replaceAll(Constants.S_REGEX_ANY_SPACE, Constants.S_WHITESPACE));
         }
         log.info("--- HTTP Client Request ---");
     }
 
     private void logResponse(ClientHttpResponse response) throws IOException {
         log.info("--- HTTP Client Response ---");
-        log.info("Status Code: '{}'", response.getStatusCode());
+        log.info("Status Code: '{} - '{}''", response.getStatusCode(), response.getStatusText());
         log.info("Headers: '{}'", response.getHeaders());
 
         if (this.isMultipartData(response.getHeaders())) {
             this.logMultipartDetails(response.getHeaders());
-        } else {
-            String responseBody =
-                    StreamUtils.copyToString(response.getBody(), StandardCharsets.UTF_8);
-            log.info("Body: '{}'", responseBody);
+        }
+        if (response.getBody().readAllBytes().length > 0) {
+            log.info("Body: '{}'",
+                    StreamUtils.copyToString(response.getBody(), StandardCharsets.UTF_8));
         }
         log.info("--- HTTP Client Response ---");
     }

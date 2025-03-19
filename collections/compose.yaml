@@ -152,13 +152,19 @@ services:
     restart: "no"
     environment:
       TZ: Europe/Rome
-    entrypoint: ["/docker-entrypoint.sh", "--global-response-templating", "--disable-gzip", "--verbose"]
+    entrypoint:
+    - "/docker-entrypoint.sh"
+    - "--global-response-templating"
+    - "--disable-gzip"
+    - "--verbose"
     volumes:
     - ./wiremock/extensions:/var/wiremock/extensions
     - ./wiremock/__files:/home/wiremock/__files
     - ./wiremock/mappings:/home/wiremock/mappings
+    - ./wiremock/certs:/home/wiremock/certs
     ports:
-    - "9999:8080" # serve web server
+    - "9998:8080" # serve web server http
+    - "9999:8443" # serve web server https
     networks:
     - vscode-spring-dev
 

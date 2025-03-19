@@ -49,7 +49,8 @@ public class HttpServerLoggingFilter extends OncePerRequestFilter {
                 request::getHeader));
         if (this.isMultipart(request.getContentType())) {
             this.logMultipartFiles(request);
-        } else {
+        }
+        if (request.getContentAsByteArray().length > 0) {
             log.info("Body: '{}'", new String(request.getContentAsByteArray()));
         }
         log.info("--- HTTP Server Request ---");
@@ -62,7 +63,8 @@ public class HttpServerLoggingFilter extends OncePerRequestFilter {
                 this.getHeadersAsString(response.getHeaderNames(), response::getHeader));
         if (this.downloadedFile(response)) {
             this.logDownloadFile(response);
-        } else {
+        }
+        if (response.getContentAsByteArray().length > 0) {
             log.info("Body: '{}'", new String(response.getContentAsByteArray()));
         }
         response.copyBodyToResponse();
