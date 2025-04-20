@@ -32,9 +32,9 @@ public class DuplicatedBarcodeEvent {
                 baseName, Constants.CSV_EXT, true);
         try (Writer writer = new FileWriter(file)) {
             StatefulBeanToCsv<DiscardedItemCsv> beanToCsv =
-                    new StatefulBeanToCsvBuilder<DiscardedItemCsv>(writer)
-                            .withOrderedResults(true)
-                            .withApplyQuotesToAll(this.appPropertiesConfig.getCsvMetadata().getApplyAllQuotes())
+                    new StatefulBeanToCsvBuilder<DiscardedItemCsv>(writer).withOrderedResults(true)
+                            .withApplyQuotesToAll(
+                                    this.appPropertiesConfig.getCsvMetadata().getApplyAllQuotes())
                             .withLineEnd(System.lineSeparator())
                             .withSeparator(
                                     this.appPropertiesConfig.getCsvMetadata().getColumnSeparator())
