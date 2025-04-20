@@ -44,7 +44,7 @@
 | Spring Lessons APIs | <http://localhost:10000> |
 | Spring Lessons Actuator | <http://localhost:10001> |
 | Swagger UI | <http://localhost:10000/spring-app/swagger-ui/index.html> |
-| Wiremock | <http://localhost:9999/__admin/> |
+| Wiremock | <http://localhost:9998/__admin/> |
 
 ## VSCode Configuration files
 
