@@ -139,6 +139,15 @@
             "group": "build",
         },
         {
+            "label": "mvn-generate-sources",
+            "type": "shell",
+            "command": "mvn generate-sources --file pom.xml --settings settings.xml",
+            "windows": {
+                "command": "mvn generate-sources --file pom.xml --settings settings.xml",
+            },
+            "group": "build",
+        },
+        {
             "label": "mvn-package",
             "type": "shell",
             "command": "mvn package --file pom.xml --settings settings.xml -Dspring.profiles.active=default,linux",
