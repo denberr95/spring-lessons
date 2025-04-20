@@ -20,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 public final class AppPropertiesConfig {
 
     /**
-     * The baseDir property is used to set the base directory for the application.
+     * This property is used to set the base directory for the application.
      */
     private String baseDir;
 
@@ -41,7 +41,7 @@ public final class AppPropertiesConfig {
     public static final class ApiDocumentation {
 
         /**
-         * The title property is used to set the title for the API documentation.
+         * This property is used to set the token url authentication for the API documentation.
          */
         @NotBlank(message = "Token URL property cannot be null or empty")
         private String tokenUrl;
@@ -52,36 +52,36 @@ public final class AppPropertiesConfig {
     public static final class CsvMetadata {
 
         /**
-         * The csvDir property is used to set the directory for the CSV metadata.
+         * This property is used to set the directory for the CSV metadata.
          */
         private String csvDir;
 
         /**
-         * The header property is used to set the header for the CSV metadata.
+         * This property is is used to set the column character separator for the CSV data.
          */
         @NotNull(message = "Column separator property cannot be null")
         private Character columnSeparator = Constants.C_SEMICOLON;
 
         /**
-         * The quote character property is used to set the quote character for the CSV metadata.
+         * This property is used to set the quote character for the CSV data.
          */
         @NotNull(message = "Quote character property cannot be null")
         private Character quoteCharacter = Constants.C_APOSTROPHE;
 
         /**
-         * The escape character property is used to set the escape character for the CSV metadata.
+         * This property is used to set the escape character for the CSV data.
          */
         @NotNull(message = "Ignore empty lines property cannot be null")
         private Boolean ignoreEmptyLines = Boolean.TRUE;
 
         /**
-         * The strict quote property is used to set the strict quote for the CSV metadata.
+         * This property is used to set the strict quote for the CSV data.
          */
         @NotNull(message = "Ignore empty lines property cannot be null")
         private Boolean strictQuote = Boolean.TRUE;
 
         /**
-         * The apply all quotes property is used to set the apply all quotes for the CSV metadata.
+         * This property is used to set the apply all quotes for the CSV data.
          */
         @NotNull(message = "Ignore empty lines property cannot be null")
         private Boolean applyAllQuotes = Boolean.FALSE;
@@ -92,59 +92,57 @@ public final class AppPropertiesConfig {
     public static final class ApiClient {
 
         /**
-         * The connection request timeout property is used to set the connection request timeout for
-         * the connection pool.
+         * This property is used to set the connection request timeout for the connection pool.
          */
         @NotNull(message = "Connection request timeout property cannot be null")
         private Long connectionRequestTimeout = 5L;
 
         /**
-         * The keep alive property is used to set the keep alive for the connection pool.
+         * This property is used to set the keep alive for the connection pool.
          */
         @NotNull(message = "Keep alive property cannot be null")
         private Long keepAlive = 30L;
 
         /**
-         * The connection timeout property is used to set the connection timeout for the connection
-         * pool.
+         * This property is used to set the connection timeout for the connection pool.
          */
         @NotNull(message = "Connection timeout property cannot be null")
         private Long connectionTimeout = 10L;
 
         /**
-         * The socket timeout property is used to set the socket timeout for the connection pool.
+         * This property is used to set the socket timeout for the connection pool.
          */
         @NotNull(message = "Socket timeout property cannot be null")
         private Long socketTimeout = 60L;
 
         /**
-         * The time to live property is used to set the time to live for the connection pool.
+         * This property is used to set the time to live for the connection pool.
          */
         @NotNull(message = "Time to Live property cannot be null")
         private Long timeToLive = 60L;
 
         /**
-         * The max connection per route property is used to set the maximum number of connections
-         * that can be opened to the server.
+         * This property is used to set the maximum number of connections that can be opened to the
+         * server per route.
          */
         @NotNull(message = "Max connection per route property cannot be null")
         private Integer maxConnPerRoute = 50;
 
         /**
-         * The max connection total property is used to set the maximum number of connections that
-         * can be opened to the server.
+         * This property is used to set the maximum number of connections that can be opened to the
+         * server.
          */
         @NotNull(message = "Max connection total property cannot be null")
         private Integer maxConnTotal = 100;
 
         /**
-         * The max redirects property is used to set the maximum number of redirects
+         * This property is used to set the maximum number of redirects
          */
         @NotNull(message = "Max redirects property cannot be null")
         private Integer maxRedirects = 5;
 
         /**
-         * The base URL property is used to set the base URL for the API client.
+         * This property is used to set the base URL for the API client.
          */
         @NotBlank(message = "Base URL property cannot be null or empty")
         private String baseUrl;
