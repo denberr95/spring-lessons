@@ -105,7 +105,7 @@
         {
             "label": "podman-compose-env-stop",
             "type": "shell",
-            "command": "podman-compose --file ./collections/compose.yaml stop",
+            "command": "podman-compose --project vscode-spring-dev --file ./collections/compose.yaml stop",
             "group": "test",
         },
         {
