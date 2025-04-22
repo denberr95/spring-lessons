@@ -1420,7 +1420,7 @@
 		},
 		{
 			"key": "clientSecretAdminBooks",
-			"value": "IThFMjQqOnzlBtR37I37XicklxY9N3Kt"
+			"value": "mIihqghj7TSU5nYydQzJlVfUlYTFQP9L"
 		},
 		{
 			"key": "clientIdWriterBooks",
@@ -1429,7 +1429,7 @@
 		},
 		{
 			"key": "clientSecretWriterBooks",
-			"value": "6hmhKlP2faQ6TkTKGsasiIk0m8OHX7XY",
+			"value": "v4TDJK8GjPwVQYQTp7SA05dchdg6rZfd",
 			"type": "string"
 		},
 		{
@@ -1438,7 +1438,7 @@
 		},
 		{
 			"key": "clientSecretReaderBooks",
-			"value": "SBNsiqDKFnirIf5fb37BURr4wNQYL1LJ"
+			"value": "UpBncsg6nTluqB8u6aRVPZunLwCE33J6"
 		},
 		{
 			"key": "clientIdAdminItems",
@@ -1446,7 +1446,7 @@
 		},
 		{
 			"key": "clientSecretAdminItems",
-			"value": "GNlekbSxQTbDm963eRMaXGeDlKsTXPYQ"
+			"value": "RMQ7b8XSHmdcABj91tSyJIiqh3ziSlxQ"
 		},
 		{
 			"key": "clientIdWriterItems",
@@ -1454,7 +1454,7 @@
 		},
 		{
 			"key": "clientSecretWriterItems",
-			"value": "JYxdfsCGQdid8oq6hg6Crhbyx6FEHypw"
+			"value": "cQinQPkVHL6PE1cAGnfxxOyovtgIjtIE"
 		},
 		{
 			"key": "clientIdReaderItems",
@@ -1462,7 +1462,7 @@
 		},
 		{
 			"key": "clientSecretReaderItems",
-			"value": "0gpFsIetlStQu58jB36RFyKKrEMTj4W0"
+			"value": "iqe4wV6jzGjOCQIxchOI403APGVJ4qRM"
 		}
 	]
 }
