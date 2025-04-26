@@ -4,28 +4,34 @@ import com.personal.springlessons.exception.BookNotFoundException;
 import com.personal.springlessons.exception.CSVContentValidationException;
 import com.personal.springlessons.exception.DuplicatedBookException;
 import com.personal.springlessons.exception.InvalidFileTypeException;
+import com.personal.springlessons.model.dto.response.BookNotFoundAdditionalDetailsDTO;
 import com.personal.springlessons.model.dto.response.BookNotFoundResponseDTO;
+import com.personal.springlessons.model.dto.response.DuplicatedBookAdditionalDetailsDTO;
 import com.personal.springlessons.model.dto.response.DuplicatedBookResponseDTO;
+import com.personal.springlessons.model.dto.response.InvalidCSVContentAdditionalDetailsDTO;
 import com.personal.springlessons.model.dto.response.InvalidCSVContentResponseDTO;
+import com.personal.springlessons.model.dto.response.InvalidFileTypeAdditionalDetailsDTO;
 import com.personal.springlessons.model.dto.response.InvalidFileTypeResponseDTO;
 import com.personal.springlessons.model.lov.DomainCategory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @RestControllerAdvice(assignableTypes = BooksRestController.class)
 public class BooksRestControllerAdvice {
+
+    private static final Logger log = LoggerFactory.getLogger(BooksRestControllerAdvice.class);
 
     @ExceptionHandler(value = {BookNotFoundException.class})
     public ResponseEntity<BookNotFoundResponseDTO> handleBookNotFoundException(
             BookNotFoundException exception) {
         log.error(exception.getMessage(), exception);
         BookNotFoundResponseDTO result = new BookNotFoundResponseDTO();
-        BookNotFoundResponseDTO.Details details = result.new Details();
+        BookNotFoundAdditionalDetailsDTO details = new BookNotFoundAdditionalDetailsDTO();
         details.setId(exception.getId());
         result.setCategory(DomainCategory.BOOKS);
         result.setMessage(exception.getMessage());
@@ -38,7 +44,7 @@ public class BooksRestControllerAdvice {
             DuplicatedBookException exception) {
         log.error(exception.getMessage(), exception);
         DuplicatedBookResponseDTO result = new DuplicatedBookResponseDTO();
-        DuplicatedBookResponseDTO.Details details = result.new Details();
+        DuplicatedBookAdditionalDetailsDTO details = new DuplicatedBookAdditionalDetailsDTO();
         result.setCategory(DomainCategory.BOOKS);
         result.setMessage(exception.getMessage());
         details.setOrinalId(exception.getId());
@@ -51,7 +57,7 @@ public class BooksRestControllerAdvice {
             InvalidFileTypeException exception, WebRequest webRequest) {
         log.error(exception.getMessage(), exception);
         InvalidFileTypeResponseDTO result = new InvalidFileTypeResponseDTO();
-        InvalidFileTypeResponseDTO.Details details = result.new Details();
+        InvalidFileTypeAdditionalDetailsDTO details = new InvalidFileTypeAdditionalDetailsDTO();
         result.setCategory(DomainCategory.BOOKS);
         result.setMessage(exception.getMessage());
         details.setFileName(exception.getFileName());
@@ -65,7 +71,7 @@ public class BooksRestControllerAdvice {
             CSVContentValidationException exception, WebRequest webRequest) {
         log.error(exception.getMessage(), exception);
         InvalidCSVContentResponseDTO result = new InvalidCSVContentResponseDTO();
-        InvalidCSVContentResponseDTO.Details details = result.new Details();
+        InvalidCSVContentAdditionalDetailsDTO details = new InvalidCSVContentAdditionalDetailsDTO();
         result.setCategory(DomainCategory.BOOKS);
         result.setMessage(exception.getMessage());
         result.setTotalRows(exception.getRows().size());

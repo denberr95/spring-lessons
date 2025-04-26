@@ -3434,9 +3434,9 @@
             {
                 "clientScope": "items:get",
                 "roles": [
-                    "api-books-writer",
-                    "api-books-admin",
-                    "api-books-reader"
+                    "api-items-writer",
+                    "api-items-admin",
+                    "api-items-reader"
                 ]
             },
             {
@@ -4801,7 +4801,7 @@
                 "description": "",
                 "protocol": "openid-connect",
                 "attributes": {
-                    "include.in.token.scope": "false",
+                    "include.in.token.scope": "true",
                     "display.on.consent.screen": "true",
                     "gui.order": "",
                     "consent.screen.text": ""
@@ -4813,7 +4813,7 @@
                 "description": "",
                 "protocol": "openid-connect",
                 "attributes": {
-                    "include.in.token.scope": "false",
+                    "include.in.token.scope": "true",
                     "display.on.consent.screen": "true",
                     "gui.order": "",
                     "consent.screen.text": ""
@@ -5083,7 +5083,7 @@
                 "description": "",
                 "protocol": "openid-connect",
                 "attributes": {
-                    "include.in.token.scope": "false",
+                    "include.in.token.scope": "true",
                     "display.on.consent.screen": "true",
                     "gui.order": "",
                     "consent.screen.text": ""

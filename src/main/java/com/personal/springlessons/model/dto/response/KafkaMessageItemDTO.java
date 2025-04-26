@@ -14,6 +14,5 @@ import lombok.ToString;
 public class KafkaMessageItemDTO extends ItemDTO {
 
     private String idOrderItems;
-    
     private ItemStatus itemStatus;
 }

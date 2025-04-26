@@ -16,6 +16,8 @@ import com.personal.springlessons.model.dto.response.NotReadableBodyRequestRespo
 import com.personal.springlessons.model.dto.response.ValidationRequestErrorResponseDTO;
 import com.personal.springlessons.model.lov.Channel;
 import com.personal.springlessons.service.BooksService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -43,9 +45,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Tag(name = "Books")
 @Validated
 @RestController
@@ -53,6 +53,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping(path = "books")
 public class BooksRestController {
 
+    private static final Logger log = LoggerFactory.getLogger(BooksRestController.class);
     private final BooksService bookService;
 
     @NewSpan
@@ -95,7 +96,7 @@ public class BooksRestController {
     public ResponseEntity<BookDTO> getById(@SpanTag @PathVariable final String id) {
         log.info("Called API to retrieve book: '{}'", id);
         BookDTO result = this.bookService.getById(id);
-        log.info("Book '{}' retrieved !", result.getId());
+        log.info("Book '{}' retrieved !", result.id());
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
@@ -119,7 +120,7 @@ public class BooksRestController {
             @RequestHeader final Channel channel) {
         log.info("Called API to create new book");
         BookDTO result = this.bookService.save(bookDTO, channel);
-        log.info("Book '{}' saved !", result.getId());
+        log.info("Book '{}' saved !", result.id());
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 

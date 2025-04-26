@@ -7,10 +7,12 @@ import jakarta.persistence.PostUpdate;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreRemove;
 import jakarta.persistence.PreUpdate;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-@Slf4j
 public class OrderItemsEntityListener {
+
+    private static final Logger log = LoggerFactory.getLogger(OrderItemsEntityListener.class);
 
     @PostLoad
     private void postLoad(OrderItemsEntity entity) {

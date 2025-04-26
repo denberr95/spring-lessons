@@ -118,10 +118,10 @@ class BooksRestControllerTest {
     @BeforeEach
     void init() {
         for (int i = 0; i < TOTAL; i++) {
-            BookDTO bookDTO = new BookDTO();
-            bookDTO.setName("Controller-Book-Name-" + i);
-            bookDTO.setPublicationDate(LocalDate.now());
-            bookDTO.setNumberOfPages(i + 1);
+            String name = "Controller-Book-Name-" + i;
+            Integer numberOfPages = i + 1;
+            LocalDate publicationDate = LocalDate.now();
+            BookDTO bookDTO = new BookDTO(null, name, numberOfPages, publicationDate, Genre.NA);
             this.bookService.save(bookDTO, Channel.NA);
         }
         this.validToken = this.retrieveAccessToken(this.clientIdFullPermission,
@@ -138,7 +138,7 @@ class BooksRestControllerTest {
     @AfterEach
     void tearDown() {
         this.bookService.getAll().forEach(x -> {
-            this.bookService.delete(x.getId());
+            this.bookService.delete(x.id());
         });
     }
 
@@ -146,11 +146,12 @@ class BooksRestControllerTest {
     void givenInvalidAccessToken_whenCallAPI_thenReturnForbidden() {
         ResponseEntity<?> response = null;
 
-        BookDTO bookRequest = new BookDTO();
-        bookRequest.setName("Controller-Book-Name-" + TOTAL);
-        bookRequest.setNumberOfPages(1);
-        bookRequest.setPublicationDate(LocalDate.now());
-        bookRequest.setGenre(Genre.NA);
+        String name = "Controller-Book-Name-" + TOTAL;
+        Integer numberOfPages = 1;
+        LocalDate publicationDate = LocalDate.now();
+        Genre genre = Genre.NA;
+
+        BookDTO bookRequest = new BookDTO(null, name, numberOfPages, publicationDate, genre);
 
         HttpHeaders httpHeaders = this.retrieveHttpHeaders(this.invalidToken);
         LinkedMultiValueMap<String, Object> parameters = new LinkedMultiValueMap<String, Object>();
@@ -190,11 +191,12 @@ class BooksRestControllerTest {
     void givenWithoutAccessToken_whenCallAPI_thenReturnUnauthorized() {
         ResponseEntity<?> response = null;
 
-        BookDTO bookRequest = new BookDTO();
-        bookRequest.setName("Controller-Book-Name-" + TOTAL);
-        bookRequest.setNumberOfPages(1);
-        bookRequest.setPublicationDate(LocalDate.now());
-        bookRequest.setGenre(Genre.NA);
+        String name = "Controller-Book-Name-" + TOTAL;
+        Integer numberOfPages = 1;
+        LocalDate publicationDate = LocalDate.now();
+        Genre genre = Genre.NA;
+
+        BookDTO bookRequest = new BookDTO(null, name, numberOfPages, publicationDate, genre);
 
         HttpHeaders httpHeaders = this.retrieveHttpHeaders(null);
         HttpEntity<BookDTO> httpEntity = new HttpEntity<>(bookRequest, httpHeaders);
@@ -234,17 +236,20 @@ class BooksRestControllerTest {
 
         ResponseEntity<BookDTO[]> response = this.testRestTemplate.exchange(this.baseUrl,
                 HttpMethod.GET, httpEntity, BookDTO[].class);
+
         assertNotNull(response.getBody());
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(TOTAL, response.getBody().length);
+
         for (int i = 0; i < TOTAL; i++) {
             BookDTO bookDTO = response.getBody()[i];
-            assertNotNull(bookDTO.getId());
-            assertNotNull(bookDTO.getName());
-            assertNotNull(bookDTO.getPublicationDate());
-            assertThat(bookDTO.getNumberOfPages()).isPositive();
+            assertNotNull(bookDTO.id());
+            assertNotNull(bookDTO.name());
+            assertNotNull(bookDTO.publicationDate());
+            assertThat(bookDTO.numberOfPages()).isPositive();
         }
     }
+
 
     @Test
     void givenEmptyCollection_whenGetAll_thenNoContent() {
@@ -259,19 +264,23 @@ class BooksRestControllerTest {
 
     @Test
     void givenExistingId_whenGetById_thenBookAreReturned() {
-        String url = String.format(this.resourceUrl, this.bookService.getAll().get(0).getId());
+        String url = String.format(this.resourceUrl, this.bookService.getAll().get(0).id());
         HttpEntity<HttpHeaders> httpEntity =
                 new HttpEntity<>(this.retrieveHttpHeaders(this.validToken));
+
         ResponseEntity<BookDTO> response =
                 this.testRestTemplate.exchange(url, HttpMethod.GET, httpEntity, BookDTO.class);
+
         assertNotNull(response.getBody());
         assertEquals(HttpStatus.OK, response.getStatusCode());
+
         BookDTO bookDTO = response.getBody();
-        assertNotNull(bookDTO.getId());
-        assertNotNull(bookDTO.getName());
-        assertNotNull(bookDTO.getPublicationDate());
-        assertThat(bookDTO.getNumberOfPages()).isPositive();
+        assertNotNull(bookDTO.id());
+        assertNotNull(bookDTO.name());
+        assertNotNull(bookDTO.publicationDate());
+        assertThat(bookDTO.numberOfPages()).isPositive();
     }
+
 
     @Test
     void givenNonExistingId_whenGetById_thenReturnBookNotFound() {
@@ -309,11 +318,8 @@ class BooksRestControllerTest {
 
     @Test
     void givenNewBook_whenSave_thenBookIsCreated() {
-        BookDTO bookRequest = new BookDTO();
-        bookRequest.setName("Controller-Book-Name-" + TOTAL);
-        bookRequest.setNumberOfPages(1);
-        bookRequest.setPublicationDate(LocalDate.now());
-        bookRequest.setGenre(Genre.NA);
+        BookDTO bookRequest =
+                new BookDTO(null, "Controller-Book-Name-" + TOTAL, 1, LocalDate.now(), Genre.NA);
 
         HttpEntity<BookDTO> httpEntity =
                 new HttpEntity<>(bookRequest, this.retrieveHttpHeaders(this.validToken));
@@ -322,20 +328,19 @@ class BooksRestControllerTest {
                 HttpMethod.POST, httpEntity, BookDTO.class);
         assertNotNull(response.getBody());
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
+
         BookDTO bookDTO = response.getBody();
-        assertNotNull(bookDTO.getId());
-        assertNotNull(bookDTO.getName());
-        assertNotNull(bookDTO.getPublicationDate());
-        assertThat(bookDTO.getNumberOfPages()).isPositive();
+        assertNotNull(bookDTO.id());
+        assertNotNull(bookDTO.name());
+        assertNotNull(bookDTO.publicationDate());
+        assertThat(bookDTO.numberOfPages()).isPositive();
     }
+
 
     @Test
     void givenExistingBook_whenSave_thenReturnDuplicatedBook() {
-        BookDTO bookRequest = new BookDTO();
-        bookRequest.setName("Controller-Book-Name-Duplicated");
-        bookRequest.setNumberOfPages(1);
-        bookRequest.setPublicationDate(LocalDate.now());
-        bookRequest.setGenre(Genre.NA);
+        BookDTO bookRequest =
+                new BookDTO(null, "Controller-Book-Name-Duplicated", 1, LocalDate.now(), Genre.NA);
 
         HttpEntity<BookDTO> httpEntity =
                 new HttpEntity<>(bookRequest, this.retrieveHttpHeaders(this.validToken));
@@ -344,16 +349,18 @@ class BooksRestControllerTest {
                 HttpMethod.POST, httpEntity, BookDTO.class);
         assertNotNull(firstResponse.getBody());
         assertEquals(HttpStatus.CREATED, firstResponse.getStatusCode());
+
         BookDTO bookDTO = firstResponse.getBody();
-        assertNotNull(bookDTO.getId());
-        assertNotNull(bookDTO.getName());
-        assertNotNull(bookDTO.getPublicationDate());
-        assertThat(bookDTO.getNumberOfPages()).isPositive();
+        assertNotNull(bookDTO.id());
+        assertNotNull(bookDTO.name());
+        assertNotNull(bookDTO.publicationDate());
+        assertThat(bookDTO.numberOfPages()).isPositive();
 
         ResponseEntity<DuplicatedBookResponseDTO> secondResponse = this.testRestTemplate.exchange(
                 this.baseUrl, HttpMethod.POST, httpEntity, DuplicatedBookResponseDTO.class);
         assertNotNull(secondResponse.getBody());
         assertEquals(HttpStatus.CONFLICT, secondResponse.getStatusCode());
+
         DuplicatedBookResponseDTO responseDTO = secondResponse.getBody();
         assertEquals(DomainCategory.BOOKS, responseDTO.getCategory());
         assertNotNull(responseDTO.getTimestamp());
@@ -364,7 +371,7 @@ class BooksRestControllerTest {
 
     @Test
     void givenExistingId_whenDelete_thenBookIsDeleted() {
-        String url = String.format(this.resourceUrl, this.bookService.getAll().get(0).getId());
+        String url = String.format(this.resourceUrl, this.bookService.getAll().get(0).id());
         HttpEntity<HttpHeaders> httpEntity =
                 new HttpEntity<>(this.retrieveHttpHeaders(this.validToken));
         ResponseEntity<Void> response =
@@ -393,13 +400,11 @@ class BooksRestControllerTest {
     @Test
     void givenExistingId_whenUpdate_thenBookIsUpdated() {
         BookDTO bookOld = this.bookService.getAll().get(0);
-        String url = String.format(this.resourceUrl, bookOld.getId());
-        bookOld.setName("Controller-Book-Name-0");
-        bookOld.setNumberOfPages(10);
-        bookOld.setPublicationDate(LocalDate.now());
-        bookOld.setGenre(Genre.NA);
+        String url = String.format(this.resourceUrl, bookOld.id());
+        BookDTO bookRequest =
+                new BookDTO(null, "Controller-Book-Name-0", 10, LocalDate.now(), Genre.NA);
         HttpEntity<BookDTO> httpEntity =
-                new HttpEntity<>(bookOld, this.retrieveHttpHeaders(this.validToken));
+                new HttpEntity<>(bookRequest, this.retrieveHttpHeaders(this.validToken));
         ResponseEntity<BookDTO> response =
                 this.testRestTemplate.exchange(url, HttpMethod.PUT, httpEntity, BookDTO.class);
         BookDTO bookNew = response.getBody();
@@ -410,11 +415,8 @@ class BooksRestControllerTest {
 
     @Test
     void givenNonExistingId_whenUpdate_thenReturnBookNotFound() {
-        BookDTO bookRequest = new BookDTO();
-        bookRequest.setName("Controller-Book-Name-" + TOTAL);
-        bookRequest.setNumberOfPages(1);
-        bookRequest.setPublicationDate(LocalDate.now());
-        bookRequest.setGenre(Genre.NA);
+        BookDTO bookRequest =
+                new BookDTO(null, "Controller-Book-Name-" + TOTAL, 1, LocalDate.now(), Genre.NA);
         HttpEntity<BookDTO> httpEntity =
                 new HttpEntity<>(bookRequest, this.retrieveHttpHeaders(this.validToken));
         ResponseEntity<BookNotFoundResponseDTO> response = this.testRestTemplate.exchange(
@@ -431,7 +433,7 @@ class BooksRestControllerTest {
     @Test
     void givenExistingBook_whenUpdate_thenReturnDuplicatedBook() {
         BookDTO bookOld = this.bookService.getAll().get(0);
-        String url = String.format(this.resourceUrl, bookOld.getId());
+        String url = String.format(this.resourceUrl, bookOld.id());
         HttpEntity<BookDTO> httpEntity =
                 new HttpEntity<>(bookOld, this.retrieveHttpHeaders(this.validToken));
         ResponseEntity<DuplicatedBookResponseDTO> response = this.testRestTemplate.exchange(url,

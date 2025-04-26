@@ -3,13 +3,15 @@ package com.personal.springlessons.component.kafka.filter;
 import com.personal.springlessons.model.dto.response.KafkaMessageItemDTO;
 import com.personal.springlessons.model.lov.ItemStatus;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.kafka.listener.adapter.RecordFilterStrategy;
 import org.springframework.stereotype.Component;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Component
 public class UploadItemsRecordFilter<K, V> implements RecordFilterStrategy<K, V> {
+
+    private static final Logger log = LoggerFactory.getLogger(UploadItemsRecordFilter.class);
 
     @Override
     public boolean filter(ConsumerRecord<K, V> consumerRecord) {

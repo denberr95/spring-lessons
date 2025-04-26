@@ -10,6 +10,8 @@ import com.personal.springlessons.repository.IItemsRepository;
 import com.personal.springlessons.repository.IOrderItemsRepository;
 import com.personal.springlessons.util.Constants;
 import com.personal.springlessons.util.Methods;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.annotation.RetryableTopic;
@@ -17,13 +19,12 @@ import org.springframework.kafka.retrytopic.DltStrategy;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Component
 @RequiredArgsConstructor
 public class ItemsKafkaListener {
 
+    private static final Logger log = LoggerFactory.getLogger(ItemsKafkaListener.class);
     private final ApplicationEventPublisher applicationEventPublisher;
     private final IItemsRepository itemRepository;
     private final IOrderItemsRepository orderItemsRepository;
@@ -33,7 +34,7 @@ public class ItemsKafkaListener {
     @KafkaListener(groupId = "upload-items.group", topics = Constants.TOPIC_ITEMS,
             filter = "uploadItemsRecordFilter", concurrency = Constants.S_VAL_3)
     public void upload(@Payload KafkaMessageItemDTO message) {
-        log.info("Received item to upload: '{}'", message.toString());
+        log.info("Received item to upload: '{}'", message);
 
         this.itemRepository.findByBarcode(message.getBarcode()).ifPresent(item -> {
             log.warn("Barcode: '{}' already exists", item.getBarcode());

@@ -3,6 +3,8 @@ package com.personal.springlessons.component.interceptor;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import com.personal.springlessons.util.Constants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.MediaType;
@@ -11,11 +13,11 @@ import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StreamUtils;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Component
 public class HttpClientInterceptor implements ClientHttpRequestInterceptor {
+
+    private static final Logger log = LoggerFactory.getLogger(HttpClientInterceptor.class);
 
     @Override
     public ClientHttpResponse intercept(HttpRequest request, byte[] body,
@@ -26,7 +28,7 @@ public class HttpClientInterceptor implements ClientHttpRequestInterceptor {
         return response;
     }
 
-    private void logRequest(HttpRequest request, byte[] body) throws IOException {
+    private void logRequest(HttpRequest request, byte[] body) {
         log.info("--- HTTP Client Request ---");
         log.info("URI: '{}'", request.getURI());
         log.info("Method: '{}'", request.getMethod());

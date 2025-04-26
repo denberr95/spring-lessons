@@ -6,18 +6,20 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import com.personal.springlessons.util.Constants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.validation.annotation.Validated;
 import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
 
 @Data
-@Slf4j
 @Validated
 @Configuration(proxyBeanMethods = false)
 @ConfigurationProperties(prefix = "app-config")
 public final class AppPropertiesConfig {
+
+    private static final Logger log = LoggerFactory.getLogger(AppPropertiesConfig.class);
 
     /**
      * This property is used to set the base directory for the application.
@@ -151,7 +153,7 @@ public final class AppPropertiesConfig {
     @PostConstruct
     public void init() {
         this.initCsvDir();
-        log.debug("Custom Application Properties Loaded: '{}'", this.toString());
+        log.debug("Custom Application Properties Loaded: '{}'", this);
     }
 
     void initCsvDir() {

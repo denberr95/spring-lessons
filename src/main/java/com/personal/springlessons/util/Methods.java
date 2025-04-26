@@ -10,14 +10,16 @@ import java.util.List;
 import java.util.UUID;
 import com.personal.springlessons.exception.InvalidUUIDException;
 import com.personal.springlessons.model.lov.DomainCategory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.info.GitProperties;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 public final class Methods {
+
+    private static final Logger log = LoggerFactory.getLogger(Methods.class);
 
     private Methods() {
         throw new UnsupportedOperationException(
@@ -61,7 +63,7 @@ public final class Methods {
         Message<Object> result = null;
         log.debug("Generate kafka message: '{}' to send at topic: '{}'", payload, topic);
         result = MessageBuilder.withPayload(payload).setHeader(KafkaHeaders.TOPIC, topic).build();
-        log.debug("Kafka Message generated: '{}'", result.toString());
+        log.debug("Kafka Message generated: '{}'", result);
         return result;
     }
 
@@ -94,7 +96,8 @@ public final class Methods {
     }
 
     public static boolean isValidFileType(String fileName, List<String> fileTypes) {
-        log.debug("Check if file: '{}' is valid respect to available file types: '{}'", fileName, fileTypes);
+        log.debug("Check if file: '{}' is valid respect to available file types: '{}'", fileName,
+                fileTypes);
         boolean result = false;
         for (String fileType : fileTypes) {
             if (fileName.endsWith(fileType)) {

@@ -72,10 +72,8 @@ public class BooksService {
     @NewSpan
     public BookDTO save(final BookDTO bookDTO, final Channel channel) {
         Span currentSpan = this.tracer.currentSpan();
-        this.bookRepository
-                .findByNameAndPublicationDateAndNumberOfPages(bookDTO.getName(),
-                        bookDTO.getPublicationDate(), bookDTO.getNumberOfPages())
-                .ifPresent(book -> {
+        this.bookRepository.findByNameAndPublicationDateAndNumberOfPages(bookDTO.name(),
+                bookDTO.publicationDate(), bookDTO.numberOfPages()).ifPresent(book -> {
                     throw new DuplicatedBookException(book.getName(), book.getId().toString());
                 });
         BooksEntity bookEntity = this.bookMapper.mapEntity(bookDTO, channel);
@@ -97,10 +95,8 @@ public class BooksService {
         Span currentSpan = this.tracer.currentSpan();
         BooksEntity bookEntity = this.bookRepository.findById(Methods.idValidation(id))
                 .orElseThrow(() -> new BookNotFoundException(id));
-        this.bookRepository
-                .findByNameAndPublicationDateAndNumberOfPages(bookDTO.getName(),
-                        bookDTO.getPublicationDate(), bookDTO.getNumberOfPages())
-                .ifPresent(book -> {
+        this.bookRepository.findByNameAndPublicationDateAndNumberOfPages(bookDTO.name(),
+                bookDTO.publicationDate(), bookDTO.numberOfPages()).ifPresent(book -> {
                     throw new DuplicatedBookException(book.getName(), book.getId().toString());
                 });
         bookEntity = this.bookMapper.update(bookDTO, channel, bookEntity);

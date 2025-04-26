@@ -111,7 +111,7 @@
         {
             "label": "podman-export-keycloak-realm",
             "type": "shell",
-            "command": "podman run --rm --name keycloak-export --volume ./collections/keycloak:/opt/keycloak/data quay.io/keycloak/keycloak:latest export --file /opt/keycloak/data/realm.json",
+            "command": "podman run --rm --name keycloak-export --volume ./collections/keycloak/conf:/opt/keycloak/data quay.io/keycloak/keycloak:latest export --file /tmp/realm.json",
             "group": "none"
         },
         {

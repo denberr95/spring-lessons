@@ -2,6 +2,7 @@ package com.personal.springlessons.model.entity.orderitems;
 
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -22,14 +23,10 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.SourceType;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Data
 @Entity
 @DynamicInsert
 @DynamicUpdate
-@NoArgsConstructor
 @EntityListeners(value = OrderItemsEntityListener.class)
 @Table(name = OrderItemsEntity.TABLE_NAME, schema = Constants.DB_SCHEMA_SPRING_APP)
 public class OrderItemsEntity {
@@ -58,4 +55,95 @@ public class OrderItemsEntity {
 
     @OneToMany(mappedBy = "orderItemsEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ItemsEntity> items;
+
+    public OrderItemsEntity() {}
+
+    public OrderItemsEntity(UUID id, OffsetDateTime createdAt, Integer quantity, ItemStatus status,
+            Channel channel, List<ItemsEntity> items) {
+        this.id = id;
+        this.createdAt = createdAt;
+        this.quantity = quantity;
+        this.status = status;
+        this.channel = channel;
+        this.items = items;
+    }
+
+    public static String getTableName() {
+        return TABLE_NAME;
+    }
+
+    public UUID getId() {
+        return this.id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public OffsetDateTime getCreatedAt() {
+        return this.createdAt;
+    }
+
+    public void setCreatedAt(OffsetDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Integer getQuantity() {
+        return this.quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public ItemStatus getStatus() {
+        return this.status;
+    }
+
+    public void setStatus(ItemStatus status) {
+        this.status = status;
+    }
+
+    public Channel getChannel() {
+        return this.channel;
+    }
+
+    public void setChannel(Channel channel) {
+        this.channel = channel;
+    }
+
+    public List<ItemsEntity> getItems() {
+        return this.items;
+    }
+
+    public void setItems(List<ItemsEntity> items) {
+        this.items = items;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.id, this.createdAt, this.quantity, this.status, this.channel,
+                this.items);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (this.getClass() != obj.getClass())
+            return false;
+        OrderItemsEntity other = (OrderItemsEntity) obj;
+        return Objects.equals(this.id, other.id) && Objects.equals(this.createdAt, other.createdAt)
+                && Objects.equals(this.quantity, other.quantity) && this.status == other.status
+                && this.channel == other.channel && Objects.equals(this.items, other.items);
+    }
+
+    @Override
+    public String toString() {
+        return "OrderItemsEntity [id=" + this.id + ", createdAt=" + this.createdAt + ", quantity="
+                + this.quantity + ", status=" + this.status + ", channel=" + this.channel
+                + ", items=" + this.items + "]";
+    }
 }

@@ -1,24 +1,22 @@
 package com.personal.springlessons.model.dto;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import com.personal.springlessons.util.Constants;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
 public class ItemDTO {
 
     private String id;
 
     @NotNull(message = Constants.ERROR_MSG_NOT_BLANK)
     @Positive(message = Constants.ERROR_MSG_POSITIVE_VALUE)
-    @DecimalMax(value = Constants.S_VAL_9999_99, inclusive = true, message = Constants.ERROR_MSG_MAX_VALUE)
+    @DecimalMax(value = Constants.S_VAL_9999_99, inclusive = true,
+            message = Constants.ERROR_MSG_MAX_VALUE)
     private BigDecimal price;
 
     @NotBlank(message = Constants.ERROR_MSG_NOT_BLANK)
@@ -30,4 +28,79 @@ public class ItemDTO {
             message = Constants.ERROR_MSG_LEN_VALIDATION)
     @NotBlank(message = Constants.ERROR_MSG_NOT_BLANK)
     private String barcode;
+
+    public ItemDTO(String id,
+            @NotNull(message = "Cannot be null or empty") @Positive(
+                    message = "Must be a positive value") @DecimalMax(value = "9999.99",
+                            inclusive = true,
+                            message = "Must be less than or equal to {value}") BigDecimal price,
+            @NotBlank(message = "Cannot be null or empty") @Size(min = 1, max = 100,
+                    message = "Must be between {min} and {max} characters long") String name,
+            @Size(min = 1, max = 50,
+                    message = "Must be between {min} and {max} characters long") @NotBlank(
+                            message = "Cannot be null or empty") String barcode) {
+        this.id = id;
+        this.price = price;
+        this.name = name;
+        this.barcode = barcode;
+    }
+
+    public ItemDTO() {}
+
+    public String getId() {
+        return this.id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public BigDecimal getPrice() {
+        return this.price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getBarcode() {
+        return this.barcode;
+    }
+
+    public void setBarcode(String barcode) {
+        this.barcode = barcode;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.id, this.price, this.name, this.barcode);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (this.getClass() != obj.getClass())
+            return false;
+        ItemDTO other = (ItemDTO) obj;
+        return Objects.equals(this.id, other.id) && Objects.equals(this.price, other.price)
+                && Objects.equals(this.name, other.name)
+                && Objects.equals(this.barcode, other.barcode);
+    }
+
+    @Override
+    public String toString() {
+        return "ItemDTO [id=" + this.id + ", price=" + this.price + ", name=" + this.name
+                + ", barcode=" + this.barcode + "]";
+    }
 }

@@ -133,7 +133,8 @@ services:
     - start-dev
     - --import-realm
     volumes:
-    - ./keycloak:/opt/keycloak/data/import
+    - ./keycloak/db:/opt/keycloak/data
+    - ./keycloak/conf:/opt/keycloak/import
     ports:
     - "8080:8080" # serve web server
     networks:
