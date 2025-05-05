@@ -401,8 +401,7 @@ class BooksRestControllerTest {
     void givenExistingId_whenUpdate_thenBookIsUpdated() {
         BookDTO bookOld = this.bookService.getAll().get(0);
         String url = String.format(this.resourceUrl, bookOld.id());
-        BookDTO bookRequest =
-                new BookDTO(null, "Controller-Book-Name-0", 10, LocalDate.now(), Genre.NA);
+        BookDTO bookRequest = new BookDTO(null, bookOld.name(), 10, LocalDate.now(), Genre.NA);
         HttpEntity<BookDTO> httpEntity =
                 new HttpEntity<>(bookRequest, this.retrieveHttpHeaders(this.validToken));
         ResponseEntity<BookDTO> response =
@@ -410,7 +409,10 @@ class BooksRestControllerTest {
         BookDTO bookNew = response.getBody();
         assertNotNull(bookNew);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(bookOld, bookNew);
+        assertEquals(bookRequest.name(), bookNew.name());
+        assertEquals(bookRequest.numberOfPages(), bookNew.numberOfPages());
+        assertEquals(bookRequest.publicationDate(), bookNew.publicationDate());
+        assertEquals(bookOld.genre(), bookNew.genre());
     }
 
     @Test
