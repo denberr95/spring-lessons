@@ -1411,7 +1411,7 @@
 	"variable": [
 		{
 			"key": "authorizationServer",
-			"value": "http://localhost:8080/realms/spring-lessons/protocol/openid-connect/token",
+			"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
 			"type": "string"
 		},
 		{
