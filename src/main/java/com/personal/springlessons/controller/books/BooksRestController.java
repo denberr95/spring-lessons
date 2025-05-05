@@ -58,7 +58,7 @@ public class BooksRestController {
         this.bookService = bookService;
     }
 
-    @Observed(name = "bookeGetAll", contextualName = "get-all-books",
+    @Observed(name = "booke.get.all", contextualName = "get-all-books",
             lowCardinalityKeyValues = {"endpoint", "/books"})
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(value = "hasAuthority('SCOPE_books:get')")
@@ -84,7 +84,7 @@ public class BooksRestController {
         return response;
     }
 
-    @Observed(name = "getBookById", contextualName = "book-id-retrieval",
+    @Observed(name = "get.book.by.id", contextualName = "book-id-retrieval",
             lowCardinalityKeyValues = {"endpoint", "/books/{id}"})
     @GetMapping(path = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(value = "hasAuthority('SCOPE_books:get')")
@@ -104,7 +104,7 @@ public class BooksRestController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    @Observed(name = "createBook", contextualName = "book-creation",
+    @Observed(name = "create.book", contextualName = "book-creation",
             lowCardinalityKeyValues = {"endpoint", "/books"})
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(value = "hasAuthority('SCOPE_books:save')")
@@ -129,7 +129,7 @@ public class BooksRestController {
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
-    @Observed(name = "deleteBook", contextualName = "book-deletion",
+    @Observed(name = "delete.book", contextualName = "book-deletion",
             lowCardinalityKeyValues = {"endpoint", "/books/{id}"})
     @DeleteMapping(path = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(value = "hasAuthority('SCOPE_books:delete')")
@@ -149,7 +149,7 @@ public class BooksRestController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @Observed(name = "updateBook", contextualName = "book-update",
+    @Observed(name = "update.book", contextualName = "book-update",
             lowCardinalityKeyValues = {"endpoint", "/books/{id}"})
     @PutMapping(path = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(value = "hasAuthority('SCOPE_books:update')")
@@ -176,7 +176,7 @@ public class BooksRestController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    @Observed(name = "downloadBooks", contextualName = "books-download",
+    @Observed(name = "download.books", contextualName = "books-download",
             lowCardinalityKeyValues = {"endpoint", "/books/download"})
     @GetMapping(path = "download")
     @PreAuthorize(value = "hasAuthority('SCOPE_books:download')")
@@ -197,7 +197,7 @@ public class BooksRestController {
         return ResponseEntity.status(HttpStatus.OK).headers(headers).body(result.getContent());
     }
 
-    @Observed(name = "uploadBooks", contextualName = "books-upload",
+    @Observed(name = "upload.books", contextualName = "books-upload",
             lowCardinalityKeyValues = {"endpoint", "/books/upload"})
     @PostMapping(path = "upload", produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

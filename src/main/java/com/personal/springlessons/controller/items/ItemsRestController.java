@@ -44,7 +44,7 @@ public class ItemsRestController {
         this.itemService = itemService;
     }
 
-    @Observed(name = "uploadItems", contextualName = "items-upload")
+    @Observed(name = "upload.items", contextualName = "items-upload")
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(value = "hasAuthority('SCOPE_items:upload')")
     @Operation(summary = "Upload items", operationId = "uploadItems")
@@ -64,7 +64,7 @@ public class ItemsRestController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @Observed(name = "deleteItems", contextualName = "items-delete",
+    @Observed(name = "delete.items", contextualName = "items-delete",
             lowCardinalityKeyValues = {"endpoint", "/items/{id}"})
     @DeleteMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(value = "hasAuthority('SCOPE_items:delete')")
@@ -85,7 +85,7 @@ public class ItemsRestController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @Observed(name = "getAllItems", contextualName = "items-get-all",
+    @Observed(name = "get.all.items", contextualName = "items-get-all",
             lowCardinalityKeyValues = {"endpoint", "/items/{id}"})
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(value = "hasAuthority('SCOPE_items:get')")
