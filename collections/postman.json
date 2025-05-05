@@ -350,7 +350,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"name\": \"Book Name\",\n\t\"numberOfPages\": 1,\n\t\"publicationDate\": \"9000-12-01\",\n\t\"genre\": \"Noir\"\n}",
+									"raw": "{\n\t\"name\": \"Book Name Updated\",\n\t\"numberOfPages\": 1,\n\t\"publicationDate\": \"9000-12-01\",\n\t\"genre\": \"Noir\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -372,7 +372,7 @@
 									"variable": [
 										{
 											"key": "id",
-											"value": ""
+											"value": "c7f23ae5-f9f2-4804-87f2-c3fda633c44c"
 										}
 									]
 								}
@@ -599,7 +599,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"name\": \"Book Name\",\n\t\"numberOfPages\": 1,\n\t\"publicationDate\": \"9000-12-01\",\n\t\"genre\": \"Noir\"\n}",
+									"raw": "{\n\t\"name\": \"Book Name Updated\",\n\t\"numberOfPages\": 1,\n\t\"publicationDate\": \"9000-12-01\",\n\t\"genre\": \"Noir\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
