@@ -120,21 +120,18 @@ services:
     networks:
     - vscode-spring-dev
 
-  # https://github.com/keycloak/keycloak/issues/11664
   keycloak:
     image: quay.io/keycloak/keycloak:latest
     restart: "no"
     environment:
     - TZ=Europe/Rome
-    - KC_BOOTSTRAP_ADMIN_USERNAME=kcuser
-    - KC_BOOTSTRAP_ADMIN_PASSWORD=kcpwd
+    - KC_BOOTSTRAP_ADMIN_USERNAME=kcuser # Temporary admin user, real is "admin"
+    - KC_BOOTSTRAP_ADMIN_PASSWORD=kcpwd # Temporary admin user pwd, real is "admin"
     - JAVA_OPTS_KC_HEAP=-XX:MaxRAMPercentage=70 -XX:MinRAMPercentage=70 -XX:InitialRAMPercentage=50
     command:
     - start-dev
-    - --import-realm
     volumes:
-    - ./keycloak/db:/opt/keycloak/data
-    - ./keycloak/conf:/opt/keycloak/import
+    - ./keycloak:/opt/keycloak/data
     ports:
     - "8080:8080" # serve web server
     networks:

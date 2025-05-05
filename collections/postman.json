@@ -147,6 +147,53 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Get SBOM Type",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:10001/actuator/sbom",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "10001",
+							"path": [
+								"actuator",
+								"sbom"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get SBOM Application",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:10001/actuator/sbom/application",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "10001",
+							"path": [
+								"actuator",
+								"sbom",
+								"application"
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"auth": {
@@ -349,7 +396,7 @@
 										{
 											"key": "file",
 											"type": "file",
-											"src": []
+											"src": "/Users/denis.berretti/Downloads/book.csv"
 										}
 									]
 								},
@@ -1373,7 +1420,7 @@
 		},
 		{
 			"key": "clientSecretAdminBooks",
-			"value": "IThFMjQqOnzlBtR37I37XicklxY9N3Kt"
+			"value": "PtBsFK4ogkxL0JRZZeoFZ8KWrJsH05jC"
 		},
 		{
 			"key": "clientIdWriterBooks",
@@ -1382,7 +1429,7 @@
 		},
 		{
 			"key": "clientSecretWriterBooks",
-			"value": "6hmhKlP2faQ6TkTKGsasiIk0m8OHX7XY",
+			"value": "gjA01yMMwFRNvyADidf9wmrQSJdOCI53",
 			"type": "string"
 		},
 		{
@@ -1391,15 +1438,15 @@
 		},
 		{
 			"key": "clientSecretReaderBooks",
-			"value": "SBNsiqDKFnirIf5fb37BURr4wNQYL1LJ"
+			"value": "12UAbqHBFyHUWM2ehiuOPLUHRDhTn5ps"
 		},
 		{
 			"key": "clientIdAdminItems",
-			"value": "client-id-items-reader"
+			"value": "client-id-items-admin"
 		},
 		{
 			"key": "clientSecretAdminItems",
-			"value": "GNlekbSxQTbDm963eRMaXGeDlKsTXPYQ"
+			"value": "NI9kyA7EfWm6f1fXNfRSxRs8RyBvlYbD"
 		},
 		{
 			"key": "clientIdWriterItems",
@@ -1407,7 +1454,7 @@
 		},
 		{
 			"key": "clientSecretWriterItems",
-			"value": "JYxdfsCGQdid8oq6hg6Crhbyx6FEHypw"
+			"value": "wYZkx1YhdSajnU2O4FiwY5trEOpM3dNt"
 		},
 		{
 			"key": "clientIdReaderItems",
@@ -1415,7 +1462,7 @@
 		},
 		{
 			"key": "clientSecretReaderItems",
-			"value": "0gpFsIetlStQu58jB36RFyKKrEMTj4W0"
+			"value": "ugpBN4DUGCSNMOoO1JQI2kbE82aJ88bN"
 		}
 	]
 }

@@ -1,16 +1,16 @@
-2025-04-22 16:35:42.117820Z jdbc[3]: exception
+2025-05-05 23:04:22.403191+02:00 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MIGRATION_MODEL" not found (this database is empty); SQL statement:
 SELECT ID, VERSION FROM MIGRATION_MODEL ORDER BY UPDATE_TIME DESC [42104-230]
-2025-04-22 16:35:42.463132Z jdbc[3]: exception
+2025-05-05 23:04:22.850218+02:00 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "DATABASECHANGELOG" not found (this database is empty); SQL statement:
 SELECT COUNT(*) FROM PUBLIC.DATABASECHANGELOG [42104-230]
-2025-04-22 16:35:42.556130Z jdbc[4]: exception
+2025-05-05 23:04:23.004743+02:00 jdbc[4]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "DATABASECHANGELOGLOCK" not found (this database is empty); SQL statement:
 SELECT COUNT(*) FROM PUBLIC.DATABASECHANGELOGLOCK [42104-230]
-2025-04-22 16:35:42.574120Z jdbc[3]: exception
+2025-05-05 23:04:23.031471+02:00 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "DATABASECHANGELOG" not found; SQL statement:
 SELECT COUNT(*) FROM PUBLIC.DATABASECHANGELOG [42102-230]
-2025-04-22 16:35:43.740154Z jdbc[3]: exception
+2025-05-05 23:04:24.540305+02:00 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Column "T.DETAILS_JSON" not found; SQL statement:
 select t.DETAILS_JSON from PUBLIC.ADMIN_EVENT_ENTITY t where 0=1 [42122-230]
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:514)
@@ -96,9 +96,8 @@ select t.DETAILS_JSON from PUBLIC.ADMIN_EVENT_ENTITY t where 0=1 [42122-230]
 	at io.quarkus.runtime.ApplicationLifecycleManager.run(ApplicationLifecycleManager.java:121)
 	at io.quarkus.runtime.Quarkus.run(Quarkus.java:77)
 	at org.keycloak.quarkus.runtime.KeycloakMain.start(KeycloakMain.java:145)
-	at org.keycloak.quarkus.runtime.cli.Picocli.start(Picocli.java:988)
+	at org.keycloak.quarkus.runtime.cli.Picocli.start(Picocli.java:1000)
 	at org.keycloak.quarkus.runtime.cli.command.AbstractStartCommand.run(AbstractStartCommand.java:49)
-	at org.keycloak.quarkus.runtime.cli.command.AbstractNonServerCommand.run(AbstractNonServerCommand.java:41)
 	at picocli.CommandLine.executeUserObject(CommandLine.java:2030)
 	at picocli.CommandLine.access$1500(CommandLine.java:148)
 	at picocli.CommandLine$RunLast.executeUserObjectOfLastSubcommandWithSameParent(CommandLine.java:2465)
