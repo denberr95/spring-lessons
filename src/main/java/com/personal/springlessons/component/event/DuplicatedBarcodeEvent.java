@@ -17,14 +17,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-import lombok.RequiredArgsConstructor;
 
 @Component
-@RequiredArgsConstructor
 public class DuplicatedBarcodeEvent {
 
     private static final Logger log = LoggerFactory.getLogger(DuplicatedBarcodeEvent.class);
     private final AppPropertiesConfig appPropertiesConfig;
+
+    public DuplicatedBarcodeEvent(AppPropertiesConfig appPropertiesConfig) {
+        this.appPropertiesConfig = appPropertiesConfig;
+    }
 
     @Async
     @EventListener

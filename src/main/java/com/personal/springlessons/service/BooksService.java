@@ -39,10 +39,8 @@ import org.springframework.web.multipart.MultipartFile;
 import io.micrometer.tracing.Span;
 import io.micrometer.tracing.Tracer;
 import io.micrometer.tracing.annotation.NewSpan;
-import lombok.RequiredArgsConstructor;
 
 @Service
-@RequiredArgsConstructor
 public class BooksService {
 
     private final AppPropertiesConfig appPropertiesConfig;
@@ -50,6 +48,15 @@ public class BooksService {
     private final IBooksRepository bookRepository;
     private final IBooksMapper bookMapper;
     private final Tracer tracer;
+
+    public BooksService(AppPropertiesConfig appPropertiesConfig, Validator validator,
+            IBooksRepository bookRepository, IBooksMapper bookMapper, Tracer tracer) {
+        this.appPropertiesConfig = appPropertiesConfig;
+        this.validator = validator;
+        this.bookRepository = bookRepository;
+        this.bookMapper = bookMapper;
+        this.tracer = tracer;
+    }
 
     @NewSpan
     public List<BookDTO> getAll() {

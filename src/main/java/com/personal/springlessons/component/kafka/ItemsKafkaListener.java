@@ -18,10 +18,8 @@ import org.springframework.kafka.annotation.RetryableTopic;
 import org.springframework.kafka.retrytopic.DltStrategy;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
-import lombok.RequiredArgsConstructor;
 
 @Component
-@RequiredArgsConstructor
 public class ItemsKafkaListener {
 
     private static final Logger log = LoggerFactory.getLogger(ItemsKafkaListener.class);
@@ -29,6 +27,15 @@ public class ItemsKafkaListener {
     private final IItemsRepository itemRepository;
     private final IOrderItemsRepository orderItemsRepository;
     private final IItemsMapper itemMapper;
+
+    public ItemsKafkaListener(ApplicationEventPublisher applicationEventPublisher,
+            IItemsRepository itemRepository, IOrderItemsRepository orderItemsRepository,
+            IItemsMapper itemMapper) {
+        this.applicationEventPublisher = applicationEventPublisher;
+        this.itemRepository = itemRepository;
+        this.orderItemsRepository = orderItemsRepository;
+        this.itemMapper = itemMapper;
+    }
 
     @RetryableTopic(attempts = Constants.S_VAL_1, dltStrategy = DltStrategy.NO_DLT)
     @KafkaListener(groupId = "upload-items.group", topics = Constants.TOPIC_ITEMS,

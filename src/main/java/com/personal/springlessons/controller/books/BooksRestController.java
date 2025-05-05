@@ -36,7 +36,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import io.micrometer.tracing.annotation.NewSpan;
+import io.micrometer.observation.annotation.Observed;
 import io.micrometer.tracing.annotation.SpanTag;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -44,19 +44,22 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
 
 @Tag(name = "Books")
 @Validated
 @RestController
-@RequiredArgsConstructor
 @RequestMapping(path = "books")
 public class BooksRestController {
 
     private static final Logger log = LoggerFactory.getLogger(BooksRestController.class);
     private final BooksService bookService;
 
-    @NewSpan
+    public BooksRestController(BooksService bookService) {
+        this.bookService = bookService;
+    }
+
+    @Observed(name = "bookeGetAll", contextualName = "get-all-books",
+            lowCardinalityKeyValues = {"endpoint", "/books"})
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(value = "hasAuthority('SCOPE_books:get')")
     @Operation(summary = "Get all books", operationId = "getAllBooks")
@@ -81,7 +84,8 @@ public class BooksRestController {
         return response;
     }
 
-    @NewSpan
+    @Observed(name = "getBookById", contextualName = "book-id-retrieval",
+            lowCardinalityKeyValues = {"endpoint", "/books/{id}"})
     @GetMapping(path = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(value = "hasAuthority('SCOPE_books:get')")
     @Operation(summary = "Get a book by id", operationId = "getBookById")
@@ -100,7 +104,8 @@ public class BooksRestController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    @NewSpan
+    @Observed(name = "createBook", contextualName = "book-creation",
+            lowCardinalityKeyValues = {"endpoint", "/books"})
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(value = "hasAuthority('SCOPE_books:save')")
     @Operation(summary = "Create a new book", operationId = "createBook")
@@ -124,7 +129,8 @@ public class BooksRestController {
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
-    @NewSpan
+    @Observed(name = "deleteBook", contextualName = "book-deletion",
+            lowCardinalityKeyValues = {"endpoint", "/books/{id}"})
     @DeleteMapping(path = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(value = "hasAuthority('SCOPE_books:delete')")
     @Operation(summary = "Delete a book", operationId = "deleteBook")
@@ -143,7 +149,8 @@ public class BooksRestController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @NewSpan
+    @Observed(name = "updateBook", contextualName = "book-update",
+            lowCardinalityKeyValues = {"endpoint", "/books/{id}"})
     @PutMapping(path = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(value = "hasAuthority('SCOPE_books:update')")
     @Operation(summary = "Delete a book", operationId = "updateBook")
@@ -169,7 +176,8 @@ public class BooksRestController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    @NewSpan
+    @Observed(name = "downloadBooks", contextualName = "books-download",
+            lowCardinalityKeyValues = {"endpoint", "/books/download"})
     @GetMapping(path = "download")
     @PreAuthorize(value = "hasAuthority('SCOPE_books:download')")
     @Operation(summary = "Download books in a csv file", operationId = "downloadBooks")
@@ -189,7 +197,8 @@ public class BooksRestController {
         return ResponseEntity.status(HttpStatus.OK).headers(headers).body(result.getContent());
     }
 
-    @NewSpan
+    @Observed(name = "uploadBooks", contextualName = "books-upload",
+            lowCardinalityKeyValues = {"endpoint", "/books/upload"})
     @PostMapping(path = "upload", produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize(value = "hasAuthority('SCOPE_books:upload')")

@@ -19,10 +19,8 @@ import org.springframework.stereotype.Service;
 import io.micrometer.tracing.Span;
 import io.micrometer.tracing.Tracer;
 import io.micrometer.tracing.annotation.NewSpan;
-import lombok.RequiredArgsConstructor;
 
 @Service
-@RequiredArgsConstructor
 public class ItemsService {
 
     private final Tracer tracer;
@@ -30,6 +28,16 @@ public class ItemsService {
     private final IItemsRepository itemsRepository;
     private final IOrderItemsRepository orderItemsRepository;
     private final KafkaTemplate<String, KafkaMessageItemDTO> kafkaTemplate;
+
+    public ItemsService(Tracer tracer, IItemsMapper itemMapper, IItemsRepository itemsRepository,
+            IOrderItemsRepository orderItemsRepository,
+            KafkaTemplate<String, KafkaMessageItemDTO> kafkaTemplate) {
+        this.tracer = tracer;
+        this.itemMapper = itemMapper;
+        this.itemsRepository = itemsRepository;
+        this.orderItemsRepository = orderItemsRepository;
+        this.kafkaTemplate = kafkaTemplate;
+    }
 
     @NewSpan
     public void upload(final List<ItemDTO> items, final Channel channel) {

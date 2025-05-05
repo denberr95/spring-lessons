@@ -23,26 +23,28 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import io.micrometer.tracing.annotation.NewSpan;
+import io.micrometer.observation.annotation.Observed;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
 
 @Tag(name = "Items")
 @Validated
 @RestController
-@RequiredArgsConstructor
 @RequestMapping(path = "items")
 public class ItemsRestController {
 
     private static final Logger log = LoggerFactory.getLogger(ItemsRestController.class);
     private final ItemsService itemService;
 
-    @NewSpan
+    public ItemsRestController(ItemsService itemService) {
+        this.itemService = itemService;
+    }
+
+    @Observed(name = "uploadItems", contextualName = "items-upload")
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(value = "hasAuthority('SCOPE_items:upload')")
     @Operation(summary = "Upload items", operationId = "uploadItems")
@@ -62,7 +64,8 @@ public class ItemsRestController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @NewSpan
+    @Observed(name = "deleteItems", contextualName = "items-delete",
+            lowCardinalityKeyValues = {"endpoint", "/items/{id}"})
     @DeleteMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(value = "hasAuthority('SCOPE_items:delete')")
     @Operation(summary = "Delete items", operationId = "deleteItems")
@@ -82,7 +85,8 @@ public class ItemsRestController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @NewSpan
+    @Observed(name = "getAllItems", contextualName = "items-get-all",
+            lowCardinalityKeyValues = {"endpoint", "/items/{id}"})
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(value = "hasAuthority('SCOPE_items:get')")
     @Operation(summary = "Get all items", operationId = "getAllItems")
