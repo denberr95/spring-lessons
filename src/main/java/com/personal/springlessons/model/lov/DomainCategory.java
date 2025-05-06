@@ -5,10 +5,8 @@ import java.util.stream.Collectors;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
 
 @Schema(enumAsRef = true, name = "Category")
-@AllArgsConstructor
 public enum DomainCategory {
     BOOKS("Books"), ITEMS("Items"), NA("Not Available");
 
@@ -32,5 +30,9 @@ public enum DomainCategory {
                         String.format("Invalid value '%s'. Allowed values are: %s", value,
                                 Arrays.stream(DomainCategory.values()).map(DomainCategory::getValue)
                                         .collect(Collectors.joining(", ")))));
+    }
+
+    private DomainCategory(String value) {
+        this.value = value;
     }
 }

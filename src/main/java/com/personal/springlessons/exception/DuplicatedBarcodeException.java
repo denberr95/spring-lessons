@@ -1,8 +1,5 @@
 package com.personal.springlessons.exception;
 
-import lombok.Getter;
-
-@Getter
 public class DuplicatedBarcodeException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
@@ -13,5 +10,17 @@ public class DuplicatedBarcodeException extends RuntimeException {
         super(String.format("Item '%s' already registered with id '%s'", barcode, id));
         this.barcode = barcode;
         this.id = id;
+    }
+
+    public static long getSerialversionuid() {
+        return serialVersionUID;
+    }
+
+    public String getBarcode() {
+        return this.barcode;
+    }
+
+    public String getId() {
+        return this.id;
     }
 }

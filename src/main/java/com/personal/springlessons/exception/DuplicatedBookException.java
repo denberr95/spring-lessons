@@ -1,8 +1,5 @@
 package com.personal.springlessons.exception;
 
-import lombok.Getter;
-
-@Getter
 public class DuplicatedBookException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
@@ -13,5 +10,17 @@ public class DuplicatedBookException extends RuntimeException {
         super(String.format("Book '%s' is associated at id '%s'", name, id));
         this.name = name;
         this.id = id;
+    }
+
+    public static long getSerialversionuid() {
+        return serialVersionUID;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public String getId() {
+        return this.id;
     }
 }

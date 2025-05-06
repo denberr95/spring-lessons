@@ -1,9 +1,7 @@
 package com.personal.springlessons.exception;
 
 import java.util.List;
-import lombok.Getter;
 
-@Getter
 public class InvalidFileTypeException extends RuntimeException {
 
     private final String fileName;
@@ -13,5 +11,13 @@ public class InvalidFileTypeException extends RuntimeException {
         super("Unsupported file type !");
         this.fileName = fileName;
         this.validFileTypes = validFileTypes;
+    }
+
+    public String getFileName() {
+        return this.fileName;
+    }
+
+    public List<String> getValidFileTypes() {
+        return this.validFileTypes;
     }
 }

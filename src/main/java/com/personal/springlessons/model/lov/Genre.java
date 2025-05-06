@@ -5,10 +5,8 @@ import java.util.stream.Collectors;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
 
 @Schema(enumAsRef = true)
-@AllArgsConstructor
 public enum Genre {
     NOIR("Noir"), FANTASY("Fantasy"), SCIENCE_FICTION("Science Fiction"), MYSTERY(
             "Mystery"), ROMANCE("Romance"), NA("Not Available");
@@ -33,5 +31,9 @@ public enum Genre {
                         String.format("Invalid value '%s'. Allowed values are: %s", value,
                                 Arrays.stream(Genre.values()).map(Genre::getValue)
                                         .collect(Collectors.joining(", ")))));
+    }
+
+    private Genre(String value) {
+        this.value = value;
     }
 }

@@ -5,10 +5,8 @@ import java.util.stream.Collectors;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
 
 @Schema(enumAsRef = true)
-@AllArgsConstructor
 public enum Channel {
     POSTMAN("Postman"), INSOMNIA("Insomnia"), SOAPUI("SoapUI"), NA("Not Available");
 
@@ -32,5 +30,9 @@ public enum Channel {
                         String.format("Invalid value '%s'. Allowed values are: %s", value,
                                 Arrays.stream(Channel.values()).map(Channel::getValue)
                                         .collect(Collectors.joining(", ")))));
+    }
+
+    private Channel(String value) {
+        this.value = value;
     }
 }

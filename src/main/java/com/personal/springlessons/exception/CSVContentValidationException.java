@@ -2,9 +2,7 @@ package com.personal.springlessons.exception;
 
 import java.util.List;
 import com.personal.springlessons.model.dto.InvalidCsvDTO;
-import lombok.Getter;
 
-@Getter
 public class CSVContentValidationException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
@@ -15,5 +13,17 @@ public class CSVContentValidationException extends RuntimeException {
         super(String.format("CSV file: %s is invalid", fileName));
         this.fileName = fileName;
         this.rows = rows;
+    }
+
+    public static long getSerialversionuid() {
+        return serialVersionUID;
+    }
+
+    public String getFileName() {
+        return this.fileName;
+    }
+
+    public List<InvalidCsvDTO> getRows() {
+        return this.rows;
     }
 }
