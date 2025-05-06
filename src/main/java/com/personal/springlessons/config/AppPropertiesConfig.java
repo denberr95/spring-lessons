@@ -59,7 +59,7 @@ public final class AppPropertiesConfig {
         private String csvDir;
 
         /**
-         * This property is is used to set the column character separator for the CSV data.
+         * This property is used to set the column character separator for the CSV data.
          */
         @NotNull(message = "Column separator property cannot be null")
         private Character columnSeparator = Constants.C_SEMICOLON;
