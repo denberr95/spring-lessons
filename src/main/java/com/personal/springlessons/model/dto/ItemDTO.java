@@ -30,15 +30,16 @@ public class ItemDTO {
     private String barcode;
 
     public ItemDTO(String id,
-            @NotNull(message = "Cannot be null or empty") @Positive(
-                    message = "Must be a positive value") @DecimalMax(value = "9999.99",
-                            inclusive = true,
-                            message = "Must be less than or equal to {value}") BigDecimal price,
-            @NotBlank(message = "Cannot be null or empty") @Size(min = 1, max = 100,
-                    message = "Must be between {min} and {max} characters long") String name,
-            @Size(min = 1, max = 50,
-                    message = "Must be between {min} and {max} characters long") @NotBlank(
-                            message = "Cannot be null or empty") String barcode) {
+            @NotNull(message = Constants.ERROR_MSG_NOT_BLANK) @Positive(
+                    message = Constants.ERROR_MSG_POSITIVE_VALUE) @DecimalMax(
+                            value = Constants.S_VAL_9999_99, inclusive = true,
+                            message = Constants.ERROR_MSG_MAX_VALUE) BigDecimal price,
+            @NotBlank(message = Constants.ERROR_MSG_NOT_BLANK) @Size(min = Constants.I_VAL_1,
+                    max = Constants.I_VAL_100,
+                    message = Constants.ERROR_MSG_LEN_VALIDATION) String name,
+            @Size(min = Constants.I_VAL_1, max = Constants.I_VAL_100,
+                    message = Constants.ERROR_MSG_LEN_VALIDATION) @NotBlank(
+                            message = Constants.ERROR_MSG_NOT_BLANK) String barcode) {
         this.id = id;
         this.price = price;
         this.name = name;
