@@ -11,7 +11,7 @@ services:
     ports:
     - "5432:5432" # serve database
     networks:
-    - vscode-spring-dev
+    - vscode-spring-lessons
 
   jaeger:
     image: jaegertracing/jaeger:latest
@@ -29,7 +29,7 @@ services:
     - "4318" # accept OpenTelemetry Protocol (OTLP) over HTTP
     - "9411" # Zipkin compatible endpoint (optional)
     networks:
-    - vscode-spring-dev
+    - vscode-spring-lessons
 
   loki:
     image: grafana/loki:main
@@ -44,7 +44,7 @@ services:
     - "3100" # serve http server
     - "9096" # serve grpc server
     networks:
-    - vscode-spring-dev
+    - vscode-spring-lessons
 
   prometheus:
     image: prom/prometheus:main
@@ -58,7 +58,7 @@ services:
     ports:
     - "9090:9090" # serve frontend
     networks:
-    - vscode-spring-dev
+    - vscode-spring-lessons
     depends_on:
     - otelcol
 
@@ -73,7 +73,7 @@ services:
     ports:
     - "3000:3000" # serve frontend
     networks:
-    - vscode-spring-dev
+    - vscode-spring-lessons
     depends_on:
     - prometheus
     - loki
@@ -99,7 +99,7 @@ services:
     depends_on:
     - jaeger
     networks:
-    - vscode-spring-dev
+    - vscode-spring-lessons
 
   kafka:
     image: bitnami/kafka:latest
@@ -118,7 +118,7 @@ services:
     ports:
     - "9092:9092" # serve broker
     networks:
-    - vscode-spring-dev
+    - vscode-spring-lessons
 
   keycloak:
     image: quay.io/keycloak/keycloak:latest
@@ -135,7 +135,7 @@ services:
     ports:
     - "8080:8080" # serve web server
     networks:
-    - vscode-spring-dev
+    - vscode-spring-lessons
 
   wiremock:
     image: wiremock/wiremock:latest
@@ -156,8 +156,8 @@ services:
     - "9998:8080" # serve web server http
     - "9999:8443" # serve web server https
     networks:
-    - vscode-spring-dev
+    - vscode-spring-lessons
 
 networks:
-  vscode-spring-dev:
+  vscode-spring-lessons:
     driver: bridge

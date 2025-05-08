@@ -1,9 +1,9 @@
-FROM eclipse-temurin:21-jre-ubi9-minimal AS runtime
+FROM bellsoft/liberica-runtime-container:jre-17-slim-glibc AS runtime
 WORKDIR /app
 COPY bin/app.jar app.jar
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN groupadd --gid 1000 appgroup \
-    && useradd --uid 1000 --gid 1000 --create-home appuser
+RUN addgroup -g 1000 appgroup && \
+    adduser -u 1000 -G appgroup -s /bin/sh -D appuser
 RUN chmod +x /usr/local/bin/entrypoint.sh
 RUN chown appuser:appgroup --recursive /app
 USER appuser
