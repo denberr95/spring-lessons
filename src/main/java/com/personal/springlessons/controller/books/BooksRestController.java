@@ -1,19 +1,8 @@
 package com.personal.springlessons.controller.books;
 
 import java.util.List;
-import jakarta.validation.Valid;
 import com.personal.springlessons.model.dto.BookDTO;
 import com.personal.springlessons.model.dto.DownloadFileDTO;
-import com.personal.springlessons.model.dto.response.BookNotFoundResponseDTO;
-import com.personal.springlessons.model.dto.response.DuplicatedBookResponseDTO;
-import com.personal.springlessons.model.dto.response.GenericErrorResponseDTO;
-import com.personal.springlessons.model.dto.response.InvalidArgumentTypeResponseDTO;
-import com.personal.springlessons.model.dto.response.InvalidCSVContentResponseDTO;
-import com.personal.springlessons.model.dto.response.InvalidFileTypeResponseDTO;
-import com.personal.springlessons.model.dto.response.InvalidUUIDResponseDTO;
-import com.personal.springlessons.model.dto.response.MissingHttpRequestHeaderResponseDTO;
-import com.personal.springlessons.model.dto.response.NotReadableBodyRequestResponseDTO;
-import com.personal.springlessons.model.dto.response.ValidationRequestErrorResponseDTO;
 import com.personal.springlessons.model.lov.Channel;
 import com.personal.springlessons.service.BooksService;
 import org.slf4j.Logger;
@@ -21,35 +10,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import io.micrometer.observation.annotation.Observed;
 import io.micrometer.tracing.annotation.SpanTag;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Tag(name = "Books")
-@Validated
 @RestController
-@RequestMapping(path = "books")
-public class BooksRestController {
+public class BooksRestController implements IBooksRestController {
 
     private static final Logger log = LoggerFactory.getLogger(BooksRestController.class);
     private final BooksService bookService;
@@ -58,18 +27,10 @@ public class BooksRestController {
         this.bookService = bookService;
     }
 
-    @Observed(name = "booke.get.all", contextualName = "get-all-books",
+    @Observed(name = "books.get.all", contextualName = "get-all-books",
             lowCardinalityKeyValues = {"endpoint", "/books"})
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(value = "hasAuthority('SCOPE_books:get')")
-    @Operation(summary = "Get all books", operationId = "getAllBooks")
-    @ApiResponse(responseCode = "200", description = "OK",
-            content = {@Content(
-                    array = @ArraySchema(schema = @Schema(implementation = BookDTO.class)))})
-    @ApiResponse(responseCode = "204", description = "No Content",
-            content = {@Content(schema = @Schema(implementation = Void.class))})
-    @ApiResponse(responseCode = "500", description = "Internal Server Error",
-            content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
+    @Override
     public ResponseEntity<List<BookDTO>> getAll() {
         log.info("Called API to retrieve all books");
         List<BookDTO> result = this.bookService.getAll();
@@ -86,18 +47,9 @@ public class BooksRestController {
 
     @Observed(name = "get.book.by.id", contextualName = "book-id-retrieval",
             lowCardinalityKeyValues = {"endpoint", "/books/{id}"})
-    @GetMapping(path = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(value = "hasAuthority('SCOPE_books:get')")
-    @Operation(summary = "Get a book by id", operationId = "getBookById")
-    @ApiResponse(responseCode = "200", description = "OK",
-            content = {@Content(schema = @Schema(implementation = BookDTO.class))})
-    @ApiResponse(responseCode = "400", description = "Bad Request",
-            content = {@Content(schema = @Schema(implementation = InvalidUUIDResponseDTO.class))})
-    @ApiResponse(responseCode = "404", description = "Not Found",
-            content = {@Content(schema = @Schema(implementation = BookNotFoundResponseDTO.class))})
-    @ApiResponse(responseCode = "500", description = "Internal Server Error",
-            content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
-    public ResponseEntity<BookDTO> getById(@SpanTag @PathVariable final String id) {
+    @Override
+    public ResponseEntity<BookDTO> getById(@SpanTag final String id) {
         log.info("Called API to retrieve book: '{}'", id);
         BookDTO result = this.bookService.getById(id);
         log.info("Book '{}' retrieved !", result.id());
@@ -106,23 +58,9 @@ public class BooksRestController {
 
     @Observed(name = "create.book", contextualName = "book-creation",
             lowCardinalityKeyValues = {"endpoint", "/books"})
-    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(value = "hasAuthority('SCOPE_books:save')")
-    @Operation(summary = "Create a new book", operationId = "createBook")
-    @ApiResponse(responseCode = "201", description = "Created",
-            content = {@Content(schema = @Schema(implementation = BookDTO.class))})
-    @ApiResponse(responseCode = "400", description = "Bad Request",
-            content = {@Content(schema = @Schema(oneOf = {InvalidUUIDResponseDTO.class,
-                    MissingHttpRequestHeaderResponseDTO.class, InvalidArgumentTypeResponseDTO.class,
-                    ValidationRequestErrorResponseDTO.class,
-                    NotReadableBodyRequestResponseDTO.class}))})
-    @ApiResponse(responseCode = "409", description = "Book already exists",
-            content = {
-                    @Content(schema = @Schema(implementation = DuplicatedBookResponseDTO.class))})
-    @ApiResponse(responseCode = "500", description = "Internal Server Error",
-            content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
-    public ResponseEntity<BookDTO> save(@Valid @RequestBody final BookDTO bookDTO,
-            @RequestHeader final Channel channel) {
+    @Override
+    public ResponseEntity<BookDTO> save(final BookDTO bookDTO, final Channel channel) {
         log.info("Called API to create new book");
         BookDTO result = this.bookService.save(bookDTO, channel);
         log.info("Book '{}' saved !", result.id());
@@ -131,18 +69,9 @@ public class BooksRestController {
 
     @Observed(name = "delete.book", contextualName = "book-deletion",
             lowCardinalityKeyValues = {"endpoint", "/books/{id}"})
-    @DeleteMapping(path = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(value = "hasAuthority('SCOPE_books:delete')")
-    @Operation(summary = "Delete a book", operationId = "deleteBook")
-    @ApiResponse(responseCode = "204", description = "No Content",
-            content = {@Content(schema = @Schema(implementation = Void.class))})
-    @ApiResponse(responseCode = "400", description = "Bad Request",
-            content = {@Content(schema = @Schema(implementation = InvalidUUIDResponseDTO.class))})
-    @ApiResponse(responseCode = "404", description = "Not Found",
-            content = {@Content(schema = @Schema(implementation = BookNotFoundResponseDTO.class))})
-    @ApiResponse(responseCode = "500", description = "Internal Server Error",
-            content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
-    public ResponseEntity<Void> delete(@SpanTag @PathVariable final String id) {
+    @Override
+    public ResponseEntity<Void> delete(@SpanTag final String id) {
         log.info("Called API to delete book: '{}'", id);
         this.bookService.delete(id);
         log.info("Book '{}' deleted !", id);
@@ -151,25 +80,10 @@ public class BooksRestController {
 
     @Observed(name = "update.book", contextualName = "book-update",
             lowCardinalityKeyValues = {"endpoint", "/books/{id}"})
-    @PutMapping(path = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(value = "hasAuthority('SCOPE_books:update')")
-    @Operation(summary = "Delete a book", operationId = "updateBook")
-    @ApiResponse(responseCode = "200", description = "OK",
-            content = {@Content(schema = @Schema(implementation = BookDTO.class))})
-    @ApiResponse(responseCode = "400", description = "Bad Request",
-            content = {@Content(schema = @Schema(oneOf = {InvalidUUIDResponseDTO.class,
-                    MissingHttpRequestHeaderResponseDTO.class, InvalidArgumentTypeResponseDTO.class,
-                    ValidationRequestErrorResponseDTO.class,
-                    NotReadableBodyRequestResponseDTO.class}))})
-    @ApiResponse(responseCode = "404", description = "Not Found",
-            content = {@Content(schema = @Schema(implementation = BookNotFoundResponseDTO.class))})
-    @ApiResponse(responseCode = "409", description = "Conflict",
-            content = {
-                    @Content(schema = @Schema(implementation = DuplicatedBookResponseDTO.class))})
-    @ApiResponse(responseCode = "500", description = "Internal Server Error",
-            content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
-    public ResponseEntity<BookDTO> update(@SpanTag @PathVariable final String id,
-            @Valid @RequestBody final BookDTO bookDTO, @RequestHeader final Channel channel) {
+    @Override
+    public ResponseEntity<BookDTO> update(@SpanTag final String id, final BookDTO bookDTO,
+            final Channel channel) {
         log.info("Called API to update book: '{}'", id);
         BookDTO result = this.bookService.update(id, bookDTO, channel);
         log.info("Book '{}' updated !", id);
@@ -178,15 +92,8 @@ public class BooksRestController {
 
     @Observed(name = "download.books", contextualName = "books-download",
             lowCardinalityKeyValues = {"endpoint", "/books/download"})
-    @GetMapping(path = "download")
     @PreAuthorize(value = "hasAuthority('SCOPE_books:download')")
-    @Operation(summary = "Download books in a csv file", operationId = "downloadBooks")
-    @ApiResponse(responseCode = "200", description = "OK",
-            content = {@Content(schema = @Schema(implementation = byte.class),
-                    mediaType = MediaType.APPLICATION_OCTET_STREAM_VALUE)})
-    @ApiResponse(responseCode = "500", description = "Internal Server Error",
-            content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class),
-                    mediaType = MediaType.APPLICATION_JSON_VALUE)})
+    @Override
     public ResponseEntity<byte[]> download() {
         log.info("Called API to download books");
         DownloadFileDTO result = this.bookService.download();
@@ -199,19 +106,9 @@ public class BooksRestController {
 
     @Observed(name = "upload.books", contextualName = "books-upload",
             lowCardinalityKeyValues = {"endpoint", "/books/upload"})
-    @PostMapping(path = "upload", produces = MediaType.APPLICATION_JSON_VALUE,
-            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize(value = "hasAuthority('SCOPE_books:upload')")
-    @Operation(summary = "Upload books from a csv file", operationId = "uploadBooks")
-    @ApiResponse(responseCode = "204", description = "No Content",
-            content = {@Content(schema = @Schema(implementation = Void.class))})
-    @ApiResponse(responseCode = "400", description = "Bad Request",
-            content = {@Content(schema = @Schema(oneOf = {InvalidFileTypeResponseDTO.class,
-                    InvalidCSVContentResponseDTO.class}))})
-    @ApiResponse(responseCode = "500", description = "Internal Server Error",
-            content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
-    public ResponseEntity<Void> upload(@RequestHeader final Channel channel,
-            @RequestPart(name = "file") MultipartFile multipartFile) {
+    @Override
+    public ResponseEntity<Void> upload(final Channel channel, MultipartFile multipartFile) {
         log.info("Called API to upload csv books: '{}'", multipartFile.getOriginalFilename());
         this.bookService.upload(channel, multipartFile);
         log.info("Upload csv file: '{}' completed |", multipartFile.getOriginalFilename());

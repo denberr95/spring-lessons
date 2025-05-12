@@ -164,7 +164,7 @@ class ItemsRestControllerTest {
         ResponseEntity<?> response = null;
         HttpHeaders httpHeaders = this.retrieveHttpHeaders(this.invalidToken);
         HttpEntity<List<ItemDTO>> httpEntity = new HttpEntity<>(this.data, httpHeaders);
-        String urlBase = this.buildUrl("/items");
+        String urlBase = this.buildUrl("/v1/items");
 
         response = this.testRestTemplate.exchange(urlBase, HttpMethod.GET,
                 new HttpEntity<>(httpHeaders), Object.class);
@@ -183,7 +183,7 @@ class ItemsRestControllerTest {
         ResponseEntity<?> response = null;
         HttpHeaders httpHeaders = this.retrieveHttpHeaders(null);
         HttpEntity<List<ItemDTO>> httpEntity = new HttpEntity<>(this.data, httpHeaders);
-        String urlBase = this.buildUrl("/items");
+        String urlBase = this.buildUrl("/v1/items");
 
         response = this.testRestTemplate.exchange(urlBase, HttpMethod.GET, null, Object.class);
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
@@ -200,7 +200,7 @@ class ItemsRestControllerTest {
     void givenItems_whenUpload_thenNoContent() {
         this.cleanupItems();
         this.cleanupOrders();
-        String url = this.buildUrl("/items");
+        String url = this.buildUrl("/v1/items");
         HttpHeaders httpHeaders = this.retrieveHttpHeaders(this.validToken);
         HttpEntity<List<ItemDTO>> httpEntity = new HttpEntity<>(this.data, httpHeaders);
 
@@ -217,7 +217,7 @@ class ItemsRestControllerTest {
     void givenItems_whenDelete_thenNoContent() {
         this.cleanupItems();
         this.cleanupOrders();
-        String url = this.buildUrl("/items");
+        String url = this.buildUrl("/v1/items");
         HttpHeaders httpHeaders = this.retrieveHttpHeaders(this.validToken);
         HttpEntity<List<ItemDTO>> httpEntity = new HttpEntity<>(this.data, httpHeaders);
 
@@ -233,7 +233,7 @@ class ItemsRestControllerTest {
     @Test
     void givenEmptyCollection_whenGetAll_thenNoContent() {
         this.tearDown();
-        String url = this.buildUrl("/items");
+        String url = this.buildUrl("/v1/items");
         HttpEntity<HttpHeaders> httpEntity =
                 new HttpEntity<>(this.retrieveHttpHeaders(this.validToken));
 
@@ -246,7 +246,7 @@ class ItemsRestControllerTest {
     @Test
     void givenPartialEmptyCollection_whenGetAll_thenNoContent() {
         this.cleanupOrders();
-        String url = this.buildUrl("/items");
+        String url = this.buildUrl("/v1/items");
         HttpEntity<HttpHeaders> httpEntity =
                 new HttpEntity<>(this.retrieveHttpHeaders(this.validToken));
         ResponseEntity<Void> responseWithoutData =
@@ -257,7 +257,7 @@ class ItemsRestControllerTest {
 
     @Test
     void givenItems_whenGetAll_thenItemsRetrieved() {
-        String url = this.buildUrl("/items");
+        String url = this.buildUrl("/v1/items");
         HttpEntity<HttpHeaders> httpEntity =
                 new HttpEntity<>(this.retrieveHttpHeaders(this.validToken));
 

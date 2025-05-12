@@ -128,10 +128,10 @@ class BooksRestControllerTest {
                 this.clientSecretFullPermission);
         this.invalidToken =
                 this.retrieveAccessToken(this.clientIdNoPermission, this.clientSecretNoPermission);
-        this.downloadUrl = this.basePath + "/books/download";
-        this.uploadUrl = this.basePath + "/books/upload";
-        this.baseUrl = this.basePath + "/books";
-        this.resourceUrl = this.basePath + "/books/%s";
+        this.downloadUrl = this.basePath + "/v1/books/download";
+        this.uploadUrl = this.basePath + "/v1/books/upload";
+        this.baseUrl = this.basePath + "/v1/books";
+        this.resourceUrl = this.basePath + "/v1/books/%s";
         this.fakeResourceUrl = String.format(this.resourceUrl, this.fakeId);
     }
 
