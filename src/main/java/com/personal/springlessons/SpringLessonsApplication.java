@@ -12,7 +12,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 
 @EnableKafka
 @EnableAsync
-@EnableMethodSecurity(jsr250Enabled = false, prePostEnabled = true, securedEnabled = true)
+@EnableMethodSecurity
 @SpringBootApplication
 @EnableJpaRepositories
 @EnableAspectJAutoProxy
