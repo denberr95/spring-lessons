@@ -1,4 +1,4 @@
-FROM bellsoft/liberica-runtime-container:jre-17-slim-glibc AS runtime
+FROM bellsoft/liberica-runtime-container:jre-21-slim-glibc AS runtime
 WORKDIR /app
 COPY bin/app.jar app.jar
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
