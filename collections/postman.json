@@ -223,7 +223,7 @@
 			]
 		},
 		{
-			"name": "Books",
+			"name": "Books V1",
 			"item": [
 				{
 					"name": "admin",
@@ -234,7 +234,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:10000/spring-app/books",
+									"raw": "http://localhost:10000/spring-app/v1/books",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -242,6 +242,7 @@
 									"port": "10000",
 									"path": [
 										"spring-app",
+										"v1",
 										"books"
 									]
 								}
@@ -269,7 +270,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:10000/spring-app/books",
+									"raw": "http://localhost:10000/spring-app/v1/books",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -277,6 +278,7 @@
 									"port": "10000",
 									"path": [
 										"spring-app",
+										"v1",
 										"books"
 									]
 								}
@@ -289,7 +291,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:10000/spring-app/books/:id",
+									"raw": "http://localhost:10000/spring-app/v1/books/:id",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -297,6 +299,7 @@
 									"port": "10000",
 									"path": [
 										"spring-app",
+										"v1",
 										"books",
 										":id"
 									],
@@ -316,7 +319,7 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:10000/spring-app/books/:id",
+									"raw": "http://localhost:10000/spring-app/v1/books/:id",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -324,6 +327,7 @@
 									"port": "10000",
 									"path": [
 										"spring-app",
+										"v1",
 										"books",
 										":id"
 									],
@@ -358,7 +362,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:10000/spring-app/books/:id",
+									"raw": "http://localhost:10000/spring-app/v1/books/:id",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -366,6 +370,7 @@
 									"port": "10000",
 									"path": [
 										"spring-app",
+										"v1",
 										"books",
 										":id"
 									],
@@ -401,7 +406,7 @@
 									]
 								},
 								"url": {
-									"raw": "http://localhost:10000/spring-app/books/upload",
+									"raw": "http://localhost:10000/spring-app/v1/books/upload",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -409,6 +414,7 @@
 									"port": "10000",
 									"path": [
 										"spring-app",
+										"v1",
 										"books",
 										"upload"
 									]
@@ -422,7 +428,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:10000/spring-app/books/download",
+									"raw": "http://localhost:10000/spring-app/v1/books/download",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -430,6 +436,7 @@
 									"port": "10000",
 									"path": [
 										"spring-app",
+										"v1",
 										"books",
 										"download"
 									]
@@ -510,7 +517,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:10000/spring-app/books",
+									"raw": "http://localhost:10000/spring-app/v1/books",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -518,6 +525,7 @@
 									"port": "10000",
 									"path": [
 										"spring-app",
+										"v1",
 										"books"
 									]
 								}
@@ -545,7 +553,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:10000/spring-app/books",
+									"raw": "http://localhost:10000/spring-app/v1/books",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -553,6 +561,7 @@
 									"port": "10000",
 									"path": [
 										"spring-app",
+										"v1",
 										"books"
 									]
 								}
@@ -565,7 +574,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:10000/spring-app/books/:id",
+									"raw": "http://localhost:10000/spring-app/v1/books/:id",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -573,6 +582,7 @@
 									"port": "10000",
 									"path": [
 										"spring-app",
+										"v1",
 										"books",
 										":id"
 									],
@@ -607,7 +617,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:10000/spring-app/books/:id",
+									"raw": "http://localhost:10000/spring-app/v1/books/:id",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -615,6 +625,7 @@
 									"port": "10000",
 									"path": [
 										"spring-app",
+										"v1",
 										"books",
 										":id"
 									],
@@ -634,7 +645,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:10000/spring-app/books/download",
+									"raw": "http://localhost:10000/spring-app/v1/books/download",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -642,6 +653,7 @@
 									"port": "10000",
 									"path": [
 										"spring-app",
+										"v1",
 										"books",
 										"download"
 									]
@@ -671,7 +683,7 @@
 									]
 								},
 								"url": {
-									"raw": "http://localhost:10000/spring-app/books/upload",
+									"raw": "http://localhost:10000/spring-app/v1/books/upload",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -679,6 +691,7 @@
 									"port": "10000",
 									"path": [
 										"spring-app",
+										"v1",
 										"books",
 										"upload"
 									]
@@ -764,7 +777,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:10000/spring-app/books",
+									"raw": "http://localhost:10000/spring-app/v1/books",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -772,6 +785,7 @@
 									"port": "10000",
 									"path": [
 										"spring-app",
+										"v1",
 										"books"
 									]
 								}
@@ -784,7 +798,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:10000/spring-app/books/:id",
+									"raw": "http://localhost:10000/spring-app/v1/books/:id",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -792,6 +806,7 @@
 									"port": "10000",
 									"path": [
 										"spring-app",
+										"v1",
 										"books",
 										":id"
 									],
@@ -811,7 +826,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:10000/spring-app/books/download",
+									"raw": "http://localhost:10000/spring-app/v1/books/download",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -819,6 +834,7 @@
 									"port": "10000",
 									"path": [
 										"spring-app",
+										"v1",
 										"books",
 										"download"
 									]
@@ -918,7 +934,7 @@
 			]
 		},
 		{
-			"name": "Items",
+			"name": "Items V1",
 			"item": [
 				{
 					"name": "admin",
@@ -944,7 +960,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:10000/spring-app/items",
+									"raw": "http://localhost:10000/spring-app/v1/items",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -952,6 +968,7 @@
 									"port": "10000",
 									"path": [
 										"spring-app",
+										"v1",
 										"items"
 									]
 								}
@@ -964,7 +981,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:10000/spring-app/items",
+									"raw": "http://localhost:10000/spring-app/v1/items",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -972,6 +989,7 @@
 									"port": "10000",
 									"path": [
 										"spring-app",
+										"v1",
 										"items"
 									]
 								}
@@ -999,7 +1017,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:10000/spring-app/items",
+									"raw": "http://localhost:10000/spring-app/v1/items",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -1007,6 +1025,7 @@
 									"port": "10000",
 									"path": [
 										"spring-app",
+										"v1",
 										"items"
 									]
 								}
@@ -1101,7 +1120,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:10000/spring-app/items",
+									"raw": "http://localhost:10000/spring-app/v1/items",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -1109,6 +1128,7 @@
 									"port": "10000",
 									"path": [
 										"spring-app",
+										"v1",
 										"items"
 									]
 								}
@@ -1121,7 +1141,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:10000/spring-app/items",
+									"raw": "http://localhost:10000/spring-app/v1/items",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -1129,6 +1149,7 @@
 									"port": "10000",
 									"path": [
 										"spring-app",
+										"v1",
 										"items"
 									]
 								}
@@ -1208,7 +1229,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:10000/spring-app/items",
+									"raw": "http://localhost:10000/spring-app/v1/items",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -1216,6 +1237,7 @@
 									"port": "10000",
 									"path": [
 										"spring-app",
+										"v1",
 										"items"
 									]
 								}

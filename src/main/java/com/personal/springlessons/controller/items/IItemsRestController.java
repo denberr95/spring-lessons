@@ -24,8 +24,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Tag(name = "Items")
-@Tag(name = "V1")
+@Tag(name = "Items V1")
 @Validated
 @RequestMapping(path = "/v1/items")
 public interface IItemsRestController {
