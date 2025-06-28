@@ -1,0 +1,5 @@
+{
+    "id": "{{randomValue type='UUID'}}",
+    "name": "{{ random 'Name.name' }}",
+    "createdAt": "{{now}}"
+}

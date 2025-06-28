@@ -1,0 +1,14 @@
+{
+    "request": {
+        "method": "GET",
+        "url": "/wiremock/v1/accounts"
+    },
+    "response": {
+        "status": 200,
+        "statusMessage": "OK",
+        "bodyFileName": "get_accounts.json",
+        "headers": {
+            "Content-Type": "application/json"
+        }
+    }
+}

@@ -138,20 +138,21 @@ services:
     - vscode-spring-lessons
 
   wiremock:
-    image: wiremock/wiremock:latest
+    build:
+      context: .
+      dockerfile: wiremock/Containerfile
     restart: "no"
     environment:
     - TZ=Europe/Rome
     entrypoint:
     - "/docker-entrypoint.sh"
-    - "--global-response-templating"
-    - "--disable-gzip"
-    - "--verbose"
+    - --global-response-templating
+    - --verbose
+    - "--extensions"
+    - "org.wiremock.RandomExtension"
     volumes:
-    - ./wiremock/extensions:/var/wiremock/extensions
     - ./wiremock/__files:/home/wiremock/__files
     - ./wiremock/mappings:/home/wiremock/mappings
-    - ./wiremock/certs:/home/wiremock/certs
     ports:
     - "9998:8080" # serve web server http
     - "9999:8443" # serve web server https

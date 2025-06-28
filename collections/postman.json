@@ -1,1490 +1,1490 @@
 {
-	"info": {
-		"_postman_id": "64499679-c24e-488c-83b6-9ce3a60e1963",
-		"name": "spring-lessons",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "4578942"
-	},
-	"item": [
-		{
-			"name": "Actuators",
-			"item": [
-				{
-					"name": "Get List Actuators",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:10001/actuator",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "10001",
-							"path": [
-								"actuator"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Prometheus Metrics",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:10001/actuator/prometheus",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "10001",
-							"path": [
-								"actuator",
-								"prometheus"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Application Information",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:10001/actuator/info",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "10001",
-							"path": [
-								"actuator",
-								"info"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Environment Variables",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:10001/actuator/env",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "10001",
-							"path": [
-								"actuator",
-								"env"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Application Metrics",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:10001/actuator/metrics",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "10001",
-							"path": [
-								"actuator",
-								"metrics"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Beans",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:10001/actuator/beans",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "10001",
-							"path": [
-								"actuator",
-								"beans"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Health",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:10001/actuator/health",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "10001",
-							"path": [
-								"actuator",
-								"health"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get SBOM Type",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:10001/actuator/sbom",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "10001",
-							"path": [
-								"actuator",
-								"sbom"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get SBOM Application",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:10001/actuator/sbom/application",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "10001",
-							"path": [
-								"actuator",
-								"sbom",
-								"application"
-							]
-						}
-					},
-					"response": []
-				}
-			],
-			"auth": {
-				"type": "noauth"
-			},
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"type": "text/javascript",
-						"packages": {},
-						"exec": [
-							""
-						]
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"packages": {},
-						"exec": [
-							""
-						]
-					}
-				}
-			]
-		},
-		{
-			"name": "Books V1",
-			"item": [
-				{
-					"name": "admin",
-					"item": [
-						{
-							"name": "Get All",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "http://localhost:10000/spring-app/v1/books",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "10000",
-									"path": [
-										"spring-app",
-										"v1",
-										"books"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Create",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "channel",
-										"value": "Postman",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n\t\"name\": \"Book Name\",\n\t\"numberOfPages\": 1,\n\t\"publicationDate\": \"9000-12-01\",\n\t\"genre\": \"Noir\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "http://localhost:10000/spring-app/v1/books",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "10000",
-									"path": [
-										"spring-app",
-										"v1",
-										"books"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Get By Id",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "http://localhost:10000/spring-app/v1/books/:id",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "10000",
-									"path": [
-										"spring-app",
-										"v1",
-										"books",
-										":id"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": ""
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Delete By Id",
-							"request": {
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "http://localhost:10000/spring-app/v1/books/:id",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "10000",
-									"path": [
-										"spring-app",
-										"v1",
-										"books",
-										":id"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": ""
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Update By Id",
-							"request": {
-								"method": "PUT",
-								"header": [
-									{
-										"key": "channel",
-										"value": "Postman",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n\t\"name\": \"Book Name Updated\",\n\t\"numberOfPages\": 1,\n\t\"publicationDate\": \"9000-12-01\",\n\t\"genre\": \"Noir\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "http://localhost:10000/spring-app/v1/books/:id",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "10000",
-									"path": [
-										"spring-app",
-										"v1",
-										"books",
-										":id"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "c7f23ae5-f9f2-4804-87f2-c3fda633c44c"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Upload",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "channel",
-										"value": "Postman",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "file",
-											"type": "file",
-											"src": "/Users/denis.berretti/Downloads/book.csv"
-										}
-									]
-								},
-								"url": {
-									"raw": "http://localhost:10000/spring-app/v1/books/upload",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "10000",
-									"path": [
-										"spring-app",
-										"v1",
-										"books",
-										"upload"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Download",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "http://localhost:10000/spring-app/v1/books/download",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "10000",
-									"path": [
-										"spring-app",
-										"v1",
-										"books",
-										"download"
-									]
-								}
-							},
-							"response": []
-						}
-					],
-					"auth": {
-						"type": "oauth2",
-						"oauth2": [
-							{
-								"key": "client_authentication",
-								"value": "body",
-								"type": "string"
-							},
-							{
-								"key": "clientSecret",
-								"value": "{{clientSecretAdminBooks}}",
-								"type": "string"
-							},
-							{
-								"key": "clientId",
-								"value": "{{clientIdAdminBooks}}",
-								"type": "string"
-							},
-							{
-								"key": "accessTokenUrl",
-								"value": "{{authorizationServer}}",
-								"type": "string"
-							},
-							{
-								"key": "grant_type",
-								"value": "client_credentials",
-								"type": "string"
-							},
-							{
-								"key": "tokenName",
-								"value": "admin-book-token",
-								"type": "string"
-							},
-							{
-								"key": "addTokenTo",
-								"value": "header",
-								"type": "string"
-							}
-						]
-					},
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"type": "text/javascript",
-								"packages": {},
-								"exec": [
-									""
-								]
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"packages": {},
-								"exec": [
-									""
-								]
-							}
-						}
-					]
-				},
-				{
-					"name": "writer",
-					"item": [
-						{
-							"name": "Get All",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "http://localhost:10000/spring-app/v1/books",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "10000",
-									"path": [
-										"spring-app",
-										"v1",
-										"books"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Create",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "channel",
-										"value": "Postman",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n\t\"name\": \"Book Name\",\n\t\"numberOfPages\": 1,\n\t\"publicationDate\": \"9000-12-01\",\n\t\"genre\": \"Noir\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "http://localhost:10000/spring-app/v1/books",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "10000",
-									"path": [
-										"spring-app",
-										"v1",
-										"books"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Get By Id",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "http://localhost:10000/spring-app/v1/books/:id",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "10000",
-									"path": [
-										"spring-app",
-										"v1",
-										"books",
-										":id"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": ""
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Update By Id",
-							"request": {
-								"method": "PUT",
-								"header": [
-									{
-										"key": "channel",
-										"value": "Postman",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n\t\"name\": \"Book Name Updated\",\n\t\"numberOfPages\": 1,\n\t\"publicationDate\": \"9000-12-01\",\n\t\"genre\": \"Noir\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "http://localhost:10000/spring-app/v1/books/:id",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "10000",
-									"path": [
-										"spring-app",
-										"v1",
-										"books",
-										":id"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": ""
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Download",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "http://localhost:10000/spring-app/v1/books/download",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "10000",
-									"path": [
-										"spring-app",
-										"v1",
-										"books",
-										"download"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Upload",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "channel",
-										"value": "Postman",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "file",
-											"type": "file",
-											"src": []
-										}
-									]
-								},
-								"url": {
-									"raw": "http://localhost:10000/spring-app/v1/books/upload",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "10000",
-									"path": [
-										"spring-app",
-										"v1",
-										"books",
-										"upload"
-									]
-								}
-							},
-							"response": []
-						}
-					],
-					"auth": {
-						"type": "oauth2",
-						"oauth2": [
-							{
-								"key": "client_authentication",
-								"value": "body",
-								"type": "string"
-							},
-							{
-								"key": "clientSecret",
-								"value": "{{clientSecretWriterBooks}}",
-								"type": "string"
-							},
-							{
-								"key": "clientId",
-								"value": "{{clientIdWriterBooks}}",
-								"type": "string"
-							},
-							{
-								"key": "tokenName",
-								"value": "writer-book-token",
-								"type": "string"
-							},
-							{
-								"key": "accessTokenUrl",
-								"value": "{{authorizationServer}}",
-								"type": "string"
-							},
-							{
-								"key": "grant_type",
-								"value": "client_credentials",
-								"type": "string"
-							},
-							{
-								"key": "redirect_uri",
-								"value": "{{authorizationServer}}",
-								"type": "string"
-							},
-							{
-								"key": "addTokenTo",
-								"value": "header",
-								"type": "string"
-							}
-						]
-					},
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"type": "text/javascript",
-								"packages": {},
-								"exec": [
-									""
-								]
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"packages": {},
-								"exec": [
-									""
-								]
-							}
-						}
-					]
-				},
-				{
-					"name": "reader",
-					"item": [
-						{
-							"name": "Get All",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "http://localhost:10000/spring-app/v1/books",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "10000",
-									"path": [
-										"spring-app",
-										"v1",
-										"books"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Get By Id",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "http://localhost:10000/spring-app/v1/books/:id",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "10000",
-									"path": [
-										"spring-app",
-										"v1",
-										"books",
-										":id"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": ""
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Download",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "http://localhost:10000/spring-app/v1/books/download",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "10000",
-									"path": [
-										"spring-app",
-										"v1",
-										"books",
-										"download"
-									]
-								}
-							},
-							"response": []
-						}
-					],
-					"auth": {
-						"type": "oauth2",
-						"oauth2": [
-							{
-								"key": "client_authentication",
-								"value": "body",
-								"type": "string"
-							},
-							{
-								"key": "clientSecret",
-								"value": "{{clientSecretReaderBooks}}",
-								"type": "string"
-							},
-							{
-								"key": "clientId",
-								"value": "{{clientIdReaderBooks}}",
-								"type": "string"
-							},
-							{
-								"key": "accessTokenUrl",
-								"value": "{{authorizationServer}}",
-								"type": "string"
-							},
-							{
-								"key": "tokenName",
-								"value": "reader-book-token",
-								"type": "string"
-							},
-							{
-								"key": "grant_type",
-								"value": "client_credentials",
-								"type": "string"
-							},
-							{
-								"key": "addTokenTo",
-								"value": "header",
-								"type": "string"
-							}
-						]
-					},
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"type": "text/javascript",
-								"packages": {},
-								"exec": [
-									""
-								]
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"packages": {},
-								"exec": [
-									""
-								]
-							}
-						}
-					]
-				}
-			],
-			"auth": {
-				"type": "noauth"
-			},
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"type": "text/javascript",
-						"packages": {},
-						"exec": [
-							""
-						]
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"packages": {},
-						"exec": [
-							""
-						]
-					}
-				}
-			]
-		},
-		{
-			"name": "Items V1",
-			"item": [
-				{
-					"name": "admin",
-					"item": [
-						{
-							"name": "Upload",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "channel",
-										"value": "Postman",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "[\n\t{\n\t\t\"price\": 9999.99,\n\t\t\"name\": \"item-1\",\n\t\t\"barcode\": \"barcode-1\"\n\t},\n\t{\n\t\t\"price\": 9999.99,\n\t\t\"name\": \"item-2\",\n\t\t\"barcode\": \"barcode-2\"\n\t},\n\t{\n\t\t\"price\": 9999.99,\n\t\t\"name\": \"item-3\",\n\t\t\"barcode\": \"barcode-3\"\n\t}\n]",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "http://localhost:10000/spring-app/v1/items",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "10000",
-									"path": [
-										"spring-app",
-										"v1",
-										"items"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Get All",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "http://localhost:10000/spring-app/v1/items",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "10000",
-									"path": [
-										"spring-app",
-										"v1",
-										"items"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Delete",
-							"request": {
-								"method": "DELETE",
-								"header": [
-									{
-										"key": "channel",
-										"value": "Postman",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "[\n\t{\n\t\t\"id\": \"\",\n\t\t\"price\": 9999.99,\n\t\t\"name\": \"item-1\",\n\t\t\"barcode\": \"barcode-1\"\n\t},\n\t{\n\t\t\"id\": \"\",\n\t\t\"price\": 9999.99,\n\t\t\"name\": \"item-2\",\n\t\t\"barcode\": \"barcode-2\"\n\t},\n\t{\n\t\t\"id\": \"\",\n\t\t\"price\": 9999.99,\n\t\t\"name\": \"item-3\",\n\t\t\"barcode\": \"barcode-3\"\n\t}\n]",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "http://localhost:10000/spring-app/v1/items",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "10000",
-									"path": [
-										"spring-app",
-										"v1",
-										"items"
-									]
-								}
-							},
-							"response": []
-						}
-					],
-					"auth": {
-						"type": "oauth2",
-						"oauth2": [
-							{
-								"key": "client_authentication",
-								"value": "body",
-								"type": "string"
-							},
-							{
-								"key": "clientSecret",
-								"value": "{{clientSecretAdminItems}}",
-								"type": "string"
-							},
-							{
-								"key": "clientId",
-								"value": "{{clientIdAdminItems}}",
-								"type": "string"
-							},
-							{
-								"key": "accessTokenUrl",
-								"value": "{{authorizationServer}}",
-								"type": "string"
-							},
-							{
-								"key": "tokenName",
-								"value": "admin-item-token",
-								"type": "string"
-							},
-							{
-								"key": "grant_type",
-								"value": "client_credentials",
-								"type": "string"
-							},
-							{
-								"key": "addTokenTo",
-								"value": "header",
-								"type": "string"
-							}
-						]
-					},
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"type": "text/javascript",
-								"packages": {},
-								"exec": [
-									""
-								]
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"packages": {},
-								"exec": [
-									""
-								]
-							}
-						}
-					]
-				},
-				{
-					"name": "writer",
-					"item": [
-						{
-							"name": "Upload",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "channel",
-										"value": "Postman",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "[\n\t{\n\t\t\"price\": 9999.99,\n\t\t\"name\": \"item-1\",\n\t\t\"barcode\": \"barcode-1\"\n\t},\n\t{\n\t\t\"price\": 9999.99,\n\t\t\"name\": \"item-2\",\n\t\t\"barcode\": \"barcode-2\"\n\t},\n\t{\n\t\t\"price\": 9999.99,\n\t\t\"name\": \"item-3\",\n\t\t\"barcode\": \"barcode-3\"\n\t}\n]",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "http://localhost:10000/spring-app/v1/items",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "10000",
-									"path": [
-										"spring-app",
-										"v1",
-										"items"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Get All",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "http://localhost:10000/spring-app/v1/items",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "10000",
-									"path": [
-										"spring-app",
-										"v1",
-										"items"
-									]
-								}
-							},
-							"response": []
-						}
-					],
-					"auth": {
-						"type": "oauth2",
-						"oauth2": [
-							{
-								"key": "client_authentication",
-								"value": "body",
-								"type": "string"
-							},
-							{
-								"key": "clientSecret",
-								"value": "{{clientSecretWriterItems}}",
-								"type": "string"
-							},
-							{
-								"key": "clientId",
-								"value": "{{clientIdWriterItems}}",
-								"type": "string"
-							},
-							{
-								"key": "accessTokenUrl",
-								"value": "{{authorizationServer}}",
-								"type": "string"
-							},
-							{
-								"key": "tokenName",
-								"value": "writer-item-token",
-								"type": "string"
-							},
-							{
-								"key": "grant_type",
-								"value": "client_credentials",
-								"type": "string"
-							},
-							{
-								"key": "addTokenTo",
-								"value": "header",
-								"type": "string"
-							}
-						]
-					},
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"type": "text/javascript",
-								"packages": {},
-								"exec": [
-									""
-								]
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"packages": {},
-								"exec": [
-									""
-								]
-							}
-						}
-					]
-				},
-				{
-					"name": "reader",
-					"item": [
-						{
-							"name": "Get All",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "http://localhost:10000/spring-app/v1/items",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "10000",
-									"path": [
-										"spring-app",
-										"v1",
-										"items"
-									]
-								}
-							},
-							"response": []
-						}
-					],
-					"auth": {
-						"type": "oauth2",
-						"oauth2": [
-							{
-								"key": "client_authentication",
-								"value": "body",
-								"type": "string"
-							},
-							{
-								"key": "clientSecret",
-								"value": "{{clientSecretReaderItems}}",
-								"type": "string"
-							},
-							{
-								"key": "clientId",
-								"value": "{{clientIdReaderItems}}",
-								"type": "string"
-							},
-							{
-								"key": "tokenName",
-								"value": "reader-item-token",
-								"type": "string"
-							},
-							{
-								"key": "accessTokenUrl",
-								"value": "{{authorizationServer}}",
-								"type": "string"
-							},
-							{
-								"key": "grant_type",
-								"value": "client_credentials",
-								"type": "string"
-							},
-							{
-								"key": "addTokenTo",
-								"value": "header",
-								"type": "string"
-							}
-						]
-					},
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"type": "text/javascript",
-								"packages": {},
-								"exec": [
-									""
-								]
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"packages": {},
-								"exec": [
-									""
-								]
-							}
-						}
-					]
-				}
-			],
-			"auth": {
-				"type": "noauth"
-			},
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"type": "text/javascript",
-						"packages": {},
-						"exec": [
-							""
-						]
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"packages": {},
-						"exec": [
-							""
-						]
-					}
-				}
-			]
-		},
-		{
-			"name": "OpenAPI",
-			"item": [
-				{
-					"name": "Get OpenAPI Docs",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:10000/spring-app/v3/api-docs.yaml",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "10000",
-							"path": [
-								"spring-app",
-								"v3",
-								"api-docs.yaml"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Swagger UI",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:10000/spring-app/swagger-ui/index.html",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "10000",
-							"path": [
-								"spring-app",
-								"swagger-ui",
-								"index.html"
-							]
-						}
-					},
-					"response": []
-				}
-			],
-			"auth": {
-				"type": "noauth"
-			},
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"type": "text/javascript",
-						"packages": {},
-						"exec": [
-							""
-						]
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"packages": {},
-						"exec": [
-							""
-						]
-					}
-				}
-			]
-		}
-	],
-	"event": [
-		{
-			"listen": "prerequest",
-			"script": {
-				"type": "text/javascript",
-				"packages": {},
-				"exec": [
-					""
-				]
-			}
-		},
-		{
-			"listen": "test",
-			"script": {
-				"type": "text/javascript",
-				"packages": {},
-				"exec": [
-					""
-				]
-			}
-		}
-	],
-	"variable": [
-		{
-			"key": "authorizationServer",
-			"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
-			"type": "string"
-		},
-		{
-			"key": "clientIdAdminBooks",
-			"value": "client-id-books-admin"
-		},
-		{
-			"key": "clientSecretAdminBooks",
-			"value": "PtBsFK4ogkxL0JRZZeoFZ8KWrJsH05jC"
-		},
-		{
-			"key": "clientIdWriterBooks",
-			"value": "client-id-books-writer",
-			"type": "string"
-		},
-		{
-			"key": "clientSecretWriterBooks",
-			"value": "gjA01yMMwFRNvyADidf9wmrQSJdOCI53",
-			"type": "string"
-		},
-		{
-			"key": "clientIdReaderBooks",
-			"value": "client-id-books-reader"
-		},
-		{
-			"key": "clientSecretReaderBooks",
-			"value": "12UAbqHBFyHUWM2ehiuOPLUHRDhTn5ps"
-		},
-		{
-			"key": "clientIdAdminItems",
-			"value": "client-id-items-admin"
-		},
-		{
-			"key": "clientSecretAdminItems",
-			"value": "NI9kyA7EfWm6f1fXNfRSxRs8RyBvlYbD"
-		},
-		{
-			"key": "clientIdWriterItems",
-			"value": "client-id-items-writer"
-		},
-		{
-			"key": "clientSecretWriterItems",
-			"value": "wYZkx1YhdSajnU2O4FiwY5trEOpM3dNt"
-		},
-		{
-			"key": "clientIdReaderItems",
-			"value": "client-id-items-reader"
-		},
-		{
-			"key": "clientSecretReaderItems",
-			"value": "ugpBN4DUGCSNMOoO1JQI2kbE82aJ88bN"
-		}
-	]
+    "info": {
+        "_postman_id": "64499679-c24e-488c-83b6-9ce3a60e1963",
+        "name": "spring-lessons",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "_exporter_id": "4578942"
+    },
+    "item": [
+        {
+            "name": "Actuators",
+            "item": [
+                {
+                    "name": "Get List Actuators",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:10001/actuator",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "10001",
+                            "path": [
+                                "actuator"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Prometheus Metrics",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:10001/actuator/prometheus",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "10001",
+                            "path": [
+                                "actuator",
+                                "prometheus"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Application Information",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:10001/actuator/info",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "10001",
+                            "path": [
+                                "actuator",
+                                "info"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Environment Variables",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:10001/actuator/env",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "10001",
+                            "path": [
+                                "actuator",
+                                "env"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Application Metrics",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:10001/actuator/metrics",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "10001",
+                            "path": [
+                                "actuator",
+                                "metrics"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Beans",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:10001/actuator/beans",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "10001",
+                            "path": [
+                                "actuator",
+                                "beans"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Health",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:10001/actuator/health",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "10001",
+                            "path": [
+                                "actuator",
+                                "health"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get SBOM Type",
+                    "request": {
+                        "auth": {
+                            "type": "noauth"
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:10001/actuator/sbom",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "10001",
+                            "path": [
+                                "actuator",
+                                "sbom"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get SBOM Application",
+                    "request": {
+                        "auth": {
+                            "type": "noauth"
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:10001/actuator/sbom/application",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "10001",
+                            "path": [
+                                "actuator",
+                                "sbom",
+                                "application"
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ],
+            "auth": {
+                "type": "noauth"
+            },
+            "event": [
+                {
+                    "listen": "prerequest",
+                    "script": {
+                        "type": "text/javascript",
+                        "packages": {},
+                        "exec": [
+                            ""
+                        ]
+                    }
+                },
+                {
+                    "listen": "test",
+                    "script": {
+                        "type": "text/javascript",
+                        "packages": {},
+                        "exec": [
+                            ""
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Books V1",
+            "item": [
+                {
+                    "name": "admin",
+                    "item": [
+                        {
+                            "name": "Get All",
+                            "request": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "http://localhost:10000/spring-app/v1/books",
+                                    "protocol": "http",
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "port": "10000",
+                                    "path": [
+                                        "spring-app",
+                                        "v1",
+                                        "books"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Create",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "channel",
+                                        "value": "Postman",
+                                        "type": "text"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n\t\"name\": \"Book Name\",\n\t\"numberOfPages\": 1,\n\t\"publicationDate\": \"9000-12-01\",\n\t\"genre\": \"Noir\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "http://localhost:10000/spring-app/v1/books",
+                                    "protocol": "http",
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "port": "10000",
+                                    "path": [
+                                        "spring-app",
+                                        "v1",
+                                        "books"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Get By Id",
+                            "request": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "http://localhost:10000/spring-app/v1/books/:id",
+                                    "protocol": "http",
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "port": "10000",
+                                    "path": [
+                                        "spring-app",
+                                        "v1",
+                                        "books",
+                                        ":id"
+                                    ],
+                                    "variable": [
+                                        {
+                                            "key": "id",
+                                            "value": ""
+                                        }
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Delete By Id",
+                            "request": {
+                                "method": "DELETE",
+                                "header": [],
+                                "url": {
+                                    "raw": "http://localhost:10000/spring-app/v1/books/:id",
+                                    "protocol": "http",
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "port": "10000",
+                                    "path": [
+                                        "spring-app",
+                                        "v1",
+                                        "books",
+                                        ":id"
+                                    ],
+                                    "variable": [
+                                        {
+                                            "key": "id",
+                                            "value": ""
+                                        }
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Update By Id",
+                            "request": {
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "channel",
+                                        "value": "Postman",
+                                        "type": "text"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n\t\"name\": \"Book Name Updated\",\n\t\"numberOfPages\": 1,\n\t\"publicationDate\": \"9000-12-01\",\n\t\"genre\": \"Noir\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "http://localhost:10000/spring-app/v1/books/:id",
+                                    "protocol": "http",
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "port": "10000",
+                                    "path": [
+                                        "spring-app",
+                                        "v1",
+                                        "books",
+                                        ":id"
+                                    ],
+                                    "variable": [
+                                        {
+                                            "key": "id",
+                                            "value": "c7f23ae5-f9f2-4804-87f2-c3fda633c44c"
+                                        }
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Upload",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "channel",
+                                        "value": "Postman",
+                                        "type": "text"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "formdata",
+                                    "formdata": [
+                                        {
+                                            "key": "file",
+                                            "type": "file",
+                                            "src": "/Users/denis.berretti/Downloads/book.csv"
+                                        }
+                                    ]
+                                },
+                                "url": {
+                                    "raw": "http://localhost:10000/spring-app/v1/books/upload",
+                                    "protocol": "http",
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "port": "10000",
+                                    "path": [
+                                        "spring-app",
+                                        "v1",
+                                        "books",
+                                        "upload"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Download",
+                            "request": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "http://localhost:10000/spring-app/v1/books/download",
+                                    "protocol": "http",
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "port": "10000",
+                                    "path": [
+                                        "spring-app",
+                                        "v1",
+                                        "books",
+                                        "download"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        }
+                    ],
+                    "auth": {
+                        "type": "oauth2",
+                        "oauth2": [
+                            {
+                                "key": "client_authentication",
+                                "value": "body",
+                                "type": "string"
+                            },
+                            {
+                                "key": "clientSecret",
+                                "value": "{{clientSecretAdminBooks}}",
+                                "type": "string"
+                            },
+                            {
+                                "key": "clientId",
+                                "value": "{{clientIdAdminBooks}}",
+                                "type": "string"
+                            },
+                            {
+                                "key": "accessTokenUrl",
+                                "value": "{{authorizationServer}}",
+                                "type": "string"
+                            },
+                            {
+                                "key": "grant_type",
+                                "value": "client_credentials",
+                                "type": "string"
+                            },
+                            {
+                                "key": "tokenName",
+                                "value": "admin-book-token",
+                                "type": "string"
+                            },
+                            {
+                                "key": "addTokenTo",
+                                "value": "header",
+                                "type": "string"
+                            }
+                        ]
+                    },
+                    "event": [
+                        {
+                            "listen": "prerequest",
+                            "script": {
+                                "type": "text/javascript",
+                                "packages": {},
+                                "exec": [
+                                    ""
+                                ]
+                            }
+                        },
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "packages": {},
+                                "exec": [
+                                    ""
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "writer",
+                    "item": [
+                        {
+                            "name": "Get All",
+                            "request": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "http://localhost:10000/spring-app/v1/books",
+                                    "protocol": "http",
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "port": "10000",
+                                    "path": [
+                                        "spring-app",
+                                        "v1",
+                                        "books"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Create",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "channel",
+                                        "value": "Postman",
+                                        "type": "text"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n\t\"name\": \"Book Name\",\n\t\"numberOfPages\": 1,\n\t\"publicationDate\": \"9000-12-01\",\n\t\"genre\": \"Noir\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "http://localhost:10000/spring-app/v1/books",
+                                    "protocol": "http",
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "port": "10000",
+                                    "path": [
+                                        "spring-app",
+                                        "v1",
+                                        "books"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Get By Id",
+                            "request": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "http://localhost:10000/spring-app/v1/books/:id",
+                                    "protocol": "http",
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "port": "10000",
+                                    "path": [
+                                        "spring-app",
+                                        "v1",
+                                        "books",
+                                        ":id"
+                                    ],
+                                    "variable": [
+                                        {
+                                            "key": "id",
+                                            "value": ""
+                                        }
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Update By Id",
+                            "request": {
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "channel",
+                                        "value": "Postman",
+                                        "type": "text"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n\t\"name\": \"Book Name Updated\",\n\t\"numberOfPages\": 1,\n\t\"publicationDate\": \"9000-12-01\",\n\t\"genre\": \"Noir\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "http://localhost:10000/spring-app/v1/books/:id",
+                                    "protocol": "http",
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "port": "10000",
+                                    "path": [
+                                        "spring-app",
+                                        "v1",
+                                        "books",
+                                        ":id"
+                                    ],
+                                    "variable": [
+                                        {
+                                            "key": "id",
+                                            "value": ""
+                                        }
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Download",
+                            "request": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "http://localhost:10000/spring-app/v1/books/download",
+                                    "protocol": "http",
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "port": "10000",
+                                    "path": [
+                                        "spring-app",
+                                        "v1",
+                                        "books",
+                                        "download"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Upload",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "channel",
+                                        "value": "Postman",
+                                        "type": "text"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "formdata",
+                                    "formdata": [
+                                        {
+                                            "key": "file",
+                                            "type": "file",
+                                            "src": []
+                                        }
+                                    ]
+                                },
+                                "url": {
+                                    "raw": "http://localhost:10000/spring-app/v1/books/upload",
+                                    "protocol": "http",
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "port": "10000",
+                                    "path": [
+                                        "spring-app",
+                                        "v1",
+                                        "books",
+                                        "upload"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        }
+                    ],
+                    "auth": {
+                        "type": "oauth2",
+                        "oauth2": [
+                            {
+                                "key": "client_authentication",
+                                "value": "body",
+                                "type": "string"
+                            },
+                            {
+                                "key": "clientSecret",
+                                "value": "{{clientSecretWriterBooks}}",
+                                "type": "string"
+                            },
+                            {
+                                "key": "clientId",
+                                "value": "{{clientIdWriterBooks}}",
+                                "type": "string"
+                            },
+                            {
+                                "key": "tokenName",
+                                "value": "writer-book-token",
+                                "type": "string"
+                            },
+                            {
+                                "key": "accessTokenUrl",
+                                "value": "{{authorizationServer}}",
+                                "type": "string"
+                            },
+                            {
+                                "key": "grant_type",
+                                "value": "client_credentials",
+                                "type": "string"
+                            },
+                            {
+                                "key": "redirect_uri",
+                                "value": "{{authorizationServer}}",
+                                "type": "string"
+                            },
+                            {
+                                "key": "addTokenTo",
+                                "value": "header",
+                                "type": "string"
+                            }
+                        ]
+                    },
+                    "event": [
+                        {
+                            "listen": "prerequest",
+                            "script": {
+                                "type": "text/javascript",
+                                "packages": {},
+                                "exec": [
+                                    ""
+                                ]
+                            }
+                        },
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "packages": {},
+                                "exec": [
+                                    ""
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "reader",
+                    "item": [
+                        {
+                            "name": "Get All",
+                            "request": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "http://localhost:10000/spring-app/v1/books",
+                                    "protocol": "http",
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "port": "10000",
+                                    "path": [
+                                        "spring-app",
+                                        "v1",
+                                        "books"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Get By Id",
+                            "request": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "http://localhost:10000/spring-app/v1/books/:id",
+                                    "protocol": "http",
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "port": "10000",
+                                    "path": [
+                                        "spring-app",
+                                        "v1",
+                                        "books",
+                                        ":id"
+                                    ],
+                                    "variable": [
+                                        {
+                                            "key": "id",
+                                            "value": ""
+                                        }
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Download",
+                            "request": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "http://localhost:10000/spring-app/v1/books/download",
+                                    "protocol": "http",
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "port": "10000",
+                                    "path": [
+                                        "spring-app",
+                                        "v1",
+                                        "books",
+                                        "download"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        }
+                    ],
+                    "auth": {
+                        "type": "oauth2",
+                        "oauth2": [
+                            {
+                                "key": "client_authentication",
+                                "value": "body",
+                                "type": "string"
+                            },
+                            {
+                                "key": "clientSecret",
+                                "value": "{{clientSecretReaderBooks}}",
+                                "type": "string"
+                            },
+                            {
+                                "key": "clientId",
+                                "value": "{{clientIdReaderBooks}}",
+                                "type": "string"
+                            },
+                            {
+                                "key": "accessTokenUrl",
+                                "value": "{{authorizationServer}}",
+                                "type": "string"
+                            },
+                            {
+                                "key": "tokenName",
+                                "value": "reader-book-token",
+                                "type": "string"
+                            },
+                            {
+                                "key": "grant_type",
+                                "value": "client_credentials",
+                                "type": "string"
+                            },
+                            {
+                                "key": "addTokenTo",
+                                "value": "header",
+                                "type": "string"
+                            }
+                        ]
+                    },
+                    "event": [
+                        {
+                            "listen": "prerequest",
+                            "script": {
+                                "type": "text/javascript",
+                                "packages": {},
+                                "exec": [
+                                    ""
+                                ]
+                            }
+                        },
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "packages": {},
+                                "exec": [
+                                    ""
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ],
+            "auth": {
+                "type": "noauth"
+            },
+            "event": [
+                {
+                    "listen": "prerequest",
+                    "script": {
+                        "type": "text/javascript",
+                        "packages": {},
+                        "exec": [
+                            ""
+                        ]
+                    }
+                },
+                {
+                    "listen": "test",
+                    "script": {
+                        "type": "text/javascript",
+                        "packages": {},
+                        "exec": [
+                            ""
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Items V1",
+            "item": [
+                {
+                    "name": "admin",
+                    "item": [
+                        {
+                            "name": "Upload",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "channel",
+                                        "value": "Postman",
+                                        "type": "text"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "[\n\t{\n\t\t\"price\": 9999.99,\n\t\t\"name\": \"item-1\",\n\t\t\"barcode\": \"barcode-1\"\n\t},\n\t{\n\t\t\"price\": 9999.99,\n\t\t\"name\": \"item-2\",\n\t\t\"barcode\": \"barcode-2\"\n\t},\n\t{\n\t\t\"price\": 9999.99,\n\t\t\"name\": \"item-3\",\n\t\t\"barcode\": \"barcode-3\"\n\t}\n]",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "http://localhost:10000/spring-app/v1/items",
+                                    "protocol": "http",
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "port": "10000",
+                                    "path": [
+                                        "spring-app",
+                                        "v1",
+                                        "items"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Get All",
+                            "request": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "http://localhost:10000/spring-app/v1/items",
+                                    "protocol": "http",
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "port": "10000",
+                                    "path": [
+                                        "spring-app",
+                                        "v1",
+                                        "items"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Delete",
+                            "request": {
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "channel",
+                                        "value": "Postman",
+                                        "type": "text"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "[\n\t{\n\t\t\"id\": \"\",\n\t\t\"price\": 9999.99,\n\t\t\"name\": \"item-1\",\n\t\t\"barcode\": \"barcode-1\"\n\t},\n\t{\n\t\t\"id\": \"\",\n\t\t\"price\": 9999.99,\n\t\t\"name\": \"item-2\",\n\t\t\"barcode\": \"barcode-2\"\n\t},\n\t{\n\t\t\"id\": \"\",\n\t\t\"price\": 9999.99,\n\t\t\"name\": \"item-3\",\n\t\t\"barcode\": \"barcode-3\"\n\t}\n]",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "http://localhost:10000/spring-app/v1/items",
+                                    "protocol": "http",
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "port": "10000",
+                                    "path": [
+                                        "spring-app",
+                                        "v1",
+                                        "items"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        }
+                    ],
+                    "auth": {
+                        "type": "oauth2",
+                        "oauth2": [
+                            {
+                                "key": "client_authentication",
+                                "value": "body",
+                                "type": "string"
+                            },
+                            {
+                                "key": "clientSecret",
+                                "value": "{{clientSecretAdminItems}}",
+                                "type": "string"
+                            },
+                            {
+                                "key": "clientId",
+                                "value": "{{clientIdAdminItems}}",
+                                "type": "string"
+                            },
+                            {
+                                "key": "accessTokenUrl",
+                                "value": "{{authorizationServer}}",
+                                "type": "string"
+                            },
+                            {
+                                "key": "tokenName",
+                                "value": "admin-item-token",
+                                "type": "string"
+                            },
+                            {
+                                "key": "grant_type",
+                                "value": "client_credentials",
+                                "type": "string"
+                            },
+                            {
+                                "key": "addTokenTo",
+                                "value": "header",
+                                "type": "string"
+                            }
+                        ]
+                    },
+                    "event": [
+                        {
+                            "listen": "prerequest",
+                            "script": {
+                                "type": "text/javascript",
+                                "packages": {},
+                                "exec": [
+                                    ""
+                                ]
+                            }
+                        },
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "packages": {},
+                                "exec": [
+                                    ""
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "writer",
+                    "item": [
+                        {
+                            "name": "Upload",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "channel",
+                                        "value": "Postman",
+                                        "type": "text"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "[\n\t{\n\t\t\"price\": 9999.99,\n\t\t\"name\": \"item-1\",\n\t\t\"barcode\": \"barcode-1\"\n\t},\n\t{\n\t\t\"price\": 9999.99,\n\t\t\"name\": \"item-2\",\n\t\t\"barcode\": \"barcode-2\"\n\t},\n\t{\n\t\t\"price\": 9999.99,\n\t\t\"name\": \"item-3\",\n\t\t\"barcode\": \"barcode-3\"\n\t}\n]",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "http://localhost:10000/spring-app/v1/items",
+                                    "protocol": "http",
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "port": "10000",
+                                    "path": [
+                                        "spring-app",
+                                        "v1",
+                                        "items"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Get All",
+                            "request": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "http://localhost:10000/spring-app/v1/items",
+                                    "protocol": "http",
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "port": "10000",
+                                    "path": [
+                                        "spring-app",
+                                        "v1",
+                                        "items"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        }
+                    ],
+                    "auth": {
+                        "type": "oauth2",
+                        "oauth2": [
+                            {
+                                "key": "client_authentication",
+                                "value": "body",
+                                "type": "string"
+                            },
+                            {
+                                "key": "clientSecret",
+                                "value": "{{clientSecretWriterItems}}",
+                                "type": "string"
+                            },
+                            {
+                                "key": "clientId",
+                                "value": "{{clientIdWriterItems}}",
+                                "type": "string"
+                            },
+                            {
+                                "key": "accessTokenUrl",
+                                "value": "{{authorizationServer}}",
+                                "type": "string"
+                            },
+                            {
+                                "key": "tokenName",
+                                "value": "writer-item-token",
+                                "type": "string"
+                            },
+                            {
+                                "key": "grant_type",
+                                "value": "client_credentials",
+                                "type": "string"
+                            },
+                            {
+                                "key": "addTokenTo",
+                                "value": "header",
+                                "type": "string"
+                            }
+                        ]
+                    },
+                    "event": [
+                        {
+                            "listen": "prerequest",
+                            "script": {
+                                "type": "text/javascript",
+                                "packages": {},
+                                "exec": [
+                                    ""
+                                ]
+                            }
+                        },
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "packages": {},
+                                "exec": [
+                                    ""
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "reader",
+                    "item": [
+                        {
+                            "name": "Get All",
+                            "request": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "http://localhost:10000/spring-app/v1/items",
+                                    "protocol": "http",
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "port": "10000",
+                                    "path": [
+                                        "spring-app",
+                                        "v1",
+                                        "items"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        }
+                    ],
+                    "auth": {
+                        "type": "oauth2",
+                        "oauth2": [
+                            {
+                                "key": "client_authentication",
+                                "value": "body",
+                                "type": "string"
+                            },
+                            {
+                                "key": "clientSecret",
+                                "value": "{{clientSecretReaderItems}}",
+                                "type": "string"
+                            },
+                            {
+                                "key": "clientId",
+                                "value": "{{clientIdReaderItems}}",
+                                "type": "string"
+                            },
+                            {
+                                "key": "tokenName",
+                                "value": "reader-item-token",
+                                "type": "string"
+                            },
+                            {
+                                "key": "accessTokenUrl",
+                                "value": "{{authorizationServer}}",
+                                "type": "string"
+                            },
+                            {
+                                "key": "grant_type",
+                                "value": "client_credentials",
+                                "type": "string"
+                            },
+                            {
+                                "key": "addTokenTo",
+                                "value": "header",
+                                "type": "string"
+                            }
+                        ]
+                    },
+                    "event": [
+                        {
+                            "listen": "prerequest",
+                            "script": {
+                                "type": "text/javascript",
+                                "packages": {},
+                                "exec": [
+                                    ""
+                                ]
+                            }
+                        },
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "packages": {},
+                                "exec": [
+                                    ""
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ],
+            "auth": {
+                "type": "noauth"
+            },
+            "event": [
+                {
+                    "listen": "prerequest",
+                    "script": {
+                        "type": "text/javascript",
+                        "packages": {},
+                        "exec": [
+                            ""
+                        ]
+                    }
+                },
+                {
+                    "listen": "test",
+                    "script": {
+                        "type": "text/javascript",
+                        "packages": {},
+                        "exec": [
+                            ""
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "OpenAPI",
+            "item": [
+                {
+                    "name": "Get OpenAPI Docs",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:10000/spring-app/v3/api-docs.yaml",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "10000",
+                            "path": [
+                                "spring-app",
+                                "v3",
+                                "api-docs.yaml"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Swagger UI",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:10000/spring-app/swagger-ui/index.html",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "10000",
+                            "path": [
+                                "spring-app",
+                                "swagger-ui",
+                                "index.html"
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ],
+            "auth": {
+                "type": "noauth"
+            },
+            "event": [
+                {
+                    "listen": "prerequest",
+                    "script": {
+                        "type": "text/javascript",
+                        "packages": {},
+                        "exec": [
+                            ""
+                        ]
+                    }
+                },
+                {
+                    "listen": "test",
+                    "script": {
+                        "type": "text/javascript",
+                        "packages": {},
+                        "exec": [
+                            ""
+                        ]
+                    }
+                }
+            ]
+        }
+    ],
+    "event": [
+        {
+            "listen": "prerequest",
+            "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "exec": [
+                    ""
+                ]
+            }
+        },
+        {
+            "listen": "test",
+            "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "exec": [
+                    ""
+                ]
+            }
+        }
+    ],
+    "variable": [
+        {
+            "key": "authorizationServer",
+            "value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+            "type": "string"
+        },
+        {
+            "key": "clientIdAdminBooks",
+            "value": "client-id-books-admin"
+        },
+        {
+            "key": "clientSecretAdminBooks",
+            "value": "PtBsFK4ogkxL0JRZZeoFZ8KWrJsH05jC"
+        },
+        {
+            "key": "clientIdWriterBooks",
+            "value": "client-id-books-writer",
+            "type": "string"
+        },
+        {
+            "key": "clientSecretWriterBooks",
+            "value": "gjA01yMMwFRNvyADidf9wmrQSJdOCI53",
+            "type": "string"
+        },
+        {
+            "key": "clientIdReaderBooks",
+            "value": "client-id-books-reader"
+        },
+        {
+            "key": "clientSecretReaderBooks",
+            "value": "12UAbqHBFyHUWM2ehiuOPLUHRDhTn5ps"
+        },
+        {
+            "key": "clientIdAdminItems",
+            "value": "client-id-items-admin"
+        },
+        {
+            "key": "clientSecretAdminItems",
+            "value": "NI9kyA7EfWm6f1fXNfRSxRs8RyBvlYbD"
+        },
+        {
+            "key": "clientIdWriterItems",
+            "value": "client-id-items-writer"
+        },
+        {
+            "key": "clientSecretWriterItems",
+            "value": "wYZkx1YhdSajnU2O4FiwY5trEOpM3dNt"
+        },
+        {
+            "key": "clientIdReaderItems",
+            "value": "client-id-items-reader"
+        },
+        {
+            "key": "clientSecretReaderItems",
+            "value": "ugpBN4DUGCSNMOoO1JQI2kbE82aJ88bN"
+        }
+    ]
 }
