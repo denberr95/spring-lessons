@@ -78,8 +78,11 @@ public class HttpServerLoggingFilter extends OncePerRequestFilter {
     }
 
     private boolean downloadedFile(ContentCachingResponseWrapper response) {
-        return response.getHeader(HttpHeaders.CONTENT_DISPOSITION) != null
-                && response.getHeader(HttpHeaders.CONTENT_DISPOSITION).contains("attachment");
+        boolean result = false;
+        if (response.getHeader(HttpHeaders.CONTENT_DISPOSITION) != null) {
+            result = response.getHeader(HttpHeaders.CONTENT_DISPOSITION).contains("attachment");
+        }
+        return result;
     }
 
     private void logMultipartFiles(HttpServletRequest request)
@@ -93,9 +96,12 @@ public class HttpServerLoggingFilter extends OncePerRequestFilter {
 
     private void logDownloadFile(ContentCachingResponseWrapper response) {
         String contentDisposition = response.getHeader(HttpHeaders.CONTENT_DISPOSITION);
-        String fileName = contentDisposition.substring(contentDisposition.indexOf("filename=") + 9)
-                .replace(Constants.S_DOUBLE_QUOTE, Constants.S_EMPTY);
-        log.info("Downloaded File Name: '{}'", fileName);
+        if (contentDisposition != null && contentDisposition.contains("filename")) {
+            String fileName =
+                    contentDisposition.substring(contentDisposition.indexOf("filename=") + 9)
+                            .replace(Constants.S_DOUBLE_QUOTE, Constants.S_EMPTY);
+            log.info("Downloaded File Name: '{}'", fileName);
+        }
     }
 
     private String getHeadersAsString(Collection<String> headerNames,
@@ -105,7 +111,7 @@ public class HttpServerLoggingFilter extends OncePerRequestFilter {
             String headerValue = headerValueResolver.apply(headerName);
             headersBuilder.append(String.format("'%s' = '%s', ", headerName, headerValue));
         }
-        if (headersBuilder.length() > 0) {
+        if (!headersBuilder.isEmpty()) {
             headersBuilder.setLength(headersBuilder.length() - 2);
         }
         return headersBuilder.toString();

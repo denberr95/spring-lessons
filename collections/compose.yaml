@@ -159,6 +159,23 @@ services:
     networks:
     - vscode-spring-lessons
 
+  mailpit:
+    image: axllent/mailpit
+    restart: "no"
+    environment:
+    - TZ=Europe/Rome
+    - MP_MAX_MESSAGES=5000
+    - MP_DATABASE=/data/mailpit.db
+    - MP_SMTP_AUTH_ACCEPT_ANY=1
+    - MP_SMTP_AUTH_ALLOW_INSECURE=1
+    volumes:
+    - ./mailpit/data:/data
+    ports:
+    - "8025:8025" # serve web ui
+    - "1025:1025" # serve smtp server
+    networks:
+    - vscode-spring-lessons
+
 networks:
   vscode-spring-lessons:
     driver: bridge

@@ -1,7 +1,7 @@
 {
     "request": {
         "method": "GET",
-        "url": "/wiremock/v1/accounts"
+        "url": "/wiremock/accounts"
     },
     "response": {
         "status": 200,

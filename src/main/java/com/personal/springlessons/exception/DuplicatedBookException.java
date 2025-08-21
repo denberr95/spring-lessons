@@ -7,7 +7,7 @@ public class DuplicatedBookException extends RuntimeException {
     private final String id;
 
     public DuplicatedBookException(String name, String id) {
-        super(String.format("Book '%s' is associated at id '%s'", name, id));
+        super(String.format("Book '%s' already exists with id '%s'", name, id));
         this.name = name;
         this.id = id;
     }

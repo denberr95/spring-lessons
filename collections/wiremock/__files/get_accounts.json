@@ -1,5 +1,57 @@
-{
-    "id": "{{randomValue type='UUID'}}",
-    "name": "{{ random 'Name.name' }}",
-    "createdAt": "{{now}}"
-}
+[
+    {
+        "id": "{{randomValue type='UUID'}}",
+        "name": "{{ random 'Name.name' }}",
+        "surname": "{{ random 'Name.lastName' }}",
+        "nationality": "{{ random 'Nation.language' }}",
+        "email": "{{ random 'Internet.emailAddress' }}",
+        "phone": "{{ random 'PhoneNumber.phoneNumber' }}",
+        "address": "{{ random 'Address.fullAddress' }}",
+        "job": "{{ random 'Job.title' }}",
+        "createdAt": "{{now}}"
+    },
+    {
+        "id": "{{randomValue type='UUID'}}",
+        "name": "{{ random 'Name.name' }}",
+        "surname": "{{ random 'Name.lastName' }}",
+        "nationality": "{{ random 'Nation.language' }}",
+        "email": "{{ random 'Internet.emailAddress' }}",
+        "phone": "{{ random 'PhoneNumber.phoneNumber' }}",
+        "address": "{{ random 'Address.fullAddress' }}",
+        "job": "{{ random 'Job.title' }}",
+        "createdAt": "{{now}}"
+    },
+    {
+        "id": "{{randomValue type='UUID'}}",
+        "name": "{{ random 'Name.name' }}",
+        "surname": "{{ random 'Name.lastName' }}",
+        "nationality": "{{ random 'Nation.language' }}",
+        "email": "{{ random 'Internet.emailAddress' }}",
+        "phone": "{{ random 'PhoneNumber.phoneNumber' }}",
+        "address": "{{ random 'Address.fullAddress' }}",
+        "job": "{{ random 'Job.title' }}",
+        "createdAt": "{{now}}"
+    },
+    {
+        "id": "{{randomValue type='UUID'}}",
+        "name": "{{ random 'Name.name' }}",
+        "surname": "{{ random 'Name.lastName' }}",
+        "nationality": "{{ random 'Nation.language' }}",
+        "email": "{{ random 'Internet.emailAddress' }}",
+        "phone": "{{ random 'PhoneNumber.phoneNumber' }}",
+        "address": "{{ random 'Address.fullAddress' }}",
+        "job": "{{ random 'Job.title' }}",
+        "createdAt": "{{now}}"
+    },
+    {
+        "id": "{{randomValue type='UUID'}}",
+        "name": "{{ random 'Name.name' }}",
+        "surname": "{{ random 'Name.lastName' }}",
+        "nationality": "{{ random 'Nation.language' }}",
+        "email": "{{ random 'Internet.emailAddress' }}",
+        "phone": "{{ random 'PhoneNumber.phoneNumber' }}",
+        "address": "{{ random 'Address.fullAddress' }}",
+        "job": "{{ random 'Job.title' }}",
+        "createdAt": "{{now}}"
+    }
+]

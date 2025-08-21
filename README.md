@@ -14,7 +14,7 @@
 | **Name** | **Link** |
 | :-: | :-: |
 | Visual Studio Code | <https://code.visualstudio.com> |
-| Java 21 | <https://adoptium.net/en-GB/temurin/releases/> |
+| Java 21 | <https://bell-sw.com/pages/downloads/> |
 | Git  | <https://git-scm.com> |
 | Maven | <https://maven.apache.org> |
 | Podman | <https://podman.io> |
@@ -27,6 +27,7 @@
 | Prometheus | <https://prometheus.io/> |
 | Grafana | <https://grafana.com/> |
 | Wiremock | <https://wiremock.org/> |
+| Mailpit | <https://mailpit.axllent.org/> |
 
 ## Environment
 
@@ -45,6 +46,8 @@
 | Spring Lessons Actuator | <http://localhost:10001> |
 | Swagger UI | <http://localhost:10000/spring-app/swagger-ui/index.html> |
 | Wiremock | <http://localhost:9998/__admin/> |
+| Mailpit | <http://localhost:8025/> |
+| SMTP Server | localhost:1025 |
 
 ## VSCode Configuration files
 
