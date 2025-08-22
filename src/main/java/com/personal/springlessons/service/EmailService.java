@@ -1,6 +1,7 @@
 package com.personal.springlessons.service;
 
 import com.personal.springlessons.model.dto.external.AccountDTO;
+import com.personal.springlessons.util.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.mail.SimpleMailMessage;
@@ -36,7 +37,8 @@ public class EmailService {
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
-        log.info("Email sent !");
+        log.info("Email sent to: '{}'", accountDTO.email());
+        currentSpan.tag(Constants.SPAN_KEY_EMAIL, accountDTO.email());
         currentSpan.event("Email sent");
     }
 }

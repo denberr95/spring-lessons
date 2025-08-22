@@ -4,6 +4,8 @@ import java.util.List;
 import com.personal.springlessons.component.httpclient.AccountsClient;
 import com.personal.springlessons.model.dto.external.AccountDTO;
 import com.personal.springlessons.service.EmailService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,7 @@ public class AccountsRunner implements ApplicationRunner {
     private final AccountsClient accountsClient;
     private final EmailService emailService;
     private final Tracer tracer;
+    private static final Logger log = LoggerFactory.getLogger(AccountsRunner.class);
 
     public AccountsRunner(AccountsClient accountsClient, EmailService emailService, Tracer tracer) {
         this.accountsClient = accountsClient;
@@ -25,15 +28,17 @@ public class AccountsRunner implements ApplicationRunner {
         this.tracer = tracer;
     }
 
-    @NewSpan
+    @NewSpan(name = "accounts-runner")
     @Override
     public void run(ApplicationArguments args) throws Exception {
+        log.info("Executing application runner to fetch accounts and send emails...");
         Span currentSpan = this.tracer.currentSpan();
         ResponseEntity<List<AccountDTO>> response = this.accountsClient.getAccounts();
         List<AccountDTO> accounts = (response != null) ? response.getBody() : null;
         if (accounts != null) {
             accounts.forEach(this.emailService::sendEmail);
         }
+        log.info("Application runner execution completed");
         currentSpan.event("Application runner executed");
     }
 }

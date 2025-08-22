@@ -22,6 +22,7 @@ public final class Constants {
     public static final String SPAN_KEY_ID_ORDER_ITEMS = "id.order.items";
     public static final String SPAN_KEY_ID_BOOKS = "id.books";
     public static final String SPAN_KEY_COLLECTED_ITEMS = "collected.items";
+    public static final String SPAN_KEY_EMAIL = "email";
 
     // Database schemas
     public static final String DB_SCHEMA_SPRING_APP = "SPRING_APP";
