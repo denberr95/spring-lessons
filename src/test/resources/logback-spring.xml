@@ -5,9 +5,9 @@
 
     <appender name="CONSOLE-TEXT" class="ch.qos.logback.core.ConsoleAppender">
         <withJansi>false</withJansi>
-        <layout class="ch.qos.logback.classic.PatternLayout">
+        <encoder>
             <pattern>[%green(%date)] - [%yellow(%thread)] - [%magenta(%logger)] - [%highlight(%level)] - [%blue(%mdc)] - [%white(%message)]%red(%n%throwable)</pattern>
-        </layout>
+        </encoder>
     </appender>
 
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
