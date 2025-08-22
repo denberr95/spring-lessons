@@ -54,7 +54,8 @@ public class HttpClientInterceptor implements ClientHttpRequestInterceptor {
         }
         if (response.getBody().readAllBytes().length > 0) {
             log.info("Body: '{}'",
-                    StreamUtils.copyToString(response.getBody(), StandardCharsets.UTF_8));
+                    StreamUtils.copyToString(response.getBody(), StandardCharsets.UTF_8)
+                            .replaceAll(Constants.S_REGEX_ANY_SPACE, Constants.S_WHITESPACE));
         }
         log.info("--- HTTP Client Response ---");
     }
