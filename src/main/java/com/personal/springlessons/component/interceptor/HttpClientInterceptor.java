@@ -46,7 +46,7 @@ public class HttpClientInterceptor implements ClientHttpRequestInterceptor {
 
     private void logResponse(ClientHttpResponse response) throws IOException {
         log.info("--- HTTP Client Response ---");
-        log.info("Status Code: '{} - '{}''", response.getStatusCode(), response.getStatusText());
+        log.info("Status Code: '{}'", response.getStatusCode());
         log.info("Headers: '{}'", response.getHeaders());
 
         if (this.isMultipartData(response.getHeaders())) {
