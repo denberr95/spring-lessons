@@ -13,7 +13,7 @@ export JAVA_OPTS="-server \
     -XshowSettings:vm"
 
 # Function for JVM mode
-jvm() {
+run_jvm() {
     echo "Execute JVM mode..."
     exec java $JAVA_OPTS $JAVA_OTHER_OPTIONS -jar app.jar
 }
@@ -23,7 +23,7 @@ MODE=${1:-jvm}
 
 case "$MODE" in
     jvm)
-        jvm
+        run_jvm
         ;;
     *)
         echo "Error: Invalid value, must be: 'jvm'"
