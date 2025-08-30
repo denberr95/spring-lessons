@@ -4,7 +4,7 @@ datasources:
   type: jaeger
   uid: jaeger_uid
   url: http://jaeger:16686
-  editable: true
+  editable: false
   isDefault: false
   access: proxy
   jsonData:

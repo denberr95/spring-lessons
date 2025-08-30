@@ -30,8 +30,11 @@ exporters:
 
 extensions:
   health_check:
+    endpoint: otelcol:13133
   pprof:
+    endpoint: otelcol:1777
   zpages:
+    endpoint: otelcol:55679
   
 service:
   extensions: [health_check, pprof, zpages]

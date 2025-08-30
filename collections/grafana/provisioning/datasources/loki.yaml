@@ -4,8 +4,8 @@ datasources:
   type: loki
   uid: loki_uid
   url: http://loki:3100
-  editable: true
-  isDefault: true
+  editable: false
+  isDefault: false
   access: proxy
   jsonData:
     timeout: 60

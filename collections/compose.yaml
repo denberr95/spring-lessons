@@ -2,6 +2,7 @@ services:
   springdb:
     image: postgres:latest
     restart: "no"
+    hostname: springdb
     environment:
     - POSTGRES_USER=admin
     - POSTGRES_PASSWORD=
@@ -16,6 +17,7 @@ services:
   jaeger:
     image: jaegertracing/jaeger:latest
     restart: "no"
+    hostname: jaeger
     environment:
     - LOG_LEVEL=debug
     - TZ=Europe/Rome
@@ -34,6 +36,7 @@ services:
   loki:
     image: grafana/loki:main
     restart: "no"
+    hostname: loki
     environment:
     - TZ=Europe/Rome
     command: 
@@ -49,6 +52,7 @@ services:
   prometheus:
     image: prom/prometheus:main
     restart: "no"
+    hostname: prometheus
     environment:
     - TZ=Europe/Rome
     command:
@@ -60,11 +64,13 @@ services:
     networks:
     - vscode-spring-lessons
     depends_on:
-    - otelcol
+      otelcol:
+        condition: service_started
 
   grafana:
     image: grafana/grafana:main
     restart: "no"
+    hostname: grafana
     environment:
     - TZ=Europe/Rome
     volumes:
@@ -75,13 +81,19 @@ services:
     networks:
     - vscode-spring-lessons
     depends_on:
-    - prometheus
-    - loki
-    - jaeger
+      prometheus:
+        condition: service_started
+      jaeger:
+        condition: service_started
+      loki:
+        condition: service_started
+      kafka:
+        condition: service_started
 
   otelcol:
     image: otel/opentelemetry-collector-contrib:latest
     restart: "no"
+    hostname: otelcol
     environment:
     - TZ=Europe/Rome
     command:
@@ -89,21 +101,23 @@ services:
     volumes:
     - ./otel/otelcol-config.yml:/etc/otelcol-config.yml
     ports:
-    - "1888" # pprof extension
     - "8888" # Prometheus metrics exposed by the Collector
     - "8889" # Prometheus exporter metrics
     - "13133" # health_check extension
     - "4317:4317" # OTLP gRPC receiver
     - "4318:4318" # OTLP http receiver
     - "55679" # zpages extension
+    - "1777" # pprof extension
     depends_on:
-    - jaeger
+      jaeger:
+        condition: service_started
     networks:
     - vscode-spring-lessons
 
   kafka:
     image: bitnami/kafka:latest
     restart: "no"
+    hostname: kafka
     environment:
     - TZ=Europe/Rome
     - KAFKA_CFG_NODE_ID=0
@@ -123,6 +137,7 @@ services:
   keycloak:
     image: quay.io/keycloak/keycloak:latest
     restart: "no"
+    hostname: keycloak
     environment:
     - TZ=Europe/Rome
     - KC_BOOTSTRAP_ADMIN_USERNAME=kcuser # Temporary admin user, real is "admin"
@@ -141,7 +156,9 @@ services:
     build:
       context: .
       dockerfile: wiremock/Containerfile
+    image: custom-wiremock:latest
     restart: "no"
+    hostname: wiremock
     environment:
     - TZ=Europe/Rome
     entrypoint:
@@ -162,6 +179,7 @@ services:
   mailpit:
     image: axllent/mailpit
     restart: "no"
+    hostname: mailpit
     environment:
     - TZ=Europe/Rome
     - MP_MAX_MESSAGES=5000

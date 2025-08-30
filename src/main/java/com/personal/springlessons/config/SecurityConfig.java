@@ -2,8 +2,10 @@ package com.personal.springlessons.config;
 
 import com.personal.springlessons.component.access.CustomAccessDeniedHandler;
 import com.personal.springlessons.component.access.CustomAuthenticationEntryPoint;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.DefaultAuthenticationEventPublisher;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
@@ -28,5 +30,11 @@ public class SecurityConfig {
                                 .accessDeniedHandler(customAccessDeniedHandler)
                                 .jwt(Customizer.withDefaults()));
         return http.build();
+    }
+
+    @Bean
+    DefaultAuthenticationEventPublisher authenticationEventPublisher(
+            ApplicationEventPublisher applicationEventPublisher) {
+        return new DefaultAuthenticationEventPublisher(applicationEventPublisher);
     }
 }

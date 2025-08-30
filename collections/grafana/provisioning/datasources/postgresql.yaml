@@ -5,7 +5,7 @@ datasources:
   uid: postgres_uid
   url: springdb:5432
   user: grafanareader
-  editable: true
+  editable: false
   isDefault: false
   access: proxy
   secureJsonData:
