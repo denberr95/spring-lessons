@@ -7,7 +7,7 @@ public class DuplicatedBarcodeException extends RuntimeException {
     private final String id;
 
     public DuplicatedBarcodeException(String barcode, String id) {
-        super(String.format("Item '%s' already registered with id '%s'", barcode, id));
+        super(String.format("Item '%s' already exists with id '%s'", barcode, id));
         this.barcode = barcode;
         this.id = id;
     }
