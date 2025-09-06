@@ -16,7 +16,7 @@
             ]
         },
         {
-            "label": "test-env",
+            "label": "test-application",
             "type": "shell",
             "group": "test",
             "dependsOrder": "sequence",
@@ -91,7 +91,7 @@
             "command": "podman build --rm=true --file Containerfile.jvm --tag spring-lessons:latest .",
             "dependsOrder": "sequence",
             "dependsOn": [
-                "test-env",
+                "test-application",
             ],
             "group": "build",
         },
