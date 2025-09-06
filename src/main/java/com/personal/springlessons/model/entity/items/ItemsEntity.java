@@ -21,7 +21,6 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.SourceType;
 import org.hibernate.generator.EventType;
-import lombok.ToString;
 
 @Entity
 @DynamicInsert
@@ -58,7 +57,6 @@ public class ItemsEntity {
 
     @ManyToOne
     @JoinColumn(name = "fk_order_items_id", referencedColumnName = "id")
-    @ToString.Exclude
     private OrderItemsEntity orderItemsEntity;
 
     public ItemsEntity(UUID id, OffsetDateTime createdAt, OffsetDateTime updatedAt,
