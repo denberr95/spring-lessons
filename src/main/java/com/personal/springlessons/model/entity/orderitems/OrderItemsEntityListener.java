@@ -16,36 +16,36 @@ public class OrderItemsEntityListener {
 
     @PostLoad
     private void postLoad(OrderItemsEntity entity) {
-        log.trace("postLoad item status entity: '{}'", entity);
+        log.trace("postLoad: '{}' entity: '{}'", entity.getClass().getName(), entity);
     }
 
     @PreUpdate
     private void preUpdate(OrderItemsEntity entity) {
-        log.trace("preUpdate item status entity: '{}'", entity);
+        log.trace("preUpdate: '{}' entity: '{}'", entity.getClass().getName(), entity);
     }
 
     @PostUpdate
     private void postUpdate(OrderItemsEntity entity) {
-        log.trace("postUpdate item status entity: '{}'", entity);
+        log.trace("postUpdate: '{}' entity: '{}'", entity.getClass().getName(), entity);
     }
 
     @PrePersist
     private void prePersist(OrderItemsEntity entity) {
-        log.trace("prePersist item status entity: '{}'", entity);
+        log.trace("prePersist: '{}' entity: '{}'", entity.getClass().getName(), entity);
     }
 
     @PostPersist
     private void postPersist(OrderItemsEntity entity) {
-        log.trace("postPersist item status entity: '{}'", entity);
+        log.trace("postPersist: '{}' entity: '{}'", entity.getClass().getName(), entity);
     }
 
     @PreRemove
     private void preRemove(OrderItemsEntity entity) {
-        log.trace("preRemove item status entity: '{}'", entity);
+        log.trace("preRemove: '{}' entity: '{}'", entity.getClass().getName(), entity);
     }
 
     @PostRemove
     private void postRemove(OrderItemsEntity entity) {
-        log.trace("postRemove item status entity: '{}'", entity);
+        log.trace("postRemove: '{}' entity: '{}'", entity.getClass().getName(), entity);
     }
 }
