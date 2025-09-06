@@ -84,11 +84,11 @@ class ItemsListenerTest {
 
     @Test
     void givenDuplicatedBarcode_whenUploadItems_thenDuplicatedBarcodeExceptionShouldBeThrown() {
-
+        // TODO
     }
 
     @Test
     void givenExistingItem_whenDeleteItem_thenItemShouldBeDeleted() {
-
+        // TODO
     }
 }
