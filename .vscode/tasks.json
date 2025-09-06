@@ -98,13 +98,13 @@
         {
             "label": "podman-compose-env-up",
             "type": "shell",
-            "command": "podman-compose --project vscode-spring-lessons --file ./collections/compose.yaml up --force-recreate --remove-orphans --detach",
+            "command": "podman-compose --project spring-lessons --file ./collections/compose.yaml up --force-recreate --remove-orphans --detach",
             "group": "test",
         },
         {
             "label": "podman-compose-env-stop",
             "type": "shell",
-            "command": "podman-compose --project vscode-spring-lessons --file ./collections/compose.yaml stop",
+            "command": "podman-compose --project spring-lessons --file ./collections/compose.yaml stop",
             "group": "test",
         },
         {
