@@ -63,7 +63,7 @@ public final class Methods {
         Message<Object> result = null;
         log.debug("Generate kafka message: '{}' to send at topic: '{}'", payload, topic);
         result = MessageBuilder.withPayload(payload).setHeader(KafkaHeaders.TOPIC, topic).build();
-        log.debug("Kafka Message generated: '{}'", result);
+        log.debug("Kafka Message generated: '{}'", result.getPayload());
         return result;
     }
 
