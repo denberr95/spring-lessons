@@ -186,6 +186,8 @@ services:
     - MP_DATABASE=/data/mailpit.db
     - MP_SMTP_AUTH_ACCEPT_ANY=1
     - MP_SMTP_AUTH_ALLOW_INSECURE=1
+    volumes:
+    - ./mailpit/data:/data
     ports:
     - "8025:8025" # serve web ui
     - "1025:1025" # serve smtp server
