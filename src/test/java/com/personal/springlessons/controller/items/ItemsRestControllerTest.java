@@ -155,8 +155,8 @@ class ItemsRestControllerTest {
     @AfterEach
     void tearDown() {
         this.cleanupData();
-        this.cleanupOrders();
         this.cleanupItems();
+        this.cleanupOrders();
     }
 
     @Test
