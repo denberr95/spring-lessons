@@ -6,23 +6,21 @@
     "configurations": [
         {
             "type": "java",
-            "name": "Spring Lessons Linux",
+            "name": "Run Spring Lessons",
             "request": "launch",
             "mainClass": "com.personal.springlessons.SpringLessonsApplication",
             "projectName": "spring-lessons",
-            "vmArgs": "-Dspring.profiles.active=default,linux",
             "preLaunchTask": "start-podman-env",
-            "postDebugTask": "stop-podman-env"
+            "postDebugTask": "stop-podman-env",
+            "linux": {
+                "vmArgs": "-Dspring.profiles.active=default,linux",
+            },
+            "osx": {
+                "vmArgs": "-Dspring.profiles.active=default,linux",
+            },
+            "windows": {
+                "vmArgs": "-Dspring.profiles.active=default,windows",
+            }
         },
-        {
-            "type": "java",
-            "name": "Spring Lessons Windows",
-            "request": "launch",
-            "mainClass": "com.personal.springlessons.SpringLessonsApplication",
-            "projectName": "spring-lessons",
-            "vmArgs": "-Dspring.profiles.active=default,windows",
-            "preLaunchTask": "start-podman-env",
-            "postDebugTask": "stop-podman-env"
-        }
     ]
 }

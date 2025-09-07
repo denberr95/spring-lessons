@@ -117,27 +117,18 @@
             "label": "mvn-clean",
             "type": "shell",
             "command": "mvn clean --file pom.xml --settings settings.xml",
-            "windows": {
-                "command": "mvn clean --file pom.xml --settings settings.xml",
-            },
             "group": "build",
         },
         {
             "label": "mvn-compile",
             "type": "shell",
             "command": "mvn compile --file pom.xml --settings settings.xml",
-            "windows": {
-                "command": "mvn compile --file pom.xml --settings settings.xml",
-            },
             "group": "build",
         },
         {
             "label": "mvn-generate-sources",
             "type": "shell",
             "command": "mvn generate-sources --file pom.xml --settings settings.xml",
-            "windows": {
-                "command": "mvn generate-sources --file pom.xml --settings settings.xml",
-            },
             "group": "build",
         },
         {
