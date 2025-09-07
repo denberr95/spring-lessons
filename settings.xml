@@ -46,7 +46,7 @@
                         <updatePolicy>always</updatePolicy>
                     </releases>
                 </repository>
-                <repository>
+                <!-- <repository>
                     <id>red-hat-enterprise</id>
                     <url>https://maven.repository.redhat.com/ga/</url>
                     <layout>default</layout>
@@ -58,8 +58,8 @@
                         <enabled>true</enabled>
                         <updatePolicy>always</updatePolicy>
                     </releases>
-                </repository>
-                <repository>
+                </repository> -->
+                <!-- <repository>
                     <id>jboss-public</id>
                     <url>https://repository.jboss.org/nexus/content/groups/public/</url>
                     <layout>default</layout>
@@ -71,10 +71,10 @@
                         <enabled>true</enabled>
                         <updatePolicy>always</updatePolicy>
                     </releases>
-                </repository>
+                </repository> -->
             </repositories>
             <pluginRepositories>
-                <pluginRepository>
+                <!-- <pluginRepository>
                     <id>jboss-public</id>
                     <url>https://repository.jboss.org/nexus/content/groups/public/</url>
                     <layout>default</layout>
@@ -86,8 +86,8 @@
                         <enabled>true</enabled>
                         <updatePolicy>always</updatePolicy>
                     </releases>
-                </pluginRepository>
-                <pluginRepository>
+                </pluginRepository> -->
+                <!-- <pluginRepository>
                     <id>red-hat-enterprise</id>
                     <url>https://maven.repository.redhat.com/ga/</url>
                     <layout>default</layout>
@@ -99,7 +99,7 @@
                         <enabled>true</enabled>
                         <updatePolicy>always</updatePolicy>
                     </releases>
-                </pluginRepository>
+                </pluginRepository> -->
                 <pluginRepository>
                     <id>spring-snapshots</id>
                     <url>https://repo.spring.io/snapshot</url>
