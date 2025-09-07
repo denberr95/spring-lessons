@@ -29,35 +29,40 @@ public class HttpClientInterceptor implements ClientHttpRequestInterceptor {
     }
 
     private void logRequest(HttpRequest request, byte[] body) {
-        log.info("--- HTTP Client Request ---");
-        log.info("URI: '{}'", request.getURI());
-        log.info("Method: '{}'", request.getMethod());
-        log.info("Headers: '{}'", request.getHeaders());
+        if (log.isInfoEnabled()) {
+            log.info("--- HTTP Client Request ---");
+            log.info("URI: '{}'", request.getURI());
+            log.info("Method: '{}'", request.getMethod());
+            log.info("Headers: '{}'", request.getHeaders());
 
-        if (this.isMultipartData(request.getHeaders())) {
-            this.logMultipartDetails(request.getHeaders());
+            if (this.isMultipartData(request.getHeaders())) {
+                this.logMultipartDetails(request.getHeaders());
+            }
+            if (body.length > 0) {
+                log.info("Body: '{}'", new String(body, StandardCharsets.UTF_8)
+                        .replaceAll(Constants.S_REGEX_ANY_SPACE, Constants.S_EMPTY));
+            }
+            log.info("--- HTTP Client Request ---");
         }
-        if (body.length > 0) {
-            log.info("Body: '{}'", new String(body, StandardCharsets.UTF_8)
-                    .replaceAll(Constants.S_REGEX_ANY_SPACE, Constants.S_WHITESPACE));
-        }
-        log.info("--- HTTP Client Request ---");
+
     }
 
     private void logResponse(ClientHttpResponse response) throws IOException {
-        log.info("--- HTTP Client Response ---");
-        log.info("Status Code: '{}'", response.getStatusCode());
-        log.info("Headers: '{}'", response.getHeaders());
+        if (log.isInfoEnabled()) {
+            log.info("--- HTTP Client Response ---");
+            log.info("Status Code: '{}'", response.getStatusCode());
+            log.info("Headers: '{}'", response.getHeaders());
 
-        if (this.isMultipartData(response.getHeaders())) {
-            this.logMultipartDetails(response.getHeaders());
+            if (this.isMultipartData(response.getHeaders())) {
+                this.logMultipartDetails(response.getHeaders());
+            }
+            if (response.getBody().readAllBytes().length > 0) {
+                log.info("Body: '{}'",
+                        StreamUtils.copyToString(response.getBody(), StandardCharsets.UTF_8)
+                                .replaceAll(Constants.S_REGEX_ANY_SPACE, Constants.S_EMPTY));
+            }
+            log.info("--- HTTP Client Response ---");
         }
-        if (response.getBody().readAllBytes().length > 0) {
-            log.info("Body: '{}'",
-                    StreamUtils.copyToString(response.getBody(), StandardCharsets.UTF_8)
-                            .replaceAll(Constants.S_REGEX_ANY_SPACE, Constants.S_WHITESPACE));
-        }
-        log.info("--- HTTP Client Response ---");
     }
 
     private boolean isMultipartData(HttpHeaders headers) {

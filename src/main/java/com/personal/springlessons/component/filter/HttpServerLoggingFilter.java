@@ -3,7 +3,10 @@ package com.personal.springlessons.component.filter;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.function.UnaryOperator;
+import java.util.stream.Collectors;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
@@ -44,33 +47,39 @@ public class HttpServerLoggingFilter extends OncePerRequestFilter {
 
     private void logRequest(ContentCachingRequestWrapper request)
             throws ServletException, IOException {
-        log.info("--- HTTP Server Request ---");
-        log.info("URI: '{}'", request.getRequestURI());
-        log.info("Method: '{}'", request.getMethod());
-        log.info("Headers: {}", this.getHeadersAsString(Collections.list(request.getHeaderNames()),
-                request::getHeader));
-        if (this.isMultipart(request.getContentType())) {
-            this.logMultipartFiles(request);
+        if (log.isInfoEnabled()) {
+            log.info("--- HTTP Server Request ---");
+            log.info("URI: '{}'", request.getRequestURI());
+            log.info("Method: '{}'", request.getMethod());
+            log.info("Headers: {}", this.getHeadersAsString(
+                    Collections.list(request.getHeaderNames()), request::getHeader));
+            if (this.isMultipart(request.getContentType())) {
+                this.logMultipartFiles(request);
+            }
+            if (request.getContentAsByteArray().length > 0) {
+                log.info("Body: '{}'", new String(request.getContentAsByteArray()));
+            }
+            log.info("--- HTTP Server Request ---");
         }
-        if (request.getContentAsByteArray().length > 0) {
-            log.info("Body: '{}'", new String(request.getContentAsByteArray()));
-        }
-        log.info("--- HTTP Server Request ---");
+
     }
 
     private void logResponse(ContentCachingResponseWrapper response) throws IOException {
-        log.info("--- HTTP Server Response ---");
-        log.info("Status Code: '{}'", response.getStatus());
-        log.info("Headers: {}",
-                this.getHeadersAsString(response.getHeaderNames(), response::getHeader));
-        if (this.downloadedFile(response)) {
-            this.logDownloadFile(response);
+        if (log.isInfoEnabled()) {
+            log.info("--- HTTP Server Response ---");
+            log.info("Status Code: '{}'", response.getStatus());
+            log.info("Headers: {}",
+                    this.getHeadersAsString(response.getHeaderNames(), response::getHeader));
+            if (this.downloadedFile(response)) {
+                this.logDownloadFile(response);
+            }
+            if (response.getContentAsByteArray().length > 0) {
+                log.info("Body: '{}'", new String(response.getContentAsByteArray()));
+            }
+            response.copyBodyToResponse();
+            log.info("--- HTTP Server Response ---");
         }
-        if (response.getContentAsByteArray().length > 0) {
-            log.info("Body: '{}'", new String(response.getContentAsByteArray()));
-        }
-        response.copyBodyToResponse();
-        log.info("--- HTTP Server Response ---");
+
     }
 
     private boolean isMultipart(String contentType) {
@@ -78,11 +87,8 @@ public class HttpServerLoggingFilter extends OncePerRequestFilter {
     }
 
     private boolean downloadedFile(ContentCachingResponseWrapper response) {
-        boolean result = false;
-        if (response.getHeader(HttpHeaders.CONTENT_DISPOSITION) != null) {
-            result = response.getHeader(HttpHeaders.CONTENT_DISPOSITION).contains("attachment");
-        }
-        return result;
+        return Optional.ofNullable(response.getHeader(HttpHeaders.CONTENT_DISPOSITION))
+                .map(h -> h.contains("attachment")).orElse(false);
     }
 
     private void logMultipartFiles(HttpServletRequest request)
@@ -106,15 +112,10 @@ public class HttpServerLoggingFilter extends OncePerRequestFilter {
 
     private String getHeadersAsString(Collection<String> headerNames,
             UnaryOperator<String> headerValueResolver) {
-        StringBuilder headersBuilder = new StringBuilder();
-        for (String headerName : headerNames) {
-            String headerValue = headerValueResolver.apply(headerName);
-            headersBuilder.append(String.format("'%s' = '%s', ", headerName, headerValue));
-        }
-        if (!headersBuilder.isEmpty()) {
-            headersBuilder.setLength(headersBuilder.length() - 2);
-        }
-        return headersBuilder.toString();
+        return headerNames.stream().map(headerName -> {
+            String headerValue = Objects.toString(headerValueResolver.apply(headerName), "");
+            return String.format("'%s' = '%s'", headerName, headerValue);
+        }).collect(Collectors.joining(", "));
     }
 
     private ContentCachingRequestWrapper requestWrapper(ServletRequest request) {

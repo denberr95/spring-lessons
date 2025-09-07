@@ -55,7 +55,6 @@ public final class Constants {
     public static final String S_DOT = ".";
     public static final String S_DOUBLE_QUOTE = "\"";
     public static final String S_REGEX_ANY_SPACE = "\\s+";
-    public static final String S_WHITESPACE = " ";
     public static final String S_CSV = "csv";
     public static final char C_SEMICOLON = ';';
     public static final char C_UNDERSCORE = '_';
