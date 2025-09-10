@@ -5,7 +5,7 @@ set -euo pipefail
 # Logging functions
 # =============================================================================
 log_info() {
-    echo "$(date '+%Y-%m-%d %H:%M:%S') - [INFO] - $*";
+    echo "$(date '+%Y-%m-%d %H:%M:%S') - [INFO] - $*"
 }
 
 log_warn() {
@@ -13,7 +13,7 @@ log_warn() {
 }
 
 log_error() {
-    echo "$(date '+%Y-%m-%d %H:%M:%S') - [ERROR] - $*" >&2;
+    echo "$(date '+%Y-%m-%d %H:%M:%S') - [ERROR] - $*"
 }
 
 # =============================================================================
@@ -41,15 +41,17 @@ JAVA_OPTS="-server \
 # Import SSL certificates
 # =============================================================================
 import_ssl_certificates() {
+
+    log_info "IMPORT_SSL_CERTIFICATE: $IMPORT_SSL_CERTIFICATE"
+    log_info "REMOTE_SERVICES: $REMOTE_SERVICES"
+
     if [ "$IMPORT_SSL_CERTIFICATE" -ne 1 ]; then
         log_info "IMPORT_SSL_CERTIFICATE is disabled. Skipping SSL import."
         return 0
     fi
 
-    log_info "IMPORT_SSL_CERTIFICATE is enabled"
-
     if [ -z "${REMOTE_SERVICES:-}" ]; then
-        log_warn "REMOTE_SERVICES is not configured but required when IMPORT_SSL_CERTIFICATE=1. Skipping SSL import."
+        log_warn "REMOTE_SERVICES is not configured but IMPORT_SSL_CERTIFICATE=1. Skipping SSL import."
         return 0
     fi
 
