@@ -121,9 +121,15 @@ public class OrderItemsEntity {
     }
 
     @Override
+    public String toString() {
+        return "OrderItemsEntity [id=" + this.id + ", createdAt=" + this.createdAt + ", quantity="
+                + this.quantity + ", status=" + this.status + ", channel=" + this.channel
+                + ", items=" + this.items + "]";
+    }
+
+    @Override
     public int hashCode() {
-        return Objects.hash(this.id, this.createdAt, this.quantity, this.status, this.channel,
-                this.items);
+        return Objects.hash(this.id);
     }
 
     @Override
@@ -135,15 +141,6 @@ public class OrderItemsEntity {
         if (this.getClass() != obj.getClass())
             return false;
         OrderItemsEntity other = (OrderItemsEntity) obj;
-        return Objects.equals(this.id, other.id) && Objects.equals(this.createdAt, other.createdAt)
-                && Objects.equals(this.quantity, other.quantity) && this.status == other.status
-                && this.channel == other.channel && Objects.equals(this.items, other.items);
-    }
-
-    @Override
-    public String toString() {
-        return "OrderItemsEntity [id=" + this.id + ", createdAt=" + this.createdAt + ", quantity="
-                + this.quantity + ", status=" + this.status + ", channel=" + this.channel
-                + ", items=" + this.items + "]";
+        return Objects.equals(this.id, other.id);
     }
 }

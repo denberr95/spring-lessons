@@ -98,15 +98,7 @@ public final class Methods {
     public static boolean isValidFileType(String fileName, List<String> fileTypes) {
         log.debug("Check if file: '{}' is valid respect to available file types: '{}'", fileName,
                 fileTypes);
-        boolean result = false;
-        for (String fileType : fileTypes) {
-            if (fileName.endsWith(fileType)) {
-                result = true;
-                break;
-            }
-        }
-        log.debug("File is valid: '{}'", result);
-        return result;
+        return fileTypes.stream().anyMatch(fileName::endsWith);
     }
 
     private static Path createFilePath(String folder, String fileName) throws IOException {

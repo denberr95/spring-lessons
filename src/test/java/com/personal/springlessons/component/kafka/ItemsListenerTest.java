@@ -54,8 +54,8 @@ class ItemsListenerTest {
 
     @AfterEach
     void tearDown() {
-        this.itemsRepository.deleteAll();
-        this.orderItemsRepository.deleteAll();
+        this.orderItemsRepository.findAll()
+                .forEach(order -> this.orderItemsRepository.delete(order));
     }
 
     @Test
@@ -88,7 +88,7 @@ class ItemsListenerTest {
     }
 
     @Test
-    void givenExistingItem_whenDeleteItem_thenItemShouldBeDeleted() {
+    void givenExistingItems_whenDeleteItems_thenItemShouldBeDeleted() {
         // TODO
     }
 }

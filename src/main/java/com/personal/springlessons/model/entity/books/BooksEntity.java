@@ -146,9 +146,16 @@ public class BooksEntity {
     }
 
     @Override
+    public String toString() {
+        return "BooksEntity [id=" + this.id + ", createdAt=" + this.createdAt + ", updatedAt="
+                + this.updatedAt + ", name=" + this.name + ", publicationDate="
+                + this.publicationDate + ", numberOfPages=" + this.numberOfPages + ", channel="
+                + this.channel + ", genre=" + this.genre + "]";
+    }
+
+    @Override
     public int hashCode() {
-        return Objects.hash(this.id, this.createdAt, this.updatedAt, this.name,
-                this.publicationDate, this.numberOfPages, this.channel, this.genre);
+        return Objects.hash(this.id);
     }
 
     @Override
@@ -160,19 +167,6 @@ public class BooksEntity {
         if (this.getClass() != obj.getClass())
             return false;
         BooksEntity other = (BooksEntity) obj;
-        return Objects.equals(this.id, other.id) && Objects.equals(this.createdAt, other.createdAt)
-                && Objects.equals(this.updatedAt, other.updatedAt)
-                && Objects.equals(this.name, other.name)
-                && Objects.equals(this.publicationDate, other.publicationDate)
-                && Objects.equals(this.numberOfPages, other.numberOfPages)
-                && this.channel == other.channel && this.genre == other.genre;
-    }
-
-    @Override
-    public String toString() {
-        return "BooksEntity [id=" + this.id + ", createdAt=" + this.createdAt + ", updatedAt="
-                + this.updatedAt + ", name=" + this.name + ", publicationDate="
-                + this.publicationDate + ", numberOfPages=" + this.numberOfPages + ", channel="
-                + this.channel + ", genre=" + this.genre + "]";
+        return Objects.equals(this.id, other.id);
     }
 }

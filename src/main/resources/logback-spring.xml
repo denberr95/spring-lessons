@@ -6,7 +6,7 @@
     <variable name="LOG_LEVEL_ROOT" value="${LOG_LEVEL_ROOT:-ERROR}" />
     <variable name="LOG_LEVEL_COM_PERSONAL_SPRINGLESSONS" value="${LOG_LEVEL_COM_PERSONAL_SPRINGLESSONS:-TRACE}" />
     <variable name="LOG_LEVEL_ORG_SPRINGFRAMEWORK" value="${LOG_LEVEL_ORG_SPRINGFRAMEWORK:-INFO}" />
-    <variable name="LOG_LEVEL_IO_UNDERTOW" value="${LOG_LEVEL_IO_UNDERTOW:-INFO}" />
+    <variable name="LOG_LEVEL_ORG_ECLIPSE" value="${LOG_LEVEL_ORG_ECLIPSE:-INFO}" />
     <variable name="LOG_LEVEL_IO_MICROMETER" value="${LOG_LEVEL_IO_MICROMETER:-INFO}" />
     <variable name="LOG_LEVEL_IO_OPENTELEMETRY" value="${LOG_LEVEL_IO_OPENTELEMETRY:-INFO}" />
     <variable name="LOG_LEVEL_ORG_FLYWAYDB" value="${LOG_LEVEL_ORG_FLYWAYDB:-INFO}" />
@@ -62,7 +62,7 @@
 
     <logger name="com.personal.springlessons" level="${LOG_LEVEL_COM_PERSONAL_SPRINGLESSONS}" />
     <logger name="org.springframework" level="${LOG_LEVEL_ORG_SPRINGFRAMEWORK}" />
-    <logger name="io.undertow" level="${LOG_LEVEL_IO_UNDERTOW}" />
+    <logger name="org.eclipse" level="${LOG_LEVEL_ORG_ECLIPSE}" />
     <logger name="io.micrometer" level="${LOG_LEVEL_IO_MICROMETER}" />
     <logger name="io.opentelemetry" level="${LOG_LEVEL_IO_OPENTELEMETRY}" />
     <logger name="org.flywaydb" level="${LOG_LEVEL_ORG_FLYWAYDB}" />

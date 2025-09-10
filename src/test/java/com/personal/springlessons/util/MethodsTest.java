@@ -7,31 +7,33 @@ import static org.mockito.Mockito.when;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Stream;
 import com.personal.springlessons.exception.InvalidUUIDException;
 import com.personal.springlessons.model.lov.DomainCategory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.boot.info.GitProperties;
 
 class MethodsTest {
 
-    static List<Object[]> provideFileNameAndTypes() {
-        return Arrays
-                .asList(new Object[][] {{"document.pdf", Arrays.asList("pdf", "txt", "docx"), true},
-                        {"image.bmp", Arrays.asList("jpg", "png", "gif"), false},});
+    static Stream<Arguments> methodSourceFileNameData() {
+        String formattedDate =
+                Methods.dateTimeFormatter(Constants.S_DATE_TIME_FORMAT_1, LocalDateTime.now());
+        return Stream.of(Arguments.of("report", ".pdf", true, "report_" + formattedDate + ".pdf"),
+                Arguments.of("image", ".png", false, "image.png"));
     }
 
-    static List<Object[]> provideFileNameData() {
-        return Arrays.asList(new Object[][] {
-                {"report", ".pdf", true,
-                        "report_" + Methods.dateTimeFormatter(Constants.S_DATE_TIME_FORMAT_1,
-                                LocalDateTime.now()) + ".pdf"},
-                {"image", ".png", false, "image.png"},});
+    static Stream<Arguments> methodSourceCheckFileType() {
+        return Stream.of(Arguments.of("document.pdf", List.of(".pdf", ".txt"), true),
+                Arguments.of("report.txt", List.of(".pdf", ".txt"), true),
+                Arguments.of("image.jpg", List.of(".pdf", ".txt"), false),
+                Arguments.of("archive.zip", List.of(".zip"), true),
+                Arguments.of("presentation.ppt", List.of(), false));
     }
 
     @Test
@@ -91,17 +93,18 @@ class MethodsTest {
     }
 
     @ParameterizedTest
-    @MethodSource("provideFileNameAndTypes")
-    void givenFileTypes_whenIsFileTypeValid_thenCheck(String fileName, List<String> extensions,
-            boolean expectedResult) {
-        assertEquals(expectedResult, Methods.isValidFileType(fileName, extensions));
+    @MethodSource("methodSourceFileNameData")
+    void givenFileMetadata_whenGenerateFileName_thenReturnFileName(String name,
+            String fileExtension, boolean useTimestamp, String expectedResult) {
+        String result = Methods.generateFileName(name, fileExtension, useTimestamp);
+        assertEquals(expectedResult, result);
     }
 
     @ParameterizedTest
-    @MethodSource("provideFileNameData")
-    void testGenerateFileName(String name, String fileExtension, boolean useTimestamp,
-            String expectedResult) {
-        String result = Methods.generateFileName(name, fileExtension, useTimestamp);
-        assertEquals(expectedResult, result);
+    @MethodSource("methodSourceCheckFileType")
+    void givenFileName_whenCheckIsValid_thenReturnIsValid(String fiileName, List<String> fileTypes,
+            boolean expectedResult) {
+        boolean actual = Methods.isValidFileType(fiileName, fileTypes);
+        assertEquals(expectedResult, actual);
     }
 }

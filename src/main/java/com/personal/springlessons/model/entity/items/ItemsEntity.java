@@ -56,7 +56,7 @@ public class ItemsEntity {
     private String barcode;
 
     @ManyToOne
-    @JoinColumn(name = "fk_order_items_id", referencedColumnName = "id")
+    @JoinColumn(name = "fk_order_items_id", referencedColumnName = "id", nullable = false)
     private OrderItemsEntity orderItemsEntity;
 
     public ItemsEntity(UUID id, OffsetDateTime createdAt, OffsetDateTime updatedAt,
@@ -134,8 +134,7 @@ public class ItemsEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.id, this.createdAt, this.updatedAt, this.price, this.name,
-                this.barcode, this.orderItemsEntity);
+        return Objects.hash(this.id);
     }
 
     @Override
@@ -147,11 +146,7 @@ public class ItemsEntity {
         if (this.getClass() != obj.getClass())
             return false;
         ItemsEntity other = (ItemsEntity) obj;
-        return Objects.equals(this.id, other.id) && Objects.equals(this.createdAt, other.createdAt)
-                && Objects.equals(this.updatedAt, other.updatedAt)
-                && Objects.equals(this.price, other.price) && Objects.equals(this.name, other.name)
-                && Objects.equals(this.barcode, other.barcode)
-                && Objects.equals(this.orderItemsEntity, other.orderItemsEntity);
+        return Objects.equals(this.id, other.id);
     }
 
     @Override
