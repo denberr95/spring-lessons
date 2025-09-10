@@ -1,7 +1,14 @@
-#! /bin/sh
+#!/bin/sh
+set -euo pipefail
 
-## Constants
-export JAVA_OPTS="-server \
+log() { 
+    echo "$(date '+%Y-%m-%d %H:%M:%S') - [INFO] - $*"; 
+}
+error() { 
+    echo "$(date '+%Y-%m-%d %H:%M:%S') - [ERROR] - $*" >&2; 
+}
+
+JAVA_OPTS="-server \
     -XX:+UseStringDeduplication \
     -XX:+OptimizeStringConcat \
     -XX:+UseContainerSupport \
@@ -12,21 +19,36 @@ export JAVA_OPTS="-server \
     -XX:+UnlockExperimentalVMOptions \
     -XshowSettings:vm"
 
-# Function for JVM mode
-run_jvm() {
-    echo "Execute JVM mode..."
-    exec java $JAVA_OPTS $JAVA_OTHER_OPTIONS -jar app.jar
+: "${JAVA_OTHER_OPTIONS:=}"
+: "${DEBUG_PORT:=5005}"
+
+java_cmd() {
+    CMD="java $JAVA_OPTS"
+    [ -n "$JAVA_OTHER_OPTIONS" ] && CMD="$CMD $JAVA_OTHER_OPTIONS"
+    echo "$CMD"
 }
 
-# Default mode if not provided
+run_jvm() {
+    log "MODE=jvm - Starting application..."
+    exec $(java_cmd) -jar app.jar
+}
+
+run_debug() {
+    log "MODE=debug - Starting application on port $DEBUG_PORT..."
+    exec $(java_cmd) -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:$DEBUG_PORT -jar app.jar
+}
+
 MODE=${1:-jvm}
 
 case "$MODE" in
-    jvm)
+    jvm)   
         run_jvm
         ;;
+    debug)
+        run_debug
+        ;;
     *)
-        echo "Error: Invalid value, must be: 'jvm'"
+        error "Invalid mode '$MODE'. Allowed values: jvm, debug"
         exit 1
         ;;
 esac
