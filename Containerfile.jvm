@@ -1,4 +1,7 @@
-FROM bellsoft/liberica-runtime-container:jre-21-slim-glibc AS runtime
+FROM bellsoft/liberica-openjre-alpine:21 AS runtime
+RUN apk add --no-cache \
+    curl \
+    openssl
 WORKDIR /app
 COPY bin/app.jar app.jar
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
