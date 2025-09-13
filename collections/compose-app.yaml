@@ -11,7 +11,7 @@ services:
     - DEBUG_PORT=5500
     - JAVA_OTHER_OPTIONS=-Dspring.profiles.active=runtime
     - IMPORT_SSL_CERTIFICATE=1
-    - REMOTE_SERVICES=google.com:443,webassessor.com:443
+    - REMOTE_SERVICES=google.com:443
     - TRUSTORE_PASSWORD=mypassword
     - RUN_MODE=debug
     - SPRING_APPLICATION_NAME=spring-lessons
