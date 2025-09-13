@@ -57,9 +57,9 @@
             "type": "shell",
             "command": "rm -rf bin logs",
             "windows": {
-                "command": "rmdir /s /q bin logs"
+                "command": "rmdir /s /q bin && rmdir /s /q logs"
             },
-            "group": "none",
+            "group": "none"
         },
         {
             "label": "shell-create-folders",
@@ -108,6 +108,23 @@
             "group": "test",
         },
         {
+            "label": "podman-compose-app-up",
+            "type": "shell",
+            "command": "podman-compose --project spring-lessons --file ./collections/compose.yaml --file ./collections/compose-app.yaml up --force-recreate --remove-orphans --detach",
+            "group": "test",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "mvn-clean",
+                "mvn-package-skip-tests"
+            ]
+        },
+        {
+            "label": "podman-compose-app-stop",
+            "type": "shell",
+            "command": "podman-compose --project spring-lessons --file ./collections/compose.yaml --file ./collections/compose-app.yaml stop",
+            "group": "test",
+        },
+        {
             "label": "mvn-test",
             "type": "shell",
             "command": "mvn test --file pom.xml --settings settings.xml",
@@ -139,6 +156,33 @@
                 "command": "mvn package --file pom.xml --settings settings.xml -Dspring.profiles.active=default,windows"
             },
             "group": "build",
+        },
+        {
+            "label": "mvn-package-skip-tests",
+            "type": "shell",
+            "command": "mvn",
+            "args": [
+                "package",
+                "--file",
+                "pom.xml",
+                "--settings",
+                "settings.xml",
+                "-Dspring.profiles.active=default,linux",
+                "-DskipTests=true"
+            ],
+            "windows": {
+                "command": "mvn",
+                "args": [
+                    "package",
+                    "--file",
+                    "pom.xml",
+                    "--settings",
+                    "settings.xml",
+                    "-Dspring.profiles.active=default,windows",
+                    "-DskipTests=true"
+                ]
+            },
+            "group": "build"
         },
         {
             "label": "mvn-dependencies-tree",

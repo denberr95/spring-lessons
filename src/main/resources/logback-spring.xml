@@ -48,6 +48,19 @@
         </encoder>
     </appender>
 
+    <appender name="FILE-ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>./logs/application.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>./logs/application-%d{yyyy-MM-dd}.log.zip</fileNamePattern>
+            <maxHistory>5</maxHistory>
+            <totalSizeCap>5GB</totalSizeCap>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>[%date] - [%thread] - [%logger] - [%level] - [%mdc] - [%message]%n%throwable</pattern>
+        </encoder>
+    </appender>
+
     <appender name="OTEL" class="io.opentelemetry.instrumentation.logback.appender.v1_0.OpenTelemetryAppender">
         <captureExperimentalAttributes>true</captureExperimentalAttributes>
         <captureCodeAttributes>false</captureCodeAttributes>
@@ -80,7 +93,7 @@
         <root level="${LOG_LEVEL_ROOT}">
             <appender-ref ref="CONSOLE-JSON" />
             <appender-ref ref="OTEL" />
-            <appender-ref ref="FILE" />
+            <appender-ref ref="FILE-ROLLING" />
         </root>
     </springProfile>
 
