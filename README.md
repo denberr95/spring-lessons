@@ -40,7 +40,7 @@
 | Prometheus | <http://localhost:9090> |
 | Grafana | <http://localhost:3000/grafana> |
 | Database Spring | jdbc:postgresql://localhost:5432/spring |
-| Kafka Broker | localhost:9092 |
+| Kafka Broker | localhost:29092 |
 | Keycloak | <http://localhost:8080> |
 | Spring Lessons APIs | <http://localhost:10000> |
 | Spring Lessons Actuator | <http://localhost:10001> |
