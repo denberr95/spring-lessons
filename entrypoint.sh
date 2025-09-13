@@ -2,6 +2,29 @@
 set -euo pipefail
 
 # =============================================================================
+# Global Variables
+# =============================================================================
+: "${JAVA_OTHER_OPTIONS:=}"
+: "${DEBUG_PORT:=5500}"
+: "${IMPORT_SSL_CERTIFICATE:=0}"
+: "${TRUSTORE_PASSWORD:=changeit}"
+: "${RUN_MODE:=jvm}"
+
+TRUSTSTORE_FILE="/app/truststore.jks"
+JAVA_OPTS="-server \
+    -XX:+UseStringDeduplication \
+    -XX:+OptimizeStringConcat \
+    -XX:+UseContainerSupport \
+    -XX:InitialRAMPercentage=25.0 \
+    -XX:MaxRAMPercentage=50.0 \
+    -XX:+PrintFlagsFinal \
+    -XX:+UnlockDiagnosticVMOptions \
+    -XX:+UnlockExperimentalVMOptions \
+    -XshowSettings:vm \
+    -Djavax.net.ssl.trustStore=$TRUSTSTORE_FILE \
+    -Djavax.net.ssl.trustStorePassword=$TRUSTORE_PASSWORD"
+
+# =============================================================================
 # Logging functions
 # =============================================================================
 log_info() {
@@ -17,36 +40,33 @@ log_error() {
 }
 
 # =============================================================================
-# JVM options
+# Java functions
 # =============================================================================
-JAVA_OPTS="-server \
-    -XX:+UseStringDeduplication \
-    -XX:+OptimizeStringConcat \
-    -XX:+UseContainerSupport \
-    -XX:InitialRAMPercentage=25.0 \
-    -XX:MaxRAMPercentage=50.0 \
-    -XX:+PrintFlagsFinal \
-    -XX:+UnlockDiagnosticVMOptions \
-    -XX:+UnlockExperimentalVMOptions \
-    -XshowSettings:vm"
+build_java_cmd() {
+    JAVA_CMD="java $JAVA_OPTS"
+    [ -n "$JAVA_OTHER_OPTIONS" ] && JAVA_CMD="$JAVA_CMD $JAVA_OTHER_OPTIONS"
+    log_info "Constructed JAVA_CMD: $JAVA_CMD"
+}
 
-# =============================================================================
-# Global Variables
-# =============================================================================
-: "${JAVA_OTHER_OPTIONS:=}"
-: "${DEBUG_PORT:=5500}"
-: "${IMPORT_SSL_CERTIFICATE:=0}"
-: "${TRUSTORE_PASSWORD:=changeit}"
+verify_java_home() {
+    if [ -z "${JAVA_HOME:-}" ]; then
+        log_error "JAVA_HOME is not set"
+        exit 1
+    fi
+}
 
-TRUSTSTORE_FILE="/app/truststore.jks"
+print_java_version() {
+    log_info "Java version in use"
+    java -version
+}
 
 # =============================================================================
 # Import SSL certificates
 # =============================================================================
 import_ssl_certificates() {
 
-    log_info "IMPORT_SSL_CERTIFICATE: $IMPORT_SSL_CERTIFICATE"
-    log_info "REMOTE_SERVICES: $REMOTE_SERVICES"
+    log_info "Configured IMPORT_SSL_CERTIFICATE: $IMPORT_SSL_CERTIFICATE"
+    log_info "Configured REMOTE_SERVICES: $REMOTE_SERVICES"
 
     if [ "$IMPORT_SSL_CERTIFICATE" -ne 1 ]; then
         log_info "IMPORT_SSL_CERTIFICATE is disabled."
@@ -71,7 +91,6 @@ import_ssl_certificates() {
     keytool -delete -alias dummy -keystore "$TRUSTSTORE_FILE" \
         -storepass "$TRUSTORE_PASSWORD" >/dev/null 2>&1 || true
 
-    # Validate REMOTE_SERVICES format: host:port,host:port,...
     if ! echo "$REMOTE_SERVICES" | grep -Eq '^[^:]+:[0-9]+(,[^:]+:[0-9]+)*$'; then
         log_warn "REMOTE_SERVICES format is invalid. Must be: host:port,host:port..."
         return 1
@@ -108,26 +127,11 @@ import_ssl_certificates() {
 }
 
 # =============================================================================
-# Build Java command once
-# =============================================================================
-JAVA_CMD="java $JAVA_OPTS"
-JAVA_CMD="$JAVA_CMD -Djavax.net.ssl.trustStore=$TRUSTSTORE_FILE -Djavax.net.ssl.trustStorePassword=$TRUSTORE_PASSWORD"
-[ -n "$JAVA_OTHER_OPTIONS" ] && JAVA_CMD="$JAVA_CMD $JAVA_OTHER_OPTIONS"
-
-# =============================================================================
-# Run application
+# Run functions
 # =============================================================================
 run_app() {
-
-    log_info "Java version in use"
-    java -version
-
-    local mode="$1"
-    log_info "Selected mode: $mode"
-
-    import_ssl_certificates
-
-    case "$mode" in
+    log_info "Selected run mode: $RUN_MODE"
+    case "$RUN_MODE" in
         jvm)
             log_info "Starting application..."
             exec $JAVA_CMD -jar app.jar
@@ -137,17 +141,17 @@ run_app() {
             exec $JAVA_CMD -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:$DEBUG_PORT -jar app.jar
             ;;
         *)
-            log_error "Invalid mode '$mode'. Allowed values: jvm, debug"
+            log_error "Invalid RUN_MODE '$RUN_MODE'. Allowed values: jvm, debug"
             exit 1
             ;;
     esac
 }
 
-# Verify if JAVA_HOME is set
-if [ -z "${JAVA_HOME:-}" ]; then
-    log_error "JAVA_HOME is not set"
-    exit 1
-fi
-
-MODE=${1:-jvm}
-run_app "$MODE"
+# =============================================================================
+# Main program
+# =============================================================================
+verify_java_home
+print_java_version
+build_java_cmd
+import_ssl_certificates
+run_app
