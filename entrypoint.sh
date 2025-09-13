@@ -7,6 +7,7 @@ set -euo pipefail
 : "${JAVA_OTHER_OPTIONS:=}"
 : "${DEBUG_PORT:=5500}"
 : "${IMPORT_SSL_CERTIFICATE:=0}"
+: "${REMOTE_SERVICES:=}"
 : "${TRUSTORE_PASSWORD:=changeit}"
 : "${RUN_MODE:=jvm}"
 
@@ -23,6 +24,8 @@ JAVA_OPTS="-server \
     -XshowSettings:vm \
     -Djavax.net.ssl.trustStore=$TRUSTSTORE_FILE \
     -Djavax.net.ssl.trustStorePassword=$TRUSTORE_PASSWORD"
+JAVA_CMD="java $JAVA_OPTS"
+JAVA_DEBUG_OPTS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:$DEBUG_PORT"
 
 # =============================================================================
 # Logging functions
@@ -42,14 +45,8 @@ log_error() {
 # =============================================================================
 # Java functions
 # =============================================================================
-build_java_cmd() {
-    JAVA_CMD="java $JAVA_OPTS"
-    [ -n "$JAVA_OTHER_OPTIONS" ] && JAVA_CMD="$JAVA_CMD $JAVA_OTHER_OPTIONS"
-    log_info "Constructed JAVA_CMD: $JAVA_CMD"
-}
-
 verify_java_home() {
-    if [ -z "${JAVA_HOME:-}" ]; then
+    if [ -z "$JAVA_HOME" ]; then
         log_error "JAVA_HOME is not set"
         exit 1
     fi
@@ -60,42 +57,96 @@ print_java_version() {
     java -version
 }
 
+build_java_cmd() {
+    JAVA_CMD="java $JAVA_OPTS"
+    [ "$RUN_MODE" = "debug" ] && JAVA_CMD="$JAVA_CMD $JAVA_DEBUG_OPTS"
+    [ -n "$JAVA_OTHER_OPTIONS" ] && JAVA_CMD="$JAVA_CMD $JAVA_OTHER_OPTIONS"
+    log_info "Constructed JAVA_CMD: $JAVA_CMD"
+}
+
 # =============================================================================
 # Import SSL certificates
 # =============================================================================
-import_ssl_certificates() {
-
-    log_info "Configured IMPORT_SSL_CERTIFICATE: $IMPORT_SSL_CERTIFICATE"
-    log_info "Configured REMOTE_SERVICES: $REMOTE_SERVICES"
-
-    if [ "$IMPORT_SSL_CERTIFICATE" -ne 1 ]; then
-        log_info "IMPORT_SSL_CERTIFICATE is disabled."
-        return 0
+validate_remote_services() {
+    local services="$1"
+    if [ -z "$services" ]; then
+        log_warn "REMOTE_SERVICES is empty."
+        return 1
     fi
-
-    if [ -z "${REMOTE_SERVICES:-}" ]; then
-        log_warn "REMOTE_SERVICES is not configured but IMPORT_SSL_CERTIFICATE=1."
-        return 0
+    if ! echo "$services" | grep -Eq '^[^:]+:[0-9]+(,[^:]+:[0-9]+)*$'; then
+        log_warn "REMOTE_SERVICES format is invalid. Must be: host:port,host:port..."
+        return 1
     fi
+    return 0
+}
 
-    if [ -f "$TRUSTSTORE_FILE" ]; then
-        log_info "Deleting existing truststore at $TRUSTSTORE_FILE"
-        rm -f "$TRUSTSTORE_FILE"
+create_empty_truststore() {
+    log_info "Creating truststore at $TRUSTSTORE_FILE with default Java CAs"
+
+    local java_cacerts=""
+    for path in \
+        "$JAVA_HOME/lib/security/cacerts" \
+        "$JAVA_HOME/lib/security/jssecacerts" \
+        "$JAVA_HOME/jre/lib/security/cacerts" \
+        "$JAVA_HOME/jre/lib/security/jssecacerts"; do
+        if [ -f "$path" ]; then
+            java_cacerts="$path"
+            break
+        fi
+    done
+
+    if [ -n "$java_cacerts" ]; then
+        log_info "Using default Java truststore: $java_cacerts"
+        if ! keytool -importkeystore \
+            -srckeystore "$java_cacerts" \
+            -destkeystore "$TRUSTSTORE_FILE" \
+            -srcstorepass changeit \
+            -deststorepass "$TRUSTORE_PASSWORD" \
+            -noprompt >/dev/null 2>&1; then
+            log_warn "Failed to copy default Java CAs, creating empty truststore"
+            create_dummy_truststore
+        fi
+    else
+        log_warn "Default Java truststore not found, creating empty truststore"
+        create_dummy_truststore
     fi
+}
 
-    log_info "Creating new truststore at $TRUSTSTORE_FILE"
+create_dummy_truststore() {
     keytool -genkeypair -alias dummy -keystore "$TRUSTSTORE_FILE" \
         -storepass "$TRUSTORE_PASSWORD" -keypass "$TRUSTORE_PASSWORD" \
         -dname "CN=dummy, OU=dummy, O=dummy, L=dummy, S=dummy, C=US" \
         -keyalg RSA -keysize 2048 -validity 1 >/dev/null 2>&1 || true
     keytool -delete -alias dummy -keystore "$TRUSTSTORE_FILE" \
         -storepass "$TRUSTORE_PASSWORD" >/dev/null 2>&1 || true
+}
 
-    if ! echo "$REMOTE_SERVICES" | grep -Eq '^[^:]+:[0-9]+(,[^:]+:[0-9]+)*$'; then
-        log_warn "REMOTE_SERVICES format is invalid. Must be: host:port,host:port..."
-        return 1
+
+import_ssl_certificates() {
+    log_info "Configured IMPORT_SSL_CERTIFICATE: $IMPORT_SSL_CERTIFICATE"
+    log_info "Configured REMOTE_SERVICES: $REMOTE_SERVICES"
+
+    # Skip if import is disabled
+    if [ "$IMPORT_SSL_CERTIFICATE" -ne 1 ]; then
+        return 0
     fi
 
+    # Skip if REMOTE_SERVICES is empty or invalid
+    if ! validate_remote_services "$REMOTE_SERVICES"; then
+        log_warn "Skipping SSL import due to empty or invalid REMOTE_SERVICES."
+        return 0
+    fi
+
+    # Remove existing truststore
+    if [ -f "$TRUSTSTORE_FILE" ]; then
+        log_info "Deleting existing truststore at $TRUSTSTORE_FILE"
+        rm -f "$TRUSTSTORE_FILE"
+    fi
+
+    # Create truststore with default Java CAs
+    create_empty_truststore
+
+    # Import external certificates
     for service in $(echo "$REMOTE_SERVICES" | tr ',' ' '); do
         host=$(echo "$service" | cut -d':' -f1)
         port=$(echo "$service" | cut -d':' -f2)
@@ -109,15 +160,13 @@ import_ssl_certificates() {
             continue
         fi
 
-        log_info "Certificate saved to $cert_file"
-
-        log_info "Importing $cert_file into truststore..."
+        log_info "Importing certificate for $host into truststore..."
         if keytool -importcert -noprompt -trustcacerts \
             -alias "external_${host}" \
             -file "$cert_file" \
             -keystore "$TRUSTSTORE_FILE" \
             -storepass "$TRUSTORE_PASSWORD"; then
-            log_info "Certificate successfully imported for $host"
+            log_info "Successfully imported certificate for $host"
         else
             log_error "Failed to import certificate for $host"
         fi
@@ -125,6 +174,7 @@ import_ssl_certificates() {
         rm -f "$cert_file"
     done
 }
+
 
 # =============================================================================
 # Run functions
@@ -137,8 +187,8 @@ run_app() {
             exec $JAVA_CMD -jar app.jar
             ;;
         debug)
-            log_info "Starting application on debug port: $DEBUG_PORT..."
-            exec $JAVA_CMD -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:$DEBUG_PORT -jar app.jar
+            log_info "Starting application in debug mode on port $DEBUG_PORT..."
+            exec $JAVA_CMD -jar app.jar
             ;;
         *)
             log_error "Invalid RUN_MODE '$RUN_MODE'. Allowed values: jvm, debug"
