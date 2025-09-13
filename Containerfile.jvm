@@ -1,13 +1,25 @@
 FROM bellsoft/liberica-openjre-alpine:21 AS runtime
-RUN apk add --no-cache \
-    curl \
-    openssl
+
+# Install utilities, update binaries, create user, set permissions and clean up
+RUN apk add --no-cache curl openssl && \
+    apk upgrade --no-cache && \
+    addgroup -g 1000 appgroup && \
+    adduser -u 1000 -G appgroup -s /bin/sh -D appuser && \
+    rm -rf /var/cache/apk/* /tmp/* /var/tmp/*
+
+# Set working directory
 WORKDIR /app
+
+# Copy application and entrypoint
 COPY bin/app.jar app.jar
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN addgroup -g 1000 appgroup && \
-    adduser -u 1000 -G appgroup -s /bin/sh -D appuser
-RUN chmod +x /usr/local/bin/entrypoint.sh
-RUN chown appuser:appgroup --recursive /app
+
+# Set entrypoint permissions and ownership
+RUN chmod +x /usr/local/bin/entrypoint.sh && \
+    chown appuser:appgroup --recursive /app
+
+# Use non-root user
 USER appuser
+
+# Set application start entrypoint
 ENTRYPOINT ["entrypoint.sh"]
