@@ -30,3 +30,8 @@ Thumbs.db
 
 # Ignore Containerfile.jvm
 Containerfile.jvm
+
+# Ignore maven wrapper
+.mvn/
+mvnw
+mvnw.cmd
