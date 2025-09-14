@@ -1,4 +1,4 @@
-package com.personal.springlessons.exception;
+package com.personal.springlessons.exception.books;
 
 import java.util.List;
 

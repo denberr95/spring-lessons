@@ -15,10 +15,12 @@ import com.personal.springlessons.model.dto.response.DuplicatedBookResponseDTO;
 import com.personal.springlessons.model.dto.response.InvalidCSVContentResponseDTO;
 import com.personal.springlessons.model.dto.response.InvalidFileTypeResponseDTO;
 import com.personal.springlessons.model.dto.response.InvalidUUIDResponseDTO;
+import com.personal.springlessons.model.dto.wrapper.BooksWrapperDTO;
 import com.personal.springlessons.model.lov.Channel;
 import com.personal.springlessons.model.lov.DomainCategory;
 import com.personal.springlessons.model.lov.Genre;
-import com.personal.springlessons.service.BooksService;
+import com.personal.springlessons.service.books.BooksService;
+import com.personal.springlessons.util.Methods;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -137,8 +139,10 @@ class BooksRestControllerTest {
 
     @AfterEach
     void tearDown() {
-        this.bookService.getAll().forEach(x -> {
-            this.bookService.delete(x.id());
+        this.bookService.getAll().getBookDTOs().forEach(x -> {
+            BooksWrapperDTO wrapper = this.bookService.getById(x.id());
+            Long version = Methods.getEtag(wrapper.getHttpHeaders());
+            this.bookService.delete(x.id(), version);
         });
     }
 
@@ -264,7 +268,8 @@ class BooksRestControllerTest {
 
     @Test
     void givenExistingId_whenGetById_thenBookAreReturned() {
-        String url = String.format(this.resourceUrl, this.bookService.getAll().get(0).id());
+        String url = String.format(this.resourceUrl,
+                this.bookService.getAll().getBookDTOs().get(0).id());
         HttpEntity<HttpHeaders> httpEntity =
                 new HttpEntity<>(this.retrieveHttpHeaders(this.validToken));
 
@@ -371,7 +376,8 @@ class BooksRestControllerTest {
 
     @Test
     void givenExistingId_whenDelete_thenBookIsDeleted() {
-        String url = String.format(this.resourceUrl, this.bookService.getAll().get(0).id());
+        String url = String.format(this.resourceUrl,
+                this.bookService.getAll().getBookDTOs().get(0).id());
         HttpEntity<HttpHeaders> httpEntity =
                 new HttpEntity<>(this.retrieveHttpHeaders(this.validToken));
         ResponseEntity<Void> response =
@@ -399,7 +405,7 @@ class BooksRestControllerTest {
 
     @Test
     void givenExistingId_whenUpdate_thenBookIsUpdated() {
-        BookDTO bookOld = this.bookService.getAll().get(0);
+        BookDTO bookOld = this.bookService.getAll().getBookDTOs().get(0);
         String url = String.format(this.resourceUrl, bookOld.id());
         BookDTO bookRequest = new BookDTO(null, bookOld.name(), 10, LocalDate.now(), Genre.NA);
         HttpEntity<BookDTO> httpEntity =
@@ -434,7 +440,7 @@ class BooksRestControllerTest {
 
     @Test
     void givenExistingBook_whenUpdate_thenReturnDuplicatedBook() {
-        BookDTO bookOld = this.bookService.getAll().get(0);
+        BookDTO bookOld = this.bookService.getAll().getBookDTOs().get(0);
         String url = String.format(this.resourceUrl, bookOld.id());
         HttpEntity<BookDTO> httpEntity =
                 new HttpEntity<>(bookOld, this.retrieveHttpHeaders(this.validToken));
@@ -452,7 +458,7 @@ class BooksRestControllerTest {
 
     @Test
     void givenInvalidBookId_whenUpdate_thenReturnInvalidUUID() {
-        BookDTO bookOld = this.bookService.getAll().get(0);
+        BookDTO bookOld = this.bookService.getAll().getBookDTOs().get(0);
         String url = String.format(this.resourceUrl, "updateFakeId");
         HttpEntity<BookDTO> httpEntity =
                 new HttpEntity<>(bookOld, this.retrieveHttpHeaders(this.validToken));

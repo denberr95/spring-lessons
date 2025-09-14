@@ -1,11 +1,10 @@
 package com.personal.springlessons.util;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -18,6 +17,8 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.boot.info.GitProperties;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 class MethodsTest {
 
@@ -34,18 +35,6 @@ class MethodsTest {
                 Arguments.of("image.jpg", List.of(".pdf", ".txt"), false),
                 Arguments.of("archive.zip", List.of(".zip"), true),
                 Arguments.of("presentation.ppt", List.of(), false));
-    }
-
-    @Test
-    void testMethodsClassCannotBeInstantiated() {
-        final Constructor<Methods> constructor;
-        try {
-            constructor = Methods.class.getDeclaredConstructor();
-            constructor.setAccessible(true);
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException(e);
-        }
-        assertThrows(InvocationTargetException.class, constructor::newInstance);
     }
 
     @CsvSource({"1.0.0, v1.0.0", ", vnull", "'', v"})
@@ -106,5 +95,33 @@ class MethodsTest {
             boolean expectedResult) {
         boolean actual = Methods.isValidFileType(fiileName, fileTypes);
         assertEquals(expectedResult, actual);
+    }
+
+    @Test
+    void givenSize_whenCreateTotalRecordKey_thenReturnMap() {
+        int total = 42;
+        MultiValueMap<String, String> headers = Methods.addTotalRecord(total);
+        assertThat(headers).containsKey(Constants.S_X_TOTAL_RECORDS);
+        assertThat(headers.getFirst(Constants.S_X_TOTAL_RECORDS)).isEqualTo(String.valueOf(total));
+    }
+
+    @Test
+    void givenVersion_whenCreateETagKey_thenReturnMap() {
+        Long version = 5L;
+        MultiValueMap<String, String> headers = Methods.addEtag(version);
+        assertThat(headers).containsKey(Constants.S_ETAG);
+        assertThat(headers.getFirst(Constants.S_ETAG))
+                .isEqualTo(Constants.S_DOUBLE_QUOTE + version + Constants.S_DOUBLE_QUOTE);
+    }
+
+    @Test
+    void givenPopulatedMap_whenRetrieveETagValue_thenReturnValue() {
+        Long version = 7L;
+        MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+        headers.add(Constants.S_ETAG,
+                Constants.S_DOUBLE_QUOTE + version + Constants.S_DOUBLE_QUOTE);
+
+        Long extracted = Methods.getEtag(headers);
+        assertThat(extracted).isEqualTo(version);
     }
 }

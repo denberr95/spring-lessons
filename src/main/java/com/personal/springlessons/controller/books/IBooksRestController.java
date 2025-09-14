@@ -4,6 +4,7 @@ import java.util.List;
 import jakarta.validation.Valid;
 import com.personal.springlessons.model.dto.BookDTO;
 import com.personal.springlessons.model.dto.response.BookNotFoundResponseDTO;
+import com.personal.springlessons.model.dto.response.ConcurrentUpdateResponseDTO;
 import com.personal.springlessons.model.dto.response.DuplicatedBookResponseDTO;
 import com.personal.springlessons.model.dto.response.GenericErrorResponseDTO;
 import com.personal.springlessons.model.dto.response.InvalidArgumentTypeResponseDTO;
@@ -71,7 +72,7 @@ public interface IBooksRestController {
                     MissingHttpRequestHeaderResponseDTO.class, InvalidArgumentTypeResponseDTO.class,
                     ValidationRequestErrorResponseDTO.class,
                     NotReadableBodyRequestResponseDTO.class}))})
-    @ApiResponse(responseCode = "409", description = "Book already exists",
+    @ApiResponse(responseCode = "409", description = "Conflict",
             content = {
                     @Content(schema = @Schema(implementation = DuplicatedBookResponseDTO.class))})
     @ApiResponse(responseCode = "500", description = "Internal Server Error",
@@ -87,12 +88,16 @@ public interface IBooksRestController {
             content = {@Content(schema = @Schema(implementation = InvalidUUIDResponseDTO.class))})
     @ApiResponse(responseCode = "404", description = "Not Found",
             content = {@Content(schema = @Schema(implementation = BookNotFoundResponseDTO.class))})
+    @ApiResponse(responseCode = "409", description = "Conflict",
+            content = {
+                    @Content(schema = @Schema(implementation = ConcurrentUpdateResponseDTO.class))})
     @ApiResponse(responseCode = "500", description = "Internal Server Error",
             content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
-    ResponseEntity<Void> delete(@PathVariable final String id);
+    ResponseEntity<Void> delete(@PathVariable final String id,
+            @RequestHeader(value = "If-Match") final String ifMatch);
 
     @PutMapping(path = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Delete a book", operationId = "updateBookV1")
+    @Operation(summary = "Update a book", operationId = "updateBookV1")
     @ApiResponse(responseCode = "200", description = "OK",
             content = {@Content(schema = @Schema(implementation = BookDTO.class))})
     @ApiResponse(responseCode = "400", description = "Bad Request",
@@ -103,12 +108,13 @@ public interface IBooksRestController {
     @ApiResponse(responseCode = "404", description = "Not Found",
             content = {@Content(schema = @Schema(implementation = BookNotFoundResponseDTO.class))})
     @ApiResponse(responseCode = "409", description = "Conflict",
-            content = {
-                    @Content(schema = @Schema(implementation = DuplicatedBookResponseDTO.class))})
+            content = {@Content(schema = @Schema(
+                    oneOf = {ConcurrentUpdateResponseDTO.class, DuplicatedBookResponseDTO.class}))})
     @ApiResponse(responseCode = "500", description = "Internal Server Error",
             content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
     ResponseEntity<BookDTO> update(@PathVariable final String id,
-            @Valid @RequestBody final BookDTO bookDTO, @RequestHeader final Channel channel);
+            @Valid @RequestBody final BookDTO bookDTO, @RequestHeader final Channel channel,
+            @RequestHeader(value = "If-Match") final String ifMatch);
 
     @GetMapping(path = "download")
     @Operation(summary = "Download books in a csv file", operationId = "downloadBooksV1")

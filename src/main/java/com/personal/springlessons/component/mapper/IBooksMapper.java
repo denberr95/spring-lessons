@@ -22,7 +22,7 @@ public interface IBooksMapper {
     List<BookDTO> mapDTO(List<BooksEntity> source);
 
     @Mapping(source = "channel", target = "channel")
-    BooksEntity update(BookDTO source, Channel channel, @MappingTarget BooksEntity target);
+    BooksEntity update(BookDTO source, Channel channel, @MappingTarget BooksEntity target, String version);
 
     List<BookCsv> mapCsv(List<BooksEntity> source);
 

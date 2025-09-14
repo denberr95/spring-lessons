@@ -5,8 +5,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import jakarta.validation.ConstraintViolationException;
+import com.personal.springlessons.exception.ConcurrentUpdateException;
 import com.personal.springlessons.exception.InvalidUUIDException;
 import com.personal.springlessons.exception.SpringLessonsApplicationException;
+import com.personal.springlessons.model.dto.response.ConcurrentUpdateAdditionalDetailsDTO;
+import com.personal.springlessons.model.dto.response.ConcurrentUpdateResponseDTO;
 import com.personal.springlessons.model.dto.response.GenericErrorAdditionalDetailsDTO;
 import com.personal.springlessons.model.dto.response.GenericErrorResponseDTO;
 import com.personal.springlessons.model.dto.response.InvalidArgumentTypeAdditionalDetailsDTO;
@@ -74,7 +77,8 @@ public class CommonRestControllerAdvice {
         result.setCategory(Methods.retrieveDomainCategory(webRequest.getDescription(false)));
         result.setMessage("Invalid request !");
         exception.getBindingResult().getFieldErrors().forEach(fieldError -> {
-            ValidationRequestAdditionalDetailsDTO detail = new ValidationRequestAdditionalDetailsDTO();
+            ValidationRequestAdditionalDetailsDTO detail =
+                    new ValidationRequestAdditionalDetailsDTO();
             detail.setField(fieldError.getField());
             detail.setMessage(fieldError.getDefaultMessage());
             details.add(detail);
@@ -88,7 +92,8 @@ public class CommonRestControllerAdvice {
             MissingRequestHeaderException exception, WebRequest webRequest) {
         log.error(exception.getMessage(), exception);
         MissingHttpRequestHeaderResponseDTO result = new MissingHttpRequestHeaderResponseDTO();
-        MissingHttpRequestHeaderAdditionalDetailsDTO details = new MissingHttpRequestHeaderAdditionalDetailsDTO();
+        MissingHttpRequestHeaderAdditionalDetailsDTO details =
+                new MissingHttpRequestHeaderAdditionalDetailsDTO();
         result.setCategory(Methods.retrieveDomainCategory(webRequest.getDescription(false)));
         result.setMessage("Missing http request header !");
         details.setHeader(exception.getHeaderName());
@@ -101,7 +106,8 @@ public class CommonRestControllerAdvice {
             MethodArgumentTypeMismatchException exception, WebRequest webRequest) {
         log.error(exception.getMessage(), exception);
         InvalidArgumentTypeResponseDTO result = new InvalidArgumentTypeResponseDTO();
-        InvalidArgumentTypeAdditionalDetailsDTO details = new InvalidArgumentTypeAdditionalDetailsDTO();
+        InvalidArgumentTypeAdditionalDetailsDTO details =
+                new InvalidArgumentTypeAdditionalDetailsDTO();
         result.setCategory(Methods.retrieveDomainCategory(webRequest.getDescription(false)));
         result.setMessage("Invalid data type !");
         details.setField(exception.getName());
@@ -127,7 +133,8 @@ public class CommonRestControllerAdvice {
         result.setCategory(Methods.retrieveDomainCategory(webRequest.getDescription(false)));
         result.setMessage("Validation request not passed !");
         exception.getConstraintViolations().forEach(constraintViolation -> {
-            ValidationRequestAdditionalDetailsDTO detail = new ValidationRequestAdditionalDetailsDTO();
+            ValidationRequestAdditionalDetailsDTO detail =
+                    new ValidationRequestAdditionalDetailsDTO();
             String propertyPath = constraintViolation.getPropertyPath() != null
                     ? constraintViolation.getPropertyPath().toString()
                     : null;
@@ -150,11 +157,26 @@ public class CommonRestControllerAdvice {
             HttpMessageNotReadableException exception, WebRequest webRequest) {
         log.error(exception.getMessage(), exception);
         NotReadableBodyRequestResponseDTO result = new NotReadableBodyRequestResponseDTO();
-        NotReadableBodyRequestAdditionalDetailsDTO details = new NotReadableBodyRequestAdditionalDetailsDTO();
+        NotReadableBodyRequestAdditionalDetailsDTO details =
+                new NotReadableBodyRequestAdditionalDetailsDTO();
         result.setCategory(Methods.retrieveDomainCategory(webRequest.getDescription(false)));
         result.setMessage("Body request not processable !");
         details.setException(exception.getRootCause().getLocalizedMessage());
         result.setAdditionalData(details);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
+    }
+
+    @ExceptionHandler(value = {ConcurrentUpdateException.class})
+    public ResponseEntity<ConcurrentUpdateResponseDTO> handleConcurrentUpdateException(
+            ConcurrentUpdateException exception, WebRequest webRequest) {
+        log.error(exception.getMessage(), exception);
+        ConcurrentUpdateResponseDTO result = new ConcurrentUpdateResponseDTO();
+        ConcurrentUpdateAdditionalDetailsDTO details = new ConcurrentUpdateAdditionalDetailsDTO();
+        result.setCategory(Methods.retrieveDomainCategory(webRequest.getDescription(false)));
+        result.setMessage("Conflict while updating the resource for the specified version");
+        details.setId(exception.getId());
+        details.setVersion(exception.getVersion());
+        result.setAdditionalData(details);
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(result);
     }
 }

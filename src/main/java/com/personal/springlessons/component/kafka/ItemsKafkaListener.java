@@ -1,13 +1,13 @@
 package com.personal.springlessons.component.kafka;
 
 import com.personal.springlessons.component.mapper.IItemsMapper;
-import com.personal.springlessons.exception.DuplicatedBarcodeException;
+import com.personal.springlessons.exception.items.DuplicatedBarcodeException;
 import com.personal.springlessons.model.csv.DiscardedItemCsv;
 import com.personal.springlessons.model.dto.response.KafkaMessageItemDTO;
 import com.personal.springlessons.model.entity.items.ItemsEntity;
 import com.personal.springlessons.model.lov.ItemStatus;
-import com.personal.springlessons.repository.IItemsRepository;
-import com.personal.springlessons.repository.IOrderItemsRepository;
+import com.personal.springlessons.repository.items.IItemsRepository;
+import com.personal.springlessons.repository.items.IOrderItemsRepository;
 import com.personal.springlessons.util.Constants;
 import com.personal.springlessons.util.Methods;
 import org.slf4j.Logger;

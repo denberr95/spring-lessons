@@ -3,7 +3,7 @@ package com.personal.springlessons.component.runner;
 import java.util.List;
 import com.personal.springlessons.component.httpclient.AccountsClient;
 import com.personal.springlessons.model.dto.external.AccountDTO;
-import com.personal.springlessons.service.EmailService;
+import com.personal.springlessons.service.email.EmailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationArguments;

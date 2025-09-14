@@ -1,4 +1,4 @@
-package com.personal.springlessons.model.entity.orderitems;
+package com.personal.springlessons.model.entity.items;
 
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -15,7 +15,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import com.personal.springlessons.model.entity.items.ItemsEntity;
 import com.personal.springlessons.model.lov.Channel;
 import com.personal.springlessons.model.lov.ItemStatus;
 import com.personal.springlessons.util.Constants;

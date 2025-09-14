@@ -56,6 +56,8 @@ public final class Constants {
     public static final String S_DOUBLE_QUOTE = "\"";
     public static final String S_REGEX_ANY_SPACE = "\\s+";
     public static final String S_CSV = "csv";
+    public static final String S_ETAG = "ETag";
+    public static final String S_X_TOTAL_RECORDS = "X-Total-Records";
     public static final char C_SEMICOLON = ';';
     public static final char C_UNDERSCORE = '_';
     public static final char C_APOSTROPHE = '\'';

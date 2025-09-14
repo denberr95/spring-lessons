@@ -1,11 +1,11 @@
-package com.personal.springlessons.repository;
+package com.personal.springlessons.repository.items;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.math.BigDecimal;
 import java.util.Optional;
 import com.personal.springlessons.model.entity.items.ItemsEntity;
-import com.personal.springlessons.model.entity.orderitems.OrderItemsEntity;
+import com.personal.springlessons.model.entity.items.OrderItemsEntity;
 import com.personal.springlessons.model.lov.Channel;
 import com.personal.springlessons.model.lov.ItemStatus;
 import org.junit.jupiter.api.AfterEach;

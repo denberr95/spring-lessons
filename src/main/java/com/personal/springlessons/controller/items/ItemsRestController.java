@@ -3,7 +3,7 @@ package com.personal.springlessons.controller.items;
 import java.util.List;
 import com.personal.springlessons.model.dto.ItemDTO;
 import com.personal.springlessons.model.lov.Channel;
-import com.personal.springlessons.service.ItemsService;
+import com.personal.springlessons.service.items.ItemsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

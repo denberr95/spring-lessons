@@ -2,7 +2,6 @@ package com.personal.springlessons.model.entity.books;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
-import java.util.Objects;
 import java.util.UUID;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import jakarta.persistence.Version;
 import com.personal.springlessons.model.lov.Channel;
 import com.personal.springlessons.model.lov.Genre;
 import com.personal.springlessons.util.Constants;
@@ -46,6 +46,10 @@ public class BooksEntity {
     @Column(name = "updated_at")
     private OffsetDateTime updatedAt;
 
+    @Version
+    @Column(name = "version")
+    private Long version;
+
     @Column(name = "name", nullable = false, length = Constants.I_VAL_100)
     private String name;
 
@@ -63,11 +67,13 @@ public class BooksEntity {
     @Column(name = "genre", nullable = false)
     private Genre genre;
 
-    public BooksEntity(UUID id, OffsetDateTime createdAt, OffsetDateTime updatedAt, String name,
-            LocalDate publicationDate, Integer numberOfPages, Channel channel, Genre genre) {
+    public BooksEntity(UUID id, OffsetDateTime createdAt, OffsetDateTime updatedAt, Long version,
+            String name, LocalDate publicationDate, Integer numberOfPages, Channel channel,
+            Genre genre) {
         this.id = id;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.version = version;
         this.name = name;
         this.publicationDate = publicationDate;
         this.numberOfPages = numberOfPages;
@@ -103,6 +109,14 @@ public class BooksEntity {
 
     public void setUpdatedAt(OffsetDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public Long getVersion() {
+        return this.version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 
     public String getName() {
@@ -143,30 +157,5 @@ public class BooksEntity {
 
     public void setGenre(Genre genre) {
         this.genre = genre;
-    }
-
-    @Override
-    public String toString() {
-        return "BooksEntity [id=" + this.id + ", createdAt=" + this.createdAt + ", updatedAt="
-                + this.updatedAt + ", name=" + this.name + ", publicationDate="
-                + this.publicationDate + ", numberOfPages=" + this.numberOfPages + ", channel="
-                + this.channel + ", genre=" + this.genre + "]";
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(this.id);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (this.getClass() != obj.getClass())
-            return false;
-        BooksEntity other = (BooksEntity) obj;
-        return Objects.equals(this.id, other.id);
     }
 }

@@ -1,4 +1,4 @@
-package com.personal.springlessons.exception;
+package com.personal.springlessons.exception.items;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;

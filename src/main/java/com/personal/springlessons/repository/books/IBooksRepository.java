@@ -1,4 +1,4 @@
-package com.personal.springlessons.repository;
+package com.personal.springlessons.repository.books;
 
 import java.time.LocalDate;
 import java.util.Optional;

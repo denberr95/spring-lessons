@@ -16,6 +16,8 @@ import org.springframework.boot.info.GitProperties;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 public final class Methods {
 
@@ -99,6 +101,32 @@ public final class Methods {
         log.debug("Check if file: '{}' is valid respect to available file types: '{}'", fileName,
                 fileTypes);
         return fileTypes.stream().anyMatch(fileName::endsWith);
+    }
+
+    public static MultiValueMap<String, String> addEtag(Long version) {
+        log.debug("Create ETag version: '{}'", version);
+        MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+        headers.add(Constants.S_ETAG,
+                Constants.S_DOUBLE_QUOTE + version + Constants.S_DOUBLE_QUOTE);
+        return headers;
+    }
+
+    public static MultiValueMap<String, String> addTotalRecord(int total) {
+        log.debug("Create X-Total-Records: '{}'", total);
+        MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+        headers.add(Constants.S_X_TOTAL_RECORDS, String.valueOf(total));
+        return headers;
+    }
+
+    public static Long getEtag(MultiValueMap<String, String> map) {
+        log.debug("Retrieve ETag value");
+        Long result = null;
+        String etag = map.getFirst(Constants.S_ETAG);
+        if (etag != null) {
+            result = Long.valueOf(etag.replace(Constants.S_DOUBLE_QUOTE, Constants.S_EMPTY));
+        }
+        log.debug("ETag value retrieved: '{}'", result);
+        return result;
     }
 
     private static Path createFilePath(String folder, String fileName) throws IOException {

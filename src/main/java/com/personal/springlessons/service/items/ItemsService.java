@@ -1,4 +1,4 @@
-package com.personal.springlessons.service;
+package com.personal.springlessons.service.items;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,11 +7,11 @@ import com.personal.springlessons.component.mapper.IItemsMapper;
 import com.personal.springlessons.model.dto.ItemDTO;
 import com.personal.springlessons.model.dto.response.KafkaMessageItemDTO;
 import com.personal.springlessons.model.entity.items.ItemsEntity;
-import com.personal.springlessons.model.entity.orderitems.OrderItemsEntity;
+import com.personal.springlessons.model.entity.items.OrderItemsEntity;
 import com.personal.springlessons.model.lov.Channel;
 import com.personal.springlessons.model.lov.ItemStatus;
-import com.personal.springlessons.repository.IItemsRepository;
-import com.personal.springlessons.repository.IOrderItemsRepository;
+import com.personal.springlessons.repository.items.IItemsRepository;
+import com.personal.springlessons.repository.items.IOrderItemsRepository;
 import com.personal.springlessons.util.Constants;
 import com.personal.springlessons.util.Methods;
 import org.springframework.kafka.core.KafkaTemplate;

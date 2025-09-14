@@ -1,4 +1,4 @@
-package com.personal.springlessons.service;
+package com.personal.springlessons.service.email;
 
 import com.personal.springlessons.model.dto.external.AccountDTO;
 import com.personal.springlessons.util.Constants;

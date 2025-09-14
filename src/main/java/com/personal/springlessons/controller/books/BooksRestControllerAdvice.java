@@ -1,9 +1,9 @@
 package com.personal.springlessons.controller.books;
 
-import com.personal.springlessons.exception.BookNotFoundException;
-import com.personal.springlessons.exception.CSVContentValidationException;
-import com.personal.springlessons.exception.DuplicatedBookException;
-import com.personal.springlessons.exception.InvalidFileTypeException;
+import com.personal.springlessons.exception.books.BookNotFoundException;
+import com.personal.springlessons.exception.books.CSVContentValidationException;
+import com.personal.springlessons.exception.books.DuplicatedBookException;
+import com.personal.springlessons.exception.books.InvalidFileTypeException;
 import com.personal.springlessons.model.dto.response.BookNotFoundAdditionalDetailsDTO;
 import com.personal.springlessons.model.dto.response.BookNotFoundResponseDTO;
 import com.personal.springlessons.model.dto.response.DuplicatedBookAdditionalDetailsDTO;

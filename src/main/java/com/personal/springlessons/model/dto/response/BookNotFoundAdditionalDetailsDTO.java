@@ -3,7 +3,7 @@ package com.personal.springlessons.model.dto.response;
 import java.util.Objects;
 
 public class BookNotFoundAdditionalDetailsDTO {
-    
+
     private String id;
 
     public BookNotFoundAdditionalDetailsDTO(String id) {
@@ -35,10 +35,5 @@ public class BookNotFoundAdditionalDetailsDTO {
             return false;
         BookNotFoundAdditionalDetailsDTO other = (BookNotFoundAdditionalDetailsDTO) obj;
         return Objects.equals(this.id, other.id);
-    }
-
-    @Override
-    public String toString() {
-        return "BookNotFoundAdditionalDetailsDTO [id=" + this.id + "]";
     }
 }

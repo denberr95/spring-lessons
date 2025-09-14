@@ -1,4 +1,4 @@
-package com.personal.springlessons.repository;
+package com.personal.springlessons.repository.books;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -36,6 +36,7 @@ class IBooksRepositoryTest {
             bookEntity.setNumberOfPages(i + 1);
             bookEntity.setChannel(Channel.NA);
             bookEntity.setGenre(Genre.NA);
+            bookEntity.setVersion(1L);
             bookEntities.add(bookEntity);
         }
         this.bookRepository.saveAllAndFlush(bookEntities);
