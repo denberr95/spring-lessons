@@ -5,9 +5,9 @@ import java.util.Objects;
 public class ConcurrentUpdateAdditionalDetailsDTO {
 
     private String id;
-    private Long version;
+    private String version;
 
-    public ConcurrentUpdateAdditionalDetailsDTO(String id, Long version) {
+    public ConcurrentUpdateAdditionalDetailsDTO(String id, String version) {
         this.id = id;
         this.version = version;
     }
@@ -22,11 +22,11 @@ public class ConcurrentUpdateAdditionalDetailsDTO {
         this.id = id;
     }
 
-    public Long getVersion() {
+    public String getVersion() {
         return this.version;
     }
 
-    public void setVersion(Long version) {
+    public void setVersion(String version) {
         this.version = version;
     }
 
