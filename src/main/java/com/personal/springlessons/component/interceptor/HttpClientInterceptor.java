@@ -39,8 +39,9 @@ public class HttpClientInterceptor implements ClientHttpRequestInterceptor {
                 this.logMultipartDetails(request.getHeaders());
             }
             if (body.length > 0) {
-                log.info("Body: '{}'", new String(body, StandardCharsets.UTF_8)
-                        .replaceAll(Constants.S_REGEX_ANY_SPACE, Constants.S_EMPTY));
+                String json = new String(body, StandardCharsets.UTF_8).replaceAll("[\\n\\r\\t]", "")
+                        .replaceAll("\\s*([\\{\\}\\[\\]:,])\\s*", "$1").trim();
+                log.info("Body: '{}'", json);
             }
             log.info("--- HTTP Client Request ---");
         }
@@ -57,9 +58,10 @@ public class HttpClientInterceptor implements ClientHttpRequestInterceptor {
                 this.logMultipartDetails(response.getHeaders());
             }
             if (response.getBody().readAllBytes().length > 0) {
-                log.info("Body: '{}'",
-                        StreamUtils.copyToString(response.getBody(), StandardCharsets.UTF_8)
-                                .replaceAll(Constants.S_REGEX_ANY_SPACE, Constants.S_EMPTY));
+                String body = StreamUtils.copyToString(response.getBody(), StandardCharsets.UTF_8)
+                        .replaceAll("[\\n\\r\\t]", "")
+                        .replaceAll("\\s*([\\{\\}\\[\\]:,])\\s*", "$1").trim();
+                log.info("Body: '{}'", body);
             }
             log.info("--- HTTP Client Response ---");
         }
