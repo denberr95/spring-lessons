@@ -118,12 +118,22 @@ public final class Methods {
         return headers;
     }
 
-    public static Long getEtag(MultiValueMap<String, String> map) {
+    public static String getEtag(MultiValueMap<String, String> map) {
         log.debug("Retrieve ETag value");
-        Long result = null;
+        String result = null;
         String etag = map.getFirst(Constants.S_ETAG);
         if (etag != null) {
-            result = Long.valueOf(etag.replace(Constants.S_DOUBLE_QUOTE, Constants.S_EMPTY));
+            result = etag.replace(Constants.S_DOUBLE_QUOTE, Constants.S_EMPTY);
+        }
+        log.debug("ETag value retrieved: '{}'", result);
+        return result;
+    }
+
+    public static String getEtag(String value) {
+        log.debug("Retrieve ETag value: '{}'", value);
+        String result = null;
+        if (value != null) {
+            result = value.replace(Constants.S_DOUBLE_QUOTE, Constants.S_EMPTY);
         }
         log.debug("ETag value retrieved: '{}'", result);
         return result;

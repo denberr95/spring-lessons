@@ -68,9 +68,7 @@ class ItemsRestControllerTest {
     private String grantType;
 
     private String validToken;
-
     private String invalidToken;
-
     private RestClient restClient;
 
     private static final int TOTAL = 5;
@@ -103,7 +101,9 @@ class ItemsRestControllerTest {
 
     private HttpHeaders retrieveHttpHeaders(String token) {
         HttpHeaders result = new HttpHeaders();
-        result.add("Authorization", "Bearer " + token);
+        if (token != null) {
+            result.add("Authorization", "Bearer " + token);
+        }
         result.add("channel", Channel.NA.toString());
         return result;
     }
@@ -113,11 +113,14 @@ class ItemsRestControllerTest {
     }
 
     private void cleanupItems() {
-        this.itemsRepository.deleteAll();
+        this.itemsRepository.deleteAllInBatch();
+        this.itemsRepository.flush();
+
     }
 
     private void cleanupOrders() {
-        this.orderItemsRepository.deleteAll();
+        this.orderItemsRepository.deleteAllInBatch();
+        this.orderItemsRepository.flush();
     }
 
     @BeforeEach
@@ -144,8 +147,8 @@ class ItemsRestControllerTest {
             itemsEntity.setPrice(price);
             itemsEntity.setOrderItemsEntity(orderItemsEntity);
             this.itemsRepository.saveAndFlush(itemsEntity);
-
         }
+
         this.validToken = this.retrieveAccessToken(this.clientIdFullPermission,
                 this.clientSecretFullPermission);
         this.invalidToken =
@@ -161,12 +164,11 @@ class ItemsRestControllerTest {
 
     @Test
     void givenInvalidAccessToken_whenCallAPI_thenReturnForbidden() {
-        ResponseEntity<?> response = null;
         HttpHeaders httpHeaders = this.retrieveHttpHeaders(this.invalidToken);
         HttpEntity<List<ItemDTO>> httpEntity = new HttpEntity<>(this.data, httpHeaders);
         String urlBase = this.buildUrl("/v1/items");
 
-        response = this.testRestTemplate.exchange(urlBase, HttpMethod.GET,
+        ResponseEntity<?> response = this.testRestTemplate.exchange(urlBase, HttpMethod.GET,
                 new HttpEntity<>(httpHeaders), Object.class);
         assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
 
@@ -180,12 +182,12 @@ class ItemsRestControllerTest {
 
     @Test
     void givenWithoutAccessToken_whenCallAPI_thenReturnUnauthorized() {
-        ResponseEntity<?> response = null;
         HttpHeaders httpHeaders = this.retrieveHttpHeaders(null);
         HttpEntity<List<ItemDTO>> httpEntity = new HttpEntity<>(this.data, httpHeaders);
         String urlBase = this.buildUrl("/v1/items");
 
-        response = this.testRestTemplate.exchange(urlBase, HttpMethod.GET, null, Object.class);
+        ResponseEntity<?> response =
+                this.testRestTemplate.exchange(urlBase, HttpMethod.GET, null, Object.class);
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
 
         response = this.testRestTemplate.exchange(urlBase, HttpMethod.POST, httpEntity, Void.class);
@@ -234,8 +236,8 @@ class ItemsRestControllerTest {
     void givenEmptyCollection_whenGetAll_thenNoContent() {
         this.tearDown();
         String url = this.buildUrl("/v1/items");
-        HttpEntity<HttpHeaders> httpEntity =
-                new HttpEntity<>(this.retrieveHttpHeaders(this.validToken));
+        HttpHeaders httpHeaders = this.retrieveHttpHeaders(this.validToken);
+        HttpEntity<HttpHeaders> httpEntity = new HttpEntity<>(httpHeaders);
 
         ResponseEntity<Void> response =
                 this.testRestTemplate.exchange(url, HttpMethod.GET, httpEntity, Void.class);
@@ -247,8 +249,8 @@ class ItemsRestControllerTest {
     void givenPartialEmptyCollection_whenGetAll_thenNoContent() {
         this.cleanupOrders();
         String url = this.buildUrl("/v1/items");
-        HttpEntity<HttpHeaders> httpEntity =
-                new HttpEntity<>(this.retrieveHttpHeaders(this.validToken));
+        HttpHeaders httpHeaders = this.retrieveHttpHeaders(this.validToken);
+        HttpEntity<HttpHeaders> httpEntity = new HttpEntity<>(httpHeaders);
         ResponseEntity<Void> responseWithoutData =
                 this.testRestTemplate.exchange(url, HttpMethod.GET, httpEntity, Void.class);
         assertNull(responseWithoutData.getBody());
@@ -258,8 +260,8 @@ class ItemsRestControllerTest {
     @Test
     void givenItems_whenGetAll_thenItemsRetrieved() {
         String url = this.buildUrl("/v1/items");
-        HttpEntity<HttpHeaders> httpEntity =
-                new HttpEntity<>(this.retrieveHttpHeaders(this.validToken));
+        HttpHeaders httpHeaders = this.retrieveHttpHeaders(this.validToken);
+        HttpEntity<HttpHeaders> httpEntity = new HttpEntity<>(httpHeaders);
 
         ResponseEntity<ItemDTO[]> response =
                 this.testRestTemplate.exchange(url, HttpMethod.GET, httpEntity, ItemDTO[].class);

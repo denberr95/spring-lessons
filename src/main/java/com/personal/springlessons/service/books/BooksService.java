@@ -133,8 +133,7 @@ public class BooksService {
         BooksEntity bookEntity = this.bookRepository.findById(Methods.idValidation(id))
                 .orElseThrow(() -> new BookNotFoundException(id));
 
-        // TODO
-        if (!bookEntity.getVersion().equals(ifMatch)) {
+        if (!bookEntity.getVersion().toString().equals(Methods.getEtag(ifMatch))) {
             throw new ConcurrentUpdateException(id, ifMatch);
         }
 
@@ -163,8 +162,12 @@ public class BooksService {
                     throw new DuplicatedBookException(book.getName(), book.getId().toString());
                 });
 
-        bookEntity = this.bookMapper.update(bookDTO, channel, bookEntity, ifMatch);
-        bookEntity = this.bookRepository.saveAndFlush(bookEntity);
+        try {
+            bookEntity = this.bookMapper.update(bookDTO, channel, bookEntity, ifMatch);
+            bookEntity = this.bookRepository.saveAndFlush(bookEntity);
+        } catch (OptimisticLockingFailureException | OptimisticLockException e) {
+            throw new ConcurrentUpdateException(id, ifMatch);
+        }
 
         currentSpan.event("Book updated");
 

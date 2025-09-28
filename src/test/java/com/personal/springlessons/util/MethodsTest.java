@@ -116,12 +116,19 @@ class MethodsTest {
 
     @Test
     void givenPopulatedMap_whenRetrieveETagValue_thenReturnValue() {
-        Long version = 7L;
+        String version = "ABC";
         MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
         headers.add(Constants.S_ETAG,
                 Constants.S_DOUBLE_QUOTE + version + Constants.S_DOUBLE_QUOTE);
 
-        Long extracted = Methods.getEtag(headers);
+        String extracted = Methods.getEtag(headers);
         assertThat(extracted).isEqualTo(version);
+    }
+
+    @Test
+    void givenStringEtag_whenRetrieveETagValue_thenReturnValue() {
+        String version = "ABC";
+        String actual = Methods.getEtag("\"ABC\"");
+        assertThat(actual).isEqualTo(version);
     }
 }

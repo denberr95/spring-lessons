@@ -9,7 +9,7 @@ class ConcurrentUpdateExceptionTest {
     @Test
     void testConcurrentUpdateException() {
         String testId = "abc";
-        Long testVersion = 5L;
+        String testVersion = "5";
 
         ConcurrentUpdateException ex = new ConcurrentUpdateException(testId, testVersion);
         String expectedMessage =
