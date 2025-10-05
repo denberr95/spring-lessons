@@ -31,11 +31,11 @@ repos:
   hooks:
   - id: maven-validate
     name: Validate Maven project
-    entry: mvn validate
+    entry: mvn validate --file pom.xml --settings settings.xml
     language: system
     pass_filenames: false
   - id: spotless-java
     name: Format Java code with Spotless
-    entry: mvn spotless:apply
+    entry: mvn spotless:apply --file pom.xml --settings settings.xml
     language: system
     pass_filenames: false
