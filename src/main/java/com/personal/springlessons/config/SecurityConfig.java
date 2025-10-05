@@ -2,6 +2,7 @@ package com.personal.springlessons.config;
 
 import com.personal.springlessons.component.access.CustomAccessDeniedHandler;
 import com.personal.springlessons.component.access.CustomAuthenticationEntryPoint;
+
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,26 +16,25 @@ import org.springframework.security.web.DefaultSecurityFilterChain;
 @Configuration(proxyBeanMethods = false)
 public class SecurityConfig {
 
-    @Bean
-    DefaultSecurityFilterChain configure(HttpSecurity http,
-            CustomAccessDeniedHandler customAccessDeniedHandler,
-            CustomAuthenticationEntryPoint customAuthenticationEntryPoint) throws Exception {
-        http.exceptionHandling(exceptionHandling -> exceptionHandling
-                .authenticationEntryPoint(customAuthenticationEntryPoint)
-                .accessDeniedHandler(customAccessDeniedHandler))
-                .csrf((Customizer<CsrfConfigurer<HttpSecurity>>) CsrfConfigurer::disable)
-                .sessionManagement(
-                        session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .oauth2ResourceServer(
-                        oauth2 -> oauth2.authenticationEntryPoint(customAuthenticationEntryPoint)
-                                .accessDeniedHandler(customAccessDeniedHandler)
-                                .jwt(Customizer.withDefaults()));
-        return http.build();
-    }
+  @Bean
+  DefaultSecurityFilterChain configure(HttpSecurity http,
+      CustomAccessDeniedHandler customAccessDeniedHandler,
+      CustomAuthenticationEntryPoint customAuthenticationEntryPoint) throws Exception {
+    http.exceptionHandling(exceptionHandling -> exceptionHandling
+        .authenticationEntryPoint(customAuthenticationEntryPoint)
+        .accessDeniedHandler(customAccessDeniedHandler))
+        .csrf((Customizer<CsrfConfigurer<HttpSecurity>>) CsrfConfigurer::disable)
+        .sessionManagement(
+            session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .oauth2ResourceServer(
+            oauth2 -> oauth2.authenticationEntryPoint(customAuthenticationEntryPoint)
+                .accessDeniedHandler(customAccessDeniedHandler).jwt(Customizer.withDefaults()));
+    return http.build();
+  }
 
-    @Bean
-    DefaultAuthenticationEventPublisher authenticationEventPublisher(
-            ApplicationEventPublisher applicationEventPublisher) {
-        return new DefaultAuthenticationEventPublisher(applicationEventPublisher);
-    }
+  @Bean
+  DefaultAuthenticationEventPublisher authenticationEventPublisher(
+      ApplicationEventPublisher applicationEventPublisher) {
+    return new DefaultAuthenticationEventPublisher(applicationEventPublisher);
+  }
 }

@@ -11,6 +11,5 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = false)
 public class MissingHttpRequestHeaderResponseDTO extends BaseErrorResponseDTO {
 
-    private MissingHttpRequestHeaderAdditionalDetailsDTO additionalData;
-
+  private MissingHttpRequestHeaderAdditionalDetailsDTO additionalData;
 }

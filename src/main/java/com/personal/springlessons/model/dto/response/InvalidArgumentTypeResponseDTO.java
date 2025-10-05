@@ -11,6 +11,5 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = false)
 public class InvalidArgumentTypeResponseDTO extends BaseErrorResponseDTO {
 
-    private InvalidArgumentTypeAdditionalDetailsDTO additionalData;
-
+  private InvalidArgumentTypeAdditionalDetailsDTO additionalData;
 }

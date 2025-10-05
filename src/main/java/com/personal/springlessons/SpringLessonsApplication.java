@@ -18,11 +18,10 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 @EnableAspectJAutoProxy
 public class SpringLessonsApplication {
 
-    public static void main(final String[] args) {
-        final SpringApplication springApplication =
-                new SpringApplication(SpringLessonsApplication.class);
-        springApplication.addListeners(new ApplicationPidFileWriter(),
-                new WebServerPortFileWriter());
-        springApplication.run(args);
-    }
+  public static void main(final String[] args) {
+    final SpringApplication springApplication =
+        new SpringApplication(SpringLessonsApplication.class);
+    springApplication.addListeners(new ApplicationPidFileWriter(), new WebServerPortFileWriter());
+    springApplication.run(args);
+  }
 }

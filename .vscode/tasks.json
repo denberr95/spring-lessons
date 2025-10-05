@@ -1,6 +1,4 @@
 {
-    // See https://go.microsoft.com/fwlink/?LinkId=733558
-    // for the documentation about the tasks.json format
     "version": "2.0.0",
     "tasks": [
         {
@@ -12,7 +10,7 @@
                 "podman-container-remove",
                 "podman-volume-remove",
                 "podman-system-prune",
-                "shell-cleanup-folders",
+                "shell-cleanup-folders"
             ]
         },
         {
@@ -40,7 +38,7 @@
                 "shell-cleanup-folders",
                 "podman-compose-env-up",
                 "mvn-clean",
-                "mvn-compile",
+                "mvn-compile"
             ]
         },
         {
@@ -65,25 +63,25 @@
             "label": "shell-create-folders",
             "type": "shell",
             "command": "mkdir logs",
-            "group": "none",
+            "group": "none"
         },
         {
             "label": "podman-volume-remove",
             "type": "shell",
             "command": "podman volume rm --force --all",
-            "group": "none",
+            "group": "none"
         },
         {
             "label": "podman-container-remove",
             "type": "shell",
             "command": "podman container rm --force --all",
-            "group": "none",
+            "group": "none"
         },
         {
             "label": "podman-system-prune",
             "type": "shell",
             "command": "podman system prune --force --all --volumes",
-            "group": "none",
+            "group": "none"
         },
         {
             "label": "podman-build-jvm-image",
@@ -91,21 +89,21 @@
             "command": "podman build --rm=true --file Containerfile.jvm --tag spring-lessons:latest .",
             "dependsOrder": "sequence",
             "dependsOn": [
-                "test-application",
+                "test-application"
             ],
-            "group": "build",
+            "group": "build"
         },
         {
             "label": "podman-compose-env-up",
             "type": "shell",
             "command": "podman-compose --project spring-lessons --file ./collections/compose.yaml up --force-recreate --remove-orphans --detach",
-            "group": "test",
+            "group": "test"
         },
         {
             "label": "podman-compose-env-stop",
             "type": "shell",
             "command": "podman-compose --project spring-lessons --file ./collections/compose.yaml stop",
-            "group": "test",
+            "group": "test"
         },
         {
             "label": "podman-compose-app-up",
@@ -122,31 +120,31 @@
             "label": "podman-compose-app-stop",
             "type": "shell",
             "command": "podman-compose --project spring-lessons --file ./collections/compose.yaml --file ./collections/compose-app.yaml stop",
-            "group": "test",
+            "group": "test"
         },
         {
             "label": "mvn-test",
             "type": "shell",
             "command": "mvn test --file pom.xml --settings settings.xml",
-            "group": "test",
+            "group": "test"
         },
         {
             "label": "mvn-clean",
             "type": "shell",
             "command": "mvn clean --file pom.xml --settings settings.xml",
-            "group": "build",
+            "group": "build"
         },
         {
             "label": "mvn-compile",
             "type": "shell",
             "command": "mvn compile --file pom.xml --settings settings.xml",
-            "group": "build",
+            "group": "build"
         },
         {
             "label": "mvn-generate-sources",
             "type": "shell",
             "command": "mvn generate-sources --file pom.xml --settings settings.xml",
-            "group": "build",
+            "group": "build"
         },
         {
             "label": "mvn-package",
@@ -155,7 +153,7 @@
             "windows": {
                 "command": "mvn package --file pom.xml --settings settings.xml -Dspring.profiles.active=default,windows"
             },
-            "group": "build",
+            "group": "build"
         },
         {
             "label": "mvn-package-skip-tests",
@@ -212,5 +210,24 @@
                 "shell-create-folders"
             ]
         },
+        {
+            "label": "pre-commit-autoupdate",
+            "type": "shell",
+            "command": "pre-commit",
+            "args": [
+                "autoupdate"
+            ],
+            "group": "none"
+        },
+        {
+            "label": "pre-commit-run-all-files",
+            "type": "shell",
+            "command": "pre-commit",
+            "args": [
+                "run",
+                "--all-files"
+            ],
+            "group": "none"
+        }
     ]
 }

@@ -11,6 +11,5 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = false)
 public class NotReadableBodyRequestResponseDTO extends BaseErrorResponseDTO {
 
-    private NotReadableBodyRequestAdditionalDetailsDTO additionalData;
-
+  private NotReadableBodyRequestAdditionalDetailsDTO additionalData;
 }

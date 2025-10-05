@@ -11,6 +11,5 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = false)
 public class InvalidUUIDResponseDTO extends BaseErrorResponseDTO {
 
-    private InvalidUUIDAdditionalDetailsDTO additionalData;
-    
+  private InvalidUUIDAdditionalDetailsDTO additionalData;
 }

@@ -35,7 +35,7 @@ extensions:
     endpoint: otelcol:1777
   zpages:
     endpoint: otelcol:55679
-  
+
 service:
   extensions: [health_check, pprof, zpages]
   pipelines:

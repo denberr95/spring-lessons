@@ -4,7 +4,7 @@
             "name": "linux",
             "vmArgs": [
                 "-Dspring.profiles.active=default,linux"
-            ],
+            ]
         },
         {
             "name": "windows",

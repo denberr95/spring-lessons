@@ -39,7 +39,7 @@ services:
     hostname: loki
     environment:
     - TZ=Europe/Rome
-    command: 
+    command:
     - -config.file=/etc/loki/local-config.yaml
     volumes:
     - ./loki/local-config.yaml:/etc/loki/local-config.yaml

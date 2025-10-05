@@ -9,15 +9,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class SuccessAuthenticationEvent {
 
-    private static final Logger log = LoggerFactory.getLogger(SuccessAuthenticationEvent.class);
+  private static final Logger log = LoggerFactory.getLogger(SuccessAuthenticationEvent.class);
 
-    @EventListener
-    public void onSuccess(AuthenticationSuccessEvent success) {
-        log.trace("Success authentication event: '{}'",
-                success.getSource().getClass().getSimpleName());
-        log.trace("Success authentication details: '{}'", success.getAuthentication().getDetails());
-        log.trace("Success authentication principal: '{}'", success.getAuthentication().getName());
-        log.trace("Success authentication permissions: '{}'",
-                success.getAuthentication().getAuthorities());
-    }
+  @EventListener
+  public void onSuccess(AuthenticationSuccessEvent success) {
+    log.trace("Success authentication event: '{}'", success.getSource().getClass().getSimpleName());
+    log.trace("Success authentication details: '{}'", success.getAuthentication().getDetails());
+    log.trace("Success authentication principal: '{}'", success.getAuthentication().getName());
+    log.trace("Success authentication permissions: '{}'",
+        success.getAuthentication().getAuthorities());
+  }
 }

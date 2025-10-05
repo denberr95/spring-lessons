@@ -9,9 +9,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = false)
-
 public class InvalidFileTypeResponseDTO extends BaseErrorResponseDTO {
 
-    private InvalidFileTypeAdditionalDetailsDTO additionalData;
-    
+  private InvalidFileTypeAdditionalDetailsDTO additionalData;
 }

@@ -11,6 +11,5 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = false)
 public class BookNotFoundResponseDTO extends BaseErrorResponseDTO {
 
-    private BookNotFoundAdditionalDetailsDTO additionalData;
-    
+  private BookNotFoundAdditionalDetailsDTO additionalData;
 }

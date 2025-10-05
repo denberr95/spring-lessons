@@ -11,6 +11,5 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = false)
 public class GenericErrorResponseDTO extends BaseErrorResponseDTO {
 
-    private GenericErrorAdditionalDetailsDTO additionalData;
-
+  private GenericErrorAdditionalDetailsDTO additionalData;
 }

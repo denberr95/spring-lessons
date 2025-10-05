@@ -10,7 +10,7 @@ import lombok.ToString;
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = false)
 public class InvalidCSVContentResponseDTO extends BaseErrorResponseDTO {
-    
-    private Integer totalRows;
-    private InvalidCSVContentAdditionalDetailsDTO additionalData;
+
+  private Integer totalRows;
+  private InvalidCSVContentAdditionalDetailsDTO additionalData;
 }

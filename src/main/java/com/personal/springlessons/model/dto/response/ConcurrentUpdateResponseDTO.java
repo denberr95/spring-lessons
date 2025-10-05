@@ -11,5 +11,5 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = false)
 public class ConcurrentUpdateResponseDTO extends BaseErrorResponseDTO {
 
-    private ConcurrentUpdateAdditionalDetailsDTO additionalData;
+  private ConcurrentUpdateAdditionalDetailsDTO additionalData;
 }
