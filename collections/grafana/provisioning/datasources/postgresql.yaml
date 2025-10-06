@@ -1,16 +1,17 @@
+---
 apiVersion: 1
 datasources:
-- name: Postgres
-  type: postgres
-  uid: postgres_uid
-  url: springdb:5432
-  user: grafanareader
-  editable: false
-  isDefault: false
-  access: proxy
-  secureJsonData:
+ - name: Postgres
+   type: postgres
+   uid: postgres_uid
+   url: springdb:5432
+   user: grafanareader
+   editable: false
+   isDefault: false
+   access: proxy
+   secureJsonData:
     password: ''
-  jsonData:
+   jsonData:
     database: spring
     sslmode: 'disable'
     maxOpenConns: 100

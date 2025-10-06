@@ -1,3 +1,4 @@
+---
 receivers:
   otlp:
     protocols:
@@ -5,8 +6,8 @@ receivers:
         endpoint: otelcol:4318
         cors:
           allowed_origins:
-          - "http://*"
-          - "https://*"
+            - "http://*"
+            - "https://*"
       grpc:
         endpoint: otelcol:4317
 

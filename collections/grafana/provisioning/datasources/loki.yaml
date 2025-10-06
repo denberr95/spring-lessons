@@ -1,12 +1,13 @@
+---
 apiVersion: 1
 datasources:
-- name: Loki
-  type: loki
-  uid: loki_uid
-  url: http://loki:3100
-  editable: false
-  isDefault: false
-  access: proxy
-  jsonData:
+ - name: Loki
+   type: loki
+   uid: loki_uid
+   url: http://loki:3100
+   editable: false
+   isDefault: false
+   access: proxy
+   jsonData:
     timeout: 60
     maxLines: 1000

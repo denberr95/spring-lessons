@@ -1,41 +1,42 @@
+---
 repos:
-  # ------------------------
-  # Pre-commit hooks base
-  # ------------------------
-- repo: https://github.com/pre-commit/pre-commit-hooks
-  rev: v6.0.0
-  hooks:
-  - id: end-of-file-fixer
-  - id: trailing-whitespace
-  - id: check-added-large-files
-  - id: check-executables-have-shebangs
-  - id: check-illegal-windows-names
-  - id: check-docstring-first
-  - id: check-xml
-  - id: check-yaml
-  - id: check-json
-    exclude: '^\.vscode/'
-  - id: fix-byte-order-marker
-  - id: mixed-line-ending
-    args:
-    - --fix=lf
-  - id: pretty-format-json
-    args:
-    - --autofix
-    - --no-sort-keys
-    - --indent=4
-  # ------------------------
-  # Maven hooks
-  # ------------------------
-- repo: local
-  hooks:
-  - id: maven-validate
-    name: Validate Maven project
-    entry: mvn validate --file pom.xml --settings settings.xml
-    language: system
-    pass_filenames: false
-  - id: spotless-java
-    name: Format Java code with Spotless
-    entry: mvn spotless:apply --file pom.xml --settings settings.xml
-    language: system
-    pass_filenames: false
+ - repo: https://github.com/pre-commit/pre-commit-hooks
+   rev: v6.0.0
+   hooks:
+    - id: end-of-file-fixer
+    - id: trailing-whitespace
+    - id: check-added-large-files
+    - id: check-executables-have-shebangs
+    - id: check-illegal-windows-names
+    - id: check-docstring-first
+    - id: check-xml
+    - id: check-yaml
+    - id: check-json
+      exclude: '^\.vscode/'
+    - id: fix-byte-order-marker
+    - id: mixed-line-ending
+      args:
+       - --fix=lf
+    - id: pretty-format-json
+      args:
+       - --autofix
+       - --no-sort-keys
+       - --indent=4
+ - repo: https://github.com/adrienverge/yamllint.git
+   rev: v1.35.1
+   hooks:
+    - id: yamllint
+      args:
+       - "--strict"
+ - repo: local
+   hooks:
+    - id: maven-validate
+      name: Validate Maven project
+      entry: mvn validate --file pom.xml --settings settings.xml
+      language: system
+      pass_filenames: false
+    - id: spotless-java
+      name: Format Java code with Spotless
+      entry: mvn spotless:apply --file pom.xml --settings settings.xml
+      language: system
+      pass_filenames: false
