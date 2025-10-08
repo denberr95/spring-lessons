@@ -33,7 +33,7 @@ repos:
        - --no-sort-keys
        - --indent=4
  - repo: https://github.com/adrienverge/yamllint.git
-   rev: v1.35.1
+   rev: v1.37.1
    hooks:
     - id: yamllint
       args:
@@ -50,3 +50,11 @@ repos:
       entry: mvn spotless:apply --file pom.xml --settings settings.xml
       language: system
       pass_filenames: false
+ - repo: https://github.com/hadolint/hadolint
+   rev: v2.14.0
+   hooks:
+    - id: hadolint
+ - repo: https://github.com/koalaman/shellcheck-precommit
+   rev: v0.11.0
+   hooks:
+    - id: shellcheck
