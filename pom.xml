@@ -314,6 +314,7 @@
                         </removeUnusedImports>
                         <forbidWildcardImports />
                         <formatAnnotations />
+                        <toggleOffOn />
                     </java>
                     <pom>
                         <sortPom>
