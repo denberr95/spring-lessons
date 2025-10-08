@@ -1,5 +1,15 @@
 ---
 repos:
+ - repo: https://github.com/compilerla/conventional-pre-commit
+   rev: v4.2.0
+   hooks:
+    - id: conventional-pre-commit
+      stages: [commit-msg]
+      args:
+       - --verbose
+       - --strict
+       - --force-scope
+       - --scopes=feat,fix,chore,test,custom,refactor
  - repo: https://github.com/pre-commit/pre-commit-hooks
    rev: v6.0.0
    hooks:
@@ -28,16 +38,6 @@ repos:
     - id: yamllint
       args:
        - "--strict"
- - repo: https://github.com/compilerla/conventional-pre-commit
-   rev: v4.2.0
-   hooks:
-    - id: conventional-pre-commit
-      stages: [commit-msg]
-      args:
-       - --verbose
-       - --strict
-       - --force-scope
-       - --scopes feat, fix, chore, test, custom, refactor
  - repo: local
    hooks:
     - id: maven-validate
