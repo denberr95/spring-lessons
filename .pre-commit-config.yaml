@@ -9,7 +9,7 @@ repos:
        - --verbose
        - --strict
        - --force-scope
-       - --scopes=feat,fix,chore,test,custom,refactor
+       - --scopes=api,setup,docs,tests,deploy
  - repo: https://github.com/pre-commit/pre-commit-hooks
    rev: v6.0.0
    hooks:
@@ -45,11 +45,13 @@ repos:
       entry: mvn validate --file pom.xml --settings settings.xml
       language: system
       pass_filenames: false
+      stages: [pre-commit]
     - id: spotless-java
       name: Format Java code with Spotless
       entry: mvn spotless:apply --file pom.xml --settings settings.xml
       language: system
       pass_filenames: false
+      stages: [pre-commit]
  - repo: https://github.com/hadolint/hadolint
    rev: v2.14.0
    hooks:
