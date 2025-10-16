@@ -64,7 +64,6 @@ repos:
    hooks:
     - id: hadolint
       name: Hadolint
-      description: Runs hadolint Docker image to lint Dockerfiles
       entry: podman run --rm --interactive --volume ./:/mnt:ro ghcr.io/hadolint/hadolint hadolint --config /mnt/hadolint.yaml /mnt/Containerfile.jvm
       pass_filenames: false
       language: system
@@ -73,7 +72,6 @@ repos:
    hooks:
     - id: shellcheck
       name: entrypoint-shellcheck
-      description: Shell script static analysis tool
       entry: podman run --rm --interactive --volume ./:/mnt koalaman/shellcheck:stable entrypoint.sh
       files: entrypoint.sh
       language: system
