@@ -1,0 +1,12 @@
+ignored:
+ - DL3018
+
+trustedRegistries:
+ - docker.io
+ - ghcr.io
+ - quay.io
+ - registry.access.redhat.com
+ - registry.centos.org
+ - mcr.microsoft.com
+ - public.ecr.aws
+ - registry.redhat.io

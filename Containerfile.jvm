@@ -1,7 +1,7 @@
 FROM bellsoft/liberica-openjre-alpine:21 AS runtime
 
 # Install utilities, update binaries, create user, set permissions and clean up
-RUN apk add --no-cache curl openssl && \
+RUN apk add --no-cache curl openssl bash && \
     apk upgrade --no-cache && \
     addgroup -g 1000 appgroup && \
     adduser -u 1000 -G appgroup -s /bin/sh -D appuser && \

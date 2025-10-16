@@ -56,7 +56,17 @@ repos:
    rev: v2.14.0
    hooks:
     - id: hadolint
+      name: Lint Containerfiles
+      description: Runs hadolint Docker image to lint Dockerfiles
+      entry: podman run --rm --interactive --volume ./:/mnt:ro ghcr.io/hadolint/hadolint hadolint --config /mnt/hadolint.yaml /mnt/Containerfile.jvm # yamllint disable-line
+      pass_filenames: false
+      language: system
  - repo: https://github.com/koalaman/shellcheck-precommit
    rev: v0.11.0
    hooks:
     - id: shellcheck
+      name: shell check
+      description: Shell script static analysis tool
+      entry: podman run --rm --interactive --volume ./:/mnt koalaman/shellcheck:stable entrypoint.sh # yamllint disable-line
+      files: \.sh$
+      language: system
