@@ -23,6 +23,7 @@ repos:
     - id: check-yaml
     - id: check-json
       exclude: '^\.vscode/'
+    - id: check-symlinks
     - id: fix-byte-order-marker
     - id: mixed-line-ending
       args:
@@ -37,7 +38,8 @@ repos:
    hooks:
     - id: yamllint
       args:
-       - "--strict"
+       - --strict
+       - --config-file=.yamllint.yaml
  - repo: local
    hooks:
     - id: maven-validate
@@ -52,21 +54,26 @@ repos:
       language: system
       pass_filenames: false
       stages: [pre-commit]
+    - id: compose-validator
+      name: Validate Compose Local Application
+      language: system
+      entry: podman-compose --file ./collections/compose.yaml --file ./collections/compose-app.yaml config
+      pass_filenames: false
  - repo: https://github.com/hadolint/hadolint
    rev: v2.14.0
    hooks:
     - id: hadolint
-      name: Lint Containerfiles
+      name: Hadolint
       description: Runs hadolint Docker image to lint Dockerfiles
-      entry: podman run --rm --interactive --volume ./:/mnt:ro ghcr.io/hadolint/hadolint hadolint --config /mnt/hadolint.yaml /mnt/Containerfile.jvm # yamllint disable-line
+      entry: podman run --rm --interactive --volume ./:/mnt:ro ghcr.io/hadolint/hadolint hadolint --config /mnt/hadolint.yaml /mnt/Containerfile.jvm
       pass_filenames: false
       language: system
  - repo: https://github.com/koalaman/shellcheck-precommit
    rev: v0.11.0
    hooks:
     - id: shellcheck
-      name: shell check
+      name: entrypoint-shellcheck
       description: Shell script static analysis tool
-      entry: podman run --rm --interactive --volume ./:/mnt koalaman/shellcheck:stable entrypoint.sh # yamllint disable-line
-      files: \.sh$
+      entry: podman run --rm --interactive --volume ./:/mnt koalaman/shellcheck:stable entrypoint.sh
+      files: entrypoint.sh
       language: system
