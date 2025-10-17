@@ -9,7 +9,7 @@ set -euo pipefail
 : "${DEBUG_PORT:=5500}"
 : "${IMPORT_SSL_CERTIFICATE:=0}"
 : "${REMOTE_SERVICES:=}"
-: "${TRUSTORE_PASSWORD:=changeit}"
+: "${TRUSTSTORE_PASSWORD:=changeit}"
 : "${RUN_MODE:=jvm}"
 
 TRUSTSTORE_FILE="/app/truststore.jks"
@@ -24,7 +24,7 @@ JAVA_OPTS="-server \
     -XX:+UnlockExperimentalVMOptions \
     -XshowSettings:vm \
     -Djavax.net.ssl.trustStore=$TRUSTSTORE_FILE \
-    -Djavax.net.ssl.trustStorePassword=$TRUSTORE_PASSWORD"
+    -Djavax.net.ssl.trustStorePassword=$TRUSTSTORE_PASSWORD"
 JAVA_CMD="java $JAVA_OPTS"
 JAVA_DEBUG_OPTS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:$DEBUG_PORT"
 
@@ -102,7 +102,7 @@ create_empty_truststore() {
             -srckeystore "$java_cacerts" \
             -destkeystore "$TRUSTSTORE_FILE" \
             -srcstorepass changeit \
-            -deststorepass "$TRUSTORE_PASSWORD" \
+            -deststorepass "$TRUSTSTORE_PASSWORD" \
             -noprompt >/dev/null 2>&1; then
             log_warn "Failed to copy default Java CAs, creating empty truststore"
             create_dummy_truststore
@@ -115,11 +115,11 @@ create_empty_truststore() {
 
 create_dummy_truststore() {
     keytool -genkeypair -alias dummy -keystore "$TRUSTSTORE_FILE" \
-        -storepass "$TRUSTORE_PASSWORD" -keypass "$TRUSTORE_PASSWORD" \
+        -storepass "$TRUSTSTORE_PASSWORD" -keypass "$TRUSTSTORE_PASSWORD" \
         -dname "CN=dummy, OU=dummy, O=dummy, L=dummy, S=dummy, C=US" \
         -keyalg RSA -keysize 2048 -validity 1 >/dev/null 2>&1 || true
     keytool -delete -alias dummy -keystore "$TRUSTSTORE_FILE" \
-        -storepass "$TRUSTORE_PASSWORD" >/dev/null 2>&1 || true
+        -storepass "$TRUSTSTORE_PASSWORD" >/dev/null 2>&1 || true
 }
 
 
@@ -166,7 +166,7 @@ import_ssl_certificates() {
             -alias "external_${host}" \
             -file "$cert_file" \
             -keystore "$TRUSTSTORE_FILE" \
-            -storepass "$TRUSTORE_PASSWORD"; then
+            -storepass "$TRUSTSTORE_PASSWORD"; then
             log_info "Successfully imported certificate for $host"
         else
             log_error "Failed to import certificate for $host"

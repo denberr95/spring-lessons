@@ -9,7 +9,7 @@ repos:
        - --verbose
        - --strict
        - --force-scope
-       - --scopes=api,setup,docs,tests,deploy
+       - --scopes=api,setup,docs,tests,deploy,script
  - repo: https://github.com/pre-commit/pre-commit-hooks
    rev: v6.0.0
    hooks:
