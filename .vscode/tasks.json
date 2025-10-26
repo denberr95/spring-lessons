@@ -24,6 +24,7 @@
                 "shell-cleanup-folders",
                 "podman-compose-env-up",
                 "mvn-clean",
+                "mvn-spotless-apply",
                 "mvn-package"
             ]
         },
@@ -38,6 +39,7 @@
                 "shell-cleanup-folders",
                 "podman-compose-env-up",
                 "mvn-clean",
+                "mvn-spotless-apply",
                 "mvn-compile"
             ]
         },
@@ -113,6 +115,7 @@
             "dependsOrder": "sequence",
             "dependsOn": [
                 "mvn-clean",
+                "mvn-spotless-apply",
                 "mvn-package-skip-tests"
             ]
         },
@@ -209,6 +212,12 @@
                 "shell-cleanup-folders",
                 "shell-create-folders"
             ]
+        },
+        {
+            "label": "mvn-spotless-apply",
+            "type": "shell",
+            "command": "mvn spotless:apply --file pom.xml --settings settings.xml",
+            "group": "build"
         },
         {
             "label": "pre-commit-autoupdate",
