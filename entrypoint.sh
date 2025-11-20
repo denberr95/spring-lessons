@@ -122,7 +122,6 @@ create_dummy_truststore() {
         -storepass "$TRUSTSTORE_PASSWORD" >/dev/null 2>&1 || true
 }
 
-
 import_ssl_certificates() {
     log_info "Configured IMPORT_SSL_CERTIFICATE: $IMPORT_SSL_CERTIFICATE"
     log_info "Configured REMOTE_SERVICES: $REMOTE_SERVICES"
@@ -175,7 +174,6 @@ import_ssl_certificates() {
         rm -f "$cert_file"
     done
 }
-
 
 # =============================================================================
 # Run functions

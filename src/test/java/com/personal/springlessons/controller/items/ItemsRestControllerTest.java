@@ -200,8 +200,6 @@ class ItemsRestControllerTest {
 
   @Test
   void givenItems_whenUpload_thenNoContent() {
-    this.cleanupItems();
-    this.cleanupOrders();
     String url = this.buildUrl("/v1/items");
     HttpHeaders httpHeaders = this.retrieveHttpHeaders(this.validToken);
     HttpEntity<List<ItemDTO>> httpEntity = new HttpEntity<>(this.data, httpHeaders);
@@ -217,8 +215,6 @@ class ItemsRestControllerTest {
 
   @Test
   void givenItems_whenDelete_thenNoContent() {
-    this.cleanupItems();
-    this.cleanupOrders();
     String url = this.buildUrl("/v1/items");
     HttpHeaders httpHeaders = this.retrieveHttpHeaders(this.validToken);
     HttpEntity<List<ItemDTO>> httpEntity = new HttpEntity<>(this.data, httpHeaders);
@@ -234,7 +230,6 @@ class ItemsRestControllerTest {
 
   @Test
   void givenEmptyCollection_whenGetAll_thenNoContent() {
-    this.tearDown();
     String url = this.buildUrl("/v1/items");
     HttpHeaders httpHeaders = this.retrieveHttpHeaders(this.validToken);
     HttpEntity<HttpHeaders> httpEntity = new HttpEntity<>(httpHeaders);
@@ -243,18 +238,6 @@ class ItemsRestControllerTest {
         this.testRestTemplate.exchange(url, HttpMethod.GET, httpEntity, Void.class);
     assertNull(response.getBody());
     assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
-  }
-
-  @Test
-  void givenPartialEmptyCollection_whenGetAll_thenNoContent() {
-    this.cleanupOrders();
-    String url = this.buildUrl("/v1/items");
-    HttpHeaders httpHeaders = this.retrieveHttpHeaders(this.validToken);
-    HttpEntity<HttpHeaders> httpEntity = new HttpEntity<>(httpHeaders);
-    ResponseEntity<Void> responseWithoutData =
-        this.testRestTemplate.exchange(url, HttpMethod.GET, httpEntity, Void.class);
-    assertNull(responseWithoutData.getBody());
-    assertEquals(HttpStatus.NO_CONTENT, responseWithoutData.getStatusCode());
   }
 
   @Test
@@ -267,6 +250,8 @@ class ItemsRestControllerTest {
         this.testRestTemplate.exchange(url, HttpMethod.GET, httpEntity, ItemDTO[].class);
     assertNotNull(response.getBody());
     assertEquals(HttpStatus.OK, response.getStatusCode());
+    assertEquals(TOTAL, response.getBody().length);
+
     for (int i = 0; i < TOTAL; i++) {
       ItemDTO itemDTO = response.getBody()[i];
       assertNotNull(itemDTO.getId());

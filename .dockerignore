@@ -4,14 +4,24 @@ build/
 
 # Ignore Java Source Code
 src/
+test/
 
 # Ignore Other files
 collections/
+lombok.config
+*.port
+*.md
 
 # Ignore temporary files
 *.tmp
 *.swp
 *.swo
+
+# Hook files
+.pre-commit-config.yaml
+.sqlfluff.toml
+.yamllint.yaml
+.hadolint.yaml
 
 # Ignore logs
 *.log
