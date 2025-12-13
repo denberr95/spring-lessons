@@ -121,7 +121,7 @@ public class HttpServerLoggingFilter extends OncePerRequestFilter {
     if (request instanceof ContentCachingRequestWrapper requestWrapper) {
       return requestWrapper;
     }
-    return new ContentCachingRequestWrapper((HttpServletRequest) request);
+    return new ContentCachingRequestWrapper((HttpServletRequest) request, 0);
   }
 
   private ContentCachingResponseWrapper responseWrapper(ServletResponse response) {

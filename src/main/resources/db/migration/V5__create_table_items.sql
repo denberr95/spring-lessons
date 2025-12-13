@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS spring_app.items (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT clock_timestamp(),
-  updated_at TIMESTAMP WITH TIME ZONE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT clock_timestamp(),
+  updated_at TIMESTAMPTZ,
   price NUMERIC(6, 2) NOT NULL,
   name VARCHAR(100) NOT NULL,
   barcode VARCHAR(50) NOT NULL,

@@ -25,9 +25,12 @@
         <captureMarkerAttribute>true</captureMarkerAttribute>
         <captureKeyValuePairAttributes>true</captureKeyValuePairAttributes>
         <captureLoggerContext>true</captureLoggerContext>
+        <captureTemplate>false</captureTemplate>
         <captureArguments>false</captureArguments>
-        <captureLogstashAttributes>false</captureLogstashAttributes>
+        <captureLogstashMarkerAttributes>false</captureLogstashMarkerAttributes>
+        <captureLogstashStructuredArguments>false</captureLogstashStructuredArguments>
         <captureMdcAttributes>*</captureMdcAttributes>
+        <captureEventName>true</captureEventName>
         <numLogsCapturedBeforeOtelInstall>1000</numLogsCapturedBeforeOtelInstall>
     </appender>
 

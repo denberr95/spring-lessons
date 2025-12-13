@@ -5,3 +5,6 @@ max_line_length = 200
 
 [sqlfluff:indentation]
 tab_space_size = 2
+
+[sqlfluff:rules:references.keywords]
+ignore_words = name, version

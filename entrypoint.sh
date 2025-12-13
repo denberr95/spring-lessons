@@ -18,7 +18,7 @@ JAVA_OPTS="-server \
     -XX:+OptimizeStringConcat \
     -XX:+UseContainerSupport \
     -XX:InitialRAMPercentage=25.0 \
-    -XX:MaxRAMPercentage=50.0 \
+    -XX:MaxRAMPercentage=85.0 \
     -XX:+PrintFlagsFinal \
     -XX:+UnlockDiagnosticVMOptions \
     -XX:+UnlockExperimentalVMOptions \

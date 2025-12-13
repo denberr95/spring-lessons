@@ -3,7 +3,7 @@ package com.personal.springlessons;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.ApplicationPidFileWriter;
-import org.springframework.boot.web.context.WebServerPortFileWriter;
+import org.springframework.boot.web.server.context.WebServerPortFileWriter;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.kafka.annotation.EnableKafka;
