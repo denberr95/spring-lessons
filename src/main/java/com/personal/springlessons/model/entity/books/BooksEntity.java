@@ -2,6 +2,7 @@ package com.personal.springlessons.model.entity.books;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
+import java.util.Objects;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -159,5 +160,36 @@ public class BooksEntity {
 
   public void setGenre(Genre genre) {
     this.genre = genre;
+  }
+
+  @Override
+  public String toString() {
+    return "BooksEntity [id=" + this.id + ", createdAt=" + this.createdAt + ", updatedAt="
+        + this.updatedAt + ", version=" + this.version + ", name=" + this.name
+        + ", publicationDate=" + this.publicationDate + ", numberOfPages=" + this.numberOfPages
+        + ", channel=" + this.channel + ", genre=" + this.genre + "]";
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(this.id, this.createdAt, this.updatedAt, this.version, this.name,
+        this.publicationDate, this.numberOfPages, this.channel, this.genre);
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (this.getClass() != obj.getClass())
+      return false;
+    BooksEntity other = (BooksEntity) obj;
+    return Objects.equals(this.id, other.id) && Objects.equals(this.createdAt, other.createdAt)
+        && Objects.equals(this.updatedAt, other.updatedAt)
+        && Objects.equals(this.version, other.version) && Objects.equals(this.name, other.name)
+        && Objects.equals(this.publicationDate, other.publicationDate)
+        && Objects.equals(this.numberOfPages, other.numberOfPages) && this.channel == other.channel
+        && this.genre == other.genre;
   }
 }

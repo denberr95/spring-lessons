@@ -2,7 +2,7 @@ package com.personal.springlessons.controller.items;
 
 import java.util.List;
 
-import com.personal.springlessons.model.dto.ItemDTO;
+import com.personal.springlessons.model.dto.OrderItemsDTO;
 import com.personal.springlessons.model.lov.Channel;
 import com.personal.springlessons.service.items.ItemsService;
 
@@ -27,34 +27,37 @@ public class ItemsRestController implements IItemsRestController {
     this.itemService = itemService;
   }
 
-  @Observed(name = "upload.items", contextualName = "items-upload")
+  @Observed(name = "items.upload", contextualName = "items-upload",
+      lowCardinalityKeyValues = {"endpoint", "/items"})
   @PreAuthorize(value = "hasAuthority('SCOPE_items:upload')")
   @Override
-  public ResponseEntity<Void> upload(final List<ItemDTO> items, final Channel channel) {
+  public ResponseEntity<OrderItemsDTO> upload(final OrderItemsDTO order, final Channel channel) {
     log.info("Called API to upload items");
-    this.itemService.upload(items, channel);
+    OrderItemsDTO result = this.itemService.upload(order, channel);
     log.info("Kafka message to upload items sent");
-    return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    return ResponseEntity.status(HttpStatus.OK).body(result);
   }
 
-  @Observed(name = "delete.items", contextualName = "items-delete",
-      lowCardinalityKeyValues = {"endpoint", "/items/{id}"})
+  @Observed(name = "items.delete", contextualName = "items-delete",
+      lowCardinalityKeyValues = {"endpoint", "/items"})
   @PreAuthorize(value = "hasAuthority('SCOPE_items:delete')")
   @Override
-  public ResponseEntity<Void> delete(final List<ItemDTO> items, final Channel channel) {
+  public ResponseEntity<Void> delete(final OrderItemsDTO order, final Channel channel) {
     log.info("Called API to delete items");
-    this.itemService.delete(items, channel);
+    this.itemService.delete(order, channel);
     log.info("Kafka message to delete items sent");
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
 
+  @Observed(name = "items.get.all", contextualName = "items-get-all",
+      lowCardinalityKeyValues = {"endpoint", "/items"})
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   @PreAuthorize(value = "hasAuthority('SCOPE_items:get')")
   @Override
-  public ResponseEntity<List<ItemDTO>> getAll() {
+  public ResponseEntity<List<OrderItemsDTO>> getAll() {
     log.info("Called API to retrieve all items");
-    List<ItemDTO> result = this.itemService.getAll();
-    ResponseEntity<List<ItemDTO>> response;
+    List<OrderItemsDTO> result = this.itemService.getAll();
+    ResponseEntity<List<OrderItemsDTO>> response;
     if (result.isEmpty()) {
       log.info("No items retrieved !");
       response = ResponseEntity.status(HttpStatus.NO_CONTENT).build();

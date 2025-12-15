@@ -58,7 +58,7 @@ public class OpenAPIConfig {
   @Bean
   SecurityScheme securityScheme(OAuthFlows oAuthFlows) {
     SecurityScheme securityScheme = new SecurityScheme();
-    securityScheme.setName("security_auth");
+    securityScheme.setName("oauth2");
     securityScheme.setType(Type.OAUTH2);
     securityScheme.setIn(SecurityScheme.In.HEADER);
     securityScheme.setFlows(oAuthFlows);

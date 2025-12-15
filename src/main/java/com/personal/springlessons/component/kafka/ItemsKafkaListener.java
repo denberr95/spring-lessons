@@ -1,13 +1,13 @@
 package com.personal.springlessons.component.kafka;
 
-import com.personal.springlessons.component.mapper.IItemsMapper;
+import java.util.UUID;
+
 import com.personal.springlessons.exception.items.DuplicatedBarcodeException;
 import com.personal.springlessons.model.csv.DiscardedItemCsv;
 import com.personal.springlessons.model.dto.response.KafkaMessageItemDTO;
 import com.personal.springlessons.model.entity.items.ItemsEntity;
-import com.personal.springlessons.model.lov.ItemStatus;
+import com.personal.springlessons.model.entity.items.OrderItemsEntity;
 import com.personal.springlessons.repository.items.IItemsRepository;
-import com.personal.springlessons.repository.items.IOrderItemsRepository;
 import com.personal.springlessons.util.Constants;
 import com.personal.springlessons.util.Methods;
 
@@ -26,16 +26,11 @@ public class ItemsKafkaListener {
   private static final Logger log = LoggerFactory.getLogger(ItemsKafkaListener.class);
   private final ApplicationEventPublisher applicationEventPublisher;
   private final IItemsRepository itemRepository;
-  private final IOrderItemsRepository orderItemsRepository;
-  private final IItemsMapper itemMapper;
 
   public ItemsKafkaListener(ApplicationEventPublisher applicationEventPublisher,
-      IItemsRepository itemRepository, IOrderItemsRepository orderItemsRepository,
-      IItemsMapper itemMapper) {
+      IItemsRepository itemRepository) {
     this.applicationEventPublisher = applicationEventPublisher;
     this.itemRepository = itemRepository;
-    this.orderItemsRepository = orderItemsRepository;
-    this.itemMapper = itemMapper;
   }
 
   @RetryableTopic(attempts = Constants.S_VAL_1, dltStrategy = DltStrategy.NO_DLT)
@@ -54,14 +49,22 @@ public class ItemsKafkaListener {
       event.setIdOrderItemsOriginal(item.getOrderItemsEntity().getId().toString());
       event.setName(message.getName());
       event.setPrice(message.getPrice());
+
       this.applicationEventPublisher.publishEvent(event);
 
-      this.orderItemsRepository.updateStatusById(ItemStatus.DISCARDED,
-          Methods.idValidation(message.getIdOrderItems()));
       throw new DuplicatedBarcodeException(message.getBarcode(), item.getId().toString());
     });
-    ItemsEntity data = this.itemMapper.mapMessageToEntity(message);
-    this.itemRepository.saveAndFlush(data);
+
+    ItemsEntity itemsEntity = new ItemsEntity();
+    itemsEntity.setName(message.getName());
+    itemsEntity.setPrice(message.getPrice());
+    itemsEntity.setBarcode(message.getBarcode());
+
+    OrderItemsEntity orderItemsEntity = new OrderItemsEntity();
+    orderItemsEntity.setId(UUID.fromString(message.getIdOrderItems()));
+    itemsEntity.setOrderItemsEntity(orderItemsEntity);
+
+    this.itemRepository.saveAndFlush(itemsEntity);
   }
 
   @RetryableTopic(attempts = Constants.S_VAL_1, dltStrategy = DltStrategy.NO_DLT)
@@ -69,6 +72,7 @@ public class ItemsKafkaListener {
       filter = "deleteItemsRecordFilter", concurrency = Constants.S_VAL_3)
   public void delete(KafkaMessageItemDTO message) {
     log.info("Received item to delete: '{}'", message);
+
     this.itemRepository.deleteById(Methods.idValidation(message.getId()));
   }
 }

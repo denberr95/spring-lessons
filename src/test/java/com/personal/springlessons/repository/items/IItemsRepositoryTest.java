@@ -9,7 +9,6 @@ import java.util.Optional;
 import com.personal.springlessons.model.entity.items.ItemsEntity;
 import com.personal.springlessons.model.entity.items.OrderItemsEntity;
 import com.personal.springlessons.model.lov.Channel;
-import com.personal.springlessons.model.lov.ItemStatus;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,8 +30,6 @@ class IItemsRepositoryTest {
   @BeforeEach
   void init() {
     OrderItemsEntity orderItemsEntity = new OrderItemsEntity();
-    orderItemsEntity.setQuantity(TOTAL);
-    orderItemsEntity.setStatus(ItemStatus.NA);
     orderItemsEntity.setChannel(Channel.NA);
     orderItemsEntity = this.orderItemsRepository.saveAndFlush(orderItemsEntity);
     for (int i = 0; i < TOTAL; i++) {

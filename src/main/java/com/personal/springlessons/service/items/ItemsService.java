@@ -2,23 +2,18 @@ package com.personal.springlessons.service.items;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-
-import com.personal.springlessons.component.mapper.IItemsMapper;
 import com.personal.springlessons.model.dto.ItemDTO;
+import com.personal.springlessons.model.dto.OrderItemsDTO;
 import com.personal.springlessons.model.dto.response.KafkaMessageItemDTO;
-import com.personal.springlessons.model.entity.items.ItemsEntity;
 import com.personal.springlessons.model.entity.items.OrderItemsEntity;
 import com.personal.springlessons.model.lov.Channel;
 import com.personal.springlessons.model.lov.ItemStatus;
-import com.personal.springlessons.repository.items.IItemsRepository;
 import com.personal.springlessons.repository.items.IOrderItemsRepository;
 import com.personal.springlessons.util.Constants;
 import com.personal.springlessons.util.Methods;
-
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
 import io.micrometer.tracing.Span;
 import io.micrometer.tracing.Tracer;
 import io.micrometer.tracing.annotation.NewSpan;
@@ -27,78 +22,93 @@ import io.micrometer.tracing.annotation.NewSpan;
 public class ItemsService {
 
   private final Tracer tracer;
-  private final IItemsMapper itemMapper;
-  private final IItemsRepository itemsRepository;
   private final IOrderItemsRepository orderItemsRepository;
   private final KafkaTemplate<String, KafkaMessageItemDTO> kafkaTemplate;
 
-  public ItemsService(Tracer tracer, IItemsMapper itemMapper, IItemsRepository itemsRepository,
-      IOrderItemsRepository orderItemsRepository,
+  public ItemsService(Tracer tracer, IOrderItemsRepository orderItemsRepository,
       KafkaTemplate<String, KafkaMessageItemDTO> kafkaTemplate) {
     this.tracer = tracer;
-    this.itemMapper = itemMapper;
-    this.itemsRepository = itemsRepository;
     this.orderItemsRepository = orderItemsRepository;
     this.kafkaTemplate = kafkaTemplate;
   }
 
   @NewSpan
-  public void upload(final List<ItemDTO> items, final Channel channel) {
+  public OrderItemsDTO upload(final OrderItemsDTO order, final Channel channel) {
     Span currentSpan = this.tracer.currentSpan();
-    currentSpan.tag(Constants.SPAN_KEY_NUMBER_ITEMS_TO_UPLOAD, items.size());
+    currentSpan.tag(Constants.SPAN_KEY_NUMBER_ITEMS_TO_UPLOAD, order.getItems().size());
+
+    OrderItemsDTO result = new OrderItemsDTO();
 
     OrderItemsEntity data = new OrderItemsEntity();
-    data.setQuantity(items.size());
-    data.setStatus(ItemStatus.UPLOAD);
     data.setChannel(channel);
-    OrderItemsEntity row = this.orderItemsRepository.saveAndFlush(data);
+    OrderItemsEntity saved = this.orderItemsRepository.saveAndFlush(data);
 
-    items.forEach(i -> {
-      KafkaMessageItemDTO message = this.itemMapper.mapMessage(i);
+    result.setId(saved.getId().toString());
+    result.setItems(order.getItems());
+
+    order.getItems().forEach(i -> {
+
+      KafkaMessageItemDTO message = new KafkaMessageItemDTO();
+      message.setBarcode(i.getBarcode());
+      message.setName(i.getName());
+      message.setPrice(i.getPrice());
       message.setItemStatus(ItemStatus.UPLOAD);
-      message.setIdOrderItems(row.getId().toString());
+      message.setIdOrderItems(saved.getId().toString());
+
       this.notifyKafkaItems(message, Constants.TOPIC_ITEMS);
     });
+
+    return result;
   }
 
   @NewSpan
-  public void delete(final List<ItemDTO> items, final Channel channel) {
+  public void delete(final OrderItemsDTO order, final Channel channel) {
     Span currentSpan = this.tracer.currentSpan();
-    currentSpan.tag(Constants.SPAN_KEY_NUMBER_ITEMS_TO_DELETE, items.size());
+    currentSpan.tag(Constants.SPAN_KEY_NUMBER_ITEMS_TO_DELETE, order.getItems().size());
 
-    OrderItemsEntity data = new OrderItemsEntity();
-    data.setQuantity(items.size());
-    data.setStatus(ItemStatus.DELETE);
-    data.setChannel(channel);
-    OrderItemsEntity row = this.orderItemsRepository.saveAndFlush(data);
+    order.getItems().forEach(i -> {
 
-    items.forEach(i -> {
-      KafkaMessageItemDTO message = this.itemMapper.mapMessage(i);
+      KafkaMessageItemDTO message = new KafkaMessageItemDTO();
+      message.setBarcode(i.getBarcode());
+      message.setName(i.getName());
+      message.setPrice(i.getPrice());
       message.setItemStatus(ItemStatus.DELETE);
-      message.setIdOrderItems(row.getId().toString());
+      message.setIdOrderItems(order.getId());
+
       this.notifyKafkaItems(message, Constants.TOPIC_ITEMS);
     });
   }
 
+  @Transactional(readOnly = true)
   @NewSpan
-  public List<ItemDTO> getAll() {
-    List<ItemsEntity> data = new ArrayList<>();
+  public List<OrderItemsDTO> getAll() {
     Span currentSpan = this.tracer.currentSpan();
+    List<OrderItemsDTO> result = new ArrayList<>();
     List<OrderItemsEntity> ordersData = this.orderItemsRepository.findAll();
     currentSpan.tag(Constants.SPAN_KEY_TOTAL_ORDERS, String.valueOf(ordersData.size()))
         .event("Orders retrieved");
 
     ordersData.forEach(i -> {
-      currentSpan.tag(Constants.SPAN_KEY_ID_ORDER_ITEMS, i.getId().toString());
-      Optional<List<ItemsEntity>> itemsData = this.itemsRepository.findByorderItemsEntity(i);
-      if (!itemsData.get().isEmpty()) {
-        data.addAll(itemsData.get());
-        currentSpan.tag(Constants.SPAN_KEY_COLLECTED_ITEMS, itemsData.get().size())
-            .event("Items collected");
-      }
+
+      OrderItemsDTO orderItemsDTO = new OrderItemsDTO();
+      orderItemsDTO.setId(i.getId().toString());
+      List<ItemDTO> items = new ArrayList<>(i.getItems().size());
+
+      i.getItems().forEach(x -> {
+
+        ItemDTO item = new ItemDTO();
+        item.setBarcode(x.getBarcode());
+        item.setId(x.getId().toString());
+        item.setName(x.getName());
+        item.setPrice(x.getPrice());
+        items.add(item);
+      });
+
+      orderItemsDTO.setItems(items);
+      orderItemsDTO.setQuantity(items.size());
+      result.add(orderItemsDTO);
     });
-    currentSpan.tag(Constants.SPAN_KEY_TOTAL_ITEMS, data.size());
-    return this.itemMapper.mapDTO(data);
+    return result;
   }
 
   private void notifyKafkaItems(KafkaMessageItemDTO message, String topic) {

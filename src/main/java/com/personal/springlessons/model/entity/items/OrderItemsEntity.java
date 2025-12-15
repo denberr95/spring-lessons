@@ -18,7 +18,6 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 import com.personal.springlessons.model.lov.Channel;
-import com.personal.springlessons.model.lov.ItemStatus;
 import com.personal.springlessons.util.Constants;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -29,7 +28,7 @@ import org.hibernate.annotations.SourceType;
 @Entity
 @DynamicInsert
 @DynamicUpdate
-@EntityListeners(value = OrderItemsEntityListener.class)
+@EntityListeners(OrderItemsEntityListener.class)
 @Table(name = OrderItemsEntity.TABLE_NAME, schema = Constants.DB_SCHEMA_SPRING_APP)
 public class OrderItemsEntity {
 
@@ -44,13 +43,6 @@ public class OrderItemsEntity {
   @Column(name = "created_at", nullable = false, updatable = false)
   private OffsetDateTime createdAt;
 
-  @Column(name = "quantity", nullable = false)
-  private Integer quantity;
-
-  @Enumerated(EnumType.STRING)
-  @Column(name = "status", nullable = false)
-  private ItemStatus status;
-
   @Enumerated(EnumType.STRING)
   @Column(name = "channel", nullable = false)
   private Channel channel;
@@ -60,14 +52,19 @@ public class OrderItemsEntity {
 
   public OrderItemsEntity() {}
 
-  public OrderItemsEntity(UUID id, OffsetDateTime createdAt, Integer quantity, ItemStatus status,
-      Channel channel, List<ItemsEntity> items) {
-    this.id = id;
-    this.createdAt = createdAt;
-    this.quantity = quantity;
-    this.status = status;
-    this.channel = channel;
-    this.items = items;
+  @Override
+  public int hashCode() {
+    return Objects.hash(this.id);
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null || this.getClass() != obj.getClass())
+      return false;
+    OrderItemsEntity other = (OrderItemsEntity) obj;
+    return Objects.equals(this.id, other.id);
   }
 
   public static String getTableName() {
@@ -90,22 +87,6 @@ public class OrderItemsEntity {
     this.createdAt = createdAt;
   }
 
-  public Integer getQuantity() {
-    return this.quantity;
-  }
-
-  public void setQuantity(Integer quantity) {
-    this.quantity = quantity;
-  }
-
-  public ItemStatus getStatus() {
-    return this.status;
-  }
-
-  public void setStatus(ItemStatus status) {
-    this.status = status;
-  }
-
   public Channel getChannel() {
     return this.channel;
   }
@@ -124,25 +105,7 @@ public class OrderItemsEntity {
 
   @Override
   public String toString() {
-    return "OrderItemsEntity [id=" + this.id + ", createdAt=" + this.createdAt + ", quantity="
-        + this.quantity + ", status=" + this.status + ", channel=" + this.channel + ", items="
-        + this.items + "]";
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(this.id);
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (this.getClass() != obj.getClass())
-      return false;
-    OrderItemsEntity other = (OrderItemsEntity) obj;
-    return Objects.equals(this.id, other.id);
+    return "OrderItemsEntity [id=" + this.id + ", createdAt=" + this.createdAt + ", channel="
+        + this.channel + ", items=" + this.items + "]";
   }
 }

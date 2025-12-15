@@ -37,13 +37,16 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.tags.Tags;
 
-@Tag(name = "Books V1")
+@Tags(value = {@Tag(name = "Books V1")})
 @Validated
 @RequestMapping(path = "/v1/books")
 public interface IBooksRestController {
 
+  @SecurityRequirement(name = "oauth2", scopes = "books:get")
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   @Operation(summary = "Get all books", operationId = "getAllBooksV1")
   @ApiResponse(responseCode = "200", description = "OK",
@@ -54,6 +57,7 @@ public interface IBooksRestController {
       content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
   ResponseEntity<List<BookDTO>> getAll();
 
+  @SecurityRequirement(name = "oauth2", scopes = "books:get")
   @GetMapping(path = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
   @Operation(summary = "Get a book by id", operationId = "getBookByIdV1")
   @ApiResponse(responseCode = "200", description = "OK",
@@ -66,6 +70,7 @@ public interface IBooksRestController {
       content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
   ResponseEntity<BookDTO> getById(@PathVariable final String id);
 
+  @SecurityRequirement(name = "oauth2", scopes = "books:create")
   @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   @Operation(summary = "Create a new book", operationId = "createBookV1")
   @ApiResponse(responseCode = "201", description = "Created",
@@ -81,6 +86,7 @@ public interface IBooksRestController {
   ResponseEntity<BookDTO> save(@Valid @RequestBody final BookDTO bookDTO,
       @RequestHeader final Channel channel);
 
+  @SecurityRequirement(name = "oauth2", scopes = "books:delete")
   @DeleteMapping(path = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
   @Operation(summary = "Delete a book", operationId = "deleteBookV1")
   @ApiResponse(responseCode = "204", description = "No Content",
@@ -96,6 +102,7 @@ public interface IBooksRestController {
   ResponseEntity<Void> delete(@PathVariable final String id,
       @RequestHeader(value = "If-Match") final String ifMatch);
 
+  @SecurityRequirement(name = "oauth2", scopes = "books:update")
   @PutMapping(path = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
   @Operation(summary = "Update a book", operationId = "updateBookV1")
   @ApiResponse(responseCode = "200", description = "OK",
@@ -115,6 +122,7 @@ public interface IBooksRestController {
       @Valid @RequestBody final BookDTO bookDTO, @RequestHeader final Channel channel,
       @RequestHeader(value = "If-Match") final String ifMatch);
 
+  @SecurityRequirement(name = "oauth2", scopes = "books:download")
   @GetMapping(path = "download")
   @Operation(summary = "Download books in a csv file", operationId = "downloadBooksV1")
   @ApiResponse(responseCode = "200", description = "OK",
@@ -125,6 +133,7 @@ public interface IBooksRestController {
           mediaType = MediaType.APPLICATION_JSON_VALUE)})
   ResponseEntity<byte[]> download();
 
+  @SecurityRequirement(name = "oauth2", scopes = "books:upload")
   @PostMapping(path = "upload", produces = MediaType.APPLICATION_JSON_VALUE,
       consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   @Operation(summary = "Upload books from a csv file", operationId = "uploadBooksV1")

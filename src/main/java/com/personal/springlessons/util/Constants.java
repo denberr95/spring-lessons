@@ -9,7 +9,6 @@ public final class Constants {
   // Span Key Tag
   public static final String SPAN_KEY_FILE_NAME = "file.name";
   public static final String SPAN_KEY_TOTAL_ORDERS = "total.orders";
-  public static final String SPAN_KEY_TOTAL_ITEMS = "total.items";
   public static final String SPAN_KEY_TOTAL_BOOKS = "total.books";
   public static final String SPAN_KEY_TOTAL_ROWS = "total.rows";
   public static final String SPAN_KEY_TOTAL_INVALID_ROWS = "total.invalid.rows";
@@ -21,7 +20,7 @@ public final class Constants {
   public static final String SPAN_KEY_ID_ORDER_ITEMS = "id.order.items";
   public static final String SPAN_KEY_ID_BOOKS = "id.books";
   public static final String SPAN_KEY_COLLECTED_ITEMS = "collected.items";
-  public static final String SPAN_KEY_EMAIL = "email";
+  public static final String SPAN_KEY_EMAIL_TO = "email.to";
 
   // Database schemas
   public static final String DB_SCHEMA_SPRING_APP = "SPRING_APP";
@@ -45,6 +44,7 @@ public final class Constants {
   public static final int I_VAL_100 = 100;
 
   // String Values
+  public static final String S_VAL_0_01 = "0.01";
   public static final String S_VAL_1 = "1";
   public static final String S_VAL_3 = "3";
   public static final String S_VAL_9999_99 = "9999.99";

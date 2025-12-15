@@ -1,14 +1,10 @@
 package com.personal.springlessons.repository.items;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import com.personal.springlessons.model.entity.items.OrderItemsEntity;
 import com.personal.springlessons.model.lov.Channel;
-import com.personal.springlessons.model.lov.ItemStatus;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -24,8 +20,6 @@ class IOrderItemsRepositoryTest {
   void init() {
     for (int i = 0; i < TOTAL; i++) {
       OrderItemsEntity entity = new OrderItemsEntity();
-      entity.setQuantity(9_999);
-      entity.setStatus(ItemStatus.NA);
       entity.setChannel(Channel.NA);
       this.orderItemsRepository.save(entity);
     }
@@ -36,13 +30,4 @@ class IOrderItemsRepositoryTest {
     this.orderItemsRepository.deleteAll();
   }
 
-  @Test
-  void givenExistingOrderItemsId_whenUpdateStatus_thenStatusUpdated() {
-    OrderItemsEntity row = this.orderItemsRepository.findAll().get(0);
-    int totalRowsUpdated =
-        this.orderItemsRepository.updateStatusById(ItemStatus.DISCARDED, row.getId());
-    assertEquals(1, totalRowsUpdated);
-    OrderItemsEntity actual = this.orderItemsRepository.findById(row.getId()).get();
-    assertEquals(ItemStatus.DISCARDED, actual.getStatus());
-  }
 }

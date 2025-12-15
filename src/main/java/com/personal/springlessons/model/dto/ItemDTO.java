@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -15,7 +16,9 @@ public class ItemDTO {
 
   private String id;
 
-  @NotNull(message = Constants.ERROR_MSG_NOT_BLANK) @Positive(message = Constants.ERROR_MSG_POSITIVE_VALUE) @DecimalMax(value = Constants.S_VAL_9999_99, inclusive = true,
+  @NotNull(message = Constants.ERROR_MSG_NOT_BLANK) @Positive(message = Constants.ERROR_MSG_POSITIVE_VALUE) @DecimalMin(value = Constants.S_VAL_0_01, inclusive = true,
+      message = Constants.ERROR_MSG_MIN_VALUE)
+  @DecimalMax(value = Constants.S_VAL_9999_99, inclusive = true,
       message = Constants.ERROR_MSG_MAX_VALUE)
   private BigDecimal price;
 

@@ -13,5 +13,5 @@ public interface IItemsRepository extends JpaRepository<ItemsEntity, UUID> {
 
   Optional<ItemsEntity> findByBarcode(String barcode);
 
-  Optional<List<ItemsEntity>> findByorderItemsEntity(OrderItemsEntity orderItemsEntity);
+  Optional<List<ItemsEntity>> findByOrderItemsEntity(OrderItemsEntity orderItemsEntity);
 }

@@ -27,9 +27,9 @@ import org.hibernate.generator.EventType;
 @Entity
 @DynamicInsert
 @DynamicUpdate
-@EntityListeners(value = ItemsEntityListener.class)
+@EntityListeners(ItemsEntityListener.class)
 @Table(name = ItemsEntity.TABLE_NAME, schema = Constants.DB_SCHEMA_SPRING_APP,
-    uniqueConstraints = {@UniqueConstraint(columnNames = "barcode")})
+    uniqueConstraints = @UniqueConstraint(columnNames = "barcode"))
 public class ItemsEntity {
 
   public static final String TABLE_NAME = "items";
@@ -42,10 +42,6 @@ public class ItemsEntity {
   @CurrentTimestamp(source = SourceType.DB, event = EventType.INSERT)
   @Column(name = "created_at", nullable = false, updatable = false)
   private OffsetDateTime createdAt;
-
-  @CurrentTimestamp(source = SourceType.VM, event = EventType.UPDATE)
-  @Column(name = "updated_at")
-  private OffsetDateTime updatedAt;
 
   @Column(name = "price", precision = Constants.I_VAL_6, scale = Constants.I_VAL_2,
       nullable = false)
@@ -61,11 +57,10 @@ public class ItemsEntity {
   @JoinColumn(name = "fk_order_items_id", referencedColumnName = "id", nullable = false)
   private OrderItemsEntity orderItemsEntity;
 
-  public ItemsEntity(UUID id, OffsetDateTime createdAt, OffsetDateTime updatedAt, BigDecimal price,
-      String name, String barcode, OrderItemsEntity orderItemsEntity) {
+  public ItemsEntity(UUID id, OffsetDateTime createdAt, BigDecimal price, String name,
+      String barcode, OrderItemsEntity orderItemsEntity) {
     this.id = id;
     this.createdAt = createdAt;
-    this.updatedAt = updatedAt;
     this.price = price;
     this.name = name;
     this.barcode = barcode;
@@ -73,6 +68,27 @@ public class ItemsEntity {
   }
 
   public ItemsEntity() {}
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(this.id);
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null || this.getClass() != obj.getClass())
+      return false;
+    ItemsEntity other = (ItemsEntity) obj;
+    return Objects.equals(this.id, other.id);
+  }
+
+  @Override
+  public String toString() {
+    return "ItemsEntity [id=" + this.id + ", createdAt=" + this.createdAt + ", price=" + this.price
+        + ", name=" + this.name + ", barcode=" + this.barcode + "]";
+  }
 
   public static String getTableName() {
     return TABLE_NAME;
@@ -92,14 +108,6 @@ public class ItemsEntity {
 
   public void setCreatedAt(OffsetDateTime createdAt) {
     this.createdAt = createdAt;
-  }
-
-  public OffsetDateTime getUpdatedAt() {
-    return this.updatedAt;
-  }
-
-  public void setUpdatedAt(OffsetDateTime updatedAt) {
-    this.updatedAt = updatedAt;
   }
 
   public BigDecimal getPrice() {
@@ -132,29 +140,5 @@ public class ItemsEntity {
 
   public void setOrderItemsEntity(OrderItemsEntity orderItemsEntity) {
     this.orderItemsEntity = orderItemsEntity;
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(this.id);
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (this.getClass() != obj.getClass())
-      return false;
-    ItemsEntity other = (ItemsEntity) obj;
-    return Objects.equals(this.id, other.id);
-  }
-
-  @Override
-  public String toString() {
-    return "ItemsEntity [id=" + this.id + ", createdAt=" + this.createdAt + ", updatedAt="
-        + this.updatedAt + ", price=" + this.price + ", name=" + this.name + ", barcode="
-        + this.barcode + "]";
   }
 }
