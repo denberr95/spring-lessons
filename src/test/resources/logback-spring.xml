@@ -36,11 +36,12 @@
 
     <logger name="com.personal.springlessons" level="TRACE" />
     <logger name="org.springframework" level="INFO" />
-    <logger name="io.undertow" level="INFO" />
+    <logger name="org.eclipse" level="INFO" />
     <logger name="io.micrometer" level="INFO" />
     <logger name="io.opentelemetry" level="INFO" />
     <logger name="org.flywaydb" level="INFO" />
     <logger name="org.hibernate" level="ERROR" />
+    <logger name="org.apache" level="INFO" />
 
     <root level="ERROR">
         <appender-ref ref="CONSOLE-TEXT" />

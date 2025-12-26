@@ -10,7 +10,8 @@
     <variable name="LOG_LEVEL_IO_MICROMETER" value="${LOG_LEVEL_IO_MICROMETER:-INFO}" />
     <variable name="LOG_LEVEL_IO_OPENTELEMETRY" value="${LOG_LEVEL_IO_OPENTELEMETRY:-INFO}" />
     <variable name="LOG_LEVEL_ORG_FLYWAYDB" value="${LOG_LEVEL_ORG_FLYWAYDB:-INFO}" />
-    <variable name="LOG_LEVEL_ORG_HIBERNATE" value="${LOG_LEVEL_ORG_HIBERNATE:-ERROR}" />
+    <variable name="LOG_LEVEL_ORG_HIBERNATE" value="${LOG_LEVEL_ORG_HIBERNATE:-INFO}" />
+    <variable name="LOG_LEVEL_ORG_APACHE" value="${LOG_LEVEL_ORG_APACHE:-INFO}" />
 
     <appender name="CONSOLE-TEXT" class="ch.qos.logback.core.ConsoleAppender">
         <withJansi>false</withJansi>
@@ -83,6 +84,7 @@
     <logger name="io.opentelemetry" level="${LOG_LEVEL_IO_OPENTELEMETRY}" />
     <logger name="org.flywaydb" level="${LOG_LEVEL_ORG_FLYWAYDB}" />
     <logger name="org.hibernate" level="${LOG_LEVEL_ORG_HIBERNATE}" />
+    <logger name="org.apache" level="${LOG_LEVEL_ORG_APACHE}" />
 
     <springProfile name="default">
         <root level="${LOG_LEVEL_ROOT}">

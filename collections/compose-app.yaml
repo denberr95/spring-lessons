@@ -119,6 +119,7 @@ services:
       - LOG_LEVEL_IO_OPENTELEMETRY=ERROR
       - LOG_LEVEL_ORG_FLYWAYDB=ERROR
       - LOG_LEVEL_ORG_HIBERNATE=ERROR
+      - LOG_LEVEL_ORG_APACHE=ERROR
     ports:
       - "10000:10000"  # serve web server
       - "10001:10001"  # serve actuator
