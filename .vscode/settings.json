@@ -1,16 +1,16 @@
 {
-  "java.test.config": [
-    {
-      "name": "linux",
-      "vmArgs": [
-        "-Dspring.profiles.active=default,linux"
-      ]
-    },
-    {
-      "name": "windows",
-      "vmArgs": [
-        "-Dspring.profiles.active=default,windows"
-      ]
-    }
-  ]
+    "java.test.config": [
+        {
+            "name": "linux",
+            "vmArgs": [
+                "-Dspring.profiles.active=default,linux"
+            ]
+        },
+        {
+            "name": "windows",
+            "vmArgs": [
+                "-Dspring.profiles.active=default,windows"
+            ]
+        }
+    ]
 }

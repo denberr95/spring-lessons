@@ -1,17 +1,17 @@
 package com.personal.springlessons.controller.items;
 
-import java.util.List;
-
 import jakarta.validation.Valid;
 
-import com.personal.springlessons.model.dto.ItemDTO;
 import com.personal.springlessons.model.dto.OrderItemsDTO;
 import com.personal.springlessons.model.dto.response.GenericErrorResponseDTO;
 import com.personal.springlessons.model.dto.response.InvalidArgumentTypeResponseDTO;
 import com.personal.springlessons.model.dto.response.NotReadableBodyRequestResponseDTO;
 import com.personal.springlessons.model.dto.response.ValidationRequestErrorResponseDTO;
+import com.personal.springlessons.model.dto.wrapper.OrderItemsWrapperDTO;
 import com.personal.springlessons.model.lov.Channel;
 
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -66,10 +66,11 @@ public interface IItemsRestController {
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   @Operation(summary = "Get all items", operationId = "getAllItemsV1")
   @ApiResponse(responseCode = "200", description = "OK",
-      content = {@Content(array = @ArraySchema(schema = @Schema(implementation = ItemDTO.class)))})
+      content = {@Content(
+          array = @ArraySchema(schema = @Schema(implementation = OrderItemsWrapperDTO.class)))})
   @ApiResponse(responseCode = "204", description = "No Content",
       content = {@Content(schema = @Schema(implementation = Void.class))})
   @ApiResponse(responseCode = "500", description = "Internal Server Error",
       content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
-  ResponseEntity<List<OrderItemsDTO>> getAll();
+  ResponseEntity<OrderItemsWrapperDTO> getAll(@ParameterObject Pageable pageable);
 }

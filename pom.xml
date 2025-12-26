@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>4.0.0</version>
+        <version>4.0.1</version>
         <relativePath />
     </parent>
     <groupId>com.personal</groupId>
@@ -23,7 +23,9 @@
         <opencsv.version>5.12.0</opencsv.version>
         <org.springdoc.version>2.8.14</org.springdoc.version>
         <spring.cloud.version>2025.1.0</spring.cloud.version>
-        <spotless-maven-plugin.version>3.0.0</spotless-maven-plugin.version>
+        <spotless-maven-plugin.version>3.1.0</spotless-maven-plugin.version>
+        <jaxb2-maven-plugin.version>4.0.0</jaxb2-maven-plugin.version>
+        <xmlschema-core.version>2.3.2</xmlschema-core.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -82,6 +84,10 @@
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-envers</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-kafka</artifactId>
         </dependency>
@@ -96,6 +102,16 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-flyway</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>wsdl4j</groupId>
+            <artifactId>wsdl4j</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.ws.xmlschema</groupId>
+            <artifactId>xmlschema-core</artifactId>
+            <version>${xmlschema-core.version}</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -135,6 +151,10 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webservices</artifactId>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
@@ -240,6 +260,10 @@
             <version>${awaitility.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webservices-test</artifactId>
+        </dependency>
     </dependencies>
     <build>
         <finalName>app</finalName>
@@ -343,11 +367,6 @@
                         <eclipse>
                             <file>https://raw.githubusercontent.com/google/styleguide/gh-pages/eclipse-java-google-style.xml</file>
                         </eclipse>
-                        <!-- <googleJavaFormat>
-                            <version>1.29.0</version>
-                            <style>GOOGLE</style>
-                            <formatJavadoc>false</formatJavadoc>
-                        </googleJavaFormat> -->
                         <indent>
                             <spaces>true</spaces>
                         </indent>
@@ -377,6 +396,30 @@
                             <goal>check</goal>
                         </goals>
                         <phase>compile</phase>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jaxb2-maven-plugin</artifactId>
+                <version>${jaxb2-maven-plugin.version}</version>
+                <configuration>
+                    <xjbSources>
+                        <xjbSource>src/main/resources/xjb/bindings.xjb</xjbSource>
+                    </xjbSources>
+                    <sources>
+                        <source>${project.basedir}/src/main/resources/schemas/PlatformHistory.xsd</source>
+                    </sources>
+                    <packageName>com.personal.springlessons.model.dto.platformhistory</packageName>
+                    <addGeneratedAnnotation>true</addGeneratedAnnotation>
+                    <verbose>true</verbose>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>xjc</id>
+                        <goals>
+                            <goal>xjc</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>

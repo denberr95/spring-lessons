@@ -2,7 +2,6 @@ package com.personal.springlessons.config;
 
 import com.personal.springlessons.component.access.CustomAccessDeniedHandler;
 import com.personal.springlessons.component.access.CustomAuthenticationEntryPoint;
-
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +18,7 @@ public class SecurityConfig {
   @Bean
   DefaultSecurityFilterChain configure(HttpSecurity http,
       CustomAccessDeniedHandler customAccessDeniedHandler,
-      CustomAuthenticationEntryPoint customAuthenticationEntryPoint) throws Exception {
+      CustomAuthenticationEntryPoint customAuthenticationEntryPoint) {
     http.exceptionHandling(exceptionHandling -> exceptionHandling
         .authenticationEntryPoint(customAuthenticationEntryPoint)
         .accessDeniedHandler(customAccessDeniedHandler))

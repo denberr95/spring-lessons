@@ -15,14 +15,14 @@
 | :-: | :-: |
 | Visual Studio Code | <https://code.visualstudio.com> |
 | Java 21 | <https://bell-sw.com/pages/downloads/> |
-| Git  | <https://git-scm.com> |
+| Git | <https://git-scm.com> |
 | Maven | <https://maven.apache.org> |
 | Podman | <https://podman.io> |
 | Podman Compose | <https://github.com/containers/podman-compose> |
 | Postman | <https://www.postman.com> |
 | Flyway | <https://flywaydb.org/> |
-| Apache Kafka| <https://kafka.apache.org/> |
-| Keycloak  | <https://www.keycloak.org/> |
+| Apache Kafka | <https://kafka.apache.org/> |
+| Keycloak | <https://www.keycloak.org/> |
 | OpenTelemetry | <https://opentelemetry.io/> |
 | Prometheus | <https://prometheus.io/> |
 | Grafana | <https://grafana.com/> |

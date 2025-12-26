@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:tns="http://personal.com/springlessons/history" targetNamespace="http://personal.com/springlessons/history" elementFormDefault="qualified">
+
+  <xs:element name="GetBookHistoryRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="bookId" type="xs:string" minOccurs="1" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="GetBookHistoryResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="OutcomeDTO" type="tns:OutcomeType" minOccurs="1" />
+        <xs:element name="RevisionsDTO" type="tns:BookRevisionType" minOccurs="0" maxOccurs="unbounded" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:simpleType name="ResultType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="OK" />
+      <xs:enumeration value="KO" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="EntityType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="BOOKS" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="OutcomeType">
+    <xs:sequence>
+      <xs:element name="result" type="tns:ResultType" minOccurs="1" />
+      <xs:element name="message" type="xs:string" minOccurs="0" />
+      <xs:element name="entity" type="tns:EntityType" minOccurs="1" />
+      <xs:element name="timestamp" type="xs:dateTime" minOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="BookRevisionType">
+    <xs:sequence>
+      <xs:element name="revisionId" type="xs:int" minOccurs="1" />
+      <xs:element name="timestamp" type="xs:dateTime" minOccurs="1" />
+      <xs:element name="username" type="xs:string" minOccurs="0" />
+      <xs:element name="clientId" type="xs:string" minOccurs="0" />
+      <xs:element name="ipAddress" type="xs:string" minOccurs="0" />
+      <xs:element name="requestURI" type="xs:string" minOccurs="0" />
+      <xs:element name="httpMethod" type="xs:string" minOccurs="0" />
+      <xs:element name="bookId" type="xs:string" minOccurs="1" />
+      <xs:element name="createdAt" type="xs:dateTime" minOccurs="1" />
+      <xs:element name="updatedAt" type="xs:dateTime" minOccurs="0" />
+      <xs:element name="bookName" type="xs:string" minOccurs="1" />
+      <xs:element name="publicationDate" type="xs:date" minOccurs="1" />
+      <xs:element name="numberOfPages" type="xs:int" minOccurs="1" />
+      <xs:element name="channel" type="xs:string" minOccurs="1" />
+      <xs:element name="genre" type="xs:string" minOccurs="1" />
+      <xs:element name="version" type="xs:long" minOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>

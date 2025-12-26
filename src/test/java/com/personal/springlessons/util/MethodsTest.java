@@ -2,6 +2,7 @@ package com.personal.springlessons.util;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -60,6 +61,13 @@ class MethodsTest {
   void givenInvalidId_whenIdValidation_thenThrowInvalidUUIDException() {
     assertThrows(InvalidUUIDException.class, () -> {
       Methods.idValidation("fakeId");
+    });
+  }
+
+  @Test
+  void givenNullId_whenIdValidation_thenThrowInvalidUUIDException() {
+    assertThrows(InvalidUUIDException.class, () -> {
+      Methods.idValidation(null);
     });
   }
 
@@ -132,5 +140,48 @@ class MethodsTest {
     String version = "ABC";
     String actual = Methods.getEtag("\"ABC\"");
     assertThat(actual).isEqualTo(version);
+  }
+
+  @Test
+  void givenOnlyNulls_whenFirstNonBlank_thenReturnNull() {
+    String[] values = {null, null};
+    String result = Methods.firstNonBlank(values);
+    assertNull(result);
+  }
+
+  @Test
+  void givenOnlyBlankValues_whenFirstNonBlank_thenReturnNull() {
+    String[] values = {"", "   ", "\t", "\n"};
+    String result = Methods.firstNonBlank(values);
+    assertNull(result);
+  }
+
+  @Test
+  void givenSingleNonBlankValue_whenFirstNonBlank_thenReturnValue() {
+    String[] values = {"value"};
+    String result = Methods.firstNonBlank(values);
+    assertEquals("value", result);
+  }
+
+
+  @Test
+  void givenNullAndBlankBeforeNonBlank_whenFirstNonBlank_thenReturnFirstNonBlank() {
+    String[] values = {null, "", "   ", "first", "second"};
+    String result = Methods.firstNonBlank(values);
+    assertEquals("first", result);
+  }
+
+  @Test
+  void givenMultipleNonBlankValues_whenFirstNonBlank_thenReturnFirst() {
+    String[] values = {"one", "two", "three"};
+    String result = Methods.firstNonBlank(values);
+    assertEquals("one", result);
+  }
+
+  @Test
+  void givenNullArray_whenFirstNonBlank_thenReturnNull() {
+    String[] values = null;
+    String result = Methods.firstNonBlank(values);
+    assertNull(result);
   }
 }

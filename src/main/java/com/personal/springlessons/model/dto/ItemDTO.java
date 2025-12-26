@@ -31,11 +31,14 @@ public class ItemDTO {
   @NotBlank(message = Constants.ERROR_MSG_NOT_BLANK) private String barcode;
 
   public ItemDTO(String id,
-      @NotNull(message = Constants.ERROR_MSG_NOT_BLANK) @Positive(message = Constants.ERROR_MSG_POSITIVE_VALUE) @DecimalMax(value = Constants.S_VAL_9999_99, inclusive = true,
+      @NotNull(message = Constants.ERROR_MSG_NOT_BLANK) @Positive(message = Constants.ERROR_MSG_POSITIVE_VALUE) @DecimalMin(value = Constants.S_VAL_0_01, inclusive = true,
+          message = Constants.ERROR_MSG_MIN_VALUE)
+      @DecimalMax(value = Constants.S_VAL_9999_99, inclusive = true,
           message = Constants.ERROR_MSG_MAX_VALUE) BigDecimal price,
-      @NotBlank(message = Constants.ERROR_MSG_NOT_BLANK) @Size(min = Constants.I_VAL_1,
-          max = Constants.I_VAL_100, message = Constants.ERROR_MSG_LEN_VALIDATION) String name,
-      @Size(min = Constants.I_VAL_1, max = Constants.I_VAL_100,
+      @Size(min = Constants.I_VAL_1, max = Constants.I_VAL_50,
+          message = Constants.ERROR_MSG_LEN_VALIDATION)
+      @NotBlank(message = Constants.ERROR_MSG_NOT_BLANK) String name,
+      @Size(min = Constants.I_VAL_1, max = Constants.I_VAL_50,
           message = Constants.ERROR_MSG_LEN_VALIDATION)
       @NotBlank(message = Constants.ERROR_MSG_NOT_BLANK) String barcode) {
     this.id = id;

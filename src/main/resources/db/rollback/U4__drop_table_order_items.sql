@@ -1,0 +1,1 @@
+DROP TABLE IF EXISTS spring_app.order_items;

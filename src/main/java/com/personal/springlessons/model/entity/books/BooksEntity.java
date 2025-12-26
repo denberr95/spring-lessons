@@ -25,17 +25,21 @@ import org.hibernate.annotations.CurrentTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.SourceType;
+import org.hibernate.envers.Audited;
 import org.hibernate.generator.EventType;
 
 @Entity
+@Audited
 @DynamicInsert
 @DynamicUpdate
 @EntityListeners(value = BooksEntityListener.class)
-@Table(name = BooksEntity.TABLE_NAME, schema = Constants.DB_SCHEMA_SPRING_APP, uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"name", "publication_date", "number_of_pages"})})
+@Table(name = BooksEntity.TABLE_NAME, schema = Constants.DB_SCHEMA_SPRING_APP,
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"name", "publication_date", "number_of_pages"},
+            name = "uk_books_name_pub_date_pages")})
 public class BooksEntity {
 
-  public static final String TABLE_NAME = "books";
+  protected static final String TABLE_NAME = "books";
 
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)

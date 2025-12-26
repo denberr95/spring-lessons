@@ -32,6 +32,9 @@ public final class Methods {
   public static UUID idValidation(String id) {
     log.debug("UUID to validate: '{}'", id);
     UUID result = null;
+    if (id == null || id.isBlank()) {
+      throw new InvalidUUIDException(id);
+    }
     try {
       result = UUID.fromString(id);
     } catch (IllegalArgumentException e) {
@@ -136,6 +139,21 @@ public final class Methods {
       result = value.replace(Constants.S_DOUBLE_QUOTE, Constants.S_EMPTY);
     }
     log.debug("ETag value retrieved: '{}'", result);
+    return result;
+  }
+
+  public static String firstNonBlank(String... values) {
+    log.debug("Retrieve first non blank value");
+    String result = null;
+    if (values != null && values.length > 0) {
+      for (String value : values) {
+        if (value != null && !value.isBlank()) {
+          result = value;
+          break;
+        }
+      }
+    }
+    log.debug("First non blank value retrieved: '{}'", result);
     return result;
   }
 

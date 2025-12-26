@@ -4,10 +4,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import jakarta.persistence.OptimisticLockException;
 import jakarta.validation.ConstraintViolation;
@@ -33,14 +37,22 @@ import com.personal.springlessons.model.dto.BookDTO;
 import com.personal.springlessons.model.dto.CsvRowValidationDTO;
 import com.personal.springlessons.model.dto.DownloadFileDTO;
 import com.personal.springlessons.model.dto.InvalidCsvDTO;
+import com.personal.springlessons.model.dto.platformhistory.BookRevisionType;
+import com.personal.springlessons.model.dto.platformhistory.EntityType;
+import com.personal.springlessons.model.dto.platformhistory.GetBookHistoryRequest;
+import com.personal.springlessons.model.dto.platformhistory.GetBookHistoryResponse;
+import com.personal.springlessons.model.dto.platformhistory.OutcomeType;
+import com.personal.springlessons.model.dto.platformhistory.ResultType;
 import com.personal.springlessons.model.dto.wrapper.BooksWrapperDTO;
 import com.personal.springlessons.model.entity.books.BooksEntity;
+import com.personal.springlessons.model.entity.revision.CustomRevisionEntity;
 import com.personal.springlessons.model.lov.Channel;
 import com.personal.springlessons.repository.books.IBooksRepository;
 import com.personal.springlessons.util.Constants;
 import com.personal.springlessons.util.Methods;
 
 import org.springframework.dao.OptimisticLockingFailureException;
+import org.springframework.data.history.Revisions;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
@@ -74,15 +86,15 @@ public class BooksService {
     MultiValueMap<String, String> httpHeaders;
 
     List<BooksEntity> bookEntities = this.bookRepository.findAll();
+    List<BookDTO> httpBody = this.bookMapper.mapDTO(bookEntities);
+
+    httpHeaders = Methods.addTotalRecord(httpBody.size());
+
+    result.setBookDTOs(httpBody);
+    result.setHttpHeaders(httpHeaders);
 
     currentSpan.tag(Constants.SPAN_KEY_TOTAL_BOOKS, String.valueOf(bookEntities.size()))
         .event("Books retrieved");
-
-    List<BookDTO> bookDTOs = this.bookMapper.mapDTO(bookEntities);
-    httpHeaders = Methods.addTotalRecord(bookDTOs.size());
-
-    result.setBookDTOs(bookDTOs);
-    result.setHttpHeaders(httpHeaders);
     return result;
   }
 
@@ -94,14 +106,14 @@ public class BooksService {
 
     BooksEntity bookEntity = this.bookRepository.findById(Methods.idValidation(id))
         .orElseThrow(() -> new BookNotFoundException(id));
-
-    currentSpan.event("Book retrieved");
-
     BookDTO httpBody = this.bookMapper.mapDTO(bookEntity);
+
     httpHeaders = Methods.addEtag(bookEntity.getVersion());
 
     result.setBookDTO(httpBody);
     result.setHttpHeaders(httpHeaders);
+
+    currentSpan.event("Book retrieved");
     return result;
   }
 
@@ -119,14 +131,14 @@ public class BooksService {
     BooksEntity bookEntity = this.bookMapper.mapEntity(bookDTO, channel);
     bookEntity = this.bookRepository.saveAndFlush(bookEntity);
 
-    currentSpan.tag(Constants.SPAN_KEY_ID_BOOKS, bookEntity.getId().toString())
-        .event("Book created");
-
     BookDTO httpBody = this.bookMapper.mapDTO(bookEntity);
     httpHeaders = Methods.addEtag(bookEntity.getVersion());
 
     result.setBookDTO(httpBody);
     result.setHttpHeaders(httpHeaders);
+
+    currentSpan.tag(Constants.SPAN_KEY_ID_BOOKS, bookEntity.getId().toString())
+        .event("Book created");
     return result;
   }
 
@@ -137,7 +149,10 @@ public class BooksService {
     BooksEntity bookEntity = this.bookRepository.findById(Methods.idValidation(id))
         .orElseThrow(() -> new BookNotFoundException(id));
 
-    if (!bookEntity.getVersion().toString().equals(Methods.getEtag(ifMatch))) {
+    boolean etagMatches = bookEntity.getVersion() != null
+        && bookEntity.getVersion().toString().equals(Methods.getEtag(ifMatch));
+
+    if (!etagMatches) {
       throw new ConcurrentUpdateException(id, ifMatch);
     }
 
@@ -167,19 +182,20 @@ public class BooksService {
         });
 
     try {
-      bookEntity = this.bookMapper.update(bookDTO, channel, bookEntity, ifMatch);
+      String version = Methods.getEtag(ifMatch);
+      bookEntity = this.bookMapper.update(bookDTO, channel, bookEntity, version);
       bookEntity = this.bookRepository.saveAndFlush(bookEntity);
     } catch (OptimisticLockingFailureException | OptimisticLockException e) {
       throw new ConcurrentUpdateException(id, ifMatch);
     }
-
-    currentSpan.event("Book updated");
 
     BookDTO httpBody = this.bookMapper.mapDTO(bookEntity);
     httpHeaders = Methods.addEtag(bookEntity.getVersion());
 
     result.setBookDTO(httpBody);
     result.setHttpHeaders(httpHeaders);
+
+    currentSpan.event("Book updated");
     return result;
   }
 
@@ -256,6 +272,65 @@ public class BooksService {
     } catch (Exception e) {
       throw new SpringLessonsApplicationException(e);
     }
+  }
+
+  @NewSpan
+  public GetBookHistoryResponse getBookHistory(GetBookHistoryRequest getBookHistoryRequest) {
+    Span currentSpan = this.tracer.currentSpan();
+    GetBookHistoryResponse result = new GetBookHistoryResponse();
+
+    String bookId = getBookHistoryRequest.getBookId();
+    currentSpan.tag(Constants.SPAN_KEY_ID_BOOKS, bookId);
+
+    UUID id = Methods.idValidation(bookId);
+
+    try {
+      Revisions<Long, BooksEntity> revisions = this.bookRepository.findRevisions(id);
+      List<BookRevisionType> revisionsDTO = new ArrayList<>();
+      revisions.forEach(e -> {
+        BookRevisionType item = new BookRevisionType();
+        CustomRevisionEntity customRevisionEntity =
+            (CustomRevisionEntity) e.getMetadata().getDelegate();
+        BooksEntity booksEntity = e.getEntity();
+
+        item.setBookId(booksEntity.getId().toString());
+        item.setBookName(booksEntity.getName());
+        item.setChannel(booksEntity.getChannel().toString());
+        item.setNumberOfPages(booksEntity.getNumberOfPages());
+        item.setPublicationDate(booksEntity.getPublicationDate());
+        item.setCreatedAt(booksEntity.getCreatedAt());
+        item.setUpdatedAt(booksEntity.getUpdatedAt());
+        item.setGenre(booksEntity.getGenre().toString());
+        item.setVersion(booksEntity.getVersion());
+
+        item.setRevisionId(customRevisionEntity.getRev());
+        item.setTimestamp(Instant.ofEpochMilli(customRevisionEntity.getRevtstmp())
+            .atZone(ZoneId.systemDefault()).toOffsetDateTime());
+        item.setClientId(customRevisionEntity.getClientId());
+        item.setUsername(customRevisionEntity.getUsername());
+        item.setHttpMethod(customRevisionEntity.getHttpMethod());
+        item.setRequestURI(customRevisionEntity.getRequestUri());
+        item.setIpAddress(customRevisionEntity.getIpAddress());
+
+        revisionsDTO.add(item);
+      });
+
+      OutcomeType outcomeType = new OutcomeType();
+      outcomeType.setResult(ResultType.OK);
+      outcomeType.setEntity(EntityType.BOOKS);
+      outcomeType.setTimestamp(OffsetDateTime.now());
+
+      String msg = revisionsDTO.isEmpty() ? "No history found for the given book ID"
+          : "History found for the given book ID";
+      outcomeType.setMessage(msg);
+
+      result.setOutcomeDTO(outcomeType);
+      result.getRevisionsDTO().addAll(revisionsDTO);
+    } catch (Exception e) {
+      throw new SpringLessonsApplicationException(e.getMessage(), e);
+    }
+    currentSpan.event("Book history retrieved");
+    return result;
   }
 
   private void persistCsvContent(final Channel channel, List<BookDTO> booksDTO) {

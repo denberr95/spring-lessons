@@ -50,6 +50,14 @@ public class OrderItemsEntity {
   @OneToMany(mappedBy = "orderItemsEntity", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<ItemsEntity> items;
 
+  public OrderItemsEntity(UUID id, OffsetDateTime createdAt, Channel channel,
+      List<ItemsEntity> items) {
+    this.id = id;
+    this.createdAt = createdAt;
+    this.channel = channel;
+    this.items = items;
+  }
+
   public OrderItemsEntity() {}
 
   @Override

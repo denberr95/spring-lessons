@@ -8,13 +8,13 @@ import java.util.UUID;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 
 import com.personal.springlessons.util.Constants;
 
@@ -28,11 +28,10 @@ import org.hibernate.generator.EventType;
 @DynamicInsert
 @DynamicUpdate
 @EntityListeners(ItemsEntityListener.class)
-@Table(name = ItemsEntity.TABLE_NAME, schema = Constants.DB_SCHEMA_SPRING_APP,
-    uniqueConstraints = @UniqueConstraint(columnNames = "barcode"))
+@Table(name = ItemsEntity.TABLE_NAME, schema = Constants.DB_SCHEMA_SPRING_APP)
 public class ItemsEntity {
 
-  public static final String TABLE_NAME = "items";
+  protected static final String TABLE_NAME = "items";
 
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
@@ -50,11 +49,13 @@ public class ItemsEntity {
   @Column(name = "name", nullable = false, length = Constants.I_VAL_100)
   private String name;
 
-  @Column(name = "barcode", nullable = false, updatable = false, length = Constants.I_VAL_50)
+  @Column(name = "barcode", nullable = false, updatable = false, length = Constants.I_VAL_50,
+      unique = true)
   private String barcode;
 
   @ManyToOne
-  @JoinColumn(name = "fk_order_items_id", referencedColumnName = "id", nullable = false)
+  @JoinColumn(name = "order_items_id", referencedColumnName = "id", nullable = false,
+      foreignKey = @ForeignKey(name = "fk_order_items_id"))
   private OrderItemsEntity orderItemsEntity;
 
   public ItemsEntity(UUID id, OffsetDateTime createdAt, BigDecimal price, String name,

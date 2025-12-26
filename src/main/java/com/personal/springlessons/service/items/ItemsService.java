@@ -1,19 +1,25 @@
 package com.personal.springlessons.service.items;
 
-import java.util.ArrayList;
 import java.util.List;
+
 import com.personal.springlessons.model.dto.ItemDTO;
 import com.personal.springlessons.model.dto.OrderItemsDTO;
 import com.personal.springlessons.model.dto.response.KafkaMessageItemDTO;
+import com.personal.springlessons.model.dto.wrapper.OrderItemsWrapperDTO;
 import com.personal.springlessons.model.entity.items.OrderItemsEntity;
 import com.personal.springlessons.model.lov.Channel;
 import com.personal.springlessons.model.lov.ItemStatus;
 import com.personal.springlessons.repository.items.IOrderItemsRepository;
 import com.personal.springlessons.util.Constants;
 import com.personal.springlessons.util.Methods;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.messaging.Message;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import io.micrometer.tracing.Span;
 import io.micrometer.tracing.Tracer;
 import io.micrometer.tracing.annotation.NewSpan;
@@ -74,6 +80,7 @@ public class ItemsService {
       message.setPrice(i.getPrice());
       message.setItemStatus(ItemStatus.DELETE);
       message.setIdOrderItems(order.getId());
+      message.setId(i.getId());
 
       this.notifyKafkaItems(message, Constants.TOPIC_ITEMS);
     });
@@ -81,40 +88,50 @@ public class ItemsService {
 
   @Transactional(readOnly = true)
   @NewSpan
-  public List<OrderItemsDTO> getAll() {
+  public OrderItemsWrapperDTO getAll(Pageable pageable) {
     Span currentSpan = this.tracer.currentSpan();
-    List<OrderItemsDTO> result = new ArrayList<>();
-    List<OrderItemsEntity> ordersData = this.orderItemsRepository.findAll();
-    currentSpan.tag(Constants.SPAN_KEY_TOTAL_ORDERS, String.valueOf(ordersData.size()))
-        .event("Orders retrieved");
+    OrderItemsWrapperDTO result = new OrderItemsWrapperDTO();
+    Page<OrderItemsEntity> page = this.orderItemsRepository.findAll(pageable);
 
-    ordersData.forEach(i -> {
+    List<OrderItemsDTO> content = page.getContent().stream().map(orderEntity -> {
+      OrderItemsDTO orderItemsDto = new OrderItemsDTO();
+      orderItemsDto.setId(orderEntity.getId().toString());
+      orderItemsDto.setQuantity(orderEntity.getItems().size());
 
-      OrderItemsDTO orderItemsDTO = new OrderItemsDTO();
-      orderItemsDTO.setId(i.getId().toString());
-      List<ItemDTO> items = new ArrayList<>(i.getItems().size());
-
-      i.getItems().forEach(x -> {
-
+      List<ItemDTO> itemsDto = orderEntity.getItems().stream().map(itemEntity -> {
         ItemDTO item = new ItemDTO();
-        item.setBarcode(x.getBarcode());
-        item.setId(x.getId().toString());
-        item.setName(x.getName());
-        item.setPrice(x.getPrice());
-        items.add(item);
-      });
+        item.setId(itemEntity.getId().toString());
+        item.setBarcode(itemEntity.getBarcode());
+        item.setName(itemEntity.getName());
+        item.setPrice(itemEntity.getPrice());
+        return item;
+      }).toList();
 
-      orderItemsDTO.setItems(items);
-      orderItemsDTO.setQuantity(items.size());
-      result.add(orderItemsDTO);
-    });
+      orderItemsDto.setItems(itemsDto);
+      return orderItemsDto;
+
+    }).toList();
+
+    result.setContent(content);
+    result.setPage(page.getNumber());
+    result.setSize(page.getSize());
+    result.setTotalElements(page.getTotalElements());
+    result.setTotalPages(page.getTotalPages());
+
+    currentSpan.tag(Constants.SPAN_KEY_TOTAL_ORDERS, String.valueOf(result.getTotalElements()))
+        .tag(Constants.SPAN_KEY_PAGE_NUMBER, String.valueOf(result.getPage()))
+        .tag(Constants.SPAN_KEY_PAGE_SIZE, String.valueOf(result.getSize()))
+        .event("Orders retrieved (paginated)");
+
     return result;
   }
 
   private void notifyKafkaItems(KafkaMessageItemDTO message, String topic) {
-    Span span = this.tracer.nextSpan().name("notifyKafkaItems");
+    Span span = this.tracer.nextSpan().name("notify-kafka-message-items");
     try (Tracer.SpanInScope ws = this.tracer.withSpan(span.start())) {
-      this.kafkaTemplate.send(Methods.createKafkaMessage(message, topic));
+      Message<Object> kafkaMessage = Methods.createKafkaMessage(message, topic);
+      this.kafkaTemplate.send(kafkaMessage);
+
       span.tag(Constants.SPAN_KEY_OPERATION_TYPE, message.getItemStatus().name());
       span.tag(Constants.SPAN_KEY_ID_ORDER_ITEMS, message.getIdOrderItems());
       span.tag(Constants.SPAN_KEY_BARCODE, message.getBarcode());

@@ -1,13 +1,13 @@
 package com.personal.springlessons.controller.items;
 
-import java.util.List;
-
 import com.personal.springlessons.model.dto.OrderItemsDTO;
+import com.personal.springlessons.model.dto.wrapper.OrderItemsWrapperDTO;
 import com.personal.springlessons.model.lov.Channel;
 import com.personal.springlessons.service.items.ItemsService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -54,11 +54,11 @@ public class ItemsRestController implements IItemsRestController {
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   @PreAuthorize(value = "hasAuthority('SCOPE_items:get')")
   @Override
-  public ResponseEntity<List<OrderItemsDTO>> getAll() {
+  public ResponseEntity<OrderItemsWrapperDTO> getAll(Pageable pageable) {
     log.info("Called API to retrieve all items");
-    List<OrderItemsDTO> result = this.itemService.getAll();
-    ResponseEntity<List<OrderItemsDTO>> response;
-    if (result.isEmpty()) {
+    OrderItemsWrapperDTO result = this.itemService.getAll(pageable);
+    ResponseEntity<OrderItemsWrapperDTO> response;
+    if (result.getContent().isEmpty()) {
       log.info("No items retrieved !");
       response = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     } else {
