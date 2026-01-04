@@ -2,9 +2,7 @@ package com.personal.springlessons.config;
 
 import java.nio.charset.Charset;
 import java.util.concurrent.TimeUnit;
-
 import com.personal.springlessons.component.interceptor.HttpClientInterceptor;
-
 import org.apache.hc.client5.http.config.ConnectionConfig;
 import org.apache.hc.client5.http.config.RequestConfig;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
@@ -23,7 +21,6 @@ import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestClient;
-
 import io.micrometer.observation.ObservationRegistry;
 
 @Configuration(proxyBeanMethods = false)
