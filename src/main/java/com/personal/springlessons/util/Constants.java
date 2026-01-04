@@ -91,7 +91,7 @@ public final class Constants {
       "http://personal.com/springlessons/history";
   public static final String S_XML_NAMESPACE_PLATFORM_FAULT =
       "http://personal.com/springlessons/fault";
-  
+
   // QName Soap Tag
   public static final String S_SOAP_TAG_TIMESTAMP = "timestamp";
   public static final String S_SOAP_TAG_EXCEPTION = "exception";

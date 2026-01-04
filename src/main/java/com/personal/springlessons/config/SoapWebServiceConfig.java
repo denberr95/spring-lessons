@@ -1,15 +1,22 @@
 package com.personal.springlessons.config;
 
+import java.util.List;
+import java.util.Locale;
 import java.util.Properties;
+
 import com.personal.springlessons.endpoint.CustomSoapFaultResolver;
 import com.personal.springlessons.exception.InvalidUUIDException;
 import com.personal.springlessons.exception.SpringLessonsApplicationException;
 import com.personal.springlessons.util.Constants;
+
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.ws.config.annotation.WsConfigurer;
+import org.springframework.ws.server.EndpointInterceptor;
 import org.springframework.ws.server.endpoint.interceptor.PayloadLoggingInterceptor;
 import org.springframework.ws.soap.server.endpoint.SoapFaultDefinition;
 import org.springframework.ws.soap.server.endpoint.interceptor.PayloadValidatingInterceptor;
@@ -18,7 +25,16 @@ import org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition;
 import org.springframework.xml.xsd.commons.CommonsXsdSchemaCollection;
 
 @Configuration(proxyBeanMethods = false)
-public class SoapWebServiceConfig {
+public class SoapWebServiceConfig implements WsConfigurer {
+
+  private final ObjectProvider<PayloadLoggingInterceptor> loggingInterceptorProvider;
+  private final ObjectProvider<PayloadValidatingInterceptor> validatingInterceptorProvider;
+
+  public SoapWebServiceConfig(ObjectProvider<PayloadLoggingInterceptor> loggingInterceptorProvider,
+      ObjectProvider<PayloadValidatingInterceptor> validatingInterceptorProvider) {
+    this.loggingInterceptorProvider = loggingInterceptorProvider;
+    this.validatingInterceptorProvider = validatingInterceptorProvider;
+  }
 
   @Bean
   ServletRegistrationBean<MessageDispatcherServlet> messageDispatcherServlet(
@@ -32,21 +48,40 @@ public class SoapWebServiceConfig {
   @Bean(name = "history")
   DefaultWsdl11Definition defaultWsdl11Definition(
       CommonsXsdSchemaCollection platformHistorySchema) {
-    DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
-    wsdl11Definition.setServiceName("PlatformHistoryService");
-    wsdl11Definition.setPortTypeName("PlatformHistoryPort");
-    wsdl11Definition.setLocationUri("/platform");
-    wsdl11Definition.setTargetNamespace(Constants.S_XML_NAMESPACE_PLATFORM_HISTORY);
-    wsdl11Definition.setSchemaCollection(platformHistorySchema);
-    return wsdl11Definition;
+    DefaultWsdl11Definition wsdl = new DefaultWsdl11Definition();
+    wsdl.setServiceName("PlatformHistoryService");
+    wsdl.setPortTypeName("PlatformHistoryPort");
+    wsdl.setLocationUri("/platform");
+    wsdl.setTargetNamespace(Constants.S_XML_NAMESPACE_PLATFORM_HISTORY);
+    wsdl.setSchemaCollection(platformHistorySchema);
+    return wsdl;
   }
 
   @Bean
-  CommonsXsdSchemaCollection commonsXsdSchemaCollection() {
-    CommonsXsdSchemaCollection commonsXsdSchemaCollection = new CommonsXsdSchemaCollection();
-    commonsXsdSchemaCollection.setXsds(new ClassPathResource("schemas/PlatformHistory.xsd"));
-    commonsXsdSchemaCollection.setInline(true);
-    return commonsXsdSchemaCollection;
+  CustomSoapFaultResolver customSoapFaultResolver() {
+    CustomSoapFaultResolver resolver = new CustomSoapFaultResolver();
+
+    SoapFaultDefinition defaultFault = new SoapFaultDefinition();
+    defaultFault.setFaultCode(SoapFaultDefinition.SERVER);
+    defaultFault.setLocale(Locale.ENGLISH);
+
+    Properties mappings = new Properties();
+    mappings.setProperty(InvalidUUIDException.class.getName(),
+        SoapFaultDefinition.CLIENT.toString());
+    mappings.setProperty(SpringLessonsApplicationException.class.getName(),
+        SoapFaultDefinition.SERVER.toString());
+
+    resolver.setDefaultFault(defaultFault);
+    resolver.setExceptionMappings(mappings);
+    resolver.setOrder(1);
+
+    return resolver;
+  }
+
+  @Override
+  public void addInterceptors(List<EndpointInterceptor> interceptors) {
+    interceptors.add(this.loggingInterceptorProvider.getObject());
+    interceptors.add(this.validatingInterceptorProvider.getObject());
   }
 
   @Bean
@@ -59,31 +94,19 @@ public class SoapWebServiceConfig {
 
   @Bean
   PayloadValidatingInterceptor payloadValidatingInterceptor(
-      CommonsXsdSchemaCollection xsdSchemaCollection) {
-    PayloadValidatingInterceptor payloadValidatingInterceptor = new PayloadValidatingInterceptor();
-    payloadValidatingInterceptor.setXsdSchemaCollection(xsdSchemaCollection);
-    payloadValidatingInterceptor.setValidateRequest(true);
-    payloadValidatingInterceptor.setValidateResponse(true);
-    return payloadValidatingInterceptor;
+      CommonsXsdSchemaCollection platformHistorySchema) {
+    PayloadValidatingInterceptor interceptor = new PayloadValidatingInterceptor();
+    interceptor.setXsdSchemaCollection(platformHistorySchema);
+    interceptor.setValidateRequest(true);
+    interceptor.setValidateResponse(true);
+    return interceptor;
   }
 
   @Bean
-  CustomSoapFaultResolver customSoapFaultResolver() {
-    CustomSoapFaultResolver resolver = new CustomSoapFaultResolver();
-    SoapFaultDefinition faultDefinition = new SoapFaultDefinition();
-
-    faultDefinition.setFaultCode(SoapFaultDefinition.SERVER);
-    resolver.setDefaultFault(faultDefinition);
-
-    Properties errorMappings = new Properties();
-    errorMappings.setProperty(InvalidUUIDException.class.getName(),
-        SoapFaultDefinition.CLIENT.toString());
-    errorMappings.setProperty(SpringLessonsApplicationException.class.getName(),
-        SoapFaultDefinition.SERVER.toString());
-
-    resolver.setExceptionMappings(errorMappings);
-    resolver.setOrder(1);
-
-    return resolver;
+  CommonsXsdSchemaCollection platformHistorySchema() {
+    CommonsXsdSchemaCollection schema = new CommonsXsdSchemaCollection();
+    schema.setXsds(new ClassPathResource("schemas/PlatformHistory.xsd"));
+    schema.setInline(true);
+    return schema;
   }
 }

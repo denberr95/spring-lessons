@@ -6,11 +6,8 @@
 
   <jaxb:globalBindings>
     <xjc:javaType name="java.time.LocalDate" xmlType="xs:date" adapter="com.personal.springlessons.util.LocalDateAdapter" />
-
     <xjc:javaType name="java.time.OffsetDateTime" xmlType="xs:dateTime" adapter="com.personal.springlessons.util.OffsetDateTimeAdapter" />
-
     <xjc:javaType name="java.time.LocalTime" xmlType="xs:time" adapter="com.personal.springlessons.util.LocalTimeAdapter" />
-
     <xjc:serializable uid="1" />
   </jaxb:globalBindings>
 </jaxb:bindings>

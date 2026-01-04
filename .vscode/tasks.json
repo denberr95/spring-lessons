@@ -24,7 +24,6 @@
                 "shell-cleanup-folders",
                 "podman-compose-env-up",
                 "mvn-clean",
-                "mvn-spotless-apply",
                 "mvn-package"
             ]
         },
@@ -39,7 +38,6 @@
                 "shell-cleanup-folders",
                 "podman-compose-env-up",
                 "mvn-clean",
-                "mvn-spotless-apply",
                 "mvn-compile"
             ]
         },
@@ -115,7 +113,6 @@
             "dependsOrder": "sequence",
             "dependsOn": [
                 "mvn-clean",
-                "mvn-spotless-apply",
                 "mvn-package-skip-tests"
             ]
         },
@@ -132,7 +129,6 @@
             "dependsOrder": "sequence",
             "dependsOn": [
                 "mvn-clean",
-                "mvn-spotless-apply",
                 "mvn-compile"
             ]
         },
@@ -152,12 +148,6 @@
             "label": "mvn-compile",
             "type": "shell",
             "command": "mvn compile --file pom.xml --settings settings.xml",
-            "group": "build"
-        },
-        {
-            "label": "mvn-generate-sources",
-            "type": "shell",
-            "command": "mvn generate-sources --file pom.xml --settings settings.xml",
             "group": "build"
         },
         {
