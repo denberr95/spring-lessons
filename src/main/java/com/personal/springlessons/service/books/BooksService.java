@@ -4,9 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
-import java.time.Instant;
 import java.time.OffsetDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -304,8 +302,8 @@ public class BooksService {
         item.setVersion(booksEntity.getVersion());
 
         item.setRevisionId(customRevisionEntity.getRev());
-        item.setTimestamp(Instant.ofEpochMilli(customRevisionEntity.getRevtstmp())
-            .atZone(ZoneId.systemDefault()).toOffsetDateTime());
+        item.setTimestamp(
+            Methods.convertInstantToOffsetDateTime(customRevisionEntity.getRevtstmp()));
         item.setClientId(customRevisionEntity.getClientId());
         item.setUsername(customRevisionEntity.getUsername());
         item.setHttpMethod(customRevisionEntity.getHttpMethod());
@@ -316,13 +314,10 @@ public class BooksService {
       });
 
       OutcomeType outcomeType = new OutcomeType();
-      outcomeType.setResult(ResultType.OK);
+      outcomeType.setResult(this.resolveHistoryResult(revisionsDTO));
+      outcomeType.setMessage(this.resolveHistoryMessage(revisionsDTO));
       outcomeType.setEntity(EntityType.BOOKS);
       outcomeType.setTimestamp(OffsetDateTime.now());
-
-      String msg = revisionsDTO.isEmpty() ? "No history found for the given book ID"
-          : "History found for the given book ID";
-      outcomeType.setMessage(msg);
 
       result.setOutcomeDTO(outcomeType);
       result.getRevisionsDTO().addAll(revisionsDTO);
@@ -331,6 +326,15 @@ public class BooksService {
     }
     currentSpan.event("Book history retrieved");
     return result;
+  }
+
+  private String resolveHistoryMessage(List<BookRevisionType> revisionsDTO) {
+    return revisionsDTO.isEmpty() ? "No history found for the given book ID"
+        : "History found for the given book ID";
+  }
+
+  private ResultType resolveHistoryResult(List<BookRevisionType> revisionsDTO) {
+    return revisionsDTO.isEmpty() ? ResultType.KO : ResultType.OK;
   }
 
   private void persistCsvContent(final Channel channel, List<BookDTO> booksDTO) {

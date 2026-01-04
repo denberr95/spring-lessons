@@ -2,12 +2,16 @@ package com.personal.springlessons.util;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Stream;
@@ -183,5 +187,22 @@ class MethodsTest {
     String[] values = null;
     String result = Methods.firstNonBlank(values);
     assertNull(result);
+  }
+
+  @Test
+  void givenValidInstantInMillis_whenConvertInstantToOffsetDateTime_thenReturnCorrectOffsetDateTime() {
+    long instantInMillis = Instant.parse("9999-12-31T12:30:00Z").toEpochMilli();
+    ZoneId systemZone = ZoneId.systemDefault();
+    OffsetDateTime result = Methods.convertInstantToOffsetDateTime(instantInMillis);
+    assertNotNull(result, "Result should not be null");
+    assertEquals(Instant.ofEpochMilli(instantInMillis).atZone(systemZone).toOffsetDateTime(),
+        result, "OffsetDateTime should match converted instant");
+  }
+
+  @Test
+  void givenNullInstantInMillis_whenConvertInstantToOffsetDateTime_thenReturnNull() {
+    Long instantInMillis = null;
+    OffsetDateTime result = Methods.convertInstantToOffsetDateTime(instantInMillis);
+    assertNull(result, "Result should be null when input is null");
   }
 }

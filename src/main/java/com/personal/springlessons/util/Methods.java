@@ -4,7 +4,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
@@ -154,6 +157,17 @@ public final class Methods {
       }
     }
     log.debug("First non blank value retrieved: '{}'", result);
+    return result;
+  }
+
+  public static OffsetDateTime convertInstantToOffsetDateTime(Long instantInMillis) {
+    log.debug("Convert Instant: '{}' to OffsetDateTime", instantInMillis);
+    OffsetDateTime result = null;
+    if (instantInMillis != null) {
+      result =
+          Instant.ofEpochMilli(instantInMillis).atZone(ZoneId.systemDefault()).toOffsetDateTime();
+    }
+    log.debug("OffsetDateTime converted: '{}'", result);
     return result;
   }
 
