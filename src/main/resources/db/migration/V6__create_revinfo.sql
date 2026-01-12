@@ -9,6 +9,6 @@ CREATE TABLE history.revinfo (
   client_id VARCHAR(255),
   username VARCHAR(255),
   request_uri TEXT,
-  http_method VARCHAR(10),
+  http_method VARCHAR(20),
   CONSTRAINT pk_revinfo PRIMARY KEY (rev)
 );

@@ -40,7 +40,6 @@ public class EmailService {
       log.error(e.getMessage(), e);
     }
     log.info("Email sent to: '{}'", accountDTO.email());
-    currentSpan.tag(Constants.SPAN_KEY_EMAIL_TO, accountDTO.email());
-    currentSpan.event("Email sent");
+    currentSpan.tag(Constants.SPAN_KEY_EMAIL_TO, accountDTO.email()).event("Email sent");
   }
 }

@@ -49,6 +49,8 @@
 | Wiremock | <http://localhost:9998/__admin/> |
 | Mailpit | <http://localhost:8025/> |
 | SMTP Server | localhost:1025 |
+| POP3 Server | localhost:1026 |
+| MailPit Prometheus Server | localhost:9091 |
 
 ## VSCode Configuration files
 

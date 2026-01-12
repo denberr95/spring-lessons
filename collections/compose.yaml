@@ -69,7 +69,7 @@ services:
         condition: service_started
 
   grafana:
-    image: grafana/grafana:main
+    image: grafana/grafana-enterprise:main
     restart: "no"
     hostname: grafana
     environment:
@@ -190,13 +190,21 @@ services:
       - TZ=Europe/Rome
       - MP_MAX_MESSAGES=5000
       - MP_DATABASE=/data/mailpit.db
-      - MP_SMTP_AUTH_ACCEPT_ANY=1
-      - MP_SMTP_AUTH_ALLOW_INSECURE=1
+      - MP_SMTP_AUTH_ALLOW_INSECURE=false
+      - MP_SMTP_AUTH_FILE=/config/auth_file
+      - MP_SMTP_REQUIRE_STARTTLS=true
+      - MP_SMTP_TLS_KEY=sans:localhost
+      - MP_SMTP_TLS_CERT=sans:localhost
+      - MP_POP3_AUTH_FILE=/config/auth_file
+      - MP_ENABLE_PROMETHEUS=0.0.0.0:9091
     volumes:
       - ./mailpit/data:/data
+      - ./mailpit/config:/config
     ports:
       - "8025:8025"  # serve web ui
       - "1025:1025"  # serve smtp server
+      - "1026:1011"  # serve pop3 server
+      - "9091:9091"  # server prometheus metrics
     networks:
       - spring-lessons
 

@@ -1,105 +1,105 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true" scanPeriod="30 seconds">
 
-    <statusListener class="ch.qos.logback.core.status.NopStatusListener" />
+  <statusListener class="ch.qos.logback.core.status.NopStatusListener" />
 
-    <variable name="LOG_LEVEL_ROOT" value="${LOG_LEVEL_ROOT:-ERROR}" />
-    <variable name="LOG_LEVEL_COM_PERSONAL_SPRINGLESSONS" value="${LOG_LEVEL_COM_PERSONAL_SPRINGLESSONS:-TRACE}" />
-    <variable name="LOG_LEVEL_ORG_SPRINGFRAMEWORK" value="${LOG_LEVEL_ORG_SPRINGFRAMEWORK:-INFO}" />
-    <variable name="LOG_LEVEL_ORG_ECLIPSE" value="${LOG_LEVEL_ORG_ECLIPSE:-INFO}" />
-    <variable name="LOG_LEVEL_IO_MICROMETER" value="${LOG_LEVEL_IO_MICROMETER:-INFO}" />
-    <variable name="LOG_LEVEL_IO_OPENTELEMETRY" value="${LOG_LEVEL_IO_OPENTELEMETRY:-INFO}" />
-    <variable name="LOG_LEVEL_ORG_FLYWAYDB" value="${LOG_LEVEL_ORG_FLYWAYDB:-INFO}" />
-    <variable name="LOG_LEVEL_ORG_HIBERNATE" value="${LOG_LEVEL_ORG_HIBERNATE:-INFO}" />
-    <variable name="LOG_LEVEL_ORG_APACHE" value="${LOG_LEVEL_ORG_APACHE:-INFO}" />
+  <variable name="LOG_LEVEL_ROOT" value="${LOG_LEVEL_ROOT:-ERROR}" />
+  <variable name="LOG_LEVEL_COM_PERSONAL_SPRINGLESSONS" value="${LOG_LEVEL_COM_PERSONAL_SPRINGLESSONS:-TRACE}" />
+  <variable name="LOG_LEVEL_ORG_SPRINGFRAMEWORK" value="${LOG_LEVEL_ORG_SPRINGFRAMEWORK:-INFO}" />
+  <variable name="LOG_LEVEL_ORG_ECLIPSE" value="${LOG_LEVEL_ORG_ECLIPSE:-INFO}" />
+  <variable name="LOG_LEVEL_IO_MICROMETER" value="${LOG_LEVEL_IO_MICROMETER:-INFO}" />
+  <variable name="LOG_LEVEL_IO_OPENTELEMETRY" value="${LOG_LEVEL_IO_OPENTELEMETRY:-INFO}" />
+  <variable name="LOG_LEVEL_ORG_FLYWAYDB" value="${LOG_LEVEL_ORG_FLYWAYDB:-INFO}" />
+  <variable name="LOG_LEVEL_ORG_HIBERNATE" value="${LOG_LEVEL_ORG_HIBERNATE:-INFO}" />
+  <variable name="LOG_LEVEL_ORG_APACHE" value="${LOG_LEVEL_ORG_APACHE:-INFO}" />
 
-    <appender name="CONSOLE-TEXT" class="ch.qos.logback.core.ConsoleAppender">
-        <withJansi>false</withJansi>
-        <encoder>
-            <pattern>[%green(%date)] - [%yellow(%thread)] - [%magenta(%logger)] - [%highlight(%level)] - [%blue(%mdc)] - [%white(%message)]%red(%n%throwable)</pattern>
-        </encoder>
-    </appender>
+  <appender name="CONSOLE-TEXT" class="ch.qos.logback.core.ConsoleAppender">
+    <withJansi>false</withJansi>
+    <encoder>
+      <pattern>[%green(%date)] - [%yellow(%thread)] - [%magenta(%logger)] - [%highlight(%level)] - [%blue(%mdc)] - [%white(%message)]%red(%n%throwable)</pattern>
+    </encoder>
+  </appender>
 
-    <appender name="CONSOLE-JSON" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
-            <layout class="ch.qos.logback.contrib.json.classic.JsonLayout">
-                <jsonFormatter class="ch.qos.logback.contrib.jackson.JacksonJsonFormatter">
-                    <prettyPrint>false</prettyPrint>
-                </jsonFormatter>
-                <timestampFormat>yyyy-MM-dd' 'HH:mm:ss.SSS</timestampFormat>
-                <includeLevel>true</includeLevel>
-                <includeLoggerName>true</includeLoggerName>
-                <includeFormattedMessage>true</includeFormattedMessage>
-                <includeMessage>false</includeMessage>
-                <includeMDC>true</includeMDC>
-                <includeThreadName>true</includeThreadName>
-                <includeException>true</includeException>
-                <includeContextName>false</includeContextName>
-                <appendLineSeparator>true</appendLineSeparator>
-            </layout>
-        </encoder>
-    </appender>
+  <appender name="CONSOLE-JSON" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+      <layout class="ch.qos.logback.contrib.json.classic.JsonLayout">
+        <jsonFormatter class="ch.qos.logback.contrib.jackson.JacksonJsonFormatter">
+          <prettyPrint>false</prettyPrint>
+        </jsonFormatter>
+        <timestampFormat>yyyy-MM-dd' 'HH:mm:ss.SSS</timestampFormat>
+        <includeLevel>true</includeLevel>
+        <includeLoggerName>true</includeLoggerName>
+        <includeFormattedMessage>true</includeFormattedMessage>
+        <includeMessage>false</includeMessage>
+        <includeMDC>true</includeMDC>
+        <includeThreadName>true</includeThreadName>
+        <includeException>true</includeException>
+        <includeContextName>false</includeContextName>
+        <appendLineSeparator>true</appendLineSeparator>
+      </layout>
+    </encoder>
+  </appender>
 
-    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>./logs/application.log</file>
-        <append>true</append>
-        <immediateFlush>true</immediateFlush>
-        <encoder>
-            <pattern>[%date] - [%thread] - [%logger] - [%level] - [%mdc] - [%message]%n%throwable</pattern>
-        </encoder>
-    </appender>
+  <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+    <file>./logs/application.log</file>
+    <append>true</append>
+    <immediateFlush>true</immediateFlush>
+    <encoder>
+      <pattern>[%date] - [%thread] - [%logger] - [%level] - [%mdc] - [%message]%n%throwable</pattern>
+    </encoder>
+  </appender>
 
-    <appender name="FILE-ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>./logs/application.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>./logs/application-%d{yyyy-MM-dd}.log.zip</fileNamePattern>
-            <maxHistory>5</maxHistory>
-            <totalSizeCap>5GB</totalSizeCap>
-            <cleanHistoryOnStart>true</cleanHistoryOnStart>
-        </rollingPolicy>
-        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <pattern>[%date] - [%thread] - [%logger] - [%level] - [%mdc] - [%message]%n%throwable</pattern>
-        </encoder>
-    </appender>
+  <appender name="FILE-ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>./logs/application.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>./logs/application-%d{yyyy-MM-dd}.log.zip</fileNamePattern>
+      <maxHistory>5</maxHistory>
+      <totalSizeCap>5GB</totalSizeCap>
+      <cleanHistoryOnStart>true</cleanHistoryOnStart>
+    </rollingPolicy>
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      <pattern>[%date] - [%thread] - [%logger] - [%level] - [%mdc] - [%message]%n%throwable</pattern>
+    </encoder>
+  </appender>
 
-    <appender name="OTEL" class="io.opentelemetry.instrumentation.logback.appender.v1_0.OpenTelemetryAppender">
-        <captureExperimentalAttributes>true</captureExperimentalAttributes>
-        <captureCodeAttributes>false</captureCodeAttributes>
-        <captureMarkerAttribute>true</captureMarkerAttribute>
-        <captureKeyValuePairAttributes>true</captureKeyValuePairAttributes>
-        <captureLoggerContext>true</captureLoggerContext>
-        <captureTemplate>false</captureTemplate>
-        <captureArguments>false</captureArguments>
-        <captureLogstashMarkerAttributes>false</captureLogstashMarkerAttributes>
-        <captureLogstashStructuredArguments>false</captureLogstashStructuredArguments>
-        <captureMdcAttributes>*</captureMdcAttributes>
-        <captureEventName>true</captureEventName>
-        <numLogsCapturedBeforeOtelInstall>1000</numLogsCapturedBeforeOtelInstall>
-    </appender>
+  <appender name="OTEL" class="io.opentelemetry.instrumentation.logback.appender.v1_0.OpenTelemetryAppender">
+    <captureExperimentalAttributes>true</captureExperimentalAttributes>
+    <captureCodeAttributes>false</captureCodeAttributes>
+    <captureMarkerAttribute>true</captureMarkerAttribute>
+    <captureKeyValuePairAttributes>true</captureKeyValuePairAttributes>
+    <captureLoggerContext>true</captureLoggerContext>
+    <captureTemplate>false</captureTemplate>
+    <captureArguments>false</captureArguments>
+    <captureLogstashMarkerAttributes>false</captureLogstashMarkerAttributes>
+    <captureLogstashStructuredArguments>false</captureLogstashStructuredArguments>
+    <captureMdcAttributes>*</captureMdcAttributes>
+    <captureEventName>true</captureEventName>
+    <numLogsCapturedBeforeOtelInstall>1000</numLogsCapturedBeforeOtelInstall>
+  </appender>
 
-    <logger name="com.personal.springlessons" level="${LOG_LEVEL_COM_PERSONAL_SPRINGLESSONS}" />
-    <logger name="org.springframework" level="${LOG_LEVEL_ORG_SPRINGFRAMEWORK}" />
-    <logger name="org.eclipse" level="${LOG_LEVEL_ORG_ECLIPSE}" />
-    <logger name="io.micrometer" level="${LOG_LEVEL_IO_MICROMETER}" />
-    <logger name="io.opentelemetry" level="${LOG_LEVEL_IO_OPENTELEMETRY}" />
-    <logger name="org.flywaydb" level="${LOG_LEVEL_ORG_FLYWAYDB}" />
-    <logger name="org.hibernate" level="${LOG_LEVEL_ORG_HIBERNATE}" />
-    <logger name="org.apache" level="${LOG_LEVEL_ORG_APACHE}" />
+  <logger name="com.personal.springlessons" level="${LOG_LEVEL_COM_PERSONAL_SPRINGLESSONS}" />
+  <logger name="org.springframework" level="${LOG_LEVEL_ORG_SPRINGFRAMEWORK}" />
+  <logger name="org.eclipse" level="${LOG_LEVEL_ORG_ECLIPSE}" />
+  <logger name="io.micrometer" level="${LOG_LEVEL_IO_MICROMETER}" />
+  <logger name="io.opentelemetry" level="${LOG_LEVEL_IO_OPENTELEMETRY}" />
+  <logger name="org.flywaydb" level="${LOG_LEVEL_ORG_FLYWAYDB}" />
+  <logger name="org.hibernate" level="${LOG_LEVEL_ORG_HIBERNATE}" />
+  <logger name="org.apache" level="${LOG_LEVEL_ORG_APACHE}" />
 
-    <springProfile name="default">
-        <root level="${LOG_LEVEL_ROOT}">
-            <appender-ref ref="CONSOLE-TEXT" />
-            <appender-ref ref="OTEL" />
-            <appender-ref ref="FILE" />
-        </root>
-    </springProfile>
+  <springProfile name="default">
+    <root level="${LOG_LEVEL_ROOT}">
+      <appender-ref ref="CONSOLE-TEXT" />
+      <appender-ref ref="OTEL" />
+      <appender-ref ref="FILE" />
+    </root>
+  </springProfile>
 
-    <springProfile name="runtime">
-        <root level="${LOG_LEVEL_ROOT}">
-            <appender-ref ref="CONSOLE-JSON" />
-            <appender-ref ref="OTEL" />
-            <appender-ref ref="FILE-ROLLING" />
-        </root>
-    </springProfile>
+  <springProfile name="runtime">
+    <root level="${LOG_LEVEL_ROOT}">
+      <appender-ref ref="CONSOLE-JSON" />
+      <appender-ref ref="OTEL" />
+      <appender-ref ref="FILE-ROLLING" />
+    </root>
+  </springProfile>
 
 </configuration>

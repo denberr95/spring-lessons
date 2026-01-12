@@ -51,7 +51,7 @@ public class CustomRevisionEntity {
   @Column(name = "request_uri")
   private String requestUri;
 
-  @Column(name = "http_method", length = Constants.I_VAL_10)
+  @Column(name = "http_method", length = Constants.I_VAL_20)
   private String httpMethod;
 
   public CustomRevisionEntity(int rev, long revtstmp, String ipAddress, String clientId,

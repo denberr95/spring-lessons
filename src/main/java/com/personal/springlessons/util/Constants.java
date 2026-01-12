@@ -45,7 +45,7 @@ public final class Constants {
   public static final int I_VAL_1 = 1;
   public static final int I_VAL_2 = 2;
   public static final int I_VAL_6 = 6;
-  public static final int I_VAL_10 = 10;
+  public static final int I_VAL_20 = 20;
   public static final int I_VAL_45 = 45;
   public static final int I_VAL_50 = 50;
   public static final int I_VAL_100 = 100;
