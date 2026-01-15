@@ -39,7 +39,7 @@
 | Postman Collection | [postman.json](./collections/postman.json) |
 | Jaeger UI | <http://localhost:16686/search> |
 | Prometheus | <http://localhost:9090> |
-| Grafana | <http://localhost:3000/grafana> |
+| Grafana | <http://localhost:3000> |
 | Database Spring | jdbc:postgresql://localhost:5432/spring |
 | Kafka Broker | localhost:29092 |
 | Keycloak | <http://localhost:8080> |

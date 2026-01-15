@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 5,
+  "id": 3,
   "links": [],
   "panels": [
     {
@@ -182,7 +182,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "select\n  DATE_TRUNC('day', created_at) :: date AS giorno,\n  COUNT(*) AS totale\nfrom\n  spring_app.order_items\nWHERE\n  1 = 1\n  AND created_at >= CURRENT_DATE - INTERVAL '30 days'\nGROUP BY\n  DATE_TRUNC('day', created_at) :: date\nORDER BY\n  giorno;",
+          "rawSql": "select\n  DATE_TRUNC('day', a.created_at) :: date AS giorno,\n  COUNT(*) AS totale\nfrom\n  spring_app.order_items a,\n  spring_app.items b\nWHERE\n  1 = 1\n  AND a.id = b.order_items_id\n  AND a.created_at >= CURRENT_DATE - INTERVAL '30 days'\nGROUP BY\n  DATE_TRUNC('day', a.created_at) :: date\nORDER BY\n  giorno;",
           "refId": "A",
           "sql": {
             "columns": [
@@ -214,12 +214,12 @@
     "list": []
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "Order Items",
   "uid": "4cfedc96-4393-4127-85a4-394ec2b943bb",
-  "version": 4
+  "version": 6
 }
