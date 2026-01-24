@@ -92,7 +92,7 @@ services:
         condition: service_started
 
   otelcol:
-    image: otel/opentelemetry-collector-contrib:latest
+    image: otel/opentelemetry-collector:latest
     restart: "no"
     hostname: otelcol
     environment:
