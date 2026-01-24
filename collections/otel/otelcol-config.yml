@@ -4,26 +4,36 @@ receivers:
     protocols:
       http:
         endpoint: otelcol:4318
-        cors:
-          allowed_origins:
-            - "http://*"
-            - "https://*"
       grpc:
         endpoint: otelcol:4317
+  jaeger:
+    protocols:
+      grpc:
+        endpoint: otelcol:4317
+      thrift_binary:
+      thrift_compact:
+      thrift_http:
 
 processors:
+  memory_limiter:
+    check_interval: 1s
+    limit_mib: 64
+    spike_limit_mib: 12
   batch:
+    timeout: 1s
+    send_batch_size: 8192
+    send_batch_max_size: 0
 
 exporters:
   debug:
     verbosity: detailed
   prometheus:
     endpoint: otelcol:8889
-  otlp:
+  otlp_grpc:
     endpoint: jaeger:4317
     tls:
       insecure: true
-  otlphttp:
+  otlp_http:
     endpoint: http://loki:3100/otlp
     compression: none
     tls:
@@ -38,17 +48,35 @@ extensions:
     endpoint: otelcol:55679
 
 service:
-  extensions: [health_check, pprof, zpages]
+  extensions:
+  - health_check
+  - pprof
+  - zpages
   pipelines:
     traces:
-      receivers: [otlp]
-      processors: [batch]
-      exporters: [otlp, debug]
+      receivers:
+      - otlp
+      processors:
+      - memory_limiter
+      - batch
+      exporters:
+      - otlp_grpc
+      - debug
     metrics:
-      receivers: [otlp]
-      processors: [batch]
-      exporters: [prometheus, debug]
+      receivers:
+      - otlp
+      processors:
+      - memory_limiter
+      - batch
+      exporters:
+      - prometheus
+      - debug
     logs:
-      receivers: [otlp]
-      processors: [batch]
-      exporters: [otlphttp, debug]
+      receivers:
+      - otlp
+      processors:
+      - memory_limiter
+      - batch
+      exporters:
+      - otlp_http
+      - debug
