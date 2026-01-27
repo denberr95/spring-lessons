@@ -1,7 +1,7 @@
 package com.personal.springlessons.model.entity.items;
 
 import java.math.BigDecimal;
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -40,7 +40,7 @@ public class ItemsEntity {
 
   @CurrentTimestamp(source = SourceType.DB, event = EventType.INSERT)
   @Column(name = "created_at", nullable = false, updatable = false)
-  private OffsetDateTime createdAt;
+  private Instant createdAt;
 
   @Column(name = "price", precision = Constants.I_VAL_6, scale = Constants.I_VAL_2,
       nullable = false)
@@ -58,8 +58,8 @@ public class ItemsEntity {
       foreignKey = @ForeignKey(name = "fk_order_items_id"))
   private OrderItemsEntity orderItemsEntity;
 
-  public ItemsEntity(UUID id, OffsetDateTime createdAt, BigDecimal price, String name,
-      String barcode, OrderItemsEntity orderItemsEntity) {
+  public ItemsEntity(UUID id, Instant createdAt, BigDecimal price, String name, String barcode,
+      OrderItemsEntity orderItemsEntity) {
     this.id = id;
     this.createdAt = createdAt;
     this.price = price;
@@ -103,11 +103,11 @@ public class ItemsEntity {
     this.id = id;
   }
 
-  public OffsetDateTime getCreatedAt() {
+  public Instant getCreatedAt() {
     return this.createdAt;
   }
 
-  public void setCreatedAt(OffsetDateTime createdAt) {
+  public void setCreatedAt(Instant createdAt) {
     this.createdAt = createdAt;
   }
 

@@ -1,6 +1,6 @@
 package com.personal.springlessons.model.entity.items;
 
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -41,7 +41,7 @@ public class OrderItemsEntity {
 
   @CreationTimestamp(source = SourceType.DB)
   @Column(name = "created_at", nullable = false, updatable = false)
-  private OffsetDateTime createdAt;
+  private Instant createdAt;
 
   @Enumerated(EnumType.STRING)
   @Column(name = "channel", nullable = false)
@@ -50,8 +50,7 @@ public class OrderItemsEntity {
   @OneToMany(mappedBy = "orderItemsEntity", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<ItemsEntity> items;
 
-  public OrderItemsEntity(UUID id, OffsetDateTime createdAt, Channel channel,
-      List<ItemsEntity> items) {
+  public OrderItemsEntity(UUID id, Instant createdAt, Channel channel, List<ItemsEntity> items) {
     this.id = id;
     this.createdAt = createdAt;
     this.channel = channel;
@@ -87,11 +86,11 @@ public class OrderItemsEntity {
     this.id = id;
   }
 
-  public OffsetDateTime getCreatedAt() {
+  public Instant getCreatedAt() {
     return this.createdAt;
   }
 
-  public void setCreatedAt(OffsetDateTime createdAt) {
+  public void setCreatedAt(Instant createdAt) {
     this.createdAt = createdAt;
   }
 

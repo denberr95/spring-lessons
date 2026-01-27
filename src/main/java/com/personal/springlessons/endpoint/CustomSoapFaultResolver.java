@@ -1,13 +1,11 @@
 package com.personal.springlessons.endpoint;
 
 import java.time.OffsetDateTime;
-
+import java.time.ZoneOffset;
 import javax.xml.namespace.QName;
-
 import com.personal.springlessons.exception.InvalidUUIDException;
 import com.personal.springlessons.exception.SpringLessonsApplicationException;
 import com.personal.springlessons.util.Constants;
-
 import org.jspecify.annotations.Nullable;
 import org.springframework.ws.soap.SoapFault;
 import org.springframework.ws.soap.SoapFaultDetail;
@@ -21,18 +19,19 @@ public class CustomSoapFaultResolver extends SoapFaultMappingExceptionResolver {
 
   private void handleGeneric(Exception ex, SoapFaultDetail detail) {
     this.addElement(detail, Constants.S_SOAP_TAG_EXCEPTION, ex.getClass().getName());
-    this.addElement(detail, Constants.S_SOAP_TAG_TIMESTAMP, OffsetDateTime.now().toString());
+    this.addElement(detail, Constants.S_SOAP_TAG_TIMESTAMP, OffsetDateTime.now(ZoneOffset.UTC).toString());
+    
   }
 
   private void handleInvalidUUIDException(InvalidUUIDException ex, SoapFaultDetail detail) {
     this.addElement(detail, Constants.S_SOAP_TAG_ID, ex.getId());
-    this.addElement(detail, Constants.S_SOAP_TAG_TIMESTAMP, OffsetDateTime.now().toString());
+    this.addElement(detail, Constants.S_SOAP_TAG_TIMESTAMP, OffsetDateTime.now(ZoneOffset.UTC).toString());
   }
 
   private void handleSpringLessonsApplicationException(SpringLessonsApplicationException ex,
       SoapFaultDetail detail) {
     this.addElement(detail, Constants.S_SOAP_TAG_EXCEPTION, ex.getClass().getName());
-    this.addElement(detail, Constants.S_SOAP_TAG_TIMESTAMP, OffsetDateTime.now().toString());
+    this.addElement(detail, Constants.S_SOAP_TAG_TIMESTAMP, OffsetDateTime.now(ZoneOffset.UTC).toString());
   }
 
   private void addElement(SoapFaultDetail detail, String name, String value) {

@@ -1,13 +1,14 @@
 package com.personal.springlessons.model.dto.response;
 
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.Objects;
 
 import com.personal.springlessons.model.lov.DomainCategory;
 
 public class BaseErrorResponseDTO {
 
-  private OffsetDateTime timestamp = OffsetDateTime.now();
+  private OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
   private DomainCategory category;
   private String message;
 

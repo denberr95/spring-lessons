@@ -7,18 +7,16 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Stream;
-
 import com.personal.springlessons.exception.InvalidUUIDException;
 import com.personal.springlessons.model.lov.DomainCategory;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -32,7 +30,7 @@ class MethodsTest {
 
   static Stream<Arguments> methodSourceFileNameData() {
     String formattedDate =
-        Methods.dateTimeFormatter(Constants.S_DATE_TIME_FORMAT_1, LocalDateTime.now());
+        Methods.dateTimeFormatter(Constants.S_DATE_TIME_FORMAT_1, LocalDateTime.now(ZoneOffset.UTC));
     return Stream.of(Arguments.of("report", ".pdf", true, "report_" + formattedDate + ".pdf"),
         Arguments.of("image", ".png", false, "image.png"));
   }

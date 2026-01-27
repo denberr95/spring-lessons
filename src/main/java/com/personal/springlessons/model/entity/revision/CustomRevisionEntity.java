@@ -32,7 +32,7 @@ public class CustomRevisionEntity {
       sequenceName = CustomRevisionEntity.SEQUENCE_NAME, schema = Constants.DB_SCHEMA_HISTORY,
       allocationSize = Constants.I_VAL_50)
   @RevisionNumber
-  @Column(name = "rev")
+  @Column(name = "rev", nullable = false)
   private int rev;
 
   @RevisionTimestamp

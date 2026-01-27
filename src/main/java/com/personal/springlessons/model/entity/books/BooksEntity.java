@@ -1,7 +1,7 @@
 package com.personal.springlessons.model.entity.books;
 
+import java.time.Instant;
 import java.time.LocalDate;
-import java.time.OffsetDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -48,14 +48,14 @@ public class BooksEntity {
 
   @CurrentTimestamp(source = SourceType.DB, event = EventType.INSERT)
   @Column(name = "created_at", nullable = false, updatable = false)
-  private OffsetDateTime createdAt;
+  private Instant createdAt;
 
-  @CurrentTimestamp(source = SourceType.VM, event = EventType.UPDATE)
+  @CurrentTimestamp(source = SourceType.DB, event = EventType.UPDATE)
   @Column(name = "updated_at")
-  private OffsetDateTime updatedAt;
+  private Instant updatedAt;
 
   @Version
-  @Column(name = "version")
+  @Column(name = "version", nullable = false)
   private Long version;
 
   @Column(name = "name", nullable = false, length = Constants.I_VAL_100)
@@ -75,8 +75,8 @@ public class BooksEntity {
   @Column(name = "genre", nullable = false)
   private Genre genre;
 
-  public BooksEntity(UUID id, OffsetDateTime createdAt, OffsetDateTime updatedAt, Long version,
-      String name, LocalDate publicationDate, Integer numberOfPages, Channel channel, Genre genre) {
+  public BooksEntity(UUID id, Instant createdAt, Instant updatedAt, Long version, String name,
+      LocalDate publicationDate, Integer numberOfPages, Channel channel, Genre genre) {
     this.id = id;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
@@ -102,19 +102,19 @@ public class BooksEntity {
     this.id = id;
   }
 
-  public OffsetDateTime getCreatedAt() {
+  public Instant getCreatedAt() {
     return this.createdAt;
   }
 
-  public void setCreatedAt(OffsetDateTime createdAt) {
+  public void setCreatedAt(Instant createdAt) {
     this.createdAt = createdAt;
   }
 
-  public OffsetDateTime getUpdatedAt() {
+  public Instant getUpdatedAt() {
     return this.updatedAt;
   }
 
-  public void setUpdatedAt(OffsetDateTime updatedAt) {
+  public void setUpdatedAt(Instant updatedAt) {
     this.updatedAt = updatedAt;
   }
 

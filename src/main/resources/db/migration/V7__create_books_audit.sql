@@ -1,7 +1,7 @@
 CREATE TABLE history.books_audit (
   id UUID NOT NULL,
   rev INTEGER NOT NULL,
-  revtype SMALLINT NOT NULL,
+  revtype SMALLINT,
   created_at TIMESTAMPTZ,
   updated_at TIMESTAMPTZ,
   version BIGINT,

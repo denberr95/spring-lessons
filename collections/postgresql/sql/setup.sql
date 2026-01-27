@@ -1,0 +1,1 @@
+ALTER DATABASE spring SET timezone = 'Europe/Rome';

@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -296,11 +297,14 @@ public class BooksService {
         item.setChannel(booksEntity.getChannel().toString());
         item.setNumberOfPages(booksEntity.getNumberOfPages());
         item.setPublicationDate(booksEntity.getPublicationDate());
-        item.setCreatedAt(booksEntity.getCreatedAt());
-        item.setUpdatedAt(booksEntity.getUpdatedAt());
-        item.setGenre(booksEntity.getGenre().toString());
-        item.setVersion(booksEntity.getVersion());
+        item.setCreatedAt(Methods.convertInstantToOffsetDateTime(booksEntity.getCreatedAt()));
+        item.setUpdatedAt(Methods.convertInstantToOffsetDateTime(booksEntity.getUpdatedAt()));
 
+        if (booksEntity.getGenre() != null) {
+          item.setGenre(booksEntity.getGenre().toString());
+        }
+
+        item.setVersion(booksEntity.getVersion());
         item.setRevisionId(customRevisionEntity.getRev());
         item.setTimestamp(
             Methods.convertInstantToOffsetDateTime(customRevisionEntity.getRevtstmp()));
@@ -317,7 +321,7 @@ public class BooksService {
       outcomeType.setResult(this.resolveHistoryResult(revisionsDTO));
       outcomeType.setMessage(this.resolveHistoryMessage(revisionsDTO));
       outcomeType.setEntity(EntityType.BOOKS);
-      outcomeType.setTimestamp(OffsetDateTime.now());
+      outcomeType.setTimestamp(OffsetDateTime.now(ZoneOffset.UTC));
 
       result.setOutcomeDTO(outcomeType);
       result.getRevisionsDTO().addAll(revisionsDTO);

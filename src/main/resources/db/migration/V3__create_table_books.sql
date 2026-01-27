@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS spring_app.books (
   id UUID NOT NULL DEFAULT gen_random_uuid(),
   created_at TIMESTAMPTZ NOT NULL DEFAULT clock_timestamp(),
-  updated_at TIMESTAMPTZ,
+  updated_at TIMESTAMPTZ DEFAULT clock_timestamp(),
   version BIGINT NOT NULL DEFAULT 1,
   name VARCHAR(100) NOT NULL,
   publication_date DATE NOT NULL,

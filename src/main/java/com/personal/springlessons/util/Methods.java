@@ -7,14 +7,12 @@ import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
-import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
-
 import com.personal.springlessons.exception.InvalidUUIDException;
 import com.personal.springlessons.model.lov.DomainCategory;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.info.GitProperties;
@@ -94,7 +92,7 @@ public final class Methods {
   public static String generateFileName(String name, String fileExtension, boolean useTimestamp) {
     String result = null;
     String tms = useTimestamp
-        ? Methods.dateTimeFormatter(Constants.S_DATE_TIME_FORMAT_1, LocalDateTime.now())
+        ? Methods.dateTimeFormatter(Constants.S_DATE_TIME_FORMAT_1, LocalDateTime.now(ZoneOffset.UTC))
         : null;
     if (null == tms) {
       result = name + fileExtension;
@@ -160,12 +158,21 @@ public final class Methods {
     return result;
   }
 
+  public static OffsetDateTime convertInstantToOffsetDateTime(Instant instant) {
+    log.debug("Convert Instant: '{}' to OffsetDateTime", instant);
+    OffsetDateTime result = null;
+    if (instant != null) {
+      result = instant.atOffset(ZoneOffset.UTC);
+    }
+    log.debug("OffsetDateTime converted: '{}'", result);
+    return result;
+  }
+
   public static OffsetDateTime convertInstantToOffsetDateTime(Long instantInMillis) {
     log.debug("Convert Instant: '{}' to OffsetDateTime", instantInMillis);
     OffsetDateTime result = null;
     if (instantInMillis != null) {
-      result =
-          Instant.ofEpochMilli(instantInMillis).atZone(ZoneId.systemDefault()).toOffsetDateTime();
+      result = Instant.ofEpochMilli(instantInMillis).atOffset(ZoneOffset.UTC);
     }
     log.debug("OffsetDateTime converted: '{}'", result);
     return result;
