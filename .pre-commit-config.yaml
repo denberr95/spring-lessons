@@ -9,7 +9,7 @@ repos:
        - --verbose
        - --strict
        - --force-scope
-       - --scopes=api,setup,docs,tests,deploy,script,report
+       - --scopes=api,setup,docs,tests,deploy,script,report,database
  - repo: https://github.com/pre-commit/pre-commit-hooks
    rev: v6.0.0
    hooks:
@@ -76,7 +76,7 @@ repos:
       files: entrypoint.sh
       language: system
  - repo: https://github.com/sqlfluff/sqlfluff
-   rev: 3.5.0
+   rev: 4.0.1
    hooks:
     - id: sqlfluff-lint
       name: Lint SQL files
