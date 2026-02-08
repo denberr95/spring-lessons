@@ -11,8 +11,10 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
+
 import com.personal.springlessons.exception.InvalidUUIDException;
 import com.personal.springlessons.model.lov.DomainCategory;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.info.GitProperties;
@@ -91,9 +93,11 @@ public final class Methods {
 
   public static String generateFileName(String name, String fileExtension, boolean useTimestamp) {
     String result = null;
-    String tms = useTimestamp
-        ? Methods.dateTimeFormatter(Constants.S_DATE_TIME_FORMAT_1, LocalDateTime.now(ZoneOffset.UTC))
-        : null;
+    String tms =
+        useTimestamp
+            ? Methods.dateTimeFormatter(Constants.S_DATE_TIME_FORMAT_1,
+                LocalDateTime.now(ZoneOffset.UTC))
+            : null;
     if (null == tms) {
       result = name + fileExtension;
     } else {
