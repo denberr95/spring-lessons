@@ -49,34 +49,34 @@ extensions:
 
 service:
   extensions:
-  - health_check
-  - pprof
-  - zpages
+    - health_check
+    - pprof
+    - zpages
   pipelines:
     traces:
       receivers:
-      - otlp
+        - otlp
       processors:
-      - memory_limiter
-      - batch
+        - memory_limiter
+        - batch
       exporters:
-      - otlp_grpc
-      - debug
+        - otlp_grpc
+        - debug
     metrics:
       receivers:
-      - otlp
+        - otlp
       processors:
-      - memory_limiter
-      - batch
+        - memory_limiter
+        - batch
       exporters:
-      - prometheus
-      - debug
+        - prometheus
+        - debug
     logs:
       receivers:
-      - otlp
+        - otlp
       processors:
-      - memory_limiter
-      - batch
+        - memory_limiter
+        - batch
       exporters:
-      - otlp_http
-      - debug
+        - otlp_http
+        - debug
