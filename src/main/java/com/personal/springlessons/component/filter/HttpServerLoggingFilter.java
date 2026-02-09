@@ -3,6 +3,7 @@ package com.personal.springlessons.component.filter;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.UnaryOperator;
@@ -16,11 +17,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 
+import com.personal.springlessons.config.AppPropertiesConfig;
 import com.personal.springlessons.util.Constants;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -28,20 +30,30 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.ContentCachingResponseWrapper;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+@ConditionalOnProperty(prefix = "app-config.logging-filter", name = "enable-http-server",
+    havingValue = "true", matchIfMissing = false)
+@EqualsAndHashCode(callSuper = false)
+@Data
 @Component
 public class HttpServerLoggingFilter extends OncePerRequestFilter {
 
   private static final Logger log = LoggerFactory.getLogger(HttpServerLoggingFilter.class);
-
-  @Value("${management.server.base-path:/actuator}")
-  private String managementServerBasePath;
+  private final AppPropertiesConfig appPropertiesConfig;
 
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
       FilterChain filterChain) throws ServletException, IOException {
     ContentCachingRequestWrapper requestWrapper = this.requestWrapper(request);
     ContentCachingResponseWrapper responseWrapper = this.responseWrapper(response);
-    if (!request.getRequestURI().startsWith(this.managementServerBasePath)) {
+    List<String> paths = this.appPropertiesConfig.getLoggingFilter().getExcludePath();
+    String requestUri = request.getRequestURI();
+    boolean isExcluded = paths != null && paths.stream().anyMatch(requestUri::startsWith);
+    if (isExcluded) {
+      filterChain.doFilter(request, response);
+    } else {
       this.logRequest(requestWrapper);
       filterChain.doFilter(requestWrapper, responseWrapper);
       this.logResponse(responseWrapper);

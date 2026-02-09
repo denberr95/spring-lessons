@@ -1,11 +1,13 @@
 package com.personal.springlessons.config;
 
 import java.nio.file.Paths;
+import java.util.List;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 
 import com.personal.springlessons.util.Constants;
 
@@ -33,6 +35,8 @@ public final class AppPropertiesConfig {
   @NotNull(message = "CSV Metadata properties cannot be null") @Valid private CsvMetadata csvMetadata;
 
   @NotNull(message = "API Client properties cannot be null") @Valid private ApiClient apiClient;
+
+  @NotNull(message = "Logging Filter properties cannot be null") @Valid private LoggingFilter loggingFilter;
 
   @Data
   @Validated
@@ -101,6 +105,23 @@ public final class AppPropertiesConfig {
 
     /** This property is used to set the base URL for the API client. */
     @NotBlank(message = "Base URL property cannot be null or empty") private String baseUrl;
+  }
+
+  @Data
+  @Validated
+  public static class LoggingFilter {
+
+    /**
+     * Flag for enable verbose http logs of http server
+     */
+    @NotNull(message = "Enable verbose http logging") private Boolean enableHttpServer = Boolean.FALSE;
+
+    /**
+     * Base path to exclude from http server logs
+     */
+    private List<@NotBlank(message = "Base path cannot be null or blank") @Pattern(
+        regexp = "^/([a-zA-Z0-9-]+)(/[a-zA-Z0-9-]+)*$",
+        message = "Path must be in the form /base-path/service-url") String> excludePath;
   }
 
   @PostConstruct
