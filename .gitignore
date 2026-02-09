@@ -37,7 +37,7 @@ build/
 ### Log ###
 *.log
 
-# Package Files #
+### Package Files ###
 *.jar
 *.war
 *.nar
@@ -45,3 +45,7 @@ build/
 *.zip
 *.tar.gz
 *.rar
+*.7z
+
+### Database ###
+mailpit.db

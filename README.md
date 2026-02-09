@@ -46,6 +46,7 @@
 | Spring Lessons APIs | <http://localhost:10000> |
 | Spring Lessons Actuator | <http://localhost:10001> |
 | Swagger UI | <http://localhost:10000/spring-app/swagger-ui/index.html> |
+| Scalar UI | <http://localhost:10000/spring-app/scalar> |
 | Wiremock | <http://localhost:9998/__admin/> |
 | Mailpit | <http://localhost:8025/> |
 | SMTP Server | localhost:1025 |
