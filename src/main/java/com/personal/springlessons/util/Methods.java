@@ -10,6 +10,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 import com.personal.springlessons.exception.InvalidUUIDException;
@@ -59,9 +60,11 @@ public final class Methods {
   public static DomainCategory retrieveDomainCategory(String uri) {
     log.debug("Check Domain Category from uri: '{}'", uri);
     DomainCategory result = DomainCategory.NA;
+    String lowerUri = uri.toLowerCase(Locale.ROOT);
     for (DomainCategory e : DomainCategory.values()) {
-      if (uri.toLowerCase().contains(e.getValue().toLowerCase())) {
+      if (lowerUri.contains(e.getValue().toLowerCase(Locale.ROOT))) {
         result = e;
+        break;
       }
     }
     log.debug("Domain Category retrieved: '{}'", result);
