@@ -112,7 +112,11 @@ public final class Methods {
   public static boolean isValidFileType(String fileName, List<String> fileTypes) {
     log.debug("Check if file: '{}' is valid respect to available file types: '{}'", fileName,
         fileTypes);
-    return fileTypes.stream().anyMatch(fileName::endsWith);
+    boolean result = false;
+    if (fileName != null && !fileName.isBlank() && fileTypes != null && !fileTypes.isEmpty()) {
+      result = fileTypes.stream().anyMatch(fileName::endsWith);
+    }
+    return result;
   }
 
   public static MultiValueMap<String, String> addEtag(Long version) {

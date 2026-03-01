@@ -2,7 +2,6 @@ package com.personal.springlessons.model.entity.items;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.Objects;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -24,6 +23,14 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.SourceType;
 import org.hibernate.generator.EventType;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+@Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@NoArgsConstructor
 @Entity
 @DynamicInsert
 @DynamicUpdate
@@ -36,6 +43,7 @@ public class ItemsEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   @Column(name = "id", updatable = false, nullable = false)
+  @EqualsAndHashCode.Include
   private UUID id;
 
   @CurrentTimestamp(source = SourceType.DB, event = EventType.INSERT)
@@ -53,93 +61,9 @@ public class ItemsEntity {
       unique = true)
   private String barcode;
 
+  @ToString.Exclude
   @ManyToOne
   @JoinColumn(name = "order_items_id", referencedColumnName = "id", nullable = false,
       foreignKey = @ForeignKey(name = "fk_order_items_id"))
   private OrderItemsEntity orderItemsEntity;
-
-  public ItemsEntity(UUID id, Instant createdAt, BigDecimal price, String name, String barcode,
-      OrderItemsEntity orderItemsEntity) {
-    this.id = id;
-    this.createdAt = createdAt;
-    this.price = price;
-    this.name = name;
-    this.barcode = barcode;
-    this.orderItemsEntity = orderItemsEntity;
-  }
-
-  public ItemsEntity() {}
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(this.id);
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null || this.getClass() != obj.getClass())
-      return false;
-    ItemsEntity other = (ItemsEntity) obj;
-    return Objects.equals(this.id, other.id);
-  }
-
-  @Override
-  public String toString() {
-    return "ItemsEntity [id=" + this.id + ", createdAt=" + this.createdAt + ", price=" + this.price
-        + ", name=" + this.name + ", barcode=" + this.barcode + "]";
-  }
-
-  public static String getTableName() {
-    return TABLE_NAME;
-  }
-
-  public UUID getId() {
-    return this.id;
-  }
-
-  public void setId(UUID id) {
-    this.id = id;
-  }
-
-  public Instant getCreatedAt() {
-    return this.createdAt;
-  }
-
-  public void setCreatedAt(Instant createdAt) {
-    this.createdAt = createdAt;
-  }
-
-  public BigDecimal getPrice() {
-    return this.price;
-  }
-
-  public void setPrice(BigDecimal price) {
-    this.price = price;
-  }
-
-  public String getName() {
-    return this.name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public String getBarcode() {
-    return this.barcode;
-  }
-
-  public void setBarcode(String barcode) {
-    this.barcode = barcode;
-  }
-
-  public OrderItemsEntity getOrderItemsEntity() {
-    return this.orderItemsEntity;
-  }
-
-  public void setOrderItemsEntity(OrderItemsEntity orderItemsEntity) {
-    this.orderItemsEntity = orderItemsEntity;
-  }
 }

@@ -10,12 +10,9 @@ import com.personal.springlessons.model.lov.Channel;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
-import org.mapstruct.factory.Mappers;
 
 @Mapper(config = ICustomMapperConfig.class, uses = MappingUtils.class)
 public interface IBooksMapper {
-
-  IBooksMapper INSTANCE = Mappers.getMapper(IBooksMapper.class);
 
   BooksEntity mapEntity(BookDTO source, Channel channel);
 

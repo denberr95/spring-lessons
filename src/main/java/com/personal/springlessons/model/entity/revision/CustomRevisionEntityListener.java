@@ -22,9 +22,9 @@ public class CustomRevisionEntityListener implements RevisionListener {
 
   @Override
   public void newRevision(Object revisionEntity) {
-    log.debug("Adding additional information to revision");
-
     CustomRevisionEntity rev = (CustomRevisionEntity) revisionEntity;
+
+    log.debug("Adding additional information to revision number: '{}'", rev.getRev());
 
     getCurrentRequest().map(this::resolveIpAddress).ifPresent(rev::setIpAddress);
     getCurrentRequest().map(this::resolveRequestUri).ifPresent(rev::setRequestUri);
@@ -33,7 +33,7 @@ public class CustomRevisionEntityListener implements RevisionListener {
     rev.setClientId(this.resolveClientId());
     rev.setUsername(this.resolveUsername());
 
-    log.debug("Revision enrichment completed");
+    log.debug("Revision enrichment completed for revision number: '{}'", rev.getRev());
   }
 
   private static Optional<HttpServletRequest> getCurrentRequest() {

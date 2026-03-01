@@ -2,7 +2,6 @@ package com.personal.springlessons.model.entity.books;
 
 import java.time.Instant;
 import java.time.LocalDate;
-import java.util.Objects;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -28,6 +27,13 @@ import org.hibernate.annotations.SourceType;
 import org.hibernate.envers.Audited;
 import org.hibernate.generator.EventType;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
+@Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@NoArgsConstructor
 @Entity
 @Audited
 @DynamicInsert
@@ -44,6 +50,7 @@ public class BooksEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   @Column(name = "id", updatable = false, nullable = false)
+  @EqualsAndHashCode.Include
   private UUID id;
 
   @CurrentTimestamp(source = SourceType.DB, event = EventType.INSERT)
@@ -74,126 +81,4 @@ public class BooksEntity {
   @Enumerated(EnumType.STRING)
   @Column(name = "genre", nullable = false)
   private Genre genre;
-
-  public BooksEntity(UUID id, Instant createdAt, Instant updatedAt, Long version, String name,
-      LocalDate publicationDate, Integer numberOfPages, Channel channel, Genre genre) {
-    this.id = id;
-    this.createdAt = createdAt;
-    this.updatedAt = updatedAt;
-    this.version = version;
-    this.name = name;
-    this.publicationDate = publicationDate;
-    this.numberOfPages = numberOfPages;
-    this.channel = channel;
-    this.genre = genre;
-  }
-
-  public BooksEntity() {}
-
-  public static String getTableName() {
-    return TABLE_NAME;
-  }
-
-  public UUID getId() {
-    return this.id;
-  }
-
-  public void setId(UUID id) {
-    this.id = id;
-  }
-
-  public Instant getCreatedAt() {
-    return this.createdAt;
-  }
-
-  public void setCreatedAt(Instant createdAt) {
-    this.createdAt = createdAt;
-  }
-
-  public Instant getUpdatedAt() {
-    return this.updatedAt;
-  }
-
-  public void setUpdatedAt(Instant updatedAt) {
-    this.updatedAt = updatedAt;
-  }
-
-  public Long getVersion() {
-    return this.version;
-  }
-
-  public void setVersion(Long version) {
-    this.version = version;
-  }
-
-  public String getName() {
-    return this.name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public LocalDate getPublicationDate() {
-    return this.publicationDate;
-  }
-
-  public void setPublicationDate(LocalDate publicationDate) {
-    this.publicationDate = publicationDate;
-  }
-
-  public Integer getNumberOfPages() {
-    return this.numberOfPages;
-  }
-
-  public void setNumberOfPages(Integer numberOfPages) {
-    this.numberOfPages = numberOfPages;
-  }
-
-  public Channel getChannel() {
-    return this.channel;
-  }
-
-  public void setChannel(Channel channel) {
-    this.channel = channel;
-  }
-
-  public Genre getGenre() {
-    return this.genre;
-  }
-
-  public void setGenre(Genre genre) {
-    this.genre = genre;
-  }
-
-  @Override
-  public String toString() {
-    return "BooksEntity [id=" + this.id + ", createdAt=" + this.createdAt + ", updatedAt="
-        + this.updatedAt + ", version=" + this.version + ", name=" + this.name
-        + ", publicationDate=" + this.publicationDate + ", numberOfPages=" + this.numberOfPages
-        + ", channel=" + this.channel + ", genre=" + this.genre + "]";
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(this.id, this.createdAt, this.updatedAt, this.version, this.name,
-        this.publicationDate, this.numberOfPages, this.channel, this.genre);
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (this.getClass() != obj.getClass())
-      return false;
-    BooksEntity other = (BooksEntity) obj;
-    return Objects.equals(this.id, other.id) && Objects.equals(this.createdAt, other.createdAt)
-        && Objects.equals(this.updatedAt, other.updatedAt)
-        && Objects.equals(this.version, other.version) && Objects.equals(this.name, other.name)
-        && Objects.equals(this.publicationDate, other.publicationDate)
-        && Objects.equals(this.numberOfPages, other.numberOfPages) && this.channel == other.channel
-        && this.genre == other.genre;
-  }
 }

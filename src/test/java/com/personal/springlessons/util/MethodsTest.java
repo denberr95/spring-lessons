@@ -11,7 +11,6 @@ import static org.mockito.Mockito.when;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
-import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.List;
 import java.util.UUID;
@@ -193,11 +192,10 @@ class MethodsTest {
   @Test
   void givenValidInstantInMillis_whenConvertInstantToOffsetDateTime_thenReturnCorrectOffsetDateTime() {
     long instantInMillis = Instant.parse("9999-12-31T12:30:00Z").toEpochMilli();
-    ZoneId systemZone = ZoneId.systemDefault();
     OffsetDateTime result = Methods.convertInstantToOffsetDateTime(instantInMillis);
     assertNotNull(result, "Result should not be null");
-    assertEquals(Instant.ofEpochMilli(instantInMillis).atZone(systemZone).toOffsetDateTime(),
-        result, "OffsetDateTime should match converted instant");
+    assertEquals(Instant.ofEpochMilli(instantInMillis).atOffset(ZoneOffset.UTC), result,
+        "OffsetDateTime should match converted instant");
   }
 
   @Test

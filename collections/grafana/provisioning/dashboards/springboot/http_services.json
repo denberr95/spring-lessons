@@ -18,7 +18,7 @@
     "editable": true,
     "fiscalYearStartMonth": 0,
     "graphTooltip": 0,
-    "id": 7,
+    "id": 5,
     "links": [],
     "panels": [
         {
@@ -35,7 +35,7 @@
                         "axisBorderShow": true,
                         "axisCenteredZero": false,
                         "axisColorMode": "text",
-                        "axisLabel": "",
+                        "axisLabel": "# Jetty Threads",
                         "axisPlacement": "auto",
                         "barAlignment": 0,
                         "barWidthFactor": 0.6,
@@ -175,7 +175,7 @@
                         "axisBorderShow": true,
                         "axisCenteredZero": false,
                         "axisColorMode": "text",
-                        "axisLabel": "",
+                        "axisLabel": "Tempi",
                         "axisPlacement": "auto",
                         "barAlignment": 0,
                         "barWidthFactor": 0.6,
@@ -272,7 +272,7 @@
                         "axisBorderShow": true,
                         "axisCenteredZero": false,
                         "axisColorMode": "text",
-                        "axisLabel": "",
+                        "axisLabel": "Tempi",
                         "axisPlacement": "auto",
                         "barAlignment": 0,
                         "barWidthFactor": 0.6,
@@ -370,5 +370,5 @@
     "timezone": "browser",
     "title": "HTTP Services",
     "uid": "c153cdec-3390-4f17-a3b0-2331aa198807",
-    "version": 2
+    "version": 4
 }
