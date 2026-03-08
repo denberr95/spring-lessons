@@ -14,7 +14,7 @@
 | **Name** | **Link** |
 | :-: | :-: |
 | Visual Studio Code | <https://code.visualstudio.com> |
-| Java 21 | <https://bell-sw.com/pages/downloads/> |
+| Java 25 | <https://bell-sw.com/pages/downloads/> |
 | Git | <https://git-scm.com> |
 | Maven | <https://maven.apache.org> |
 | Podman | <https://podman.io> |
@@ -43,8 +43,8 @@
 | Database Spring | jdbc:postgresql://localhost:5432/spring |
 | Kafka Broker | localhost:29092 |
 | Keycloak | <http://localhost:8080> |
-| Spring Lessons APIs | <http://localhost:10000> |
-| Spring Lessons Actuator | <http://localhost:10001> |
+| Spring Lessons APIs | <http://localhost:10000/spring-app> |
+| Spring Lessons Actuator | <http://localhost:10001/actuator> |
 | Swagger UI | <http://localhost:10000/spring-app/swagger-ui/index.html> |
 | Scalar UI | <http://localhost:10000/spring-app/scalar> |
 | Wiremock | <http://localhost:9998/__admin/> |

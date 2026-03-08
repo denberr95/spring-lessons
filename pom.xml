@@ -15,7 +15,7 @@
     <version>1.0.0</version>
     <name>spring-lessons</name>
     <properties>
-        <java.version>21</java.version>
+        <java.version>25</java.version>
         <org.mapstruct.version>1.6.3</org.mapstruct.version>
         <logback.contrib.version>0.1.5</logback.contrib.version>
         <opentelemetry.appender.version>2.25.0-alpha</opentelemetry.appender.version>
@@ -23,7 +23,7 @@
         <opencsv.version>5.12.0</opencsv.version>
         <org.springdoc.version>3.0.1</org.springdoc.version>
         <spring.cloud.version>2025.1.1</spring.cloud.version>
-        <spotless-maven-plugin.version>3.2.1</spotless-maven-plugin.version>
+        <spotless-maven-plugin.version>3.3.0</spotless-maven-plugin.version>
         <jaxb2-maven-plugin.version>4.1.0</jaxb2-maven-plugin.version>
         <xmlschema-core.version>2.3.2</xmlschema-core.version>
     </properties>

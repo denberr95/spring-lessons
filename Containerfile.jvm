@@ -1,4 +1,4 @@
-FROM bellsoft/liberica-openjre-alpine:21 AS runtime
+FROM bellsoft/liberica-openjre-alpine:25 AS runtime
 
 # Install utilities, update binaries, create user, set permissions and clean up
 RUN apk add --no-cache curl openssl bash && \
