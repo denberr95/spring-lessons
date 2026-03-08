@@ -215,6 +215,20 @@
             ]
         },
         {
+            "label": "mvn-display-plugin-updates",
+            "type": "shell",
+            "command": "mvn versions:display-plugin-updates --file pom.xml --settings settings.xml 1> logs/maven-plugin-updates.log",
+            "windows": {
+                "command": "mvn versions:display-plugin-updates --file pom.xml --settings settings.xml > logs\\maven-plugin-updates.log"
+            },
+            "group": "build",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "shell-cleanup-folders",
+                "shell-create-folders"
+            ]
+        },
+        {
             "label": "mvn-spotless-apply",
             "type": "shell",
             "command": "mvn spotless:apply --file pom.xml --settings settings.xml",
