@@ -38,8 +38,8 @@ lombok.config
 .DS_Store
 Thumbs.db
 
-# Ignore Containerfile.jvm
-Containerfile.jvm
+# Ignore Containerfile
+Containerfile
 
 # Ignore maven wrapper
 .mvn/

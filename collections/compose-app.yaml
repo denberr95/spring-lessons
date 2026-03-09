@@ -3,7 +3,7 @@ services:
   app:
     build:
       context: ../
-      dockerfile: Containerfile.jvm
+      dockerfile: Containerfile
     restart: "no"
     hostname: spring-lessons
     environment:

@@ -57,14 +57,14 @@ repos:
     - id: compose-validator
       name: Validate Compose Local Application
       language: system
-      entry: podman-compose --file ./collections/compose.yaml --file ./collections/compose-app.yaml config
+      entry: podman-compose --file ./collections/compose-env.yaml --file ./collections/compose-app.yaml config
       pass_filenames: false
  - repo: https://github.com/hadolint/hadolint
    rev: v2.14.0
    hooks:
     - id: hadolint
       name: Hadolint
-      entry: podman run --rm --interactive --volume ./:/mnt:ro ghcr.io/hadolint/hadolint hadolint --config /mnt/.hadolint.yaml /mnt/Containerfile.jvm
+      entry: podman run --rm --interactive --volume ./:/mnt:ro ghcr.io/hadolint/hadolint hadolint --config /mnt/.hadolint.yaml /mnt/Containerfile
       pass_filenames: false
       language: system
  - repo: https://github.com/koalaman/shellcheck-precommit

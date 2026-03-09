@@ -1,0 +1,25 @@
+services:
+  keycloak-export:
+    image: quay.io/keycloak/keycloak:latest
+    restart: "no"
+    hostname: keycloak-export
+    environment:
+      - TZ=Europe/Rome
+    command:
+      - export
+      - --dir
+      - /opt/keycloak/export
+      - --realm
+      - master
+      - --users
+      - same_file
+      - --verbose
+    volumes:
+      - ./keycloak/data:/opt/keycloak/data
+      - ./keycloak/export:/opt/keycloak/export
+    networks:
+      - spring-lessons
+
+networks:
+  spring-lessons:
+    driver: bridge

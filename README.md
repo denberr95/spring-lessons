@@ -34,8 +34,8 @@
 
 | **Name** | **Link** |
 | :-: | :-: |
-| Environment Compose | [compose.yaml](./collections/compose.yaml) |
-| Application Containerfile | [Containerfile.jvm](Containerfile.jvm) |
+| Environment Compose | [compose-env.yaml](./collections/compose-env.yaml) |
+| Application Containerfile | [Containerfile](Containerfile) |
 | Postman Collection | [postman.json](./collections/postman.json) |
 | Jaeger UI | <http://localhost:16686/search> |
 | Prometheus | <http://localhost:9090> |
