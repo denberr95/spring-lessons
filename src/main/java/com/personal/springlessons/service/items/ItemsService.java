@@ -1,7 +1,6 @@
 package com.personal.springlessons.service.items;
 
 import java.util.List;
-
 import com.personal.springlessons.model.dto.ItemDTO;
 import com.personal.springlessons.model.dto.OrderItemsDTO;
 import com.personal.springlessons.model.dto.response.KafkaMessageItemDTO;
@@ -12,14 +11,12 @@ import com.personal.springlessons.model.lov.ItemStatus;
 import com.personal.springlessons.repository.items.IOrderItemsRepository;
 import com.personal.springlessons.util.Constants;
 import com.personal.springlessons.util.Methods;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.messaging.Message;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import io.micrometer.tracing.Span;
 import io.micrometer.tracing.Tracer;
 import io.micrometer.tracing.annotation.NewSpan;
@@ -128,7 +125,7 @@ public class ItemsService {
 
   private void notifyKafkaItems(KafkaMessageItemDTO message, String topic) {
     Span span = this.tracer.nextSpan().name("notify-kafka-message-items");
-    try (Tracer.SpanInScope ws = this.tracer.withSpan(span.start())) {
+    try (var _ = this.tracer.withSpan(span.start())) {
       Message<Object> kafkaMessage = Methods.createKafkaMessage(message, topic);
       this.kafkaTemplate.send(kafkaMessage);
 

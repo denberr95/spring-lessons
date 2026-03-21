@@ -11,11 +11,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
-
 import jakarta.persistence.OptimisticLockException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
-
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import com.opencsv.bean.CsvToBean;
@@ -49,13 +47,11 @@ import com.personal.springlessons.model.lov.Channel;
 import com.personal.springlessons.repository.books.IBooksRepository;
 import com.personal.springlessons.util.Constants;
 import com.personal.springlessons.util.Methods;
-
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.data.history.Revisions;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
-
 import io.micrometer.tracing.Span;
 import io.micrometer.tracing.Tracer;
 import io.micrometer.tracing.annotation.NewSpan;
@@ -158,7 +154,7 @@ public class BooksService {
     try {
       this.bookRepository.delete(bookEntity);
       this.bookRepository.flush();
-    } catch (OptimisticLockingFailureException | OptimisticLockException e) {
+    } catch (OptimisticLockingFailureException | OptimisticLockException _) {
       throw new ConcurrentUpdateException(id, ifMatch);
     }
 
@@ -184,7 +180,7 @@ public class BooksService {
       String version = Methods.getEtag(ifMatch);
       bookEntity = this.bookMapper.update(bookDTO, channel, bookEntity, version);
       bookEntity = this.bookRepository.saveAndFlush(bookEntity);
-    } catch (OptimisticLockingFailureException | OptimisticLockException e) {
+    } catch (OptimisticLockingFailureException | OptimisticLockException _) {
       throw new ConcurrentUpdateException(id, ifMatch);
     }
 
@@ -343,7 +339,7 @@ public class BooksService {
 
   private void persistCsvContent(final Channel channel, List<BookDTO> booksDTO) {
     Span span = this.tracer.nextSpan().name("persistCsvContent");
-    try (Tracer.SpanInScope ws = this.tracer.withSpan(span.start())) {
+    try (var _ = this.tracer.withSpan(span.start())) {
       List<BooksEntity> entities = new ArrayList<>(booksDTO.size());
       booksDTO.forEach(item -> entities.add(this.bookMapper.mapEntity(item, channel)));
       this.bookRepository.saveAllAndFlush(entities);
@@ -357,7 +353,7 @@ public class BooksService {
       Iterator<BookCsv> iterator, List<InvalidCsvDTO> invalidCsvDTO, List<BookDTO> booksDTO) {
     Span span = this.tracer.nextSpan().name("validateCsvContent");
 
-    try (Tracer.SpanInScope ws = this.tracer.withSpan(span.start())) {
+    try (var _ = this.tracer.withSpan(span.start())) {
       while (iterator.hasNext()) {
 
         row++;
@@ -396,7 +392,7 @@ public class BooksService {
 
   private void isPermittedFileType(final String fileName) {
     Span span = this.tracer.nextSpan().name("isPermittedFileType");
-    try (Tracer.SpanInScope ws = this.tracer.withSpan(span.start())) {
+    try (var _ = this.tracer.withSpan(span.start())) {
       List<String> availableFileTypes = List.of(Constants.CSV_EXT);
       if (!Methods.isValidFileType(fileName, availableFileTypes)) {
         throw new InvalidFileTypeException(fileName, availableFileTypes);

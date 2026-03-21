@@ -3,10 +3,8 @@ package com.personal.springlessons.component.mapper;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-
 import com.personal.springlessons.model.lov.Genre;
 import com.personal.springlessons.util.Constants;
-
 import org.mapstruct.Named;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +19,7 @@ public class MappingUtils {
     try {
       DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Constants.S_DATE_FORMAT_1);
       return LocalDate.parse(dateString, formatter);
-    } catch (DateTimeParseException e) {
+    } catch (DateTimeParseException _) {
       return null;
     }
   }
@@ -33,7 +31,7 @@ public class MappingUtils {
     }
     try {
       return Integer.parseInt(numberString);
-    } catch (NumberFormatException e) {
+    } catch (NumberFormatException _) {
       return null;
     }
   }
@@ -45,7 +43,7 @@ public class MappingUtils {
     }
     try {
       return Enum.valueOf(enumClass, value.toUpperCase());
-    } catch (IllegalArgumentException e) {
+    } catch (IllegalArgumentException _) {
       return null;
     }
   }
