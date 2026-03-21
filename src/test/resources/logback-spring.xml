@@ -30,7 +30,6 @@
         <captureLogstashMarkerAttributes>false</captureLogstashMarkerAttributes>
         <captureLogstashStructuredArguments>false</captureLogstashStructuredArguments>
         <captureMdcAttributes>*</captureMdcAttributes>
-        <captureEventName>true</captureEventName>
         <numLogsCapturedBeforeOtelInstall>1000</numLogsCapturedBeforeOtelInstall>
     </appender>
 
