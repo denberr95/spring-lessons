@@ -18,7 +18,7 @@ services:
       - SPRING_MAIN_BANNER_MODE=off
       - SPRING_MAIN_LOG_STARTUP_INFO=true
       - SPRING_PID_FAIL_IN_WRITE_ERROR=true
-      - SERVER_PORT=10000
+      - SERVER_PORT=8888
       - SERVER_SHUTDOWN=graceful
       - SERVER_COMPRESSION_ENABLED=true
       - SPRING_WEB_ERROR_INCLUDE_EXCEPTION=true
@@ -33,7 +33,7 @@ services:
       - SPRING_JACKSON_DEFAULT_PROPERTY_INCLUSION=NON_EMPTY
       - SPRING_JACKSON_TIME_ZONE=UTC
       - SPRING_JACKSON_SERIALIZATION_INDENT_OUTPUT=false
-      - MANAGEMENENT_SERVER_PORT=10001
+      - MANAGEMENT_SERVER_PORT=10001
       - MANAGEMENT_SERVER_ADD_APPLICATION_CONTEXT_HEADER=true
       - MANAGEMENT_OBSERVATIONS_ANNOTATIONS_ENABLED=true
       - MANAGEMENT_INFO_ENV_ENABLED=true
@@ -137,8 +137,8 @@ services:
       - LOG_LEVEL_ORG_HIBERNATE=ERROR
       - LOG_LEVEL_ORG_APACHE=ERROR
     ports:
-      - "10000:10000"  # serve web server
-      - "10001:10001"  # serve actuator
+      - "8888:8888"  # serve web server
+      - "8889:8889"  # serve actuator
       - "5500:5500"    # serve jdwp
     networks:
       - spring-lessons
