@@ -9,6 +9,7 @@ import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import jakarta.persistence.OptimisticLockException;
@@ -74,7 +75,7 @@ public class BooksService {
     this.tracer = tracer;
   }
 
-  @NewSpan
+  @NewSpan(name = "get-all-books")
   public BooksWrapperDTO getAll() {
     Span currentSpan = this.tracer.currentSpan();
     BooksWrapperDTO result = new BooksWrapperDTO();
@@ -93,7 +94,7 @@ public class BooksService {
     return result;
   }
 
-  @NewSpan
+  @NewSpan(name = "get-book-by-id")
   public BooksWrapperDTO getById(final String id) {
     Span currentSpan = this.tracer.currentSpan();
     BooksWrapperDTO result = new BooksWrapperDTO();
@@ -112,7 +113,7 @@ public class BooksService {
     return result;
   }
 
-  @NewSpan
+  @NewSpan(name = "save-book")
   public BooksWrapperDTO save(final BookDTO bookDTO, final Channel channel) {
     Span currentSpan = this.tracer.currentSpan();
     BooksWrapperDTO result = new BooksWrapperDTO();
@@ -137,7 +138,7 @@ public class BooksService {
     return result;
   }
 
-  @NewSpan
+  @NewSpan(name = "delete-book")
   public void delete(final String id, final String ifMatch) {
     Span currentSpan = this.tracer.currentSpan();
 
@@ -161,7 +162,7 @@ public class BooksService {
     currentSpan.event("Book deleted");
   }
 
-  @NewSpan
+  @NewSpan(name = "update-book")
   public BooksWrapperDTO update(final String id, final BookDTO bookDTO, final Channel channel,
       final String ifMatch) {
     Span currentSpan = this.tracer.currentSpan();
@@ -194,7 +195,7 @@ public class BooksService {
     return result;
   }
 
-  @NewSpan
+  @NewSpan(name = "download-books")
   public DownloadFileDTO download() {
     Span currentSpan = this.tracer.currentSpan();
 
@@ -234,14 +235,16 @@ public class BooksService {
     return result;
   }
 
-  @NewSpan
+  @NewSpan(name = "upload-books")
   public void upload(final Channel channel, final MultipartFile multipartFile) {
     Span currentSpan = this.tracer.currentSpan();
-    currentSpan.tag(Constants.SPAN_KEY_FILE_NAME, multipartFile.getOriginalFilename());
+    String filename =
+        Optional.ofNullable(multipartFile.getResource().getFilename()).orElse("unknown");
+    currentSpan.tag(Constants.SPAN_KEY_FILE_NAME, filename);
 
     int row = 0;
 
-    this.isPermittedFileType(multipartFile.getOriginalFilename());
+    this.isPermittedFileType(filename);
 
     try (CSVReader reader = new CSVReader(
         new InputStreamReader(multipartFile.getInputStream(), StandardCharsets.UTF_8))) {
@@ -269,7 +272,7 @@ public class BooksService {
     }
   }
 
-  @NewSpan
+  @NewSpan(name = "get-book-history")
   public GetBookHistoryResponse getBookHistory(GetBookHistoryRequest getBookHistoryRequest) {
     Span currentSpan = this.tracer.currentSpan();
     GetBookHistoryResponse result = new GetBookHistoryResponse();
@@ -338,7 +341,7 @@ public class BooksService {
   }
 
   private void persistCsvContent(final Channel channel, List<BookDTO> booksDTO) {
-    Span span = this.tracer.nextSpan().name("persistCsvContent");
+    Span span = this.tracer.nextSpan().name("persist-csv-content");
     try (var _ = this.tracer.withSpan(span.start())) {
       List<BooksEntity> entities = new ArrayList<>(booksDTO.size());
       booksDTO.forEach(item -> entities.add(this.bookMapper.mapEntity(item, channel)));
@@ -351,7 +354,7 @@ public class BooksService {
 
   private void validateCsvContent(final MultipartFile multipartFile, int row,
       Iterator<BookCsv> iterator, List<InvalidCsvDTO> invalidCsvDTO, List<BookDTO> booksDTO) {
-    Span span = this.tracer.nextSpan().name("validateCsvContent");
+    Span span = this.tracer.nextSpan().name("validate-csv-content");
 
     try (var _ = this.tracer.withSpan(span.start())) {
       while (iterator.hasNext()) {
@@ -391,7 +394,7 @@ public class BooksService {
   }
 
   private void isPermittedFileType(final String fileName) {
-    Span span = this.tracer.nextSpan().name("isPermittedFileType");
+    Span span = this.tracer.nextSpan().name("is-permitted-file-type");
     try (var _ = this.tracer.withSpan(span.start())) {
       List<String> availableFileTypes = List.of(Constants.CSV_EXT);
       if (!Methods.isValidFileType(fileName, availableFileTypes)) {

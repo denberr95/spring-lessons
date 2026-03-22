@@ -1,6 +1,7 @@
 package com.personal.springlessons.component.kafka;
 
 import java.util.UUID;
+
 import com.personal.springlessons.exception.items.DuplicatedBarcodeException;
 import com.personal.springlessons.model.csv.DiscardedItemCsv;
 import com.personal.springlessons.model.dto.response.KafkaMessageItemDTO;
@@ -10,6 +11,7 @@ import com.personal.springlessons.repository.items.IItemsRepository;
 import com.personal.springlessons.repository.items.IOrderItemsRepository;
 import com.personal.springlessons.util.Constants;
 import com.personal.springlessons.util.Methods;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
@@ -19,6 +21,7 @@ import org.springframework.kafka.retrytopic.DltStrategy;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
 import io.micrometer.tracing.Span;
 import io.micrometer.tracing.Tracer;
 

@@ -1,6 +1,7 @@
 package com.personal.springlessons.service.items;
 
 import java.util.List;
+import com.personal.springlessons.exception.SpringLessonsApplicationException;
 import com.personal.springlessons.model.dto.ItemDTO;
 import com.personal.springlessons.model.dto.OrderItemsDTO;
 import com.personal.springlessons.model.dto.response.KafkaMessageItemDTO;
@@ -35,7 +36,8 @@ public class ItemsService {
     this.kafkaTemplate = kafkaTemplate;
   }
 
-  @NewSpan
+  @NewSpan(name = "upload-order-items")
+  @Transactional
   public OrderItemsDTO upload(final OrderItemsDTO order, final Channel channel) {
     Span currentSpan = this.tracer.currentSpan();
     currentSpan.tag(Constants.SPAN_KEY_NUMBER_ITEMS_TO_UPLOAD, order.getItems().size());
@@ -46,45 +48,31 @@ public class ItemsService {
     data.setChannel(channel);
     OrderItemsEntity saved = this.orderItemsRepository.saveAndFlush(data);
 
-    result.setId(saved.getId().toString());
-    result.setItems(order.getItems());
-
     order.getItems().forEach(i -> {
-
-      KafkaMessageItemDTO message = new KafkaMessageItemDTO();
-      message.setBarcode(i.getBarcode());
-      message.setName(i.getName());
-      message.setPrice(i.getPrice());
-      message.setItemStatus(ItemStatus.UPLOAD);
-      message.setIdOrderItems(saved.getId().toString());
-
+      KafkaMessageItemDTO message =
+          this.buildKafkaMessage(i, ItemStatus.UPLOAD, saved.getId().toString());
       this.notifyKafkaItems(message, Constants.TOPIC_ITEMS);
     });
 
+    result.setId(saved.getId().toString());
+    result.setItems(order.getItems());
     return result;
   }
 
-  @NewSpan
+  @NewSpan(name = "delete-order-items")
   public void delete(final OrderItemsDTO order, final Channel channel) {
     Span currentSpan = this.tracer.currentSpan();
     currentSpan.tag(Constants.SPAN_KEY_NUMBER_ITEMS_TO_DELETE, order.getItems().size());
 
     order.getItems().forEach(i -> {
-
-      KafkaMessageItemDTO message = new KafkaMessageItemDTO();
-      message.setBarcode(i.getBarcode());
-      message.setName(i.getName());
-      message.setPrice(i.getPrice());
-      message.setItemStatus(ItemStatus.DELETE);
-      message.setIdOrderItems(order.getId());
+      KafkaMessageItemDTO message = this.buildKafkaMessage(i, ItemStatus.DELETE, order.getId());
       message.setId(i.getId());
-
       this.notifyKafkaItems(message, Constants.TOPIC_ITEMS);
     });
   }
 
   @Transactional(readOnly = true)
-  @NewSpan
+  @NewSpan(name = "get-all-order-items")
   public OrderItemsWrapperDTO getAll(Pageable pageable) {
     Span currentSpan = this.tracer.currentSpan();
     OrderItemsWrapperDTO result = new OrderItemsWrapperDTO();
@@ -128,13 +116,25 @@ public class ItemsService {
     try (var _ = this.tracer.withSpan(span.start())) {
       Message<Object> kafkaMessage = Methods.createKafkaMessage(message, topic);
       this.kafkaTemplate.send(kafkaMessage);
-
       span.tag(Constants.SPAN_KEY_OPERATION_TYPE, message.getItemStatus().name());
       span.tag(Constants.SPAN_KEY_ID_ORDER_ITEMS, message.getIdOrderItems());
       span.tag(Constants.SPAN_KEY_BARCODE, message.getBarcode());
       span.event("Kafka message sent");
+    } catch (Exception e) {
+      span.error(e);
+      throw new SpringLessonsApplicationException(e);
     } finally {
       span.end();
     }
+  }
+
+  private KafkaMessageItemDTO buildKafkaMessage(ItemDTO item, ItemStatus status, String orderId) {
+    KafkaMessageItemDTO message = new KafkaMessageItemDTO();
+    message.setBarcode(item.getBarcode());
+    message.setName(item.getName());
+    message.setPrice(item.getPrice());
+    message.setItemStatus(status);
+    message.setIdOrderItems(orderId);
+    return message;
   }
 }
