@@ -15,7 +15,7 @@
                         "method": "GET",
                         "header": [],
                         "url": {
-                            "raw": "http://localhost:10001/actuator",
+                            "raw": "http://localhost:8889/actuator",
                             "protocol": "http",
                             "host": [
                                 "localhost"
@@ -34,7 +34,7 @@
                         "method": "GET",
                         "header": [],
                         "url": {
-                            "raw": "http://localhost:10001/actuator/prometheus",
+                            "raw": "http://localhost:8889/actuator/prometheus",
                             "protocol": "http",
                             "host": [
                                 "localhost"
@@ -54,7 +54,7 @@
                         "method": "GET",
                         "header": [],
                         "url": {
-                            "raw": "http://localhost:10001/actuator/info",
+                            "raw": "http://localhost:8889/actuator/info",
                             "protocol": "http",
                             "host": [
                                 "localhost"
@@ -74,7 +74,7 @@
                         "method": "GET",
                         "header": [],
                         "url": {
-                            "raw": "http://localhost:10001/actuator/env",
+                            "raw": "http://localhost:8889/actuator/env",
                             "protocol": "http",
                             "host": [
                                 "localhost"
@@ -94,7 +94,7 @@
                         "method": "GET",
                         "header": [],
                         "url": {
-                            "raw": "http://localhost:10001/actuator/metrics",
+                            "raw": "http://localhost:8889/actuator/metrics",
                             "protocol": "http",
                             "host": [
                                 "localhost"
@@ -114,7 +114,7 @@
                         "method": "GET",
                         "header": [],
                         "url": {
-                            "raw": "http://localhost:10001/actuator/beans",
+                            "raw": "http://localhost:8889/actuator/beans",
                             "protocol": "http",
                             "host": [
                                 "localhost"
@@ -134,7 +134,7 @@
                         "method": "GET",
                         "header": [],
                         "url": {
-                            "raw": "http://localhost:10001/actuator/health",
+                            "raw": "http://localhost:8889/actuator/health",
                             "protocol": "http",
                             "host": [
                                 "localhost"
@@ -157,7 +157,7 @@
                         "method": "GET",
                         "header": [],
                         "url": {
-                            "raw": "http://localhost:10001/actuator/sbom",
+                            "raw": "http://localhost:8889/actuator/sbom",
                             "protocol": "http",
                             "host": [
                                 "localhost"
@@ -180,7 +180,7 @@
                         "method": "GET",
                         "header": [],
                         "url": {
-                            "raw": "http://localhost:10001/actuator/sbom/application",
+                            "raw": "http://localhost:8889/actuator/sbom/application",
                             "protocol": "http",
                             "host": [
                                 "localhost"
@@ -234,7 +234,7 @@
                                 "method": "GET",
                                 "header": [],
                                 "url": {
-                                    "raw": "http://localhost:10000/spring-app/v1/books",
+                                    "raw": "http://localhost:8888/spring-app/v1/books",
                                     "protocol": "http",
                                     "host": [
                                         "localhost"
@@ -270,7 +270,7 @@
                                     }
                                 },
                                 "url": {
-                                    "raw": "http://localhost:10000/spring-app/v1/books",
+                                    "raw": "http://localhost:8888/spring-app/v1/books",
                                     "protocol": "http",
                                     "host": [
                                         "localhost"
@@ -291,7 +291,7 @@
                                 "method": "GET",
                                 "header": [],
                                 "url": {
-                                    "raw": "http://localhost:10000/spring-app/v1/books/:id",
+                                    "raw": "http://localhost:8888/spring-app/v1/books/:id",
                                     "protocol": "http",
                                     "host": [
                                         "localhost"
@@ -325,7 +325,7 @@
                                     }
                                 ],
                                 "url": {
-                                    "raw": "http://localhost:10000/spring-app/v1/books/:id",
+                                    "raw": "http://localhost:8888/spring-app/v1/books/:id",
                                     "protocol": "http",
                                     "host": [
                                         "localhost"
@@ -373,7 +373,7 @@
                                     }
                                 },
                                 "url": {
-                                    "raw": "http://localhost:10000/spring-app/v1/books/:id",
+                                    "raw": "http://localhost:8888/spring-app/v1/books/:id",
                                     "protocol": "http",
                                     "host": [
                                         "localhost"
@@ -418,7 +418,7 @@
                                     ]
                                 },
                                 "url": {
-                                    "raw": "http://localhost:10000/spring-app/v1/books/upload",
+                                    "raw": "http://localhost:8888/spring-app/v1/books/upload",
                                     "protocol": "http",
                                     "host": [
                                         "localhost"
@@ -440,7 +440,7 @@
                                 "method": "GET",
                                 "header": [],
                                 "url": {
-                                    "raw": "http://localhost:10000/spring-app/v1/books/download",
+                                    "raw": "http://localhost:8888/spring-app/v1/books/download",
                                     "protocol": "http",
                                     "host": [
                                         "localhost"
@@ -529,7 +529,7 @@
                                 "method": "GET",
                                 "header": [],
                                 "url": {
-                                    "raw": "http://localhost:10000/spring-app/v1/books",
+                                    "raw": "http://localhost:8888/spring-app/v1/books",
                                     "protocol": "http",
                                     "host": [
                                         "localhost"
@@ -565,7 +565,7 @@
                                     }
                                 },
                                 "url": {
-                                    "raw": "http://localhost:10000/spring-app/v1/books",
+                                    "raw": "http://localhost:8888/spring-app/v1/books",
                                     "protocol": "http",
                                     "host": [
                                         "localhost"
@@ -586,7 +586,7 @@
                                 "method": "GET",
                                 "header": [],
                                 "url": {
-                                    "raw": "http://localhost:10000/spring-app/v1/books/:id",
+                                    "raw": "http://localhost:8888/spring-app/v1/books/:id",
                                     "protocol": "http",
                                     "host": [
                                         "localhost"
@@ -634,7 +634,7 @@
                                     }
                                 },
                                 "url": {
-                                    "raw": "http://localhost:10000/spring-app/v1/books/:id",
+                                    "raw": "http://localhost:8888/spring-app/v1/books/:id",
                                     "protocol": "http",
                                     "host": [
                                         "localhost"
@@ -662,7 +662,7 @@
                                 "method": "GET",
                                 "header": [],
                                 "url": {
-                                    "raw": "http://localhost:10000/spring-app/v1/books/download",
+                                    "raw": "http://localhost:8888/spring-app/v1/books/download",
                                     "protocol": "http",
                                     "host": [
                                         "localhost"
@@ -700,7 +700,7 @@
                                     ]
                                 },
                                 "url": {
-                                    "raw": "http://localhost:10000/spring-app/v1/books/upload",
+                                    "raw": "http://localhost:8888/spring-app/v1/books/upload",
                                     "protocol": "http",
                                     "host": [
                                         "localhost"
@@ -794,7 +794,7 @@
                                 "method": "GET",
                                 "header": [],
                                 "url": {
-                                    "raw": "http://localhost:10000/spring-app/v1/books",
+                                    "raw": "http://localhost:8888/spring-app/v1/books",
                                     "protocol": "http",
                                     "host": [
                                         "localhost"
@@ -815,7 +815,7 @@
                                 "method": "GET",
                                 "header": [],
                                 "url": {
-                                    "raw": "http://localhost:10000/spring-app/v1/books/:id",
+                                    "raw": "http://localhost:8888/spring-app/v1/books/:id",
                                     "protocol": "http",
                                     "host": [
                                         "localhost"
@@ -843,7 +843,7 @@
                                 "method": "GET",
                                 "header": [],
                                 "url": {
-                                    "raw": "http://localhost:10000/spring-app/v1/books/download",
+                                    "raw": "http://localhost:8888/spring-app/v1/books/download",
                                     "protocol": "http",
                                     "host": [
                                         "localhost"
@@ -977,7 +977,7 @@
                                     }
                                 },
                                 "url": {
-                                    "raw": "http://localhost:10000/spring-app/v1/items",
+                                    "raw": "http://localhost:8888/spring-app/v1/items",
                                     "protocol": "http",
                                     "host": [
                                         "localhost"
@@ -998,7 +998,7 @@
                                 "method": "GET",
                                 "header": [],
                                 "url": {
-                                    "raw": "http://localhost:10000/spring-app/v1/items?page=0&size=5&sort=id,asc",
+                                    "raw": "http://localhost:8888/spring-app/v1/items?page=0&size=5&sort=id,asc",
                                     "protocol": "http",
                                     "host": [
                                         "localhost"
@@ -1048,7 +1048,7 @@
                                     }
                                 },
                                 "url": {
-                                    "raw": "http://localhost:10000/spring-app/v1/items",
+                                    "raw": "http://localhost:8888/spring-app/v1/items",
                                     "protocol": "http",
                                     "host": [
                                         "localhost"
@@ -1151,7 +1151,7 @@
                                     }
                                 },
                                 "url": {
-                                    "raw": "http://localhost:10000/spring-app/v1/items",
+                                    "raw": "http://localhost:8888/spring-app/v1/items",
                                     "protocol": "http",
                                     "host": [
                                         "localhost"
@@ -1172,7 +1172,7 @@
                                 "method": "GET",
                                 "header": [],
                                 "url": {
-                                    "raw": "http://localhost:10000/spring-app/v1/items",
+                                    "raw": "http://localhost:8888/spring-app/v1/items",
                                     "protocol": "http",
                                     "host": [
                                         "localhost"
@@ -1260,7 +1260,7 @@
                                 "method": "GET",
                                 "header": [],
                                 "url": {
-                                    "raw": "http://localhost:10000/spring-app/v1/items",
+                                    "raw": "http://localhost:8888/spring-app/v1/items",
                                     "protocol": "http",
                                     "host": [
                                         "localhost"
@@ -1375,7 +1375,7 @@
                         "method": "GET",
                         "header": [],
                         "url": {
-                            "raw": "http://localhost:10000/spring-app/v3/api-docs.yaml",
+                            "raw": "http://localhost:8888/spring-app/v3/api-docs.yaml",
                             "protocol": "http",
                             "host": [
                                 "localhost"
@@ -1396,7 +1396,7 @@
                         "method": "GET",
                         "header": [],
                         "url": {
-                            "raw": "http://localhost:10000/spring-app/swagger-ui/index.html",
+                            "raw": "http://localhost:8888/spring-app/swagger-ui/index.html",
                             "protocol": "http",
                             "host": [
                                 "localhost"

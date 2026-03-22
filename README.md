@@ -43,10 +43,10 @@
 | Database Spring | jdbc:postgresql://localhost:5432/spring |
 | Kafka Broker | localhost:29092 |
 | Keycloak | <http://localhost:8080> |
-| Spring Lessons APIs | <http://localhost:10000/spring-app> |
-| Spring Lessons Actuator | <http://localhost:10001/actuator> |
-| Swagger UI | <http://localhost:10000/spring-app/swagger-ui/index.html> |
-| Scalar UI | <http://localhost:10000/spring-app/scalar> |
+| Spring Lessons APIs | <http://localhost:8888/spring-app> |
+| Spring Lessons Actuator | <http://localhost:8889/actuator> |
+| Swagger UI | <http://localhost:8888/spring-app/swagger-ui/index.html> |
+| Scalar UI | <http://localhost:8888/spring-app/scalar> |
 | Wiremock | <http://localhost:9998/__admin/> |
 | Mailpit | <http://localhost:8025/> |
 | SMTP Server | localhost:1025 |
