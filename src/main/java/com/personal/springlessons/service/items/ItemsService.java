@@ -1,6 +1,7 @@
 package com.personal.springlessons.service.items;
 
 import java.util.List;
+
 import com.personal.springlessons.exception.SpringLessonsApplicationException;
 import com.personal.springlessons.model.dto.ItemDTO;
 import com.personal.springlessons.model.dto.OrderItemsDTO;
@@ -12,12 +13,14 @@ import com.personal.springlessons.model.lov.ItemStatus;
 import com.personal.springlessons.repository.items.IOrderItemsRepository;
 import com.personal.springlessons.util.Constants;
 import com.personal.springlessons.util.Methods;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.messaging.Message;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import io.micrometer.tracing.Span;
 import io.micrometer.tracing.Tracer;
 import io.micrometer.tracing.annotation.NewSpan;

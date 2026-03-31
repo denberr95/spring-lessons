@@ -12,9 +12,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+
 import jakarta.persistence.OptimisticLockException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
+
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import com.opencsv.bean.CsvToBean;
@@ -48,11 +50,13 @@ import com.personal.springlessons.model.lov.Channel;
 import com.personal.springlessons.repository.books.IBooksRepository;
 import com.personal.springlessons.util.Constants;
 import com.personal.springlessons.util.Methods;
+
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.data.history.Revisions;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
+
 import io.micrometer.tracing.Span;
 import io.micrometer.tracing.Tracer;
 import io.micrometer.tracing.annotation.NewSpan;

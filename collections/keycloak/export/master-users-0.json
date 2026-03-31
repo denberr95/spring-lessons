@@ -1,182 +1,249 @@
 {
-  "realm" : "master",
-  "users" : [ {
-    "id" : "cb0fbba0-caae-45ba-9b1c-e6312189ae34",
-    "username" : "admin",
-    "emailVerified" : false,
-    "enabled" : true,
-    "createdTimestamp" : 1746479284651,
-    "totp" : false,
-    "credentials" : [ {
-      "id" : "1669aa2f-5b90-4c56-9c3a-8a9c9a306542",
-      "type" : "password",
-      "userLabel" : "admin password",
-      "createdDate" : 1746479298822,
-      "secretData" : "{\"value\":\"OooKo6Ct77HAlOUF6/nuudA/qMreCcrZmWH8Lm3Or3o=\",\"salt\":\"+tocusZWyw5Ow/eii9Xsyg==\",\"additionalParameters\":{}}",
-      "credentialData" : "{\"hashIterations\":5,\"algorithm\":\"argon2\",\"additionalParameters\":{\"hashLength\":[\"32\"],\"memory\":[\"7168\"],\"type\":[\"id\"],\"version\":[\"1.3\"],\"parallelism\":[\"1\"]}}"
-    } ],
-    "disableableCredentialTypes" : [ ],
-    "requiredActions" : [ ],
-    "realmRoles" : [ "admin", "default-roles-master" ],
-    "notBefore" : 0,
-    "groups" : [ ]
-  }, {
-    "id" : "816d6764-b5cd-4a71-b1f6-5592050ea32b",
-    "username" : "kcuser",
-    "emailVerified" : false,
-    "attributes" : {
-      "is_temporary_admin" : [ "true" ]
-    },
-    "enabled" : true,
-    "createdTimestamp" : 1746479066459,
-    "totp" : false,
-    "credentials" : [ {
-      "id" : "949390cc-c1a3-4ee7-9e91-22515de92be4",
-      "type" : "password",
-      "createdDate" : 1746479066538,
-      "secretData" : "{\"value\":\"ElNUvQqovvqKGwfuVuzYCsu3XloGruFKDuxVEzQDuyc=\",\"salt\":\"t6DhKzipHl97m9BBgjxwpw==\",\"additionalParameters\":{}}",
-      "credentialData" : "{\"hashIterations\":5,\"algorithm\":\"argon2\",\"additionalParameters\":{\"hashLength\":[\"32\"],\"memory\":[\"7168\"],\"type\":[\"id\"],\"version\":[\"1.3\"],\"parallelism\":[\"1\"]}}"
-    } ],
-    "disableableCredentialTypes" : [ ],
-    "requiredActions" : [ ],
-    "realmRoles" : [ "admin", "default-roles-master" ],
-    "notBefore" : 0,
-    "groups" : [ ]
-  }, {
-    "id" : "81c1df0d-f028-4131-89e4-254eeb4a58c8",
-    "username" : "service-account-client-id-books-admin",
-    "emailVerified" : false,
-    "enabled" : true,
-    "createdTimestamp" : 1746479978507,
-    "totp" : false,
-    "serviceAccountClientId" : "client-id-books-admin",
-    "credentials" : [ ],
-    "disableableCredentialTypes" : [ ],
-    "requiredActions" : [ ],
-    "realmRoles" : [ "api-books-admin", "default-roles-master" ],
-    "clientRoles" : {
-      "client-id-books-admin" : [ "uma_protection" ]
-    },
-    "notBefore" : 0,
-    "groups" : [ ]
-  }, {
-    "id" : "019f31fe-4e1c-4ba9-abb1-6e7e0997c33b",
-    "username" : "service-account-client-id-books-reader",
-    "emailVerified" : false,
-    "enabled" : true,
-    "createdTimestamp" : 1746480109583,
-    "totp" : false,
-    "serviceAccountClientId" : "client-id-books-reader",
-    "credentials" : [ ],
-    "disableableCredentialTypes" : [ ],
-    "requiredActions" : [ ],
-    "realmRoles" : [ "api-books-reader", "default-roles-master" ],
-    "clientRoles" : {
-      "client-id-books-reader" : [ "uma_protection" ]
-    },
-    "notBefore" : 0,
-    "groups" : [ ]
-  }, {
-    "id" : "5eaae94a-5881-4efc-ab00-64129cd22679",
-    "username" : "service-account-client-id-books-writer",
-    "emailVerified" : false,
-    "enabled" : true,
-    "createdTimestamp" : 1746480031632,
-    "totp" : false,
-    "serviceAccountClientId" : "client-id-books-writer",
-    "credentials" : [ ],
-    "disableableCredentialTypes" : [ ],
-    "requiredActions" : [ ],
-    "realmRoles" : [ "api-books-writer", "default-roles-master" ],
-    "clientRoles" : {
-      "client-id-books-writer" : [ "uma_protection" ]
-    },
-    "notBefore" : 0,
-    "groups" : [ ]
-  }, {
-    "id" : "5ab79245-9e89-4e4c-b9ab-3b20bb4cf6f2",
-    "username" : "service-account-client-id-items-admin",
-    "emailVerified" : false,
-    "enabled" : true,
-    "createdTimestamp" : 1746480156721,
-    "totp" : false,
-    "serviceAccountClientId" : "client-id-items-admin",
-    "credentials" : [ ],
-    "disableableCredentialTypes" : [ ],
-    "requiredActions" : [ ],
-    "realmRoles" : [ "api-items-admin", "default-roles-master" ],
-    "clientRoles" : {
-      "client-id-items-admin" : [ "uma_protection" ]
-    },
-    "notBefore" : 0,
-    "groups" : [ ]
-  }, {
-    "id" : "8e869143-1462-48ea-aa6e-0403131d3a99",
-    "username" : "service-account-client-id-items-reader",
-    "emailVerified" : false,
-    "enabled" : true,
-    "createdTimestamp" : 1746480303991,
-    "totp" : false,
-    "serviceAccountClientId" : "client-id-items-reader",
-    "credentials" : [ ],
-    "disableableCredentialTypes" : [ ],
-    "requiredActions" : [ ],
-    "realmRoles" : [ "api-items-reader", "default-roles-master" ],
-    "clientRoles" : {
-      "client-id-items-reader" : [ "uma_protection" ]
-    },
-    "notBefore" : 0,
-    "groups" : [ ]
-  }, {
-    "id" : "c41b888d-a1ce-43d1-98e3-3fff5b823f8b",
-    "username" : "service-account-client-id-items-writer",
-    "emailVerified" : false,
-    "enabled" : true,
-    "createdTimestamp" : 1746480262584,
-    "totp" : false,
-    "serviceAccountClientId" : "client-id-items-writer",
-    "credentials" : [ ],
-    "disableableCredentialTypes" : [ ],
-    "requiredActions" : [ ],
-    "realmRoles" : [ "api-items-writer", "default-roles-master" ],
-    "clientRoles" : {
-      "client-id-items-writer" : [ "uma_protection" ]
-    },
-    "notBefore" : 0,
-    "groups" : [ ]
-  }, {
-    "id" : "aa83ae54-c6a0-423f-8051-4275b8bde723",
-    "username" : "service-account-client-id-test-full",
-    "emailVerified" : false,
-    "enabled" : true,
-    "createdTimestamp" : 1746480345487,
-    "totp" : false,
-    "serviceAccountClientId" : "client-id-test-full",
-    "credentials" : [ ],
-    "disableableCredentialTypes" : [ ],
-    "requiredActions" : [ ],
-    "realmRoles" : [ "api-books-reader", "api-books-admin", "api-items-reader", "api-books-writer", "api-items-writer", "api-items-admin", "default-roles-master" ],
-    "clientRoles" : {
-      "client-id-test-full" : [ "uma_protection" ]
-    },
-    "notBefore" : 0,
-    "groups" : [ ]
-  }, {
-    "id" : "63b8e24a-dd7e-448e-acc4-8c11e1d7fb71",
-    "username" : "service-account-client-id-test-no-permission",
-    "emailVerified" : false,
-    "enabled" : true,
-    "createdTimestamp" : 1746480370653,
-    "totp" : false,
-    "serviceAccountClientId" : "client-id-test-no-permission",
-    "credentials" : [ ],
-    "disableableCredentialTypes" : [ ],
-    "requiredActions" : [ ],
-    "realmRoles" : [ "default-roles-master" ],
-    "clientRoles" : {
-      "client-id-test-no-permission" : [ "uma_protection" ]
-    },
-    "notBefore" : 0,
-    "groups" : [ ]
-  } ]
+    "realm": "master",
+    "users": [
+        {
+            "id": "cb0fbba0-caae-45ba-9b1c-e6312189ae34",
+            "username": "admin",
+            "emailVerified": false,
+            "enabled": true,
+            "createdTimestamp": 1746479284651,
+            "totp": false,
+            "credentials": [
+                {
+                    "id": "1669aa2f-5b90-4c56-9c3a-8a9c9a306542",
+                    "type": "password",
+                    "userLabel": "admin password",
+                    "createdDate": 1746479298822,
+                    "secretData": "{\"value\":\"OooKo6Ct77HAlOUF6/nuudA/qMreCcrZmWH8Lm3Or3o=\",\"salt\":\"+tocusZWyw5Ow/eii9Xsyg==\",\"additionalParameters\":{}}",
+                    "credentialData": "{\"hashIterations\":5,\"algorithm\":\"argon2\",\"additionalParameters\":{\"hashLength\":[\"32\"],\"memory\":[\"7168\"],\"type\":[\"id\"],\"version\":[\"1.3\"],\"parallelism\":[\"1\"]}}"
+                }
+            ],
+            "disableableCredentialTypes": [],
+            "requiredActions": [],
+            "realmRoles": [
+                "admin",
+                "default-roles-master"
+            ],
+            "notBefore": 0,
+            "groups": []
+        },
+        {
+            "id": "816d6764-b5cd-4a71-b1f6-5592050ea32b",
+            "username": "kcuser",
+            "emailVerified": false,
+            "attributes": {
+                "is_temporary_admin": [
+                    "true"
+                ]
+            },
+            "enabled": true,
+            "createdTimestamp": 1746479066459,
+            "totp": false,
+            "credentials": [
+                {
+                    "id": "949390cc-c1a3-4ee7-9e91-22515de92be4",
+                    "type": "password",
+                    "createdDate": 1746479066538,
+                    "secretData": "{\"value\":\"ElNUvQqovvqKGwfuVuzYCsu3XloGruFKDuxVEzQDuyc=\",\"salt\":\"t6DhKzipHl97m9BBgjxwpw==\",\"additionalParameters\":{}}",
+                    "credentialData": "{\"hashIterations\":5,\"algorithm\":\"argon2\",\"additionalParameters\":{\"hashLength\":[\"32\"],\"memory\":[\"7168\"],\"type\":[\"id\"],\"version\":[\"1.3\"],\"parallelism\":[\"1\"]}}"
+                }
+            ],
+            "disableableCredentialTypes": [],
+            "requiredActions": [],
+            "realmRoles": [
+                "admin",
+                "default-roles-master"
+            ],
+            "notBefore": 0,
+            "groups": []
+        },
+        {
+            "id": "81c1df0d-f028-4131-89e4-254eeb4a58c8",
+            "username": "service-account-client-id-books-admin",
+            "emailVerified": false,
+            "enabled": true,
+            "createdTimestamp": 1746479978507,
+            "totp": false,
+            "serviceAccountClientId": "client-id-books-admin",
+            "credentials": [],
+            "disableableCredentialTypes": [],
+            "requiredActions": [],
+            "realmRoles": [
+                "api-books-admin",
+                "default-roles-master"
+            ],
+            "clientRoles": {
+                "client-id-books-admin": [
+                    "uma_protection"
+                ]
+            },
+            "notBefore": 0,
+            "groups": []
+        },
+        {
+            "id": "019f31fe-4e1c-4ba9-abb1-6e7e0997c33b",
+            "username": "service-account-client-id-books-reader",
+            "emailVerified": false,
+            "enabled": true,
+            "createdTimestamp": 1746480109583,
+            "totp": false,
+            "serviceAccountClientId": "client-id-books-reader",
+            "credentials": [],
+            "disableableCredentialTypes": [],
+            "requiredActions": [],
+            "realmRoles": [
+                "api-books-reader",
+                "default-roles-master"
+            ],
+            "clientRoles": {
+                "client-id-books-reader": [
+                    "uma_protection"
+                ]
+            },
+            "notBefore": 0,
+            "groups": []
+        },
+        {
+            "id": "5eaae94a-5881-4efc-ab00-64129cd22679",
+            "username": "service-account-client-id-books-writer",
+            "emailVerified": false,
+            "enabled": true,
+            "createdTimestamp": 1746480031632,
+            "totp": false,
+            "serviceAccountClientId": "client-id-books-writer",
+            "credentials": [],
+            "disableableCredentialTypes": [],
+            "requiredActions": [],
+            "realmRoles": [
+                "api-books-writer",
+                "default-roles-master"
+            ],
+            "clientRoles": {
+                "client-id-books-writer": [
+                    "uma_protection"
+                ]
+            },
+            "notBefore": 0,
+            "groups": []
+        },
+        {
+            "id": "5ab79245-9e89-4e4c-b9ab-3b20bb4cf6f2",
+            "username": "service-account-client-id-items-admin",
+            "emailVerified": false,
+            "enabled": true,
+            "createdTimestamp": 1746480156721,
+            "totp": false,
+            "serviceAccountClientId": "client-id-items-admin",
+            "credentials": [],
+            "disableableCredentialTypes": [],
+            "requiredActions": [],
+            "realmRoles": [
+                "api-items-admin",
+                "default-roles-master"
+            ],
+            "clientRoles": {
+                "client-id-items-admin": [
+                    "uma_protection"
+                ]
+            },
+            "notBefore": 0,
+            "groups": []
+        },
+        {
+            "id": "8e869143-1462-48ea-aa6e-0403131d3a99",
+            "username": "service-account-client-id-items-reader",
+            "emailVerified": false,
+            "enabled": true,
+            "createdTimestamp": 1746480303991,
+            "totp": false,
+            "serviceAccountClientId": "client-id-items-reader",
+            "credentials": [],
+            "disableableCredentialTypes": [],
+            "requiredActions": [],
+            "realmRoles": [
+                "api-items-reader",
+                "default-roles-master"
+            ],
+            "clientRoles": {
+                "client-id-items-reader": [
+                    "uma_protection"
+                ]
+            },
+            "notBefore": 0,
+            "groups": []
+        },
+        {
+            "id": "c41b888d-a1ce-43d1-98e3-3fff5b823f8b",
+            "username": "service-account-client-id-items-writer",
+            "emailVerified": false,
+            "enabled": true,
+            "createdTimestamp": 1746480262584,
+            "totp": false,
+            "serviceAccountClientId": "client-id-items-writer",
+            "credentials": [],
+            "disableableCredentialTypes": [],
+            "requiredActions": [],
+            "realmRoles": [
+                "api-items-writer",
+                "default-roles-master"
+            ],
+            "clientRoles": {
+                "client-id-items-writer": [
+                    "uma_protection"
+                ]
+            },
+            "notBefore": 0,
+            "groups": []
+        },
+        {
+            "id": "aa83ae54-c6a0-423f-8051-4275b8bde723",
+            "username": "service-account-client-id-test-full",
+            "emailVerified": false,
+            "enabled": true,
+            "createdTimestamp": 1746480345487,
+            "totp": false,
+            "serviceAccountClientId": "client-id-test-full",
+            "credentials": [],
+            "disableableCredentialTypes": [],
+            "requiredActions": [],
+            "realmRoles": [
+                "api-books-reader",
+                "api-books-admin",
+                "api-items-reader",
+                "api-books-writer",
+                "api-items-writer",
+                "api-items-admin",
+                "default-roles-master"
+            ],
+            "clientRoles": {
+                "client-id-test-full": [
+                    "uma_protection"
+                ]
+            },
+            "notBefore": 0,
+            "groups": []
+        },
+        {
+            "id": "63b8e24a-dd7e-448e-acc4-8c11e1d7fb71",
+            "username": "service-account-client-id-test-no-permission",
+            "emailVerified": false,
+            "enabled": true,
+            "createdTimestamp": 1746480370653,
+            "totp": false,
+            "serviceAccountClientId": "client-id-test-no-permission",
+            "credentials": [],
+            "disableableCredentialTypes": [],
+            "requiredActions": [],
+            "realmRoles": [
+                "default-roles-master"
+            ],
+            "clientRoles": {
+                "client-id-test-no-permission": [
+                    "uma_protection"
+                ]
+            },
+            "notBefore": 0,
+            "groups": []
+        }
+    ]
 }

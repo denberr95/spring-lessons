@@ -45,7 +45,7 @@ public class ItemsKafkaListener {
   @Transactional
   @RetryableTopic(attempts = Constants.S_VAL_1, dltStrategy = DltStrategy.NO_DLT)
   @KafkaListener(groupId = "upload-items.group", topics = Constants.TOPIC_ITEMS,
-      filter = "uploadItemsRecordFilter", concurrency = Constants.S_VAL_3)
+      filter = "uploadItemsRecordFilter", concurrency = Constants.S_VAL_1)
   public void upload(@Payload KafkaMessageItemDTO message) {
     Span span = this.tracer.nextSpan().name("process-kafka-upload");
 
@@ -93,7 +93,7 @@ public class ItemsKafkaListener {
   @Transactional
   @RetryableTopic(attempts = Constants.S_VAL_1, dltStrategy = DltStrategy.NO_DLT)
   @KafkaListener(groupId = "delete-items.group", topics = Constants.TOPIC_ITEMS,
-      filter = "deleteItemsRecordFilter", concurrency = Constants.S_VAL_3)
+      filter = "deleteItemsRecordFilter", concurrency = Constants.S_VAL_1)
   public void delete(@Payload KafkaMessageItemDTO message) {
     Span span = this.tracer.nextSpan().name("process-kafka-delete");
 

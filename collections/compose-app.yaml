@@ -55,7 +55,7 @@ services:
       - MANAGEMENT_METRICS_TAGS_ENV=podman
       - SPRING_DATASOURCE_URL=jdbc:postgresql://springdb:5432/spring
       - SPRING_DATASOURCE_USERNAME=admin
-      - SPRING_DATASOURCE_PASSWORD=
+      - SPRING_DATASOURCE_PASSWORD=adminpwd
       - SPRING_JPA_SHOW_SQL=false
       - SPRING_JPA_OPEN_IN_VIEW=false
       - SPRING_JPA_HIBERNATE_DDL_AUTO=validate
