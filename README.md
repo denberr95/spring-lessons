@@ -4,6 +4,7 @@
 
 - [Setup & Requirements](SETUP.md)
 - [Architecture](ARCHITECTURE.md)
+- [Claude Agents & Skills](CLAUDE_AGENTS.md)
 
 ---
 

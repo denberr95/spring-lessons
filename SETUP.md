@@ -29,6 +29,14 @@
 - Extension Pack for Java (Microsoft)
 - Spring Boot Extension Pack
 
+### AI Assistant
+
+**Claude Code** is used for AI-assisted development in this project.
+
+- Install: `npm install -g @anthropic-ai/claude-code`
+- Project-level slash commands are defined in `.claude/commands/` and loaded automatically
+- See [Claude Agents & Skills](CLAUDE_AGENTS.md) for the full list of available commands
+
 ---
 
 ## Project Dependencies
