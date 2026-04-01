@@ -37,9 +37,7 @@ Il messaggio DEVE rispettare il formato esatto:
 
 6. Crea il commit con:
 ```
-git commit -m "<type>(<scope>): <description>
-
-Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>"
+git commit -m "<type>(<scope>): <description>"
 ```
 
 7. Se il pre-commit hook fallisce:
