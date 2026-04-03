@@ -248,8 +248,20 @@
                 "--file",
                 "pom.xml",
                 "--settings",
-                "settings.xml"
+                "settings.xml",
+                "-Dspring.profiles.active=default,linux"
             ],
+            "windows": {
+                "command": "mvn",
+                "args": [
+                    "test",
+                    "--file",
+                    "pom.xml",
+                    "--settings",
+                    "settings.xml",
+                    "-Dspring.profiles.active=default,windows"
+                ]
+            },
             "group": "test"
         },
         {
