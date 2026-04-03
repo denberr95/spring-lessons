@@ -7,6 +7,7 @@
             "group": "none",
             "dependsOrder": "sequence",
             "dependsOn": [
+                "podman-compose-env-stop",
                 "podman-container-remove",
                 "podman-image-remove",
                 "podman-volume-remove",
@@ -62,12 +63,10 @@
                 "logs"
             ],
             "windows": {
-                "command": "rmdir",
+                "command": "powershell",
                 "args": [
-                    "/s",
-                    "/q",
-                    "bin",
-                    "logs"
+                    "-Command",
+                    "Remove-Item -Recurse -Force -ErrorAction SilentlyContinue bin, logs"
                 ]
             },
             "group": "none"
@@ -77,9 +76,17 @@
             "type": "shell",
             "command": "mkdir",
             "args": [
+                "-p",
                 "logs",
                 "bin"
             ],
+            "windows": {
+                "command": "powershell",
+                "args": [
+                    "-Command",
+                    "New-Item -ItemType Directory -Force -Path logs, bin | Out-Null"
+                ]
+            },
             "group": "none"
         },
         {
