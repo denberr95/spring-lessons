@@ -64,10 +64,19 @@ pre-commit install
 
 Start all external services (database, Kafka, Keycloak, observability stack):
 
+**Linux / macOS:**
 ```bash
 podman compose \
   --project spring-lessons \
   --file ./collections/compose-env.yaml \
+  up --force-recreate --remove-orphans --detach
+```
+
+**Windows (PowerShell):**
+```powershell
+podman compose `
+  --project spring-lessons `
+  --file ./collections/compose-env.yaml `
   up --force-recreate --remove-orphans --detach
 ```
 
@@ -105,15 +114,19 @@ It automatically:
 ### Option B — Maven CLI
 
 ```bash
-# Compile
+# Compile (all platforms)
 mvn compile --file pom.xml --settings settings.xml
+```
 
-# Run (Linux / macOS)
+**Linux / macOS:**
+```bash
 mvn spring-boot:run --file pom.xml --settings settings.xml \
   -Dspring-boot.run.profiles=default,linux
+```
 
-# Run (Windows)
-mvn spring-boot:run --file pom.xml --settings settings.xml \
+**Windows (PowerShell):**
+```powershell
+mvn spring-boot:run --file pom.xml --settings settings.xml `
   -Dspring-boot.run.profiles=default,windows
 ```
 
@@ -144,7 +157,7 @@ Once started:
 Tests require the infrastructure to be running first (see [Environment Setup](#environment-setup)).
 
 ```bash
-# Run all tests
+# All platforms
 mvn test --file pom.xml --settings settings.xml
 ```
 
@@ -166,8 +179,9 @@ The `test-application` task performs the full cycle:
 
 ### Build the JAR
 
+**Linux / macOS:**
 ```bash
-# With tests (Linux / macOS)
+# With tests
 mvn package --file pom.xml --settings settings.xml \
   -Dspring.profiles.active=default,linux
 
@@ -176,11 +190,23 @@ mvn package --file pom.xml --settings settings.xml \
   -Dspring.profiles.active=default,linux -DskipTests=true
 ```
 
+**Windows (PowerShell):**
+```powershell
+# With tests
+mvn package --file pom.xml --settings settings.xml `
+  -Dspring.profiles.active=default,windows
+
+# Skip tests
+mvn package --file pom.xml --settings settings.xml `
+  -Dspring.profiles.active=default,windows -DskipTests=true
+```
+
 Output JAR is placed in `./bin/`.
 
 ### Build the container image
 
 ```bash
+# All platforms
 podman build --rm=true --file Containerfile --tag spring-lessons:latest .
 ```
 
@@ -188,11 +214,21 @@ The VS Code task `podman-build-image` handles this automatically (runs `mvn clea
 
 ### Run as container (full stack)
 
+**Linux / macOS:**
 ```bash
 podman compose \
   --project spring-lessons \
   --file ./collections/compose-env.yaml \
   --file ./collections/compose-app.yaml \
+  up --force-recreate --remove-orphans --detach
+```
+
+**Windows (PowerShell):**
+```powershell
+podman compose `
+  --project spring-lessons `
+  --file ./collections/compose-env.yaml `
+  --file ./collections/compose-app.yaml `
   up --force-recreate --remove-orphans --detach
 ```
 
@@ -251,6 +287,7 @@ Tasks are defined in `.vscode/tasks.json`.
 ### Podman — stop and clean up everything
 
 ```bash
+# All platforms
 podman container rm --force --all
 podman volume rm --force --all
 podman system prune --force --all --volumes
@@ -259,22 +296,33 @@ podman system prune --force --all --volumes
 ### Maven — code formatting
 
 ```bash
+# All platforms
 mvn spotless:apply --file pom.xml --settings settings.xml
 ```
 
 ### Maven — check dependency updates
 
 ```bash
+# All platforms
 mvn versions:display-dependency-updates --file pom.xml --settings settings.xml
 mvn versions:display-plugin-updates --file pom.xml --settings settings.xml
 ```
 
 ### Export Keycloak realm
 
+**Linux / macOS:**
 ```bash
 podman compose \
   --project spring-lessons \
   --file ./collections/compose-keycloak-export.yaml \
+  up --abort-on-container-exit --remove-orphans
+```
+
+**Windows (PowerShell):**
+```powershell
+podman compose `
+  --project spring-lessons `
+  --file ./collections/compose-keycloak-export.yaml `
   up --abort-on-container-exit --remove-orphans
 ```
 
