@@ -281,3 +281,7 @@ podman compose \
 ### Postman collection
 
 Import `./collections/postman.json` into Postman for a ready-made request collection covering all API endpoints.
+
+---
+
+[← Back to README](README.md)

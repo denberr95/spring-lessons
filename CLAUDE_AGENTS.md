@@ -64,3 +64,7 @@ Example: `feat(api): add paginated endpoint for order items`
 4. Commit the file using `/commit-conventional` with scope `setup`
 
 **Naming convention:** use lowercase kebab-case (e.g. `new-endpoint.md`, `check-deps.md`).
+
+---
+
+[← Back to README](README.md)

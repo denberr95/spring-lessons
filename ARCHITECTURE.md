@@ -582,3 +582,7 @@ A separate `collections/compose-app.yaml` runs the app container alongside the e
 | **Graceful shutdown** | `server.shutdown=graceful` with 20s timeout |
 | **CSV bulk import/export** | Books upload/download endpoints |
 | **Message filtering** | Kafka `RecordFilterStrategy` per consumer group |
+
+---
+
+[← Back to README](README.md)
