@@ -10,22 +10,25 @@ set -euo pipefail
 : "${IMPORT_SSL_CERTIFICATE:=0}"
 : "${REMOTE_SERVICES:=}"
 : "${TRUSTSTORE_PASSWORD:=changeit}"
+: "${JAVA_CACERTS_PASSWORD:=changeit}"
 : "${RUN_MODE:=jvm}"
 
 TRUSTSTORE_FILE="/app/truststore.jks"
-JAVA_OPTS="-server \
-    -XX:+UseStringDeduplication \
-    -XX:+OptimizeStringConcat \
-    -XX:+UseContainerSupport \
-    -XX:InitialRAMPercentage=25.0 \
-    -XX:MaxRAMPercentage=85.0 \
-    -XX:+PrintFlagsFinal \
-    -XX:+UnlockDiagnosticVMOptions \
-    -XX:+UnlockExperimentalVMOptions \
-    -XshowSettings:vm \
-    -Djavax.net.ssl.trustStore=$TRUSTSTORE_FILE \
-    -Djavax.net.ssl.trustStorePassword=$TRUSTSTORE_PASSWORD"
-JAVA_CMD="java $JAVA_OPTS"
+JAVA_OPTS=(
+    -server
+    -XX:+UseStringDeduplication
+    -XX:+OptimizeStringConcat
+    -XX:+UseContainerSupport
+    -XX:InitialRAMPercentage=25.0
+    -XX:MaxRAMPercentage=85.0
+    -XX:+PrintFlagsFinal
+    -XX:+UnlockDiagnosticVMOptions
+    -XX:+UnlockExperimentalVMOptions
+    -XshowSettings:vm
+    "-Djavax.net.ssl.trustStore=$TRUSTSTORE_FILE"
+    "-Djavax.net.ssl.trustStorePassword=$TRUSTSTORE_PASSWORD"
+)
+JAVA_CMD=()
 JAVA_DEBUG_OPTS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:$DEBUG_PORT"
 
 # =============================================================================
@@ -36,11 +39,11 @@ log_info() {
 }
 
 log_warn() {
-    echo "$(date '+%Y-%m-%d %H:%M:%S') - [WARN] - $*"
+    echo "$(date '+%Y-%m-%d %H:%M:%S') - [WARN] - $*" >&2
 }
 
 log_error() {
-    echo "$(date '+%Y-%m-%d %H:%M:%S') - [ERROR] - $*"
+    echo "$(date '+%Y-%m-%d %H:%M:%S') - [ERROR] - $*" >&2
 }
 
 # =============================================================================
@@ -55,14 +58,14 @@ verify_java_home() {
 
 print_java_version() {
     log_info "Java version in use"
-    java -version
+    "$JAVA_HOME/bin/java" -version
 }
 
 build_java_cmd() {
-    JAVA_CMD="java $JAVA_OPTS"
-    [ "$RUN_MODE" = "debug" ] && JAVA_CMD="$JAVA_CMD $JAVA_DEBUG_OPTS"
-    [ -n "$JAVA_OTHER_OPTIONS" ] && JAVA_CMD="$JAVA_CMD $JAVA_OTHER_OPTIONS"
-    log_info "Constructed JAVA_CMD: $JAVA_CMD"
+    JAVA_CMD=("$JAVA_HOME/bin/java" "${JAVA_OPTS[@]}")
+    [ "$RUN_MODE" = "debug" ] && JAVA_CMD+=("$JAVA_DEBUG_OPTS")
+    [ -n "$JAVA_OTHER_OPTIONS" ] && JAVA_CMD+=($JAVA_OTHER_OPTIONS)
+    log_info "Constructed JAVA_CMD: ${JAVA_CMD[*]}"
 }
 
 # =============================================================================
@@ -101,7 +104,7 @@ create_empty_truststore() {
         if ! keytool -importkeystore \
             -srckeystore "$java_cacerts" \
             -destkeystore "$TRUSTSTORE_FILE" \
-            -srcstorepass changeit \
+            -srcstorepass "$JAVA_CACERTS_PASSWORD" \
             -deststorepass "$TRUSTSTORE_PASSWORD" \
             -noprompt >/dev/null 2>&1; then
             log_warn "Failed to copy default Java CAs, creating empty truststore"
@@ -147,13 +150,15 @@ import_ssl_certificates() {
     create_empty_truststore
 
     # Import external certificates
-    for service in $(echo "$REMOTE_SERVICES" | tr ',' ' '); do
-        host=$(echo "$service" | cut -d':' -f1)
-        port=$(echo "$service" | cut -d':' -f2)
+    IFS=',' read -ra services <<< "$REMOTE_SERVICES"
+    for service in "${services[@]}"; do
+        # fix #8: parameter expansion al posto di subshell con cut
+        host="${service%%:*}"
+        port="${service##*:}"
         cert_file="/app/${host}_external_certificate.crt"
 
         log_info "Fetching SSL certificate from $host:$port..."
-        if ! openssl s_client -connect "$host:$port" -servername "$host" < /dev/null \
+        if ! openssl s_client -connect "$host:$port" -servername "$host" -showcerts < /dev/null \
             | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' > "$cert_file"; then
             log_error "Failed to fetch certificate from $host:$port"
             rm -f "$cert_file"
@@ -183,11 +188,11 @@ run_app() {
     case "$RUN_MODE" in
         jvm)
             log_info "Starting application..."
-            exec $JAVA_CMD -jar app.jar
+            exec "${JAVA_CMD[@]}" -jar app.jar
             ;;
         debug)
             log_info "Starting application in debug mode on port $DEBUG_PORT..."
-            exec $JAVA_CMD -jar app.jar
+            exec "${JAVA_CMD[@]}" -jar app.jar
             ;;
         *)
             log_error "Invalid RUN_MODE '$RUN_MODE'. Allowed values: jvm, debug"
