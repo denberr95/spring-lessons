@@ -391,7 +391,7 @@ topic-items
 
 ## Database
 
-**Engine:** PostgreSQL  
+**Engine:** PostgreSQL
 **Connection:** `jdbc:postgresql://localhost:5432/spring`
 
 ### Schema Layout
@@ -488,7 +488,7 @@ Spring App
 | Traces | `http://localhost:4318/v1/traces` |
 | Logs | `http://localhost:4318/v1/logs` |
 
-**Tracing sampling probability:** 100% (`management.tracing.sampling.probability=1.0`)  
+**Tracing sampling probability:** 100% (`management.tracing.sampling.probability=1.0`)
 **Metrics export interval:** 10 seconds
 
 ### Actuator
@@ -503,7 +503,7 @@ Health groups: `liveness` and `readiness` (Kubernetes-ready).
 
 ## Email
 
-**Library:** JavaMail  
+**Library:** JavaMail
 **Local SMTP server:** Mailpit (captures outgoing emails for development inspection)
 
 | Setting | Value |
@@ -561,7 +561,7 @@ grafana ◄── prometheus, jaeger, loki, springdb
 
 ### Application Container
 
-The application itself can be containerized via `Containerfile` (Podman).  
+The application itself can be containerized via `Containerfile` (Podman).
 A separate `collections/compose-app.yaml` runs the app container alongside the environment.
 
 ---
