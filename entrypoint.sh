@@ -64,7 +64,10 @@ print_java_version() {
 build_java_cmd() {
     JAVA_CMD=("$JAVA_HOME/bin/java" "${JAVA_OPTS[@]}")
     [ "$RUN_MODE" = "debug" ] && JAVA_CMD+=("$JAVA_DEBUG_OPTS")
-    [ -n "$JAVA_OTHER_OPTIONS" ] && JAVA_CMD+=($JAVA_OTHER_OPTIONS)
+    if [ -n "$JAVA_OTHER_OPTIONS" ]; then
+        read -ra extra_opts <<< "$JAVA_OTHER_OPTIONS"
+        JAVA_CMD+=("${extra_opts[@]}")
+    fi
     log_info "Constructed JAVA_CMD: ${JAVA_CMD[*]}"
 }
 
