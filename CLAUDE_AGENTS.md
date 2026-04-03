@@ -54,6 +54,49 @@ Automates git commits following the Conventional Commits rules enforced by `.pre
 
 Example: `feat(api): add paginated endpoint for order items`
 
+### `/document-code-md`
+
+**File:** `.claude/commands/document-code-md.md`
+
+Analyzes the source code and keeps the Markdown documentation files up to date, reflecting the current state of the codebase.
+
+**What it does:**
+
+1. Discovers the project structure (build files, config, scripts, `.claude/commands/`)
+2. Reads all `.md` files in the project root (excluding `.claude/`)
+3. Compares documented content against actual code and identifies: obsolete info, missing sections, incorrect data, removed components
+4. For `CLAUDE_AGENTS.md` specifically: syncs the command list with `.claude/commands/` (adds missing, removes deleted, updates changed)
+5. Applies only necessary edits — preserves structure, style, and navigation links
+6. Produces a report of changes per file
+
+**Usage:**
+
+```text
+/document-code-md
+```
+
+---
+
+### `/update-maven-deps`
+
+**File:** `.claude/commands/update-maven-deps.md`
+
+Scans Maven dependencies and plugins for available stable version upgrades, without modifying any file.
+
+**What it does:**
+
+1. Reads `pom.xml` (parent BOM, properties, dependencies, plugins) and `settings.xml` if present
+2. Runs `mvn versions:display-dependency-updates`, `display-plugin-updates`, `display-property-updates`
+3. Filters out non-stable versions (alpha, beta, milestone, RC, snapshot)
+4. Produces a structured report grouped by: Parent BOM, Properties, Dependencies, Plugins
+5. Highlights high-impact upgrades (Spring parent, core libs) vs low-risk ones (build plugins)
+
+**Usage:**
+
+```text
+/update-maven-deps
+```
+
 ---
 
 ## Adding New Commands
