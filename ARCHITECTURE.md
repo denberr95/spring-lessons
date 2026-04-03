@@ -148,8 +148,8 @@ erDiagram
         varchar     name            "not null"
         date        publication_date "not null"
         integer     number_of_pages "not null"
-        varchar     channel         "not null (INTERNAL|EXTERNAL|API)"
-        varchar     genre           "not null (FICTION|BIOGRAPHY|SCIENCE|HISTORY|TECHNOLOGY|FANTASY)"
+        varchar     channel         "not null (POSTMAN|INSOMNIA|SOAPUI|NA)"
+        varchar     genre           "not null (NOIR|FANTASY|SCIENCE_FICTION|MYSTERY|ROMANCE|NA)"
         timestamptz created_at      "DB-generated, not updatable"
         timestamptz updated_at      "DB-generated, nullable"
         bigint      version         "optimistic locking"
@@ -157,7 +157,7 @@ erDiagram
 
     ORDER_ITEMS {
         uuid        id          PK
-        varchar     channel     "not null (INTERNAL|EXTERNAL|API)"
+        varchar     channel     "not null (POSTMAN|INSOMNIA|SOAPUI|NA)"
         timestamptz created_at  "DB-generated, not updatable"
     }
 
@@ -206,9 +206,10 @@ erDiagram
 
 | Enum | Values |
 | --- | --- |
-| `Channel` | INTERNAL, EXTERNAL, API |
-| `Genre` | FICTION, BIOGRAPHY, SCIENCE, HISTORY, TECHNOLOGY, FANTASY |
-| `ItemStatus` | UPLOAD, DELETE (used as Kafka message routing key) |
+| `Channel` | POSTMAN, INSOMNIA, SOAPUI, NA |
+| `Genre` | NOIR, FANTASY, SCIENCE_FICTION, MYSTERY, ROMANCE, NA |
+| `ItemStatus` | UPLOAD, DELETE (used as Kafka message routing key), NA |
+| `DomainCategory` | BOOKS, ITEMS, NA |
 
 ---
 
