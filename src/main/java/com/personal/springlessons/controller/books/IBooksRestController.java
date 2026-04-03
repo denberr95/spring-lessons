@@ -1,9 +1,7 @@
 package com.personal.springlessons.controller.books;
 
 import java.util.List;
-
 import jakarta.validation.Valid;
-
 import com.personal.springlessons.model.dto.BookDTO;
 import com.personal.springlessons.model.dto.response.BookNotFoundResponseDTO;
 import com.personal.springlessons.model.dto.response.ConcurrentUpdateResponseDTO;
@@ -17,7 +15,6 @@ import com.personal.springlessons.model.dto.response.MissingHttpRequestHeaderRes
 import com.personal.springlessons.model.dto.response.NotReadableBodyRequestResponseDTO;
 import com.personal.springlessons.model.dto.response.ValidationRequestErrorResponseDTO;
 import com.personal.springlessons.model.lov.Channel;
-
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +29,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -71,7 +67,7 @@ public interface IBooksRestController {
       content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
   ResponseEntity<BookDTO> getById(@PathVariable final String id);
 
-  @SecurityRequirement(name = "oauth2", scopes = "books:create")
+  @SecurityRequirement(name = "oauth2", scopes = "books:save")
   @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE,
       consumes = MediaType.APPLICATION_JSON_VALUE)
   @Operation(summary = "Create a new book", operationId = "createBookV1")
