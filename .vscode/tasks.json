@@ -48,9 +48,9 @@
             "dependsOrder": "sequence",
             "dependsOn": [
                 "podman-compose-env-stop",
+                "podman-compose-keycloak-export",
                 "podman-container-remove",
-                "podman-volume-remove",
-                "podman-compose-keycloak-export"
+                "podman-volume-remove"
             ]
         },
         {
