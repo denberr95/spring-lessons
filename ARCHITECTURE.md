@@ -547,6 +547,23 @@ All external services run as containers via Podman Compose (`collections/compose
 | `grafana` | grafana/grafana-enterprise | 3000 | Metrics + logs dashboards |
 | `loki` | grafana/loki | 3100 | Log aggregation |
 
+### Service Credentials
+
+| Service | URL | Username | Password | Notes |
+| --- | --- | --- | --- | --- |
+| **Keycloak** | <http://localhost:8080> | `admin` | *(see export)* | Admin user from `master-users-0.json` |
+| **Keycloak** | <http://localhost:8080> | `kcuser` | *(see export)* | Admin user from `master-users-0.json` |
+| **Grafana** | <http://localhost:3000> | `admin` | `admin` | Default — change on first login |
+| **PostgreSQL** | `localhost:5432` | `admin` | `adminpwd` | DB: `spring`, schema: `spring_app` |
+| **Mailpit UI** | <http://localhost:8025> | — | — | No authentication required |
+| **Mailpit SMTP** | `localhost:1025` | `grafana_sa` | `grafana_sa_password` | Used by Grafana to send alerts |
+| **Mailpit SMTP** | `localhost:1025` | `springapp_sa` | `springapp_password` | Used by Spring Boot to send emails |
+| **Prometheus** | <http://localhost:9090> | — | — | No authentication required |
+| **Jaeger** | <http://localhost:16686> | — | — | No authentication required |
+| **Wiremock** | <http://localhost:9998> | — | — | No authentication required |
+
+> **Keycloak passwords:** stored only in `collections/keycloak/export/master-users-0.json` as bcrypt hashes — not recoverable in plain text. Use the Keycloak admin console to reset them if forgotten.
+
 **Network:** `spring-lessons` (bridge)
 
 **Service dependency order:**
