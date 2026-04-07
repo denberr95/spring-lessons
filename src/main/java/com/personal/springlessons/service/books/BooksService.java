@@ -57,9 +57,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 
-import io.micrometer.tracing.Span;
-import io.micrometer.tracing.Tracer;
-import io.micrometer.tracing.annotation.NewSpan;
+import io.micrometer.observation.Observation;
+import io.micrometer.observation.ObservationRegistry;
+import io.micrometer.observation.annotation.Observed;
 
 @Service
 public class BooksService {
@@ -68,61 +68,51 @@ public class BooksService {
   private final Validator validator;
   private final IBooksRepository bookRepository;
   private final IBooksMapper bookMapper;
-  private final Tracer tracer;
+  private final ObservationRegistry observationRegistry;
 
   public BooksService(AppPropertiesConfig appPropertiesConfig, Validator validator,
-      IBooksRepository bookRepository, IBooksMapper bookMapper, Tracer tracer) {
+      IBooksRepository bookRepository, IBooksMapper bookMapper,
+      ObservationRegistry observationRegistry) {
     this.appPropertiesConfig = appPropertiesConfig;
     this.validator = validator;
     this.bookRepository = bookRepository;
     this.bookMapper = bookMapper;
-    this.tracer = tracer;
+    this.observationRegistry = observationRegistry;
   }
 
-  @NewSpan(name = "get-all-books")
+  @Observed(name = "books.retrieval", contextualName = "get-all-books")
   public BooksWrapperDTO getAll() {
-    Span currentSpan = this.tracer.currentSpan();
-    BooksWrapperDTO result = new BooksWrapperDTO();
-    MultiValueMap<String, String> httpHeaders;
-
     List<BooksEntity> bookEntities = this.bookRepository.findAll();
     List<BookDTO> httpBody = this.bookMapper.mapDTO(bookEntities);
+    MultiValueMap<String, String> httpHeaders = Methods.addTotalRecord(httpBody.size());
 
-    httpHeaders = Methods.addTotalRecord(httpBody.size());
+    Observation current = this.observationRegistry.getCurrentObservation();
+    if (current != null) {
+      current.highCardinalityKeyValue(Constants.SPAN_KEY_TOTAL_BOOKS,
+          String.valueOf(bookEntities.size()));
+    }
 
+    BooksWrapperDTO result = new BooksWrapperDTO();
     result.setBookDTOs(httpBody);
     result.setHttpHeaders(httpHeaders);
-
-    currentSpan.tag(Constants.SPAN_KEY_TOTAL_BOOKS, String.valueOf(bookEntities.size()))
-        .event("Books retrieved");
     return result;
   }
 
-  @NewSpan(name = "get-book-by-id")
+  @Observed(name = "books.retrieval", contextualName = "get-book-by-id")
   public BooksWrapperDTO getById(final String id) {
-    Span currentSpan = this.tracer.currentSpan();
-    BooksWrapperDTO result = new BooksWrapperDTO();
-    MultiValueMap<String, String> httpHeaders;
-
     BooksEntity bookEntity = this.bookRepository.findById(Methods.idValidation(id))
         .orElseThrow(() -> new BookNotFoundException(id));
     BookDTO httpBody = this.bookMapper.mapDTO(bookEntity);
+    MultiValueMap<String, String> httpHeaders = Methods.addEtag(bookEntity.getVersion());
 
-    httpHeaders = Methods.addEtag(bookEntity.getVersion());
-
+    BooksWrapperDTO result = new BooksWrapperDTO();
     result.setBookDTO(httpBody);
     result.setHttpHeaders(httpHeaders);
-
-    currentSpan.event("Book retrieved");
     return result;
   }
 
-  @NewSpan(name = "save-book")
+  @Observed(name = "books.save", contextualName = "save-book")
   public BooksWrapperDTO save(final BookDTO bookDTO, final Channel channel) {
-    Span currentSpan = this.tracer.currentSpan();
-    BooksWrapperDTO result = new BooksWrapperDTO();
-    MultiValueMap<String, String> httpHeaders;
-
     this.bookRepository.findByNameAndPublicationDateAndNumberOfPages(bookDTO.name(),
         bookDTO.publicationDate(), bookDTO.numberOfPages()).ifPresent(book -> {
           throw new DuplicatedBookException(book.getName(), book.getId().toString());
@@ -131,21 +121,22 @@ public class BooksService {
     BooksEntity bookEntity = this.bookMapper.mapEntity(bookDTO, channel);
     bookEntity = this.bookRepository.saveAndFlush(bookEntity);
 
-    BookDTO httpBody = this.bookMapper.mapDTO(bookEntity);
-    httpHeaders = Methods.addEtag(bookEntity.getVersion());
+    Observation current = this.observationRegistry.getCurrentObservation();
+    if (current != null) {
+      current.highCardinalityKeyValue(Constants.SPAN_KEY_ID_BOOKS, bookEntity.getId().toString());
+    }
 
+    BookDTO httpBody = this.bookMapper.mapDTO(bookEntity);
+    MultiValueMap<String, String> httpHeaders = Methods.addEtag(bookEntity.getVersion());
+
+    BooksWrapperDTO result = new BooksWrapperDTO();
     result.setBookDTO(httpBody);
     result.setHttpHeaders(httpHeaders);
-
-    currentSpan.tag(Constants.SPAN_KEY_ID_BOOKS, bookEntity.getId().toString())
-        .event("Book created");
     return result;
   }
 
-  @NewSpan(name = "delete-book")
+  @Observed(name = "books.delete", contextualName = "delete-book")
   public void delete(final String id, final String ifMatch) {
-    Span currentSpan = this.tracer.currentSpan();
-
     BooksEntity bookEntity = this.bookRepository.findById(Methods.idValidation(id))
         .orElseThrow(() -> new BookNotFoundException(id));
 
@@ -162,17 +153,11 @@ public class BooksService {
     } catch (OptimisticLockingFailureException | OptimisticLockException _) {
       throw new ConcurrentUpdateException(id, ifMatch);
     }
-
-    currentSpan.event("Book deleted");
   }
 
-  @NewSpan(name = "update-book")
+  @Observed(name = "books.update", contextualName = "update-book")
   public BooksWrapperDTO update(final String id, final BookDTO bookDTO, final Channel channel,
       final String ifMatch) {
-    Span currentSpan = this.tracer.currentSpan();
-    BooksWrapperDTO result = new BooksWrapperDTO();
-    MultiValueMap<String, String> httpHeaders;
-
     BooksEntity bookEntity = this.bookRepository.findById(Methods.idValidation(id))
         .orElseThrow(() -> new BookNotFoundException(id));
 
@@ -190,19 +175,16 @@ public class BooksService {
     }
 
     BookDTO httpBody = this.bookMapper.mapDTO(bookEntity);
-    httpHeaders = Methods.addEtag(bookEntity.getVersion());
+    MultiValueMap<String, String> httpHeaders = Methods.addEtag(bookEntity.getVersion());
 
+    BooksWrapperDTO result = new BooksWrapperDTO();
     result.setBookDTO(httpBody);
     result.setHttpHeaders(httpHeaders);
-
-    currentSpan.event("Book updated");
     return result;
   }
 
-  @NewSpan(name = "download-books")
+  @Observed(name = "books.download", contextualName = "download-books")
   public DownloadFileDTO download() {
-    Span currentSpan = this.tracer.currentSpan();
-
     DownloadFileDTO result = new DownloadFileDTO();
     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
@@ -212,6 +194,7 @@ public class BooksService {
       List<BooksEntity> dbData = this.bookRepository.findAll();
       List<BookCsv> csvData = this.bookMapper.mapCsv(dbData);
       String file = Methods.generateFileName("books", Constants.CSV_EXT, true);
+
       HeaderColumnNameMappingStrategy<BookCsv> strategy = new HeaderColumnNameMappingStrategy<>();
       strategy.setType(BookCsv.class);
 
@@ -224,34 +207,27 @@ public class BooksService {
           .build();
 
       beanToCsv.write(csvData);
-
       writer.flush();
 
       result.setFileName(file);
       result.setContent(byteArrayOutputStream.toByteArray());
-
-      currentSpan.tag(Constants.SPAN_KEY_BOOKS_NAME, file)
-          .tag(Constants.SPAN_KEY_TOTAL_BOOKS, String.valueOf(csvData.size()))
-          .event("Books downloaded");
     } catch (Exception e) {
       throw new SpringLessonsApplicationException(e);
     }
     return result;
   }
 
-  @NewSpan(name = "upload-books")
+  @Observed(name = "books.upload", contextualName = "upload-books")
   public void upload(final Channel channel, final MultipartFile multipartFile) {
-    Span currentSpan = this.tracer.currentSpan();
     String filename =
         Optional.ofNullable(multipartFile.getResource().getFilename()).orElse("unknown");
-    currentSpan.tag(Constants.SPAN_KEY_FILE_NAME, filename);
-
     int row = 0;
 
     this.isPermittedFileType(filename);
 
     try (CSVReader reader = new CSVReader(
         new InputStreamReader(multipartFile.getInputStream(), StandardCharsets.UTF_8))) {
+
       HeaderColumnNameMappingStrategy<BookCsv> strategy = new HeaderColumnNameMappingStrategy<>();
       strategy.setType(BookCsv.class);
 
@@ -269,6 +245,7 @@ public class BooksService {
 
       this.validateCsvContent(multipartFile, row, iterator, invalidCsvDTO, booksDTO);
       this.persistCsvContent(channel, booksDTO);
+
     } catch (CSVContentValidationException e) {
       throw e;
     } catch (Exception e) {
@@ -276,19 +253,21 @@ public class BooksService {
     }
   }
 
-  @NewSpan(name = "get-book-history")
+  @Observed(name = "books.history", contextualName = "get-book-history")
   public GetBookHistoryResponse getBookHistory(GetBookHistoryRequest getBookHistoryRequest) {
-    Span currentSpan = this.tracer.currentSpan();
     GetBookHistoryResponse result = new GetBookHistoryResponse();
-
     String bookId = getBookHistoryRequest.getBookId();
-    currentSpan.tag(Constants.SPAN_KEY_ID_BOOKS, bookId);
-
     UUID id = Methods.idValidation(bookId);
+
+    Observation current = this.observationRegistry.getCurrentObservation();
+    if (current != null) {
+      current.highCardinalityKeyValue(Constants.SPAN_KEY_ID_BOOKS, bookId);
+    }
 
     try {
       Revisions<Long, BooksEntity> revisions = this.bookRepository.findRevisions(id);
       List<BookRevisionType> revisionsDTO = new ArrayList<>();
+
       revisions.forEach(e -> {
         BookRevisionType item = new BookRevisionType();
         CustomRevisionEntity customRevisionEntity =
@@ -331,45 +310,35 @@ public class BooksService {
     } catch (Exception e) {
       throw new SpringLessonsApplicationException(e.getMessage(), e);
     }
-    currentSpan.event("Book history retrieved");
     return result;
   }
 
-  private String resolveHistoryMessage(List<BookRevisionType> revisionsDTO) {
-    return revisionsDTO.isEmpty() ? "No history found for the given book ID"
-        : "History found for the given book ID";
-  }
-
-  private ResultType resolveHistoryResult(List<BookRevisionType> revisionsDTO) {
-    return revisionsDTO.isEmpty() ? ResultType.KO : ResultType.OK;
-  }
-
   private void persistCsvContent(final Channel channel, List<BookDTO> booksDTO) {
-    Span span = this.tracer.nextSpan().name("persist-csv-content");
-    try (var _ = this.tracer.withSpan(span.start())) {
-      List<BooksEntity> entities = new ArrayList<>(booksDTO.size());
-      booksDTO.forEach(item -> entities.add(this.bookMapper.mapEntity(item, channel)));
-      this.bookRepository.saveAllAndFlush(entities);
-      span.event("Saved books into database");
-    } finally {
-      span.end();
-    }
+    Observation.createNotStarted("books.csv.persistence", this.observationRegistry)
+        .contextualName("persist-csv-content")
+        .lowCardinalityKeyValue(Constants.OPERATION, "persist").observe(() -> {
+          List<BooksEntity> entities = new ArrayList<>(booksDTO.size());
+          booksDTO.forEach(item -> entities.add(this.bookMapper.mapEntity(item, channel)));
+          this.bookRepository.saveAllAndFlush(entities);
+        });
   }
 
   private void validateCsvContent(final MultipartFile multipartFile, int row,
       Iterator<BookCsv> iterator, List<InvalidCsvDTO> invalidCsvDTO, List<BookDTO> booksDTO) {
-    Span span = this.tracer.nextSpan().name("validate-csv-content");
 
-    try (var _ = this.tracer.withSpan(span.start())) {
+    Observation obs = Observation.createNotStarted("books.csv.validation", this.observationRegistry)
+        .contextualName("validate-csv-content")
+        .lowCardinalityKeyValue(Constants.OPERATION, "validate");
+    obs.start();
+
+    try {
       while (iterator.hasNext()) {
-
         row++;
         BookCsv csvRow = iterator.next();
         BookDTO bookDTO = this.bookMapper.mapDTO(csvRow);
         Set<ConstraintViolation<BookDTO>> violations = this.validator.validate(bookDTO);
 
         if (!violations.isEmpty()) {
-
           InvalidCsvDTO csvRowInvalid = new InvalidCsvDTO();
           csvRowInvalid.setRow(row);
           List<CsvRowValidationDTO> rowsValidation = new ArrayList<>(violations.size());
@@ -386,26 +355,39 @@ public class BooksService {
         }
         booksDTO.add(bookDTO);
       }
+
+      obs.highCardinalityKeyValue(Constants.SPAN_KEY_TOTAL_ROWS, String.valueOf(row));
+
       if (!invalidCsvDTO.isEmpty()) {
-        span.tag(Constants.SPAN_KEY_TOTAL_INVALID_ROWS, invalidCsvDTO.size())
-            .event("CSV Content contains invalid rows");
+        obs.highCardinalityKeyValue(Constants.SPAN_KEY_TOTAL_INVALID_ROWS,
+            String.valueOf(invalidCsvDTO.size()));
         throw new CSVContentValidationException(multipartFile.getOriginalFilename(), invalidCsvDTO);
       }
+    } catch (Exception e) {
+      obs.error(e);
+      throw e;
     } finally {
-      span.tag(Constants.SPAN_KEY_TOTAL_ROWS, row).event("Calculated total CSV rows");
-      span.end();
+      obs.stop();
     }
   }
 
   private void isPermittedFileType(final String fileName) {
-    Span span = this.tracer.nextSpan().name("is-permitted-file-type");
-    try (var _ = this.tracer.withSpan(span.start())) {
-      List<String> availableFileTypes = List.of(Constants.CSV_EXT);
-      if (!Methods.isValidFileType(fileName, availableFileTypes)) {
-        throw new InvalidFileTypeException(fileName, availableFileTypes);
-      }
-    } finally {
-      span.end();
-    }
+    Observation.createNotStarted("books.csv.filetype", this.observationRegistry)
+        .contextualName("validate-file-type")
+        .lowCardinalityKeyValue(Constants.OPERATION, "validate-file-type").observe(() -> {
+          List<String> availableFileTypes = List.of(Constants.CSV_EXT);
+          if (!Methods.isValidFileType(fileName, availableFileTypes)) {
+            throw new InvalidFileTypeException(fileName, availableFileTypes);
+          }
+        });
+  }
+
+  private String resolveHistoryMessage(List<BookRevisionType> revisionsDTO) {
+    return revisionsDTO.isEmpty() ? "No history found for the given book ID"
+        : "History found for the given book ID";
+  }
+
+  private ResultType resolveHistoryResult(List<BookRevisionType> revisionsDTO) {
+    return revisionsDTO.isEmpty() ? ResultType.KO : ResultType.OK;
   }
 }

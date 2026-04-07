@@ -21,31 +21,33 @@ import org.springframework.messaging.Message;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import io.micrometer.tracing.Span;
-import io.micrometer.tracing.Tracer;
-import io.micrometer.tracing.annotation.NewSpan;
+import io.micrometer.observation.Observation;
+import io.micrometer.observation.ObservationRegistry;
+import io.micrometer.observation.annotation.Observed;
 
 @Service
 public class ItemsService {
 
-  private final Tracer tracer;
+  private final ObservationRegistry observationRegistry;
   private final IOrderItemsRepository orderItemsRepository;
   private final KafkaTemplate<String, KafkaMessageItemDTO> kafkaTemplate;
 
-  public ItemsService(Tracer tracer, IOrderItemsRepository orderItemsRepository,
+  public ItemsService(ObservationRegistry observationRegistry,
+      IOrderItemsRepository orderItemsRepository,
       KafkaTemplate<String, KafkaMessageItemDTO> kafkaTemplate) {
-    this.tracer = tracer;
+    this.observationRegistry = observationRegistry;
     this.orderItemsRepository = orderItemsRepository;
     this.kafkaTemplate = kafkaTemplate;
   }
 
-  @NewSpan(name = "upload-order-items")
+  @Observed(name = "items.upload", contextualName = "upload-order-items")
   @Transactional
   public OrderItemsDTO upload(final OrderItemsDTO order, final Channel channel) {
-    Span currentSpan = this.tracer.currentSpan();
-    currentSpan.tag(Constants.SPAN_KEY_NUMBER_ITEMS_TO_UPLOAD, order.getItems().size());
-
-    OrderItemsDTO result = new OrderItemsDTO();
+    Observation current = this.observationRegistry.getCurrentObservation();
+    if (current != null) {
+      current.highCardinalityKeyValue(Constants.SPAN_KEY_NUMBER_ITEMS_TO_UPLOAD,
+          String.valueOf(order.getItems().size()));
+    }
 
     OrderItemsEntity data = new OrderItemsEntity();
     data.setChannel(channel);
@@ -57,15 +59,19 @@ public class ItemsService {
       this.notifyKafkaItems(message, Constants.TOPIC_ITEMS);
     });
 
+    OrderItemsDTO result = new OrderItemsDTO();
     result.setId(saved.getId().toString());
     result.setItems(order.getItems());
     return result;
   }
 
-  @NewSpan(name = "delete-order-items")
+  @Observed(name = "items.delete", contextualName = "delete-order-items")
   public void delete(final OrderItemsDTO order, final Channel channel) {
-    Span currentSpan = this.tracer.currentSpan();
-    currentSpan.tag(Constants.SPAN_KEY_NUMBER_ITEMS_TO_DELETE, order.getItems().size());
+    Observation current = this.observationRegistry.getCurrentObservation();
+    if (current != null) {
+      current.highCardinalityKeyValue(Constants.SPAN_KEY_NUMBER_ITEMS_TO_DELETE,
+          String.valueOf(order.getItems().size()));
+    }
 
     order.getItems().forEach(i -> {
       KafkaMessageItemDTO message = this.buildKafkaMessage(i, ItemStatus.DELETE, order.getId());
@@ -74,11 +80,9 @@ public class ItemsService {
     });
   }
 
+  @Observed(name = "items.retrieval", contextualName = "get-all-order-items")
   @Transactional(readOnly = true)
-  @NewSpan(name = "get-all-order-items")
   public OrderItemsWrapperDTO getAll(Pageable pageable) {
-    Span currentSpan = this.tracer.currentSpan();
-    OrderItemsWrapperDTO result = new OrderItemsWrapperDTO();
     Page<OrderItemsEntity> page = this.orderItemsRepository.findAll(pageable);
 
     List<OrderItemsDTO> content = page.getContent().stream().map(orderEntity -> {
@@ -97,37 +101,43 @@ public class ItemsService {
 
       orderItemsDto.setItems(itemsDto);
       return orderItemsDto;
-
     }).toList();
 
+    OrderItemsWrapperDTO result = new OrderItemsWrapperDTO();
     result.setContent(content);
     result.setPage(page.getNumber());
     result.setSize(page.getSize());
     result.setTotalElements(page.getTotalElements());
     result.setTotalPages(page.getTotalPages());
 
-    currentSpan.tag(Constants.SPAN_KEY_TOTAL_ORDERS, String.valueOf(result.getTotalElements()))
-        .tag(Constants.SPAN_KEY_PAGE_NUMBER, String.valueOf(result.getPage()))
-        .tag(Constants.SPAN_KEY_PAGE_SIZE, String.valueOf(result.getSize()))
-        .event("Orders retrieved (paginated)");
+    Observation current = this.observationRegistry.getCurrentObservation();
+    if (current != null) {
+      current
+          .highCardinalityKeyValue(Constants.SPAN_KEY_TOTAL_ORDERS,
+              String.valueOf(result.getTotalElements()))
+          .highCardinalityKeyValue(Constants.SPAN_KEY_PAGE_NUMBER, String.valueOf(result.getPage()))
+          .highCardinalityKeyValue(Constants.SPAN_KEY_PAGE_SIZE, String.valueOf(result.getSize()));
+    }
 
     return result;
   }
 
   private void notifyKafkaItems(KafkaMessageItemDTO message, String topic) {
-    Span span = this.tracer.nextSpan().name("notify-kafka-message-items");
-    try (var _ = this.tracer.withSpan(span.start())) {
+    Observation obs =
+        Observation.createNotStarted("items.kafka.notification", this.observationRegistry)
+            .contextualName("notify-kafka-message-items")
+            .lowCardinalityKeyValue(Constants.OPERATION, message.getItemStatus().name())
+            .highCardinalityKeyValue(Constants.SPAN_KEY_ID_ORDER_ITEMS, message.getIdOrderItems())
+            .highCardinalityKeyValue(Constants.SPAN_KEY_BARCODE, message.getBarcode());
+    obs.start();
+    try {
       Message<Object> kafkaMessage = Methods.createKafkaMessage(message, topic);
       this.kafkaTemplate.send(kafkaMessage);
-      span.tag(Constants.SPAN_KEY_OPERATION_TYPE, message.getItemStatus().name());
-      span.tag(Constants.SPAN_KEY_ID_ORDER_ITEMS, message.getIdOrderItems());
-      span.tag(Constants.SPAN_KEY_BARCODE, message.getBarcode());
-      span.event("Kafka message sent");
     } catch (Exception e) {
-      span.error(e);
+      obs.error(e);
       throw new SpringLessonsApplicationException(e);
     } finally {
-      span.end();
+      obs.stop();
     }
   }
 

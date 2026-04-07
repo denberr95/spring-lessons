@@ -6,6 +6,9 @@ public final class Constants {
     throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
   }
 
+  // Observation Key
+  public static final String OPERATION = "operation";
+
   // Span Key Tag
   public static final String SPAN_KEY_FILE_NAME = "file.name";
   public static final String SPAN_KEY_TOTAL_ORDERS = "total.orders";
