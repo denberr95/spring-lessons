@@ -65,6 +65,7 @@ pre-commit install
 Start all external services (database, Kafka, Keycloak, observability stack):
 
 **Linux / macOS:**
+
 ```bash
 podman compose \
   --project spring-lessons \
@@ -73,6 +74,7 @@ podman compose \
 ```
 
 **Windows (PowerShell):**
+
 ```powershell
 podman compose `
   --project spring-lessons `
@@ -119,12 +121,14 @@ mvn compile --file pom.xml --settings settings.xml
 ```
 
 **Linux / macOS:**
+
 ```bash
 mvn spring-boot:run --file pom.xml --settings settings.xml \
   -Dspring-boot.run.profiles=default,linux
 ```
 
 **Windows (PowerShell):**
+
 ```powershell
 mvn spring-boot:run --file pom.xml --settings settings.xml `
   -Dspring-boot.run.profiles=default,windows
@@ -180,6 +184,7 @@ The `test-application` task performs the full cycle:
 ### Build the JAR
 
 **Linux / macOS:**
+
 ```bash
 # With tests
 mvn package --file pom.xml --settings settings.xml \
@@ -191,6 +196,7 @@ mvn package --file pom.xml --settings settings.xml \
 ```
 
 **Windows (PowerShell):**
+
 ```powershell
 # With tests
 mvn package --file pom.xml --settings settings.xml `
@@ -215,6 +221,7 @@ The VS Code task `podman-build-image` handles this automatically (runs `mvn clea
 ### Run as container (full stack)
 
 **Linux / macOS:**
+
 ```bash
 podman compose \
   --project spring-lessons \
@@ -224,6 +231,7 @@ podman compose \
 ```
 
 **Windows (PowerShell):**
+
 ```powershell
 podman compose `
   --project spring-lessons `
@@ -311,6 +319,7 @@ mvn versions:display-plugin-updates --file pom.xml --settings settings.xml
 ### Export Keycloak realm
 
 **Linux / macOS:**
+
 ```bash
 podman compose \
   --project spring-lessons \
@@ -319,6 +328,7 @@ podman compose \
 ```
 
 **Windows (PowerShell):**
+
 ```powershell
 podman compose `
   --project spring-lessons `

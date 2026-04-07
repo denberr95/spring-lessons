@@ -15,8 +15,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.micrometer.observation.annotation.Observed;
-
 @RestController
 public class ItemsRestController implements IItemsRestController {
 
@@ -27,8 +25,6 @@ public class ItemsRestController implements IItemsRestController {
     this.itemService = itemService;
   }
 
-  @Observed(name = "items.upload", contextualName = "items-upload",
-      lowCardinalityKeyValues = {"endpoint", "/items"})
   @PreAuthorize(value = "hasAuthority('SCOPE_items:upload')")
   @Override
   public ResponseEntity<OrderItemsDTO> upload(final OrderItemsDTO order, final Channel channel) {
@@ -38,8 +34,6 @@ public class ItemsRestController implements IItemsRestController {
     return ResponseEntity.status(HttpStatus.OK).body(result);
   }
 
-  @Observed(name = "items.delete", contextualName = "items-delete",
-      lowCardinalityKeyValues = {"endpoint", "/items"})
   @PreAuthorize(value = "hasAuthority('SCOPE_items:delete')")
   @Override
   public ResponseEntity<Void> delete(final OrderItemsDTO order, final Channel channel) {
@@ -49,8 +43,6 @@ public class ItemsRestController implements IItemsRestController {
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
 
-  @Observed(name = "items.get.all", contextualName = "items-get-all",
-      lowCardinalityKeyValues = {"endpoint", "/items"})
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   @PreAuthorize(value = "hasAuthority('SCOPE_items:get')")
   @Override

@@ -1,0 +1,9 @@
+---
+default: true
+
+# Line length — disabled: tables, code blocks and URLs naturally exceed any fixed limit
+MD013: false
+
+# Multiple headings with the same content — disabled: common in long docs (e.g. repeated "Usage" sections)
+MD024:
+  siblings_only: true

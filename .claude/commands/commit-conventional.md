@@ -1,3 +1,5 @@
+# Commit Conventional
+
 Crea un git commit seguendo le regole di Conventional Commits definite in `.pre-commit-config.yaml`.
 
 ## Regole obbligatorie
@@ -5,7 +7,7 @@ Crea un git commit seguendo le regole di Conventional Commits definite in `.pre-
 Il commit-msg hook usa `conventional-pre-commit` con `--strict` e `--force-scope`.
 Il messaggio DEVE rispettare il formato esatto:
 
-```
+```text
 <type>(<scope>): <description>
 ```
 
@@ -36,9 +38,10 @@ Il messaggio DEVE rispettare il formato esatto:
 5. Se ci sono file untracked da includere, aggiungili con `git add <file>` prima del commit. Non usare mai `git add -A` o `git add .`.
 
 6. Crea il commit con:
-```
-git commit -m "<type>(<scope>): <description>"
-```
+
+   ```bash
+   git commit -m "<type>(<scope>): <description>"
+   ```
 
 7. Se il pre-commit hook fallisce:
    - Leggi l'errore per capire quale hook ha fallito.

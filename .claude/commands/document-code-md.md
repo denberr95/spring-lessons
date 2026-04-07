@@ -1,3 +1,5 @@
+# Document Code MD
+
 Analizza il codice sorgente del progetto e mantieni aggiornata la documentazione nei file Markdown, riflettendo fedelmente lo stato attuale del codice.
 
 ## File da aggiornare
@@ -11,6 +13,7 @@ Analizza il codice sorgente del progetto e mantieni aggiornata la documentazione
 ### 1. Scoperta del progetto
 
 Esplora la struttura del progetto per capire cosa c'è da documentare:
+
 - Leggi i file di build (`pom.xml`, `build.gradle`, `package.json`, ecc.) per identificare tecnologie, dipendenze e versioni
 - Esplora le directory principali del codice sorgente
 - Individua file di configurazione rilevanti (properties, yaml, env, docker-compose, ecc.)
@@ -31,6 +34,7 @@ Per ogni file `.md`, confronta il contenuto documentato con lo stato attuale del
 - **Da rimuovere:** riferimenti a componenti o funzionalità eliminate dal codice
 
 Per `CLAUDE_AGENTS.md` in particolare:
+
 - Confronta i file in `.claude/commands/` con i comandi elencati nel file
 - Aggiungi la documentazione per ogni comando presente ma non descritto
 - Rimuovi la documentazione di comandi che non esistono più
@@ -50,7 +54,7 @@ Applica le modifiche necessarie rispettando queste regole:
 
 Al termine mostra un riepilogo in questo formato:
 
-```
+```text
 ## Documentation update report
 
 ### <nome-file.md>

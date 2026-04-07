@@ -18,7 +18,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import io.micrometer.observation.annotation.Observed;
 import io.micrometer.tracing.annotation.SpanTag;
 
 @RestController
@@ -31,8 +30,6 @@ public class BooksRestController implements IBooksRestController {
     this.bookService = bookService;
   }
 
-  @Observed(name = "books.get.all", contextualName = "get-all-books",
-      lowCardinalityKeyValues = {"endpoint", "/books"})
   @PreAuthorize(value = "hasAuthority('SCOPE_books:get')")
   @Override
   public ResponseEntity<List<BookDTO>> getAll() {
@@ -51,8 +48,6 @@ public class BooksRestController implements IBooksRestController {
     return response;
   }
 
-  @Observed(name = "get.book.by.id", contextualName = "book-id-retrieval",
-      lowCardinalityKeyValues = {"endpoint", "/books/{id}"})
   @PreAuthorize(value = "hasAuthority('SCOPE_books:get')")
   @Override
   public ResponseEntity<BookDTO> getById(@SpanTag final String id) {
@@ -63,8 +58,6 @@ public class BooksRestController implements IBooksRestController {
         .body(result.getBookDTO());
   }
 
-  @Observed(name = "create.book", contextualName = "book-creation",
-      lowCardinalityKeyValues = {"endpoint", "/books"})
   @PreAuthorize(value = "hasAuthority('SCOPE_books:save')")
   @Override
   public ResponseEntity<BookDTO> save(final BookDTO bookDTO, final Channel channel) {
@@ -75,8 +68,6 @@ public class BooksRestController implements IBooksRestController {
         .body(result.getBookDTO());
   }
 
-  @Observed(name = "delete.book", contextualName = "book-deletion",
-      lowCardinalityKeyValues = {"endpoint", "/books/{id}"})
   @PreAuthorize(value = "hasAuthority('SCOPE_books:delete')")
   @Override
   public ResponseEntity<Void> delete(@SpanTag final String id, @SpanTag final String ifMatch) {
@@ -86,8 +77,6 @@ public class BooksRestController implements IBooksRestController {
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
 
-  @Observed(name = "update.book", contextualName = "book-update",
-      lowCardinalityKeyValues = {"endpoint", "/books/{id}"})
   @PreAuthorize(value = "hasAuthority('SCOPE_books:update')")
   @Override
   public ResponseEntity<BookDTO> update(@SpanTag final String id, final BookDTO bookDTO,
@@ -99,8 +88,6 @@ public class BooksRestController implements IBooksRestController {
         .body(result.getBookDTO());
   }
 
-  @Observed(name = "download.books", contextualName = "books-download",
-      lowCardinalityKeyValues = {"endpoint", "/books/download"})
   @PreAuthorize(value = "hasAuthority('SCOPE_books:download')")
   @Override
   public ResponseEntity<byte[]> download() {
@@ -113,8 +100,6 @@ public class BooksRestController implements IBooksRestController {
     return ResponseEntity.status(HttpStatus.OK).headers(headers).body(result.getContent());
   }
 
-  @Observed(name = "upload.books", contextualName = "books-upload",
-      lowCardinalityKeyValues = {"endpoint", "/books/upload"})
   @PreAuthorize(value = "hasAuthority('SCOPE_books:upload')")
   @Override
   public ResponseEntity<Void> upload(final Channel channel, MultipartFile multipartFile) {

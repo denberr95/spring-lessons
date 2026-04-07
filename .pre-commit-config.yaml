@@ -18,7 +18,6 @@ repos:
     - id: check-added-large-files
     - id: check-executables-have-shebangs
     - id: check-illegal-windows-names
-    - id: check-docstring-first
     - id: check-xml
     - id: check-yaml
     - id: check-json
@@ -33,6 +32,12 @@ repos:
        - --autofix
        - --no-sort-keys
        - --indent=4
+ - repo: https://github.com/igorshubovych/markdownlint-cli
+   rev: v0.48.0
+   hooks:
+    - id: markdownlint
+      args:
+       - --config=.markdownlint.yaml
  - repo: https://github.com/adrienverge/yamllint.git
    rev: v1.37.1
    hooks:
