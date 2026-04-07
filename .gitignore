@@ -48,4 +48,7 @@ build/
 *.7z
 
 ### Database ###
-mailpit.db
+collections/mailpit/data/
+
+### Keycloak ###
+collections/keycloak/data/

@@ -147,19 +147,13 @@ services:
     hostname: keycloak
     environment:
       - TZ=Europe/Rome
-      - KC_BOOTSTRAP_ADMIN_USERNAME=kcuser
-      - KC_BOOTSTRAP_ADMIN_PASSWORD=kcpwd
       - JAVA_OPTS_KC_HEAP=-XX:MaxRAMPercentage=70 -XX:MinRAMPercentage=70 -XX:InitialRAMPercentage=50
     command:
       - start-dev
-    # entrypoint:
-    #   - "/bin/sh"
-    #   - "-c"
-    # command: >
-    #   "/opt/keycloak/bin/kc.sh build --features=scripts && /opt/keycloak/bin/kc.sh import --dir /opt/keycloak/data/import --verbose --override=true --optimized --features=scripts && exec /opt/keycloak/bin/kc.sh start-dev --features=scripts"
+      - --import-realm
     volumes:
-      - ./keycloak/data:/opt/keycloak/data
-    #  - ./keycloak/export:/opt/keycloak/data/import
+      - keycloak-data:/opt/keycloak/data
+      - ./keycloak/export:/opt/keycloak/data/import:ro
     ports:
       - "8080:8080"
     networks:
@@ -218,3 +212,6 @@ services:
 networks:
   spring-lessons:
     driver: bridge
+
+volumes:
+  keycloak-data:

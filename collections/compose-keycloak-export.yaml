@@ -16,7 +16,7 @@ services:
       - same_file
       - --verbose
     volumes:
-      - ./keycloak/data:/opt/keycloak/data
+      - keycloak-data:/opt/keycloak/data
       - ./keycloak/export:/opt/keycloak/export
     networks:
       - spring-lessons
@@ -24,3 +24,6 @@ services:
 networks:
   spring-lessons:
     driver: bridge
+
+volumes:
+  keycloak-data:
