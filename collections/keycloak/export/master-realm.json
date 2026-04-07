@@ -828,7 +828,8 @@
             "protocol": "openid-connect",
             "attributes": {
                 "realm_client": "false",
-                "client.use.lightweight.access.token.enabled": "true"
+                "client.use.lightweight.access.token.enabled": "true",
+                "post.logout.redirect.uris": "+"
             },
             "authenticationFlowBindingOverrides": {},
             "fullScopeAllowed": true,
@@ -870,7 +871,8 @@
             "frontchannelLogout": false,
             "protocol": "openid-connect",
             "attributes": {
-                "realm_client": "true"
+                "realm_client": "true",
+                "post.logout.redirect.uris": "+"
             },
             "authenticationFlowBindingOverrides": {},
             "fullScopeAllowed": false,
@@ -917,7 +919,6 @@
             "implicitFlowEnabled": false,
             "directAccessGrantsEnabled": false,
             "serviceAccountsEnabled": true,
-            "authorizationServicesEnabled": true,
             "publicClient": false,
             "frontchannelLogout": true,
             "protocol": "openid-connect",
@@ -927,6 +928,7 @@
                 "client.secret.creation.time": "1746479978",
                 "backchannel.logout.session.required": "true",
                 "standard.token.exchange.enabled": "false",
+                "post.logout.redirect.uris": "+",
                 "oauth2.device.authorization.grant.enabled": "false",
                 "backchannel.logout.revoke.offline.tokens": "false"
             },
@@ -954,47 +956,7 @@
                 "profile",
                 "microprofile-jwt",
                 "email"
-            ],
-            "authorizationSettings": {
-                "allowRemoteResourceManagement": true,
-                "policyEnforcementMode": "ENFORCING",
-                "resources": [
-                    {
-                        "name": "Default Resource",
-                        "type": "urn:client-id-books-admin:resources:default",
-                        "ownerManagedAccess": false,
-                        "attributes": {},
-                        "uris": [
-                            "/*"
-                        ]
-                    }
-                ],
-                "policies": [
-                    {
-                        "name": "Default Policy",
-                        "description": "A policy that grants access only for users within this realm",
-                        "type": "js",
-                        "logic": "POSITIVE",
-                        "decisionStrategy": "AFFIRMATIVE",
-                        "config": {
-                            "code": "// by default, grants any permission associated with this policy\n$evaluation.grant();\n"
-                        }
-                    },
-                    {
-                        "name": "Default Permission",
-                        "description": "A permission that applies to the default resource type",
-                        "type": "resource",
-                        "logic": "POSITIVE",
-                        "decisionStrategy": "UNANIMOUS",
-                        "config": {
-                            "defaultResourceType": "urn:client-id-books-admin:resources:default",
-                            "applyPolicies": "[\"Default Policy\"]"
-                        }
-                    }
-                ],
-                "scopes": [],
-                "decisionStrategy": "UNANIMOUS"
-            }
+            ]
         },
         {
             "id": "06ea1565-c9ba-4c08-803e-a263073406a8",
@@ -1022,7 +984,6 @@
             "implicitFlowEnabled": false,
             "directAccessGrantsEnabled": false,
             "serviceAccountsEnabled": true,
-            "authorizationServicesEnabled": true,
             "publicClient": false,
             "frontchannelLogout": true,
             "protocol": "openid-connect",
@@ -1032,6 +993,7 @@
                 "client.secret.creation.time": "1746480109",
                 "backchannel.logout.session.required": "true",
                 "standard.token.exchange.enabled": "false",
+                "post.logout.redirect.uris": "+",
                 "oauth2.device.authorization.grant.enabled": "false",
                 "backchannel.logout.revoke.offline.tokens": "false"
             },
@@ -1055,47 +1017,7 @@
                 "profile",
                 "microprofile-jwt",
                 "email"
-            ],
-            "authorizationSettings": {
-                "allowRemoteResourceManagement": true,
-                "policyEnforcementMode": "ENFORCING",
-                "resources": [
-                    {
-                        "name": "Default Resource",
-                        "type": "urn:client-id-books-reader:resources:default",
-                        "ownerManagedAccess": false,
-                        "attributes": {},
-                        "uris": [
-                            "/*"
-                        ]
-                    }
-                ],
-                "policies": [
-                    {
-                        "name": "Default Policy",
-                        "description": "A policy that grants access only for users within this realm",
-                        "type": "js",
-                        "logic": "POSITIVE",
-                        "decisionStrategy": "AFFIRMATIVE",
-                        "config": {
-                            "code": "// by default, grants any permission associated with this policy\n$evaluation.grant();\n"
-                        }
-                    },
-                    {
-                        "name": "Default Permission",
-                        "description": "A permission that applies to the default resource type",
-                        "type": "resource",
-                        "logic": "POSITIVE",
-                        "decisionStrategy": "UNANIMOUS",
-                        "config": {
-                            "defaultResourceType": "urn:client-id-books-reader:resources:default",
-                            "applyPolicies": "[\"Default Policy\"]"
-                        }
-                    }
-                ],
-                "scopes": [],
-                "decisionStrategy": "UNANIMOUS"
-            }
+            ]
         },
         {
             "id": "95afe5db-c5c5-49fe-9b7c-182d380c8157",
@@ -1123,7 +1045,6 @@
             "implicitFlowEnabled": false,
             "directAccessGrantsEnabled": false,
             "serviceAccountsEnabled": true,
-            "authorizationServicesEnabled": true,
             "publicClient": false,
             "frontchannelLogout": true,
             "protocol": "openid-connect",
@@ -1133,6 +1054,7 @@
                 "client.secret.creation.time": "1746480031",
                 "backchannel.logout.session.required": "true",
                 "standard.token.exchange.enabled": "false",
+                "post.logout.redirect.uris": "+",
                 "oauth2.device.authorization.grant.enabled": "false",
                 "backchannel.logout.revoke.offline.tokens": "false"
             },
@@ -1159,47 +1081,7 @@
                 "profile",
                 "microprofile-jwt",
                 "email"
-            ],
-            "authorizationSettings": {
-                "allowRemoteResourceManagement": true,
-                "policyEnforcementMode": "ENFORCING",
-                "resources": [
-                    {
-                        "name": "Default Resource",
-                        "type": "urn:client-id-books-writer:resources:default",
-                        "ownerManagedAccess": false,
-                        "attributes": {},
-                        "uris": [
-                            "/*"
-                        ]
-                    }
-                ],
-                "policies": [
-                    {
-                        "name": "Default Policy",
-                        "description": "A policy that grants access only for users within this realm",
-                        "type": "js",
-                        "logic": "POSITIVE",
-                        "decisionStrategy": "AFFIRMATIVE",
-                        "config": {
-                            "code": "// by default, grants any permission associated with this policy\n$evaluation.grant();\n"
-                        }
-                    },
-                    {
-                        "name": "Default Permission",
-                        "description": "A permission that applies to the default resource type",
-                        "type": "resource",
-                        "logic": "POSITIVE",
-                        "decisionStrategy": "UNANIMOUS",
-                        "config": {
-                            "defaultResourceType": "urn:client-id-books-writer:resources:default",
-                            "applyPolicies": "[\"Default Policy\"]"
-                        }
-                    }
-                ],
-                "scopes": [],
-                "decisionStrategy": "UNANIMOUS"
-            }
+            ]
         },
         {
             "id": "9fe62e47-7161-4a67-99a3-bbbbbb4044ea",
@@ -1227,7 +1109,6 @@
             "implicitFlowEnabled": false,
             "directAccessGrantsEnabled": false,
             "serviceAccountsEnabled": true,
-            "authorizationServicesEnabled": true,
             "publicClient": false,
             "frontchannelLogout": true,
             "protocol": "openid-connect",
@@ -1237,6 +1118,7 @@
                 "client.secret.creation.time": "1746480156",
                 "backchannel.logout.session.required": "true",
                 "standard.token.exchange.enabled": "false",
+                "post.logout.redirect.uris": "+",
                 "oauth2.device.authorization.grant.enabled": "false",
                 "backchannel.logout.revoke.offline.tokens": "false"
             },
@@ -1261,47 +1143,7 @@
                 "profile",
                 "microprofile-jwt",
                 "email"
-            ],
-            "authorizationSettings": {
-                "allowRemoteResourceManagement": true,
-                "policyEnforcementMode": "ENFORCING",
-                "resources": [
-                    {
-                        "name": "Default Resource",
-                        "type": "urn:client-id-items-admin:resources:default",
-                        "ownerManagedAccess": false,
-                        "attributes": {},
-                        "uris": [
-                            "/*"
-                        ]
-                    }
-                ],
-                "policies": [
-                    {
-                        "name": "Default Policy",
-                        "description": "A policy that grants access only for users within this realm",
-                        "type": "js",
-                        "logic": "POSITIVE",
-                        "decisionStrategy": "AFFIRMATIVE",
-                        "config": {
-                            "code": "// by default, grants any permission associated with this policy\n$evaluation.grant();\n"
-                        }
-                    },
-                    {
-                        "name": "Default Permission",
-                        "description": "A permission that applies to the default resource type",
-                        "type": "resource",
-                        "logic": "POSITIVE",
-                        "decisionStrategy": "UNANIMOUS",
-                        "config": {
-                            "defaultResourceType": "urn:client-id-items-admin:resources:default",
-                            "applyPolicies": "[\"Default Policy\"]"
-                        }
-                    }
-                ],
-                "scopes": [],
-                "decisionStrategy": "UNANIMOUS"
-            }
+            ]
         },
         {
             "id": "1617f559-247d-4fdc-8864-95afde164207",
@@ -1329,7 +1171,6 @@
             "implicitFlowEnabled": false,
             "directAccessGrantsEnabled": false,
             "serviceAccountsEnabled": true,
-            "authorizationServicesEnabled": true,
             "publicClient": false,
             "frontchannelLogout": true,
             "protocol": "openid-connect",
@@ -1339,6 +1180,7 @@
                 "client.secret.creation.time": "1746480303",
                 "backchannel.logout.session.required": "true",
                 "standard.token.exchange.enabled": "false",
+                "post.logout.redirect.uris": "+",
                 "oauth2.device.authorization.grant.enabled": "false",
                 "backchannel.logout.revoke.offline.tokens": "false"
             },
@@ -1361,47 +1203,7 @@
                 "profile",
                 "microprofile-jwt",
                 "email"
-            ],
-            "authorizationSettings": {
-                "allowRemoteResourceManagement": true,
-                "policyEnforcementMode": "ENFORCING",
-                "resources": [
-                    {
-                        "name": "Default Resource",
-                        "type": "urn:client-id-items-reader:resources:default",
-                        "ownerManagedAccess": false,
-                        "attributes": {},
-                        "uris": [
-                            "/*"
-                        ]
-                    }
-                ],
-                "policies": [
-                    {
-                        "name": "Default Policy",
-                        "description": "A policy that grants access only for users within this realm",
-                        "type": "js",
-                        "logic": "POSITIVE",
-                        "decisionStrategy": "AFFIRMATIVE",
-                        "config": {
-                            "code": "// by default, grants any permission associated with this policy\n$evaluation.grant();\n"
-                        }
-                    },
-                    {
-                        "name": "Default Permission",
-                        "description": "A permission that applies to the default resource type",
-                        "type": "resource",
-                        "logic": "POSITIVE",
-                        "decisionStrategy": "UNANIMOUS",
-                        "config": {
-                            "defaultResourceType": "urn:client-id-items-reader:resources:default",
-                            "applyPolicies": "[\"Default Policy\"]"
-                        }
-                    }
-                ],
-                "scopes": [],
-                "decisionStrategy": "UNANIMOUS"
-            }
+            ]
         },
         {
             "id": "d02a59a5-4f54-4121-959b-7a11279e1269",
@@ -1429,7 +1231,6 @@
             "implicitFlowEnabled": false,
             "directAccessGrantsEnabled": false,
             "serviceAccountsEnabled": true,
-            "authorizationServicesEnabled": true,
             "publicClient": false,
             "frontchannelLogout": true,
             "protocol": "openid-connect",
@@ -1439,6 +1240,7 @@
                 "client.secret.creation.time": "1746480262",
                 "backchannel.logout.session.required": "true",
                 "standard.token.exchange.enabled": "false",
+                "post.logout.redirect.uris": "+",
                 "oauth2.device.authorization.grant.enabled": "false",
                 "backchannel.logout.revoke.offline.tokens": "false"
             },
@@ -1462,47 +1264,7 @@
                 "profile",
                 "microprofile-jwt",
                 "email"
-            ],
-            "authorizationSettings": {
-                "allowRemoteResourceManagement": true,
-                "policyEnforcementMode": "ENFORCING",
-                "resources": [
-                    {
-                        "name": "Default Resource",
-                        "type": "urn:client-id-items-writer:resources:default",
-                        "ownerManagedAccess": false,
-                        "attributes": {},
-                        "uris": [
-                            "/*"
-                        ]
-                    }
-                ],
-                "policies": [
-                    {
-                        "name": "Default Policy",
-                        "description": "A policy that grants access only for users within this realm",
-                        "type": "js",
-                        "logic": "POSITIVE",
-                        "decisionStrategy": "AFFIRMATIVE",
-                        "config": {
-                            "code": "// by default, grants any permission associated with this policy\n$evaluation.grant();\n"
-                        }
-                    },
-                    {
-                        "name": "Default Permission",
-                        "description": "A permission that applies to the default resource type",
-                        "type": "resource",
-                        "logic": "POSITIVE",
-                        "decisionStrategy": "UNANIMOUS",
-                        "config": {
-                            "defaultResourceType": "urn:client-id-items-writer:resources:default",
-                            "applyPolicies": "[\"Default Policy\"]"
-                        }
-                    }
-                ],
-                "scopes": [],
-                "decisionStrategy": "UNANIMOUS"
-            }
+            ]
         },
         {
             "id": "5eb4fedf-3406-42fc-84b9-8a6efd635e52",
@@ -1530,7 +1292,6 @@
             "implicitFlowEnabled": false,
             "directAccessGrantsEnabled": false,
             "serviceAccountsEnabled": true,
-            "authorizationServicesEnabled": true,
             "publicClient": false,
             "frontchannelLogout": true,
             "protocol": "openid-connect",
@@ -1540,6 +1301,7 @@
                 "client.secret.creation.time": "1746480345",
                 "backchannel.logout.session.required": "true",
                 "standard.token.exchange.enabled": "false",
+                "post.logout.redirect.uris": "+",
                 "oauth2.device.authorization.grant.enabled": "false",
                 "backchannel.logout.revoke.offline.tokens": "false"
             },
@@ -1570,47 +1332,7 @@
                 "profile",
                 "microprofile-jwt",
                 "email"
-            ],
-            "authorizationSettings": {
-                "allowRemoteResourceManagement": true,
-                "policyEnforcementMode": "ENFORCING",
-                "resources": [
-                    {
-                        "name": "Default Resource",
-                        "type": "urn:client-id-test-full:resources:default",
-                        "ownerManagedAccess": false,
-                        "attributes": {},
-                        "uris": [
-                            "/*"
-                        ]
-                    }
-                ],
-                "policies": [
-                    {
-                        "name": "Default Policy",
-                        "description": "A policy that grants access only for users within this realm",
-                        "type": "js",
-                        "logic": "POSITIVE",
-                        "decisionStrategy": "AFFIRMATIVE",
-                        "config": {
-                            "code": "// by default, grants any permission associated with this policy\n$evaluation.grant();\n"
-                        }
-                    },
-                    {
-                        "name": "Default Permission",
-                        "description": "A permission that applies to the default resource type",
-                        "type": "resource",
-                        "logic": "POSITIVE",
-                        "decisionStrategy": "UNANIMOUS",
-                        "config": {
-                            "defaultResourceType": "urn:client-id-test-full:resources:default",
-                            "applyPolicies": "[\"Default Policy\"]"
-                        }
-                    }
-                ],
-                "scopes": [],
-                "decisionStrategy": "UNANIMOUS"
-            }
+            ]
         },
         {
             "id": "72015f95-8571-40be-a3cf-039a407bd716",
@@ -1638,7 +1360,6 @@
             "implicitFlowEnabled": false,
             "directAccessGrantsEnabled": false,
             "serviceAccountsEnabled": true,
-            "authorizationServicesEnabled": true,
             "publicClient": false,
             "frontchannelLogout": true,
             "protocol": "openid-connect",
@@ -1648,6 +1369,7 @@
                 "client.secret.creation.time": "1746480370",
                 "backchannel.logout.session.required": "true",
                 "standard.token.exchange.enabled": "false",
+                "post.logout.redirect.uris": "+",
                 "oauth2.device.authorization.grant.enabled": "false",
                 "backchannel.logout.revoke.offline.tokens": "false"
             },
@@ -1669,47 +1391,7 @@
                 "profile",
                 "microprofile-jwt",
                 "email"
-            ],
-            "authorizationSettings": {
-                "allowRemoteResourceManagement": true,
-                "policyEnforcementMode": "ENFORCING",
-                "resources": [
-                    {
-                        "name": "Default Resource",
-                        "type": "urn:client-id-test-no-permission:resources:default",
-                        "ownerManagedAccess": false,
-                        "attributes": {},
-                        "uris": [
-                            "/*"
-                        ]
-                    }
-                ],
-                "policies": [
-                    {
-                        "name": "Default Policy",
-                        "description": "A policy that grants access only for users within this realm",
-                        "type": "js",
-                        "logic": "POSITIVE",
-                        "decisionStrategy": "AFFIRMATIVE",
-                        "config": {
-                            "code": "// by default, grants any permission associated with this policy\n$evaluation.grant();\n"
-                        }
-                    },
-                    {
-                        "name": "Default Permission",
-                        "description": "A permission that applies to the default resource type",
-                        "type": "resource",
-                        "logic": "POSITIVE",
-                        "decisionStrategy": "UNANIMOUS",
-                        "config": {
-                            "defaultResourceType": "urn:client-id-test-no-permission:resources:default",
-                            "applyPolicies": "[\"Default Policy\"]"
-                        }
-                    }
-                ],
-                "scopes": [],
-                "decisionStrategy": "UNANIMOUS"
-            }
+            ]
         },
         {
             "id": "0b66d8e4-fcbb-49ca-9b1c-4a3fe6ebd18a",
@@ -1730,8 +1412,10 @@
             "serviceAccountsEnabled": false,
             "publicClient": false,
             "frontchannelLogout": false,
+            "protocol": "openid-connect",
             "attributes": {
-                "realm_client": "true"
+                "realm_client": "true",
+                "post.logout.redirect.uris": "+"
             },
             "authenticationFlowBindingOverrides": {},
             "fullScopeAllowed": false,
@@ -2001,12 +1685,13 @@
                     "protocolMapper": "oidc-organization-membership-mapper",
                     "consentRequired": false,
                     "config": {
-                        "id.token.claim": "true",
                         "introspection.token.claim": "true",
+                        "multivalued": "true",
+                        "userinfo.token.claim": "true",
+                        "id.token.claim": "true",
                         "access.token.claim": "true",
                         "claim.name": "organization",
-                        "jsonType.label": "String",
-                        "multivalued": "true"
+                        "jsonType.label": "String"
                     }
                 }
             ]
@@ -2065,8 +1750,9 @@
                     "consentRequired": false,
                     "config": {
                         "user.session.note": "clientAddress",
-                        "id.token.claim": "true",
                         "introspection.token.claim": "true",
+                        "userinfo.token.claim": "true",
+                        "id.token.claim": "true",
                         "access.token.claim": "true",
                         "claim.name": "clientAddress",
                         "jsonType.label": "String"
@@ -2080,8 +1766,9 @@
                     "consentRequired": false,
                     "config": {
                         "user.session.note": "clientHost",
-                        "id.token.claim": "true",
                         "introspection.token.claim": "true",
+                        "userinfo.token.claim": "true",
+                        "id.token.claim": "true",
                         "access.token.claim": "true",
                         "claim.name": "clientHost",
                         "jsonType.label": "String"
@@ -2095,8 +1782,9 @@
                     "consentRequired": false,
                     "config": {
                         "user.session.note": "client_id",
-                        "id.token.claim": "true",
                         "introspection.token.claim": "true",
+                        "userinfo.token.claim": "true",
+                        "id.token.claim": "true",
                         "access.token.claim": "true",
                         "claim.name": "client_id",
                         "jsonType.label": "String"
@@ -2514,6 +2202,7 @@
                     "config": {
                         "introspection.token.claim": "true",
                         "multivalued": "true",
+                        "userinfo.token.claim": "true",
                         "user.attribute": "foo",
                         "id.token.claim": "true",
                         "access.token.claim": "true",
@@ -2542,7 +2231,8 @@
                     "config": {
                         "id.token.claim": "true",
                         "introspection.token.claim": "true",
-                        "access.token.claim": "true"
+                        "access.token.claim": "true",
+                        "userinfo.token.claim": "true"
                     }
                 }
             ]
@@ -2565,8 +2255,9 @@
                     "consentRequired": false,
                     "config": {
                         "user.session.note": "AUTH_TIME",
-                        "id.token.claim": "true",
                         "introspection.token.claim": "true",
+                        "userinfo.token.claim": "true",
+                        "id.token.claim": "true",
                         "access.token.claim": "true",
                         "claim.name": "auth_time",
                         "jsonType.label": "long"
@@ -2703,10 +2394,10 @@
                 "subComponents": {},
                 "config": {
                     "allowed-protocol-mapper-types": [
-                        "oidc-usermodel-attribute-mapper",
                         "saml-user-property-mapper",
-                        "oidc-sha256-pairwise-sub-mapper",
                         "oidc-full-name-mapper",
+                        "oidc-sha256-pairwise-sub-mapper",
+                        "oidc-usermodel-attribute-mapper",
                         "oidc-address-mapper",
                         "oidc-usermodel-property-mapper",
                         "saml-user-attribute-mapper",
@@ -2723,13 +2414,13 @@
                 "config": {
                     "allowed-protocol-mapper-types": [
                         "oidc-usermodel-attribute-mapper",
-                        "oidc-usermodel-property-mapper",
-                        "oidc-full-name-mapper",
-                        "oidc-sha256-pairwise-sub-mapper",
                         "saml-user-property-mapper",
                         "oidc-address-mapper",
+                        "oidc-full-name-mapper",
+                        "oidc-sha256-pairwise-sub-mapper",
                         "saml-user-attribute-mapper",
-                        "saml-role-list-mapper"
+                        "saml-role-list-mapper",
+                        "oidc-usermodel-property-mapper"
                     ]
                 }
             },
@@ -3508,7 +3199,13 @@
         "cibaBackchannelTokenDeliveryMode": "poll",
         "cibaExpiresIn": "120",
         "cibaAuthRequestedUserHint": "login_hint",
+        "oauth2DeviceCodeLifespan": "600",
+        "clientOfflineSessionMaxLifespan": "0",
+        "oauth2DevicePollingInterval": "5",
+        "clientSessionIdleTimeout": "0",
         "parRequestUriLifespan": "60",
+        "clientSessionMaxLifespan": "0",
+        "clientOfflineSessionIdleTimeout": "0",
         "cibaInterval": "5",
         "realmReusableOtpCode": "false"
     },
