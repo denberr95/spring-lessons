@@ -110,4 +110,4 @@ Scans Maven dependencies and plugins for available stable version upgrades, with
 
 ---
 
-[← Back to README](README.md)
+[← Back to README](../README.md)

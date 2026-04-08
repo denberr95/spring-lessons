@@ -2,9 +2,9 @@
 
 ## Index
 
-- [Setup & Requirements](SETUP.md)
-- [Architecture](ARCHITECTURE.md)
-- [Claude Agents & Skills](CLAUDE_AGENTS.md)
+- [Setup & Requirements](docs/SETUP.md)
+- [Architecture](docs/ARCHITECTURE.md)
+- [Claude Agents & Skills](docs/CLAUDE_AGENTS.md)
 
 ---
 

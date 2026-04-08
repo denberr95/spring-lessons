@@ -19,7 +19,7 @@
 
 ## Overview
 
-See [README.md](README.md) for a full project description.
+See [README.md](../README.md) for a full project description.
 
 The application exposes REST APIs for two domains — **Books** and **Items** — with asynchronous item processing through Kafka and a complete audit history via Hibernate Envers.
 
@@ -603,4 +603,4 @@ A separate `collections/compose-app.yaml` runs the app container alongside the e
 
 ---
 
-[← Back to README](README.md)
+[← Back to README](../README.md)

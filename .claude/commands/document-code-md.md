@@ -4,9 +4,9 @@ Analizza il codice sorgente del progetto e mantieni aggiornata la documentazione
 
 ## File da aggiornare
 
-- Individua tutti i file `.md` nella root del progetto
+- Individua tutti i file `.md` nella root del progetto e nella cartella `docs/`
 - **Escludi** qualsiasi file sotto `.claude/`
-- **`CLAUDE_AGENTS.md` è incluso**: va aggiornato quando vengono aggiunti, modificati o rimossi comandi in `.claude/commands/`
+- **`docs/CLAUDE_AGENTS.md` è incluso**: va aggiornato quando vengono aggiunti, modificati o rimossi comandi in `.claude/commands/`
 
 ## Procedura
 
@@ -33,7 +33,7 @@ Per ogni file `.md`, confronta il contenuto documentato con lo stato attuale del
 - **Errato:** dati parzialmente imprecisi o fuorvianti
 - **Da rimuovere:** riferimenti a componenti o funzionalità eliminate dal codice
 
-Per `CLAUDE_AGENTS.md` in particolare:
+Per `docs/CLAUDE_AGENTS.md` in particolare:
 
 - Confronta i file in `.claude/commands/` con i comandi elencati nel file
 - Aggiungi la documentazione per ogni comando presente ma non descritto
