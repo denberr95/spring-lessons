@@ -27,8 +27,8 @@ Il messaggio DEVE rispettare il formato esatto:
      - `database` → modifiche a migration Flyway (`src/main/resources/db/`), entità JPA, schema
      - `docs` → modifiche a file `.md`, documentazione
      - `tests` → modifiche a test (`src/test/`)
-     - `setup` → modifiche a `pom.xml`, `settings.xml`, `.pre-commit-config.yaml`, `Containerfile`, `.vscode/`
-     - `deploy` → modifiche a `collections/compose-*.yaml`, `Containerfile`
+     - `setup` → modifiche a `pom.xml`, `settings.xml`, `.pre-commit-config.yaml`, `Containerfile`, `.vscode/`, `Dockerfile`
+     - `deploy` → modifiche a `collections/compose-*.yaml`, `Containerfile`, `Dockerfile`
      - `script` → modifiche a script shell, `entrypoint.sh`
      - `report` → modifiche a configurazioni di osservabilità (Prometheus, Grafana, Loki)
      - `ci` → modifiche a pipeline CI/CD
