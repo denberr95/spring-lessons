@@ -45,6 +45,7 @@ class MethodsTest {
         Arguments.of("presentation.ppt", List.of(), false));
   }
 
+  @ParameterizedTest
   @CsvSource({"1.0.0, v1.0.0", ", vnull", "'', v"})
   void givenGitProperties_whenGetApplicationVersion_thenReturnFormattedVersion(String buildVersion,
       String expectedVersion) {

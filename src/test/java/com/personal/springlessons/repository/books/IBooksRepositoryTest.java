@@ -38,7 +38,6 @@ class IBooksRepositoryTest {
       bookEntity.setNumberOfPages(i + 1);
       bookEntity.setChannel(Channel.NA);
       bookEntity.setGenre(Genre.NA);
-      bookEntity.setVersion(1L);
       bookEntities.add(bookEntity);
     }
     this.bookRepository.saveAllAndFlush(bookEntities);
