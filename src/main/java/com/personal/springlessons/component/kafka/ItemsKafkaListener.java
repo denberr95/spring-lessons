@@ -43,7 +43,8 @@ public class ItemsKafkaListener {
   }
 
   @Transactional
-  @RetryableTopic(attempts = Constants.S_VAL_1, dltStrategy = DltStrategy.NO_DLT)
+  @RetryableTopic(attempts = Constants.S_VAL_1, dltStrategy = DltStrategy.NO_DLT,
+      exclude = DuplicatedBarcodeException.class)
   @KafkaListener(groupId = "upload-items.group", topics = Constants.TOPIC_ITEMS,
       filter = "uploadItemsRecordFilter", concurrency = Constants.S_VAL_1)
   public void upload(@Payload KafkaMessageItemDTO message) {
