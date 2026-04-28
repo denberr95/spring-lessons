@@ -66,7 +66,7 @@ The application exposes REST APIs for two domains — **Books** and **Items** �
 
 | Layer | Technology |
 | --- | --- |
-| Framework | Spring Boot 4.0.5 |
+| Framework | Spring Boot 4.0.6 |
 | Language | Java 25 |
 | Web Server | Jetty (replaces Tomcat) |
 | Security | Spring Security — OAuth2 Resource Server + JWT |
@@ -382,6 +382,7 @@ topic-items
 | `max-poll-records` | 1 (one record per poll) |
 | `auto-offset-reset` | earliest |
 | `@RetryableTopic(attempts)` | 1 |
+| `@RetryableTopic(exclude)` | `DuplicatedBarcodeException` (upload group only) |
 | `dltStrategy` | NO_DLT |
 | `concurrency` | 1 |
 

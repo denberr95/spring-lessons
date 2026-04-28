@@ -27,17 +27,17 @@ Automates git commits following the Conventional Commits rules enforced by `.pre
    | --- | --- |
    | `api` | Controllers, DTOs, REST/SOAP endpoints, OpenAPI spec |
    | `code` | Service, component, config, model, repository, util, exception |
-   | `database` | Flyway migrations, JPA entities, schema changes |
+   | `database` | Flyway migrations, JPA entities, schema changes, SQL files |
    | `docs` | Markdown files, documentation |
    | `tests` | Test sources under `src/test/` |
-   | `setup` | `pom.xml`, `settings.xml`, `.pre-commit-config.yaml`, `.vscode/`, `Containerfile` |
-   | `deploy` | `collections/compose-*.yaml`, `Containerfile` |
-   | `script` | Shell scripts, `entrypoint.sh` |
+   | `setup` | `pom.xml`, `settings.xml`, `.pre-commit-config.yaml`, `.vscode/` |
+   | `deploy` | `collections/compose-*.yaml`, `Containerfile`, `Dockerfile` |
+   | `script` | Shell or batch scripts (e.g. `entrypoint.sh`) |
    | `report` | Observability config (Prometheus, Grafana, Loki) |
    | `ci` | CI/CD pipeline files |
 
 4. Stages specific files (never `git add -A` or `git add .`)
-5. Creates the commit with the correct message format
+5. Creates the commit with the correct message format — **description must always be in English**
 6. If a pre-commit hook fails, diagnoses the error, fixes it, and creates a **new** commit (never `--amend`)
 
 **Usage:**
