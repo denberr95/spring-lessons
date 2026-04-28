@@ -35,7 +35,7 @@
 
 - Install: `npm install -g @anthropic-ai/claude-code`
 - Project-level slash commands are defined in `.claude/commands/` and loaded automatically
-- See [Claude Agents & Skills](CLAUDE_AGENTS.md) for the full list of available commands
+- See [Claude Commands](CLAUDE_COMMANDS.md) for the full list of available commands
 
 ---
 

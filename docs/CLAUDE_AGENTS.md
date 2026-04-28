@@ -1,112 +1,57 @@
-# Claude Agents & Skills — Spring Lessons
+# Claude Agents — Spring Lessons
 
-This document describes the Claude Code agents and custom slash commands available in this repository.
+This document describes how Claude Code subagents are used in this project — which agent types to spawn, when, and for what purpose.
 
-- [Custom Slash Commands](#custom-slash-commands)
-- [Adding New Commands](#adding-new-commands)
-
----
-
-## Custom Slash Commands
-
-Custom slash commands live in `.claude/commands/` and are available in every Claude Code session opened in this repository. Invoke them by typing `/command-name` in the prompt.
-
-### `/commit-conventional`
-
-**File:** `.claude/commands/commit-conventional.md`
-
-Automates git commits following the Conventional Commits rules enforced by `.pre-commit-config.yaml`.
-
-**What it does:**
-
-1. Runs `git status` and `git diff HEAD` to analyse staged and unstaged changes
-2. Selects the appropriate commit **type** (`feat`, `fix`, `docs`, `refactor`, `chore`, `ci`, `build`, `perf`, `test`, `style`, `revert`)
-3. Forces one of the valid **scopes** accepted by the `conventional-pre-commit` hook:
-
-   | Scope | When to use |
-   | --- | --- |
-   | `api` | Controllers, DTOs, REST/SOAP endpoints, OpenAPI spec |
-   | `code` | Service, component, config, model, repository, util, exception |
-   | `database` | Flyway migrations, JPA entities, schema changes, SQL files |
-   | `docs` | Markdown files, documentation |
-   | `tests` | Test sources under `src/test/` |
-   | `setup` | `pom.xml`, `settings.xml`, `.pre-commit-config.yaml`, `.vscode/` |
-   | `deploy` | `collections/compose-*.yaml`, `Containerfile`, `Dockerfile` |
-   | `script` | Shell or batch scripts (e.g. `entrypoint.sh`) |
-   | `report` | Observability config (Prometheus, Grafana, Loki) |
-   | `ci` | CI/CD pipeline files |
-
-4. Stages specific files (never `git add -A` or `git add .`)
-5. Creates the commit with the correct message format — **description must always be in English**
-6. If a pre-commit hook fails, diagnoses the error, fixes it, and creates a **new** commit (never `--amend`)
-
-**Usage:**
-
-```text
-/commit-conventional
-```
-
-**Commit message format:**
-
-```text
-<type>(<scope>): <description>
-```
-
-Example: `feat(api): add paginated endpoint for order items`
-
-### `/document-code-md`
-
-**File:** `.claude/commands/document-code-md.md`
-
-Analyzes the source code and keeps the Markdown documentation files up to date, reflecting the current state of the codebase.
-
-**What it does:**
-
-1. Discovers the project structure (build files, config, scripts, `.claude/commands/`)
-2. Reads all `.md` files in the project root (excluding `.claude/`)
-3. Compares documented content against actual code and identifies: obsolete info, missing sections, incorrect data, removed components
-4. For `CLAUDE_AGENTS.md` specifically: syncs the command list with `.claude/commands/` (adds missing, removes deleted, updates changed)
-5. Applies only necessary edits — preserves structure, style, and navigation links
-6. Produces a report of changes per file
-
-**Usage:**
-
-```text
-/document-code-md
-```
+- [Available Agent Types](#available-agent-types)
+- [Usage Patterns in This Project](#usage-patterns-in-this-project)
 
 ---
 
-### `/update-maven-deps`
+## Available Agent Types
 
-**File:** `.claude/commands/update-maven-deps.md`
-
-Scans Maven dependencies and plugins for available stable version upgrades, without modifying any file.
-
-**What it does:**
-
-1. Reads `pom.xml` (parent BOM, properties, dependencies, plugins) and `settings.xml` if present
-2. Runs `mvn versions:display-dependency-updates`, `display-plugin-updates`, `display-property-updates`
-3. Filters out non-stable versions (alpha, beta, milestone, RC, snapshot)
-4. Produces a structured report grouped by: Parent BOM, Properties, Dependencies, Plugins
-5. Highlights high-impact upgrades (Spring parent, core libs) vs low-risk ones (build plugins)
-
-**Usage:**
-
-```text
-/update-maven-deps
-```
+| Agent type | Model | Strengths | Tools available |
+| --- | --- | --- | --- |
+| `Explore` | fast | File search, grep, codebase Q&A | All except Agent, Edit, Write |
+| `Plan` | — | Architecture design, implementation plans | All except Agent, Edit, Write |
+| `general-purpose` | — | Multi-step research, complex tasks, web search | All tools |
+| `claude-code-guide` | — | Claude Code CLI, API, SDK questions | Bash, Read, WebFetch, WebSearch |
 
 ---
 
-## Adding New Commands
+## Usage Patterns in This Project
 
-1. Create a Markdown file in `.claude/commands/<command-name>.md`
-2. Write the prompt that Claude will follow when the command is invoked
-3. Restart Claude Code (or reload the session) to pick up the new command
-4. Commit the file using `/commit-conventional` with scope `setup`
+### Codebase exploration
 
-**Naming convention:** use lowercase kebab-case (e.g. `new-endpoint.md`, `check-deps.md`).
+Use `Explore` when searching for symbols, patterns or answering structural questions that span multiple files. Specify thoroughness: `quick`, `medium`, or `very thorough`.
+
+```text
+Agent(Explore): "find all classes annotated with @KafkaListener and describe their consumer group config"
+Agent(Explore, very thorough): "how does optimistic locking flow from the REST layer to the DB?"
+```
+
+### Architecture planning
+
+Use `Plan` before implementing a non-trivial feature (new endpoint, Kafka consumer, Flyway migration) to align on approach and trade-offs before writing code.
+
+```text
+Agent(Plan): "design the implementation plan for adding a new SOAP endpoint that queries books_audit"
+```
+
+### Documentation and research
+
+Use `general-purpose` for tasks that require reading files AND writing/editing, or for web research combined with code changes.
+
+```text
+Agent(general-purpose): "research the latest SpringDoc 3.x release notes and update pom.xml"
+```
+
+### Claude Code / API questions
+
+Use `claude-code-guide` for questions about Claude Code features, hooks syntax, MCP servers, or Anthropic API usage.
+
+```text
+Agent(claude-code-guide): "how do I configure a PostToolUse hook that runs spotless after every Edit?"
+```
 
 ---
 
