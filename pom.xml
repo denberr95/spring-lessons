@@ -17,6 +17,7 @@
     <properties>
         <java.version>25</java.version>
         <org.mapstruct.version>1.6.3</org.mapstruct.version>
+        <opentelemetry.version>1.60.0</opentelemetry.version>
         <opentelemetry.appender.version>2.27.0-alpha</opentelemetry.appender.version>
         <jacoco.version>0.8.14</jacoco.version>
         <opencsv.version>5.12.0</opencsv.version>
@@ -350,19 +351,11 @@
                 <version>${spotless-maven-plugin.version}</version>
                 <configuration>
                     <java>
-                        <includes>
-                            <include>src/main/java/**/*.java</include>
-                            <include>src/test/java/**/*.java</include>
-                        </includes>
                         <trimTrailingWhitespace />
                         <endWithNewline />
-                        <cleanthat />
                         <eclipse>
                             <file>${project.basedir}/.mvn/eclipse-java-google-style.xml</file>
                         </eclipse>
-                        <indent>
-                            <spaces>true</spaces>
-                        </indent>
                         <importOrder>
                             <order>java,jakarta,javax,com,org,</order>
                         </importOrder>
