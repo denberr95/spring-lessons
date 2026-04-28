@@ -10,8 +10,7 @@ Analizza il codice sorgente del progetto e mantieni aggiornata la documentazione
 
 | File | Fonte di verità |
 | --- | --- |
-| `docs/CLAUDE_COMMANDS.md` | `.claude/commands/` — comandi slash custom |
-| `docs/CLAUDE_SKILLS.md` | skills disponibili nel progetto (plugin + globali rilevanti) |
+| `docs/CLAUDE_COMMANDS.md` | `.claude/commands/` — comandi slash custom e skills (plugin + globali rilevanti) |
 | `docs/CLAUDE_HOOKS.md` | hooks in `.claude/settings.json` e `~/.claude/settings.json` |
 | `docs/CLAUDE_AGENTS.md` | tipi di subagent usati/configurati nel progetto |
 
@@ -52,12 +51,7 @@ Per i file Claude-specifici in particolare:
 - Aggiungi la documentazione per ogni comando presente ma non descritto
 - Rimuovi la documentazione di comandi che non esistono più
 - Aggiorna la descrizione dei comandi il cui file `.md` è stato modificato
-
-**`docs/CLAUDE_SKILLS.md`**
-
-- Elenca le skills disponibili tramite plugin installati (leggi `~/.claude/plugins/installed_plugins.json`)
-- Documenta le skills globali di Claude Code rilevanti per questo progetto
-- Non documentare skills generiche non usate nel workflow del progetto
+- Aggiorna la sezione Platform Skills: elenca plugin installati (leggi `~/.claude/plugins/installed_plugins.json`) e skills globali rilevanti per il progetto
 
 **`docs/CLAUDE_HOOKS.md`**
 
