@@ -15,6 +15,8 @@ Il messaggio DEVE rispettare il formato esatto:
 
 **Tipi validi**: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `chore`, `ci`, `build`, `revert`
 
+**Lingua**: la `<description>` DEVE essere sempre in **inglese**, indipendentemente dalla lingua usata dall'utente.
+
 ## Procedura
 
 1. Esegui `git status` per vedere i file modificati, staged e untracked.
@@ -24,12 +26,12 @@ Il messaggio DEVE rispettare il formato esatto:
    - Lo **scope** corretto tra quelli validi:
      - `api` → modifiche a controller, DTO, endpoint REST/SOAP, OpenAPI
      - `code` → modifiche a service, component, config, model, repository, util, exception
-     - `database` → modifiche a migration Flyway (`src/main/resources/db/`), entità JPA, schema
+     - `database` → modifiche a migration Flyway (`src/main/resources/db/`), entità JPA, schema, file sql
      - `docs` → modifiche a file `.md`, documentazione
      - `tests` → modifiche a test (`src/test/`)
-     - `setup` → modifiche a `pom.xml`, `settings.xml`, `.pre-commit-config.yaml`, `Containerfile`, `.vscode/`, `Dockerfile`
+     - `setup` → modifiche a `pom.xml`, `settings.xml`, `.pre-commit-config.yaml`, `.vscode/`
      - `deploy` → modifiche a `collections/compose-*.yaml`, `Containerfile`, `Dockerfile`
-     - `script` → modifiche a script shell, `entrypoint.sh`
+     - `script` → modifiche a script shell, o batch, (es: `entrypoint.sh`)
      - `report` → modifiche a configurazioni di osservabilità (Prometheus, Grafana, Loki)
      - `ci` → modifiche a pipeline CI/CD
 
