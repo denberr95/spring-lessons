@@ -6,7 +6,16 @@ Analizza il codice sorgente del progetto e mantieni aggiornata la documentazione
 
 - Individua tutti i file `.md` nella root del progetto e nella cartella `docs/`
 - **Escludi** qualsiasi file sotto `.claude/`
-- **`docs/CLAUDE_AGENTS.md` è incluso**: va aggiornato quando vengono aggiunti, modificati o rimossi comandi in `.claude/commands/`
+- I seguenti file Claude-specifici in `docs/` sono inclusi e vanno mantenuti separati:
+
+| File | Fonte di verità |
+| --- | --- |
+| `docs/CLAUDE_COMMANDS.md` | `.claude/commands/` — comandi slash custom |
+| `docs/CLAUDE_SKILLS.md` | skills disponibili nel progetto (plugin + globali rilevanti) |
+| `docs/CLAUDE_HOOKS.md` | hooks in `.claude/settings.json` e `~/.claude/settings.json` |
+| `docs/CLAUDE_AGENTS.md` | tipi di subagent usati/configurati nel progetto |
+
+Se uno di questi file non esiste, crealo con la struttura base coerente con gli altri.
 
 ## Procedura
 
@@ -19,6 +28,8 @@ Esplora la struttura del progetto per capire cosa c'è da documentare:
 - Individua file di configurazione rilevanti (properties, yaml, env, docker-compose, ecc.)
 - Rileva eventuali script, Dockerfile/Containerfile, pipeline CI/CD
 - Elenca i file presenti in `.claude/commands/` per rilevare comandi aggiunti, modificati o rimossi
+- Leggi `.claude/settings.json` (progetto) e `~/.claude/settings.json` (globale) per hooks e permissions
+- Identifica i tipi di subagent lanciati nel progetto (Explore, Plan, general-purpose, ecc.)
 
 ### 2. Lettura della documentazione esistente
 
@@ -33,12 +44,31 @@ Per ogni file `.md`, confronta il contenuto documentato con lo stato attuale del
 - **Errato:** dati parzialmente imprecisi o fuorvianti
 - **Da rimuovere:** riferimenti a componenti o funzionalità eliminate dal codice
 
-Per `docs/CLAUDE_AGENTS.md` in particolare:
+Per i file Claude-specifici in particolare:
 
-- Confronta i file in `.claude/commands/` con i comandi elencati nel file
+**`docs/CLAUDE_COMMANDS.md`**
+
+- Confronta i file in `.claude/commands/` con i comandi elencati
 - Aggiungi la documentazione per ogni comando presente ma non descritto
 - Rimuovi la documentazione di comandi che non esistono più
 - Aggiorna la descrizione dei comandi il cui file `.md` è stato modificato
+
+**`docs/CLAUDE_SKILLS.md`**
+
+- Elenca le skills disponibili tramite plugin installati (leggi `~/.claude/plugins/installed_plugins.json`)
+- Documenta le skills globali di Claude Code rilevanti per questo progetto
+- Non documentare skills generiche non usate nel workflow del progetto
+
+**`docs/CLAUDE_HOOKS.md`**
+
+- Leggi `.claude/settings.json` per hooks a livello progetto
+- Leggi `~/.claude/settings.json` per hooks globali attivi in questo progetto
+- Se non ci sono hooks configurati, documenta la struttura attesa e lascia le sezioni vuote
+
+**`docs/CLAUDE_AGENTS.md`**
+
+- Documenta i tipi di subagent (Explore, Plan, general-purpose, ecc.) e quando usarli in questo progetto
+- Aggiorna se vengono aggiunti nuovi pattern di utilizzo degli agent
 
 ### 4. Aggiornamento
 
@@ -58,7 +88,7 @@ Al termine mostra un riepilogo in questo formato:
 ## Documentation update report
 
 ### <nome-file.md>
-- [aggiornato | rimosso | invariato] <descrizione sintetica della modifica>
+- [aggiornato | creato | rimosso | invariato] <descrizione sintetica della modifica>
 ```
 
 Se un file non richiede modifiche, indicalo con `invariato — nessuna discrepanza rilevata`.
