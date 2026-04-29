@@ -17,7 +17,6 @@ import jakarta.persistence.OptimisticLockException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
 
-import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
@@ -225,19 +224,18 @@ public class BooksService {
 
     this.isPermittedFileType(filename);
 
-    try (CSVReader reader = new CSVReader(
-        new InputStreamReader(multipartFile.getInputStream(), StandardCharsets.UTF_8))) {
+    try (InputStreamReader inputStreamReader =
+        new InputStreamReader(multipartFile.getInputStream(), StandardCharsets.UTF_8)) {
 
       HeaderColumnNameMappingStrategy<BookCsv> strategy = new HeaderColumnNameMappingStrategy<>();
       strategy.setType(BookCsv.class);
 
-      CsvToBean<BookCsv> csvToBean = new CsvToBeanBuilder<BookCsv>(reader).withOrderedResults(true)
-          .withMappingStrategy(strategy)
+      CsvToBean<BookCsv> csvToBean = new CsvToBeanBuilder<BookCsv>(inputStreamReader)
+          .withOrderedResults(true).withMappingStrategy(strategy)
           .withStrictQuotes(this.appPropertiesConfig.getCsvMetadata().getStrictQuote())
           .withIgnoreEmptyLine(this.appPropertiesConfig.getCsvMetadata().getIgnoreEmptyLines())
           .withSeparator(this.appPropertiesConfig.getCsvMetadata().getColumnSeparator())
-          .withQuoteChar(this.appPropertiesConfig.getCsvMetadata().getQuoteCharacter())
-          .withSkipLines(1).build();
+          .withQuoteChar(this.appPropertiesConfig.getCsvMetadata().getQuoteCharacter()).build();
 
       Iterator<BookCsv> iterator = csvToBean.iterator();
       List<InvalidCsvDTO> invalidCsvDTO = new ArrayList<>();
