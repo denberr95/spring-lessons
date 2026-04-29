@@ -157,31 +157,68 @@ class ItemsRestControllerTest {
 
   @Test
   void givenInvalidAccessToken_whenCallAPI_thenReturnForbidden() {
-    // TODO
+    this.restTestClient.get().uri(this.buildUrl("/v1/items"))
+        .headers(this.retrieveHttpHeaders(this.invalidToken)).exchange().expectStatus()
+        .isForbidden();
   }
 
   @Test
   void givenWithoutAccessToken_whenCallAPI_thenReturnUnauthorized() {
-    // TODO
+    this.restTestClient.get().uri(this.buildUrl("/v1/items"))
+        .headers(this.retrieveHttpHeaders(null)).exchange().expectStatus().isUnauthorized();
   }
 
   @Test
   void givenItems_whenUpload_thenNoContent() {
-    // TODO
+    ItemDTO item = new ItemDTO();
+    item.setName("Upload Item");
+    item.setBarcode("CTRL-UPL001");
+    item.setPrice(new BigDecimal("9.99"));
+
+    com.personal.springlessons.model.dto.OrderItemsDTO order =
+        new com.personal.springlessons.model.dto.OrderItemsDTO();
+    order.setItems(List.of(item));
+
+    this.restTestClient.post().uri(this.buildUrl("/v1/items"))
+        .contentType(MediaType.APPLICATION_JSON).headers(this.retrieveHttpHeaders(this.validToken))
+        .body(order).exchange().expectStatus().isOk();
   }
 
   @Test
   void givenItems_whenDelete_thenNoContent() {
-    // TODO
+    OrderItemsEntity orderEntity = this.orderItemsRepository.findAll().get(0);
+    List<ItemDTO> items = this.itemsRepository.findAll().stream().map(entity -> {
+      ItemDTO dto = new ItemDTO();
+      dto.setId(entity.getId().toString());
+      dto.setName(entity.getName());
+      dto.setBarcode(entity.getBarcode());
+      dto.setPrice(entity.getPrice());
+      return dto;
+    }).toList();
+
+    com.personal.springlessons.model.dto.OrderItemsDTO order =
+        new com.personal.springlessons.model.dto.OrderItemsDTO();
+    order.setId(orderEntity.getId().toString());
+    order.setItems(items);
+
+    this.restTestClient.method(org.springframework.http.HttpMethod.DELETE)
+        .uri(this.buildUrl("/v1/items")).contentType(MediaType.APPLICATION_JSON)
+        .headers(this.retrieveHttpHeaders(this.validToken)).body(order).exchange().expectStatus()
+        .isNoContent();
   }
 
   @Test
   void givenEmptyCollection_whenGetAll_thenNoContent() {
-    // TODO
+    this.cleanupItems();
+    this.cleanupOrders();
+
+    this.restTestClient.get().uri(this.buildUrl("/v1/items"))
+        .headers(this.retrieveHttpHeaders(this.validToken)).exchange().expectStatus().isNoContent();
   }
 
   @Test
   void givenItems_whenGetAll_thenItemsRetrieved() {
-    // TODO
+    this.restTestClient.get().uri(this.buildUrl("/v1/items"))
+        .headers(this.retrieveHttpHeaders(this.validToken)).exchange().expectStatus().isOk();
   }
 }
