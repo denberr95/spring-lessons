@@ -66,7 +66,7 @@ The application exposes REST APIs for two domains — **Books** and **Items** �
 
 | Layer | Technology |
 | --- | --- |
-| Framework | Spring Boot 4.0.6 |
+| Framework | Spring Boot 4.1.0 |
 | Language | Java 25 |
 | Web Server | Jetty (replaces Tomcat) |
 | Security | Spring Security — OAuth2 Resource Server + JWT |

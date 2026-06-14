@@ -34,8 +34,8 @@
 **Claude Code** is used for AI-assisted development in this project.
 
 - Install: `npm install -g @anthropic-ai/claude-code`
-- Project-level slash commands are defined in `.claude/commands/` and loaded automatically
-- See [Claude Commands](CLAUDE_COMMANDS.md) for the full list of available commands
+- Project-level skills are defined in `.claude/skills/` and loaded automatically
+- See [Claude Skills](CLAUDE_SKILLS.md) for the full list of available skills
 
 ---
 

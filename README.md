@@ -4,7 +4,7 @@
 
 - [Setup & Requirements](docs/SETUP.md)
 - [Architecture](docs/ARCHITECTURE.md)
-- [Claude Commands & Skills](docs/CLAUDE_COMMANDS.md)
+- [Claude Skills](docs/CLAUDE_SKILLS.md)
 - [Claude Hooks](docs/CLAUDE_HOOKS.md)
 - [Claude Agents](docs/CLAUDE_AGENTS.md)
 
