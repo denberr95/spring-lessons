@@ -15,5 +15,6 @@ class DuplicatedBookExceptionTest {
     assertEquals(expectedMessage, exception.getMessage());
     assertEquals(name, exception.getName());
     assertEquals(id, exception.getId());
+    assertEquals(1L, DuplicatedBookException.getSerialversionuid());
   }
 }

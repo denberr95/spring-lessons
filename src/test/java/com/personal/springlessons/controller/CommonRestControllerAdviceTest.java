@@ -1,10 +1,15 @@
 package com.personal.springlessons.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
+import java.util.HashSet;
 import java.util.Set;
 
+import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Path;
 
 import com.personal.springlessons.exception.ConcurrentUpdateException;
 import com.personal.springlessons.exception.InvalidUUIDException;
@@ -117,5 +122,37 @@ class CommonRestControllerAdviceTest {
         new ConcurrentUpdateException("some-id", "\"3\""), this.createWebRequest());
 
     assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
+  }
+
+  @Test
+  void givenConstraintViolationWithDottedPathAndNonNullValue_whenHandleException_thenReturnBadRequest() {
+    Path path = mock(Path.class);
+    when(path.toString()).thenReturn("methodName.fieldName");
+    ConstraintViolation<?> violation = mock(ConstraintViolation.class);
+    when(violation.getPropertyPath()).thenReturn(path);
+    when(violation.getMessage()).thenReturn("must not be null");
+    when(violation.getInvalidValue()).thenReturn("invalidValue");
+
+    Set<ConstraintViolation<?>> violations = new HashSet<>();
+    violations.add((ConstraintViolation<?>) violation);
+    ResponseEntity<?> response = this.advice.handleConstraintViolationException(
+        new ConstraintViolationException(violations), this.createWebRequest());
+
+    assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+  }
+
+  @Test
+  void givenConstraintViolationWithNullPathAndNullValue_whenHandleException_thenReturnBadRequest() {
+    ConstraintViolation<?> violation = mock(ConstraintViolation.class);
+    when(violation.getPropertyPath()).thenReturn(null);
+    when(violation.getMessage()).thenReturn("invalid");
+    when(violation.getInvalidValue()).thenReturn(null);
+
+    Set<ConstraintViolation<?>> violations = new HashSet<>();
+    violations.add((ConstraintViolation<?>) violation);
+    ResponseEntity<?> response = this.advice.handleConstraintViolationException(
+        new ConstraintViolationException(violations), this.createWebRequest());
+
+    assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
   }
 }

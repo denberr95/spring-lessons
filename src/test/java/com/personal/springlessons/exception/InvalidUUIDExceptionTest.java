@@ -13,5 +13,6 @@ class InvalidUUIDExceptionTest {
     String expectedMessage = String.format("ID '%s' malformed, is not a valid UUID", id);
     assertEquals(expectedMessage, exception.getMessage());
     assertEquals(id, exception.getId());
+    assertEquals(1L, InvalidUUIDException.getSerialversionuid());
   }
 }

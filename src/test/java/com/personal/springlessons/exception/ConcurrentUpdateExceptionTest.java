@@ -17,6 +17,6 @@ class ConcurrentUpdateExceptionTest {
     assertEquals(expectedMessage, ex.getMessage());
     assertEquals(testId, ex.getId());
     assertEquals(testVersion, ex.getVersion());
-
+    assertEquals(1L, ConcurrentUpdateException.getSerialversionuid());
   }
 }

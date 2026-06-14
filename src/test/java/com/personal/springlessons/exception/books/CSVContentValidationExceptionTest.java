@@ -23,5 +23,6 @@ class CSVContentValidationExceptionTest {
     assertEquals(fileName, exception.getFileName());
     assertEquals(rows, exception.getRows());
     assertEquals("CSV file: test.csv is invalid", exception.getMessage());
+    assertEquals(1L, CSVContentValidationException.getSerialversionuid());
   }
 }

@@ -13,5 +13,6 @@ class BookNotFoundExceptionTest {
     String expectedMessage = String.format("Book '%s' not found !", id);
     assertEquals(expectedMessage, exception.getMessage());
     assertEquals(id, exception.getId());
+    assertEquals(1L, BookNotFoundException.getSerialversionuid());
   }
 }

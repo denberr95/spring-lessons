@@ -15,5 +15,6 @@ class DuplicatedBarcodeExceptionTest {
     assertEquals(expectedMessage, exception.getMessage());
     assertEquals(barcode, exception.getBarcode());
     assertEquals(id, exception.getId());
+    assertEquals(1L, DuplicatedBarcodeException.getSerialversionuid());
   }
 }

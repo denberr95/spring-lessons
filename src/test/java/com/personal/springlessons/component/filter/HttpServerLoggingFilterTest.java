@@ -8,6 +8,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockFilterChain;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.web.util.ContentCachingRequestWrapper;
+import org.springframework.web.util.ContentCachingResponseWrapper;
 
 @SpringBootTest
 class HttpServerLoggingFilterTest {
@@ -59,6 +61,44 @@ class HttpServerLoggingFilterTest {
     MockFilterChain chain = new MockFilterChain();
 
     this.filter.doFilter(request, response, chain);
+
+    assertNotNull(chain.getRequest());
+  }
+
+  @Test
+  void givenPreReadRequestWithBody_whenDoFilter_thenLogBody() throws Exception {
+    MockHttpServletRequest original = new MockHttpServletRequest("POST", "/spring-app/v1/books");
+    original.setContent("{\"name\":\"book\"}".getBytes());
+    ContentCachingRequestWrapper preRead = new ContentCachingRequestWrapper(original, 1024);
+    preRead.getInputStream().readAllBytes();
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    MockFilterChain chain = new MockFilterChain();
+
+    this.filter.doFilter(preRead, response, chain);
+
+    assertNotNull(chain.getRequest());
+  }
+
+  @Test
+  void givenAlreadyWrappedRequest_whenDoFilter_thenUseExistingWrapper() throws Exception {
+    MockHttpServletRequest original = new MockHttpServletRequest("GET", "/spring-app/v1/books");
+    ContentCachingRequestWrapper wrapped = new ContentCachingRequestWrapper(original, 1024);
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    MockFilterChain chain = new MockFilterChain();
+
+    this.filter.doFilter(wrapped, response, chain);
+
+    assertNotNull(chain.getRequest());
+  }
+
+  @Test
+  void givenAlreadyWrappedResponse_whenDoFilter_thenUseExistingWrapper() throws Exception {
+    MockHttpServletRequest request = new MockHttpServletRequest("GET", "/spring-app/v1/books");
+    MockHttpServletResponse original = new MockHttpServletResponse();
+    ContentCachingResponseWrapper wrapped = new ContentCachingResponseWrapper(original);
+    MockFilterChain chain = new MockFilterChain();
+
+    this.filter.doFilter(request, wrapped, chain);
 
     assertNotNull(chain.getRequest());
   }
