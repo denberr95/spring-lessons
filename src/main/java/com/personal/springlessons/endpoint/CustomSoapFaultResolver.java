@@ -17,8 +17,15 @@ import org.springframework.ws.soap.server.endpoint.SoapFaultMappingExceptionReso
 public class CustomSoapFaultResolver extends SoapFaultMappingExceptionResolver {
 
   @Override
-  protected void customizeFault(@Nullable Object endpoint, Exception ex,
-      SoapFault fault) {SoapFaultDetail detail=fault.addFaultDetail();switch(ex){case InvalidUUIDException e->this.handleInvalidUUIDException(e,detail);case SpringLessonsApplicationException e->this.handleSpringLessonsApplicationException(e,detail);default->this.handleGeneric(ex,detail);}}
+  protected void customizeFault(@Nullable Object endpoint, Exception ex, SoapFault fault) {
+    SoapFaultDetail detail = fault.addFaultDetail();
+    switch (ex) {
+      case InvalidUUIDException e -> this.handleInvalidUUIDException(e, detail);
+      case SpringLessonsApplicationException e ->
+        this.handleSpringLessonsApplicationException(e, detail);
+      default -> this.handleGeneric(ex, detail);
+    }
+  }
 
   private void handleGeneric(Exception ex, SoapFaultDetail detail) {
     this.addElement(detail, Constants.S_SOAP_TAG_EXCEPTION, ex.getClass().getName());
