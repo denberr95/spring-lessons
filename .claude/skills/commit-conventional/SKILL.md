@@ -1,3 +1,9 @@
+---
+name: commit-conventional
+description: Create a git commit following Conventional Commits format with project-defined scopes (api, setup, docs, tests, deploy, script, report, database, code) and strict English descriptions. Use when the user asks to commit changes, save changes to git, finishes a feature or fix and wants to persist it, or requests a properly formatted commit message.
+disable-model-invocation: true
+---
+
 # Commit Conventional
 
 Crea un git commit seguendo le regole di Conventional Commits definite in `.pre-commit-config.yaml`.

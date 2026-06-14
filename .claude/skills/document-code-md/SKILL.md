@@ -1,3 +1,9 @@
+---
+name: document-code-md
+description: Analyze the source code and update all Markdown documentation (README, docs/, CLAUDE_SKILLS.md, CLAUDE_HOOKS.md, CLAUDE_AGENTS.md) to reflect the current codebase state. Use when the user asks to update or refresh documentation, sync docs with recent code changes, document new features or skills, or keep Markdown files aligned with the project.
+disable-model-invocation: true
+---
+
 # Document Code MD
 
 Analizza il codice sorgente del progetto e mantieni aggiornata la documentazione nei file Markdown, riflettendo fedelmente lo stato attuale del codice.
@@ -10,7 +16,7 @@ Analizza il codice sorgente del progetto e mantieni aggiornata la documentazione
 
 | File | Fonte di verità |
 | --- | --- |
-| `docs/CLAUDE_COMMANDS.md` | `.claude/commands/` — comandi slash custom e skills (plugin + globali rilevanti) |
+| `docs/CLAUDE_SKILLS.md` | `.claude/skills/` — comandi slash custom e skills (plugin + globali rilevanti) |
 | `docs/CLAUDE_HOOKS.md` | hooks in `.claude/settings.json` e `~/.claude/settings.json` |
 | `docs/CLAUDE_AGENTS.md` | tipi di subagent usati/configurati nel progetto |
 
@@ -26,7 +32,7 @@ Esplora la struttura del progetto per capire cosa c'è da documentare:
 - Esplora le directory principali del codice sorgente
 - Individua file di configurazione rilevanti (properties, yaml, env, docker-compose, ecc.)
 - Rileva eventuali script, Dockerfile/Containerfile, pipeline CI/CD
-- Elenca i file presenti in `.claude/commands/` per rilevare comandi aggiunti, modificati o rimossi
+- Elenca i file presenti in `.claude/skills/` per rilevare comandi aggiunti, modificati o rimossi
 - Leggi `.claude/settings.json` (progetto) e `~/.claude/settings.json` (globale) per hooks e permissions
 - Identifica i tipi di subagent lanciati nel progetto (Explore, Plan, general-purpose, ecc.)
 
@@ -45,9 +51,9 @@ Per ogni file `.md`, confronta il contenuto documentato con lo stato attuale del
 
 Per i file Claude-specifici in particolare:
 
-**`docs/CLAUDE_COMMANDS.md`**
+**`docs/CLAUDE_SKILLS.md`**
 
-- Confronta i file in `.claude/commands/` con i comandi elencati
+- Confronta i file in `.claude/skills/` con i comandi elencati
 - Aggiungi la documentazione per ogni comando presente ma non descritto
 - Rimuovi la documentazione di comandi che non esistono più
 - Aggiorna la descrizione dei comandi il cui file `.md` è stato modificato

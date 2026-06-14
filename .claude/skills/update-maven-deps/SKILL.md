@@ -1,3 +1,9 @@
+---
+name: update-maven-deps
+description: Scan Maven dependencies and plugins for available stable updates and produce a categorized report (Parent BOM, properties, dependencies, plugins). Excludes pre-release versions (alpha, beta, RC, SNAPSHOT) and vendor-specific builds. Use when the user asks about dependency updates, wants to check for outdated Maven libraries, is preparing a maintenance release, or needs a dependency health report.
+disable-model-invocation: true
+---
+
 # Update Maven Dependencies
 
 Analizza le dipendenze e i plugin Maven del progetto e produce un report degli aggiornamenti disponibili a versioni stable.
