@@ -533,20 +533,22 @@ A SOAP web service endpoint (`PlatformHistoryEndpoint`) is exposed alongside the
 
 All external services run as containers via Podman Compose (`collections/compose-env.yaml`).
 
+Image versions are pinned in `collections/.env` via `IMAGE_*` variables and referenced in compose files as `${IMAGE_*}`. To update all images to their latest stable releases, use `/update-docker-images`.
+
 ### Services
 
-| Service | Image | Port(s) | Role |
-| --- | --- | --- | --- |
-| `springdb` | postgres:latest | 5432 | Application database |
-| `kafka` | apache/kafka:latest | 29092 | Message broker |
-| `keycloak` | quay.io/keycloak/keycloak:latest | 8080 | OAuth2 / OIDC provider |
-| `mailpit` | axllent/mailpit | 1025 (SMTP), 8025 (UI) | Email capture |
-| `wiremock` | custom-wiremock | 9998, 9999 | HTTP API mocking |
-| `otelcol` | otel/opentelemetry-collector | 4317, 4318 | Telemetry aggregator |
-| `jaeger` | jaegertracing/jaeger | 16686 | Distributed tracing UI |
-| `prometheus` | prom/prometheus | 9090 | Metrics storage |
-| `grafana` | grafana/grafana-enterprise | 3000 | Metrics + logs dashboards |
-| `loki` | grafana/loki | 3100 | Log aggregation |
+| Service | Image | Port(s) | Role | Health check |
+| --- | --- | --- | --- | --- |
+| `springdb` | `postgres:${IMAGE_POSTGRES}` | 5432 | Application database | `pg_isready` |
+| `kafka` | `apache/kafka:${IMAGE_KAFKA}` | 29092 | Message broker | `kafka-broker-api-versions.sh` |
+| `keycloak` | `quay.io/keycloak/keycloak:${IMAGE_KEYCLOAK}` | 8080 | OAuth2 / OIDC provider | `/realms/master` HTTP 200 |
+| `mailpit` | `axllent/mailpit:${IMAGE_MAILPIT}` | 1025 (SMTP), 8025 (UI) | Email capture | — |
+| `wiremock` | `custom-wiremock` (built from `${IMAGE_WIREMOCK}`) | 9998, 9999 | HTTP API mocking | — |
+| `otelcol` | `otel/opentelemetry-collector:${IMAGE_OTELCOL}` | 4317, 4318 | Telemetry aggregator | — |
+| `jaeger` | `jaegertracing/jaeger:${IMAGE_JAEGER}` | 16686 | Distributed tracing UI | — |
+| `prometheus` | `prom/prometheus:${IMAGE_PROMETHEUS}` | 9090 | Metrics storage | — |
+| `grafana` | `grafana/grafana-enterprise:${IMAGE_GRAFANA}` | 3000 | Metrics + logs dashboards | — |
+| `loki` | `grafana/loki:${IMAGE_LOKI}` | 3100 | Log aggregation | — |
 
 ### Service Credentials
 
@@ -567,15 +569,17 @@ All external services run as containers via Podman Compose (`collections/compose
 
 **Network:** `spring-lessons` (bridge)
 
-**Service dependency order:**
+**Service dependency order** (→ means "waits for"):
 
 ```text
-kafka ◄── (independent)
-keycloak ◄── (independent)
-otelcol ◄── jaeger
-prometheus ◄── otelcol
-grafana ◄── prometheus, jaeger, loki, springdb
+app → springdb (healthy), kafka (healthy), keycloak (healthy)
+app → jaeger, loki, prometheus, grafana, otelcol, wiremock, mailpit (started)
+prometheus → otelcol (started)
+grafana → prometheus, jaeger, loki, springdb (started)
+otelcol → jaeger (started)
 ```
+
+Services with a health check (`springdb`, `kafka`, `keycloak`) use `condition: service_healthy` in the app's `depends_on`; all others use `condition: service_started`.
 
 ### Application Container
 

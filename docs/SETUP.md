@@ -69,6 +69,7 @@ Start all external services (database, Kafka, Keycloak, observability stack):
 ```bash
 podman compose \
   --project spring-lessons \
+  --env-file ./collections/.env \
   --file ./collections/compose-env.yaml \
   up --force-recreate --remove-orphans --detach
 ```
@@ -78,6 +79,7 @@ podman compose \
 ```powershell
 podman compose `
   --project spring-lessons `
+  --env-file ./collections/.env `
   --file ./collections/compose-env.yaml `
   up --force-recreate --remove-orphans --detach
 ```
@@ -225,6 +227,7 @@ The VS Code task `podman-build-image` handles this automatically (runs `mvn clea
 ```bash
 podman compose \
   --project spring-lessons \
+  --env-file ./collections/.env \
   --file ./collections/compose-env.yaml \
   --file ./collections/compose-app.yaml \
   up --force-recreate --remove-orphans --detach
@@ -235,6 +238,7 @@ podman compose \
 ```powershell
 podman compose `
   --project spring-lessons `
+  --env-file ./collections/.env `
   --file ./collections/compose-env.yaml `
   --file ./collections/compose-app.yaml `
   up --force-recreate --remove-orphans --detach
@@ -323,6 +327,7 @@ mvn versions:display-plugin-updates --file pom.xml --settings settings.xml
 ```bash
 podman compose \
   --project spring-lessons \
+  --env-file ./collections/.env \
   --file ./collections/compose-keycloak-export.yaml \
   up --abort-on-container-exit --remove-orphans
 ```
@@ -332,6 +337,7 @@ podman compose \
 ```powershell
 podman compose `
   --project spring-lessons `
+  --env-file ./collections/.env `
   --file ./collections/compose-keycloak-export.yaml `
   up --abort-on-container-exit --remove-orphans
 ```

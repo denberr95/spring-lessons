@@ -12,6 +12,7 @@ Invoke a skill by typing `/skill-name` in the Claude Code prompt.
 | --- | --- | --- |
 | `/commit-conventional` | Creates a git commit following Conventional Commits rules enforced by `.pre-commit-config.yaml` | [`.claude/skills/commit-conventional/SKILL.md`](../.claude/skills/commit-conventional/SKILL.md) |
 | `/document-code-md` | Analyses the source code and keeps all Markdown documentation files up to date | [`.claude/skills/document-code-md/SKILL.md`](../.claude/skills/document-code-md/SKILL.md) |
+| `/update-docker-images` | Fetches the latest stable tag for every pinned image in `collections/.env`, updates the file and any hardcoded `FROM` in Containerfiles, and optionally validates the compose stack starts correctly | [`.claude/skills/update-docker-images/SKILL.md`](../.claude/skills/update-docker-images/SKILL.md) |
 | `/update-maven-deps` | Scans Maven dependencies and plugins for available stable version upgrades, without modifying any file | [`.claude/skills/update-maven-deps/SKILL.md`](../.claude/skills/update-maven-deps/SKILL.md) |
 
 ---
