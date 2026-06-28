@@ -1,11 +1,11 @@
 ---
 services:
   keycloak-export:
-    image: quay.io/keycloak/keycloak:latest
+    image: quay.io/keycloak/keycloak:${IMAGE_KEYCLOAK}
     restart: "no"
     hostname: keycloak-export
     environment:
-      - TZ=Europe/Rome
+      - TZ=${TZ}
     command:
       - export
       - --dir

@@ -1,29 +1,35 @@
 ---
 services:
   springdb:
-    image: postgres:latest
+    image: postgres:${IMAGE_POSTGRES}
     restart: "no"
     hostname: springdb
     environment:
-      - POSTGRES_USER=admin
-      - POSTGRES_PASSWORD=adminpwd
-      - POSTGRES_DB=spring
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_HOST_AUTH_METHOD=trust
-      - TZ=Europe/Rome
+      - TZ=${TZ}
     volumes:
       - ./postgresql/sql:/docker-entrypoint-initdb.d/
     ports:
       - "5432:5432"  # serve database
     networks:
       - spring-lessons
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER}", "-d", "${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
   jaeger:
-    image: jaegertracing/jaeger:latest
+    image: jaegertracing/jaeger:${IMAGE_JAEGER}
     restart: "no"
     hostname: jaeger
     environment:
       - LOG_LEVEL=debug
-      - TZ=Europe/Rome
+      - TZ=${TZ}
     ports:
       - "6831"   # accept jaeger.thrift over Thrift-compact protocol
       - "6832"   # accept jaeger.thrift over Thrift-binary protocol
@@ -37,11 +43,11 @@ services:
       - spring-lessons
 
   loki:
-    image: grafana/loki:main
+    image: grafana/loki:${IMAGE_LOKI}
     restart: "no"
     hostname: loki
     environment:
-      - TZ=Europe/Rome
+      - TZ=${TZ}
     command:
       - -config.file=/etc/loki/local-config.yaml
     volumes:
@@ -53,11 +59,11 @@ services:
       - spring-lessons
 
   prometheus:
-    image: prom/prometheus:main
+    image: prom/prometheus:${IMAGE_PROMETHEUS}
     restart: "no"
     hostname: prometheus
     environment:
-      - TZ=Europe/Rome
+      - TZ=${TZ}
     command:
       - --config.file=/etc/prometheus/prometheus.yml
     volumes:
@@ -71,11 +77,11 @@ services:
         condition: service_started
 
   grafana:
-    image: grafana/grafana-enterprise:main
+    image: grafana/grafana-enterprise:${IMAGE_GRAFANA}
     restart: "no"
     hostname: grafana
     environment:
-      - TZ=Europe/Rome
+      - TZ=${TZ}
     volumes:
       - ./grafana/grafana.ini:/etc/grafana/grafana.ini
       - ./grafana/provisioning/:/etc/grafana/provisioning/
@@ -94,11 +100,11 @@ services:
         condition: service_started
 
   otelcol:
-    image: otel/opentelemetry-collector:latest
+    image: otel/opentelemetry-collector:${IMAGE_OTELCOL}
     restart: "no"
     hostname: otelcol
     environment:
-      - TZ=Europe/Rome
+      - TZ=${TZ}
     command:
       - --config=/etc/otelcol-config.yml
     volumes:
@@ -118,11 +124,11 @@ services:
       - spring-lessons
 
   kafka:
-    image: apache/kafka:latest
+    image: apache/kafka:${IMAGE_KAFKA}
     restart: "no"
     hostname: kafka
     environment:
-      - TZ=Europe/Rome
+      - TZ=${TZ}
       - KAFKA_NODE_ID=0
       - KAFKA_LISTENERS=PLAINTEXT://:9092,PLAINTEXT_HOST://:29092,CONTROLLER://:9093
       - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
@@ -140,14 +146,22 @@ services:
       - "29092:29092"  # serve broker externally
     networks:
       - spring-lessons
+    healthcheck:
+      test: ["CMD", "/opt/kafka/bin/kafka-broker-api-versions.sh", "--bootstrap-server", "localhost:9092"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
 
   keycloak:
-    image: quay.io/keycloak/keycloak:latest
+    image: quay.io/keycloak/keycloak:${IMAGE_KEYCLOAK}
     restart: "no"
     hostname: keycloak
     environment:
-      - TZ=Europe/Rome
+      - TZ=${TZ}
       - JAVA_OPTS_KC_HEAP=-XX:MaxRAMPercentage=70 -XX:MinRAMPercentage=70 -XX:InitialRAMPercentage=50
+    # start-dev: disables TLS, caching and persistent sessions — intentional for local development only.
+    # For any other environment use `start` with proper hostname and TLS configuration.
     command:
       - start-dev
       - --import-realm
@@ -158,6 +172,12 @@ services:
       - "8080:8080"
     networks:
       - spring-lessons
+    healthcheck:
+      test: ["CMD-SHELL", "exec 3<>/dev/tcp/localhost/8080 && echo -e 'GET /realms/master HTTP/1.0\\r\\nHost: localhost\\r\\n\\r\\n' >&3 && cat <&3 | grep -q '200 OK'"]
+      interval: 15s
+      timeout: 10s
+      retries: 8
+      start_period: 30s
 
   wiremock:
     build:
@@ -167,7 +187,7 @@ services:
     restart: "no"
     hostname: wiremock
     environment:
-      - TZ=Europe/Rome
+      - TZ=${TZ}
     entrypoint:
       - "/docker-entrypoint.sh"
       - --global-response-templating
@@ -184,11 +204,11 @@ services:
       - spring-lessons
 
   mailpit:
-    image: axllent/mailpit
+    image: axllent/mailpit:${IMAGE_MAILPIT}
     restart: "no"
     hostname: mailpit
     environment:
-      - TZ=Europe/Rome
+      - TZ=${TZ}
       - MP_MAX_MESSAGES=5000
       - MP_DATABASE=/data/mailpit.db
       - MP_SMTP_AUTH_ALLOW_INSECURE=false

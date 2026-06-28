@@ -7,13 +7,13 @@ services:
     restart: "no"
     hostname: spring-lessons
     environment:
-      - TZ=Europe/Rome
-      - DEBUG_PORT=5500
+      - TZ=${TZ}
+      - DEBUG_PORT=${DEBUG_PORT}
       - JAVA_OTHER_OPTIONS=-Dspring.profiles.active=runtime
       - IMPORT_SSL_CERTIFICATE=1
       - REMOTE_SERVICES=google.com:443
       - TRUSTORE_PASSWORD=mypassword
-      - RUN_MODE=debug
+      - RUN_MODE=${RUN_MODE}
       - SPRING_APPLICATION_NAME=spring-lessons
       - SPRING_MAIN_BANNER_MODE=off
       - SPRING_MAIN_LOG_STARTUP_INFO=true
@@ -53,9 +53,9 @@ services:
       - MANAGEMENT_OPENTELEMETRY_LOGGING_EXPORT_OTLP_ENDPOINT=http://otelcol:4318/v1/logs
       - MANAGEMENT_TRACING_SAMPLING_PROBABILITY=1.0
       - MANAGEMENT_METRICS_TAGS_ENV=podman
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://springdb:5432/spring
-      - SPRING_DATASOURCE_USERNAME=admin
-      - SPRING_DATASOURCE_PASSWORD=adminpwd
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://springdb:5432/${POSTGRES_DB}
+      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER}
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
       - SPRING_JPA_SHOW_SQL=false
       - SPRING_JPA_OPEN_IN_VIEW=false
       - SPRING_JPA_HIBERNATE_DDL_AUTO=validate
@@ -97,8 +97,8 @@ services:
       - SPRING_MAIL_HOST=mailpit
       - SPRING_MAIL_PORT=1025
       - SPRING_MAIL_TEST_CONNECTION=true
-      - SPRING_MAIL_USERNAME=grafana_sa
-      - SPRING_MAIL_PASSWORD=springapp_password
+      - SPRING_MAIL_USERNAME=${SPRING_MAIL_USERNAME}
+      - SPRING_MAIL_PASSWORD=${SPRING_MAIL_PASSWORD}
       - SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH=true
       - SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE=true
       - SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_REQUIRED=false
@@ -144,7 +144,7 @@ services:
       - spring-lessons
     depends_on:
       springdb:
-        condition: service_started
+        condition: service_healthy
       jaeger:
         condition: service_started
       loki:
@@ -156,9 +156,9 @@ services:
       otelcol:
         condition: service_started
       kafka:
-        condition: service_started
+        condition: service_healthy
       keycloak:
-        condition: service_started
+        condition: service_healthy
       wiremock:
         condition: service_started
       mailpit:
