@@ -7,6 +7,7 @@
             "request": "launch",
             "mainClass": "com.personal.springlessons.SpringLessonsApplication",
             "projectName": "spring-lessons",
+            "envFile": "${workspaceFolder}/collections/.env",
             "preLaunchTask": "start-podman-env",
             "postDebugTask": "stop-podman-env",
             "linux": {
