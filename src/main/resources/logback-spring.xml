@@ -74,7 +74,6 @@
     <root level="${LOG_LEVEL_ROOT}">
       <appender-ref ref="CONSOLE-JSON" />
       <appender-ref ref="OTEL" />
-      <appender-ref ref="FILE-ROLLING" />
     </root>
   </springProfile>
 

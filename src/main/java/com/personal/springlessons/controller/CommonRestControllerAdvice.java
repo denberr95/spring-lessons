@@ -159,7 +159,9 @@ public class CommonRestControllerAdvice {
         new NotReadableBodyRequestAdditionalDetailsDTO();
     result.setCategory(Methods.retrieveDomainCategory(webRequest.getDescription(false)));
     result.setMessage("Body request not processable !");
-    details.setException(exception.getRootCause().getLocalizedMessage());
+    Throwable rootCause = exception.getRootCause();
+    details.setException(
+        rootCause != null ? rootCause.getLocalizedMessage() : exception.getLocalizedMessage());
     result.setAdditionalData(details);
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
   }

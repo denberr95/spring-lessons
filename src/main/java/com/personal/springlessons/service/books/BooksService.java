@@ -169,7 +169,7 @@ public class BooksService {
       String version = Methods.getEtag(ifMatch);
       bookEntity = this.bookMapper.update(bookDTO, channel, bookEntity, version);
       bookEntity = this.bookRepository.saveAndFlush(bookEntity);
-    } catch (OptimisticLockingFailureException | OptimisticLockException _) {
+    } catch (NumberFormatException | OptimisticLockingFailureException | OptimisticLockException _) {
       throw new ConcurrentUpdateException(id, ifMatch);
     }
 
