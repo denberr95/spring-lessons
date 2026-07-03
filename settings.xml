@@ -8,19 +8,6 @@
             </activation>
             <repositories>
                 <repository>
-                    <id>redgate-release</id>
-                    <url>https://download.red-gate.com/maven/release</url>
-                    <layout>default</layout>
-                    <snapshots>
-                        <enabled>false</enabled>
-                        <updatePolicy>daily</updatePolicy>
-                    </snapshots>
-                    <releases>
-                        <enabled>true</enabled>
-                        <updatePolicy>always</updatePolicy>
-                    </releases>
-                </repository>
-                <repository>
                     <id>spring-snapshots</id>
                     <url>https://repo.spring.io/snapshot</url>
                     <layout>default</layout>
@@ -30,7 +17,7 @@
                     </snapshots>
                     <releases>
                         <enabled>true</enabled>
-                        <updatePolicy>always</updatePolicy>
+                        <updatePolicy>daily</updatePolicy>
                     </releases>
                 </repository>
                 <repository>
@@ -43,7 +30,7 @@
                     </snapshots>
                     <releases>
                         <enabled>true</enabled>
-                        <updatePolicy>always</updatePolicy>
+                        <updatePolicy>daily</updatePolicy>
                     </releases>
                 </repository>
                 <repository>
@@ -56,38 +43,12 @@
                     </snapshots>
                     <releases>
                         <enabled>true</enabled>
-                        <updatePolicy>always</updatePolicy>
-                    </releases>
-                </repository>
-                <repository>
-                    <id>jboss-public</id>
-                    <url>https://repository.jboss.org/nexus/content/groups/public/</url>
-                    <layout>default</layout>
-                    <snapshots>
-                        <enabled>false</enabled>
                         <updatePolicy>daily</updatePolicy>
-                    </snapshots>
-                    <releases>
-                        <enabled>true</enabled>
-                        <updatePolicy>always</updatePolicy>
                     </releases>
                 </repository>
             </repositories>
             <pluginRepositories>
                 <pluginRepository>
-                    <id>jboss-public</id>
-                    <url>https://repository.jboss.org/nexus/content/groups/public/</url>
-                    <layout>default</layout>
-                    <snapshots>
-                        <enabled>false</enabled>
-                        <updatePolicy>daily</updatePolicy>
-                    </snapshots>
-                    <releases>
-                        <enabled>true</enabled>
-                        <updatePolicy>always</updatePolicy>
-                    </releases>
-                </pluginRepository>
-                <pluginRepository>
                     <id>red-hat-enterprise</id>
                     <url>https://maven.repository.redhat.com/ga/</url>
                     <layout>default</layout>
@@ -97,7 +58,7 @@
                     </snapshots>
                     <releases>
                         <enabled>true</enabled>
-                        <updatePolicy>always</updatePolicy>
+                        <updatePolicy>daily</updatePolicy>
                     </releases>
                 </pluginRepository>
                 <pluginRepository>
@@ -110,7 +71,7 @@
                     </snapshots>
                     <releases>
                         <enabled>true</enabled>
-                        <updatePolicy>always</updatePolicy>
+                        <updatePolicy>daily</updatePolicy>
                     </releases>
                 </pluginRepository>
                 <pluginRepository>
@@ -123,20 +84,7 @@
                     </snapshots>
                     <releases>
                         <enabled>true</enabled>
-                        <updatePolicy>always</updatePolicy>
-                    </releases>
-                </pluginRepository>
-                <pluginRepository>
-                    <id>redgate-release</id>
-                    <url>https://download.red-gate.com/maven/release</url>
-                    <layout>default</layout>
-                    <snapshots>
-                        <enabled>false</enabled>
                         <updatePolicy>daily</updatePolicy>
-                    </snapshots>
-                    <releases>
-                        <enabled>true</enabled>
-                        <updatePolicy>always</updatePolicy>
                     </releases>
                 </pluginRepository>
             </pluginRepositories>

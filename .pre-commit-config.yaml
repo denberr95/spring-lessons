@@ -55,7 +55,7 @@ repos:
       stages: [pre-commit]
     - id: spotless-java
       name: Format Java code with Spotless
-      entry: mvn spotless:apply --file pom.xml --settings settings.xml
+      entry: mvn spotless:check --file pom.xml --settings settings.xml
       language: system
       pass_filenames: false
       stages: [pre-commit]
@@ -83,11 +83,6 @@ repos:
  - repo: https://github.com/sqlfluff/sqlfluff
    rev: 4.2.2
    hooks:
-    - id: sqlfluff-lint
-      name: Lint SQL files
-      args:
-       - --config=.sqlfluff.toml
-       - --verbose
     - id: sqlfluff-fix
       name: Format SQL files
       args:
