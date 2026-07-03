@@ -25,8 +25,6 @@ JAVA_OPTS=(
     -XX:+UnlockDiagnosticVMOptions
     -XX:+UnlockExperimentalVMOptions
     -XshowSettings:vm
-    "-Djavax.net.ssl.trustStore=$TRUSTSTORE_FILE"
-    "-Djavax.net.ssl.trustStorePassword=$TRUSTSTORE_PASSWORD"
 )
 JAVA_CMD=()
 JAVA_DEBUG_OPTS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:$DEBUG_PORT"
@@ -64,6 +62,10 @@ print_java_version() {
 build_java_cmd() {
     JAVA_CMD=("$JAVA_HOME/bin/java" "${JAVA_OPTS[@]}")
     [ "$RUN_MODE" = "debug" ] && JAVA_CMD+=("$JAVA_DEBUG_OPTS")
+    if [ "${IMPORT_SSL_CERTIFICATE:-0}" != "0" ]; then
+        JAVA_CMD+=("-Djavax.net.ssl.trustStore=$TRUSTSTORE_FILE")
+        JAVA_CMD+=("-Djavax.net.ssl.trustStorePassword=$TRUSTSTORE_PASSWORD")
+    fi
     if [ -n "$JAVA_OTHER_OPTIONS" ]; then
         read -ra extra_opts <<< "$JAVA_OTHER_OPTIONS"
         JAVA_CMD+=("${extra_opts[@]}")
