@@ -10,6 +10,8 @@ RUN apk add --no-cache openssl bash && \
 # Set working directory
 WORKDIR /app
 
+RUN chown appuser:appgroup /app
+
 # Copy application and entrypoint
 COPY --chown=appuser:appgroup bin/app.jar app.jar
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
