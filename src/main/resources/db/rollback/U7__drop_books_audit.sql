@@ -1,1 +1,1 @@
-DROP TABLE IF EXISTS public.books_audit;
+DROP TABLE IF EXISTS history.books_audit;

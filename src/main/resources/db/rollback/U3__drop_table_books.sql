@@ -1,1 +1,1 @@
-DROP TABLE IF EXISTS spring_app.spring_app;
+DROP TABLE IF EXISTS spring_app.books;
