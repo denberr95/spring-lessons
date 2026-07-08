@@ -15,6 +15,7 @@ import com.personal.springlessons.model.dto.response.InvalidFileTypeResponseDTO;
 import com.personal.springlessons.model.dto.response.InvalidUUIDResponseDTO;
 import com.personal.springlessons.model.dto.response.MissingHttpRequestHeaderResponseDTO;
 import com.personal.springlessons.model.dto.response.NotReadableBodyRequestResponseDTO;
+import com.personal.springlessons.model.dto.response.PreconditionFailedResponseDTO;
 import com.personal.springlessons.model.dto.response.ValidationRequestErrorResponseDTO;
 import com.personal.springlessons.model.lov.Channel;
 
@@ -117,6 +118,8 @@ public interface IBooksRestController {
       content = {@Content(schema = @Schema(implementation = BookNotFoundResponseDTO.class))})
   @ApiResponse(responseCode = "409", description = "Conflict",
       content = {@Content(schema = @Schema(implementation = ConcurrentUpdateResponseDTO.class))})
+  @ApiResponse(responseCode = "412", description = "Precondition Failed",
+      content = {@Content(schema = @Schema(implementation = PreconditionFailedResponseDTO.class))})
   @ApiResponse(responseCode = "500", description = "Internal Server Error",
       content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
   ResponseEntity<Void> delete(@PathVariable final String id,
@@ -141,6 +144,8 @@ public interface IBooksRestController {
   @ApiResponse(responseCode = "409", description = "Conflict",
       content = {@Content(schema = @Schema(
           oneOf = {ConcurrentUpdateResponseDTO.class, DuplicatedBookResponseDTO.class}))})
+  @ApiResponse(responseCode = "412", description = "Precondition Failed",
+      content = {@Content(schema = @Schema(implementation = PreconditionFailedResponseDTO.class))})
   @ApiResponse(responseCode = "500", description = "Internal Server Error",
       content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
   ResponseEntity<BookDTO> update(@PathVariable final String id,

@@ -8,9 +8,12 @@ import jakarta.validation.ConstraintViolationException;
 
 import com.personal.springlessons.exception.ConcurrentUpdateException;
 import com.personal.springlessons.exception.InvalidUUIDException;
+import com.personal.springlessons.exception.PreconditionFailedException;
 import com.personal.springlessons.exception.SpringLessonsApplicationException;
 import com.personal.springlessons.model.dto.response.ConcurrentUpdateAdditionalDetailsDTO;
 import com.personal.springlessons.model.dto.response.ConcurrentUpdateResponseDTO;
+import com.personal.springlessons.model.dto.response.PreconditionFailedAdditionalDetailsDTO;
+import com.personal.springlessons.model.dto.response.PreconditionFailedResponseDTO;
 import com.personal.springlessons.model.dto.response.GenericErrorAdditionalDetailsDTO;
 import com.personal.springlessons.model.dto.response.GenericErrorResponseDTO;
 import com.personal.springlessons.model.dto.response.InvalidArgumentTypeAdditionalDetailsDTO;
@@ -178,5 +181,19 @@ public class CommonRestControllerAdvice {
     details.setVersion(exception.getVersion());
     result.setAdditionalData(details);
     return ResponseEntity.status(HttpStatus.CONFLICT).body(result);
+  }
+
+  @ExceptionHandler(value = {PreconditionFailedException.class})
+  public ResponseEntity<PreconditionFailedResponseDTO> handlePreconditionFailedException(
+      PreconditionFailedException exception, WebRequest webRequest) {
+    log.error(exception.getMessage(), exception);
+    PreconditionFailedResponseDTO result = new PreconditionFailedResponseDTO();
+    PreconditionFailedAdditionalDetailsDTO details = new PreconditionFailedAdditionalDetailsDTO();
+    result.setCategory(Methods.retrieveDomainCategory(webRequest.getDescription(false)));
+    result.setMessage("The If-Match precondition does not match the current resource version");
+    details.setId(exception.getId());
+    details.setVersion(exception.getVersion());
+    result.setAdditionalData(details);
+    return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).body(result);
   }
 }
