@@ -7,6 +7,7 @@ import java.util.UUID;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -62,7 +63,7 @@ public class ItemsEntity {
   private String barcode;
 
   @ToString.Exclude
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "order_items_id", referencedColumnName = "id", nullable = false,
       foreignKey = @ForeignKey(name = "fk_order_items_id"))
   private OrderItemsEntity orderItemsEntity;
