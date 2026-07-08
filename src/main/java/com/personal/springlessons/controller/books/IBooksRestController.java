@@ -13,7 +13,9 @@ import com.personal.springlessons.model.dto.response.InvalidArgumentTypeResponse
 import com.personal.springlessons.model.dto.response.InvalidCSVContentResponseDTO;
 import com.personal.springlessons.model.dto.response.InvalidFileTypeResponseDTO;
 import com.personal.springlessons.model.dto.response.InvalidUUIDResponseDTO;
+import com.personal.springlessons.model.dto.response.MaxUploadSizeResponseDTO;
 import com.personal.springlessons.model.dto.response.MissingHttpRequestHeaderResponseDTO;
+import com.personal.springlessons.model.dto.response.MissingRequestPartResponseDTO;
 import com.personal.springlessons.model.dto.response.NotReadableBodyRequestResponseDTO;
 import com.personal.springlessons.model.dto.response.PreconditionFailedResponseDTO;
 import com.personal.springlessons.model.dto.response.ValidationRequestErrorResponseDTO;
@@ -176,12 +178,14 @@ public interface IBooksRestController {
   @ApiResponse(responseCode = "204", description = "No Content",
       content = {@Content(schema = @Schema(implementation = Void.class))})
   @ApiResponse(responseCode = "400", description = "Bad Request",
-      content = {@Content(schema = @Schema(
-          oneOf = {InvalidFileTypeResponseDTO.class, InvalidCSVContentResponseDTO.class}))})
+      content = {@Content(schema = @Schema(oneOf = {InvalidFileTypeResponseDTO.class,
+          InvalidCSVContentResponseDTO.class, MissingRequestPartResponseDTO.class}))})
   @ApiResponse(responseCode = "401", description = "Unauthorized",
       content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
   @ApiResponse(responseCode = "403", description = "Forbidden",
       content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
+  @ApiResponse(responseCode = "413", description = "Payload Too Large",
+      content = {@Content(schema = @Schema(implementation = MaxUploadSizeResponseDTO.class))})
   @ApiResponse(responseCode = "500", description = "Internal Server Error",
       content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
   ResponseEntity<Void> upload(@RequestHeader final Channel channel,

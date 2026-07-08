@@ -20,6 +20,10 @@ import com.personal.springlessons.model.dto.response.InvalidArgumentTypeAddition
 import com.personal.springlessons.model.dto.response.InvalidArgumentTypeResponseDTO;
 import com.personal.springlessons.model.dto.response.InvalidUUIDAdditionalDetailsDTO;
 import com.personal.springlessons.model.dto.response.InvalidUUIDResponseDTO;
+import com.personal.springlessons.model.dto.response.MaxUploadSizeAdditionalDetailsDTO;
+import com.personal.springlessons.model.dto.response.MaxUploadSizeResponseDTO;
+import com.personal.springlessons.model.dto.response.MissingRequestPartAdditionalDetailsDTO;
+import com.personal.springlessons.model.dto.response.MissingRequestPartResponseDTO;
 import com.personal.springlessons.model.dto.response.MissingHttpRequestHeaderAdditionalDetailsDTO;
 import com.personal.springlessons.model.dto.response.MissingHttpRequestHeaderResponseDTO;
 import com.personal.springlessons.model.dto.response.NotReadableBodyRequestAdditionalDetailsDTO;
@@ -40,6 +44,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
 @RestControllerAdvice
 public class CommonRestControllerAdvice {
@@ -195,5 +201,32 @@ public class CommonRestControllerAdvice {
     details.setVersion(exception.getVersion());
     result.setAdditionalData(details);
     return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).body(result);
+  }
+
+  @ExceptionHandler(value = {MissingServletRequestPartException.class})
+  public ResponseEntity<MissingRequestPartResponseDTO> handleMissingServletRequestPartException(
+      MissingServletRequestPartException exception, WebRequest webRequest) {
+    log.error(exception.getMessage(), exception);
+    MissingRequestPartResponseDTO result = new MissingRequestPartResponseDTO();
+    MissingRequestPartAdditionalDetailsDTO details = new MissingRequestPartAdditionalDetailsDTO();
+    result.setCategory(Methods.retrieveDomainCategory(webRequest.getDescription(false)));
+    result.setMessage("Missing multipart request part !");
+    details.setPart(exception.getRequestPartName());
+    result.setAdditionalData(details);
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
+  }
+
+  @ExceptionHandler(value = {MaxUploadSizeExceededException.class})
+  public ResponseEntity<MaxUploadSizeResponseDTO> handleMaxUploadSizeExceededException(
+      MaxUploadSizeExceededException exception, WebRequest webRequest) {
+    log.error(exception.getMessage(), exception);
+    MaxUploadSizeResponseDTO result = new MaxUploadSizeResponseDTO();
+    MaxUploadSizeAdditionalDetailsDTO details = new MaxUploadSizeAdditionalDetailsDTO();
+    result.setCategory(Methods.retrieveDomainCategory(webRequest.getDescription(false)));
+    result.setMessage("Uploaded file exceeds the maximum allowed size !");
+    long maxUploadSize = exception.getMaxUploadSize();
+    details.setMaxUploadSize(maxUploadSize >= 0 ? String.valueOf(maxUploadSize) : null);
+    result.setAdditionalData(details);
+    return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE).body(result);
   }
 }
