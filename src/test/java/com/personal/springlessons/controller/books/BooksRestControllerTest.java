@@ -268,6 +268,26 @@ class BooksRestControllerTest {
   }
 
   @Test
+  void givenStaleEtag_whenDelete_thenReturnPreconditionFailed() {
+    String id = this.bookService.getAll().getBookDTOs().get(0).id();
+
+    this.restTestClient.delete().uri(String.format(this.resourceUrl, id)).headers(headers -> {
+      this.retrieveHttpHeaders(this.validToken).accept(headers);
+      headers.add(HttpHeaders.IF_MATCH, "\"999\"");
+    }).exchange().expectStatus().isEqualTo(412);
+  }
+
+  @Test
+  void givenWildcardIfMatch_whenDelete_thenBookIsDeleted() {
+    String id = this.bookService.getAll().getBookDTOs().get(0).id();
+
+    this.restTestClient.delete().uri(String.format(this.resourceUrl, id)).headers(headers -> {
+      this.retrieveHttpHeaders(this.validToken).accept(headers);
+      headers.add(HttpHeaders.IF_MATCH, "*");
+    }).exchange().expectStatus().isNoContent();
+  }
+
+  @Test
   void givenInvalidId_whenDelete_thenReturnInvalidUUID() {
     this.restTestClient.delete().uri(String.format(this.resourceUrl, "not-a-uuid"))
         .headers(headers -> {
@@ -288,6 +308,32 @@ class BooksRestControllerTest {
         .contentType(MediaType.APPLICATION_JSON).headers(headers -> {
           this.retrieveHttpHeaders(this.validToken).accept(headers);
           headers.add(HttpHeaders.IF_MATCH, etag);
+        }).body(updated).exchange().expectStatus().isOk();
+  }
+
+  @Test
+  void givenStaleEtag_whenUpdate_thenReturnPreconditionFailed() {
+    String id = this.bookService.getAll().getBookDTOs().get(0).id();
+    BookDTO updated = new BookDTO(null, "Stale Etag Update", 210,
+        LocalDate.of(2025, Month.FEBRUARY, 1), Genre.FANTASY);
+
+    this.restTestClient.put().uri(String.format(this.resourceUrl, id))
+        .contentType(MediaType.APPLICATION_JSON).headers(headers -> {
+          this.retrieveHttpHeaders(this.validToken).accept(headers);
+          headers.add(HttpHeaders.IF_MATCH, "\"999\"");
+        }).body(updated).exchange().expectStatus().isEqualTo(412);
+  }
+
+  @Test
+  void givenWildcardIfMatch_whenUpdate_thenBookIsUpdated() {
+    String id = this.bookService.getAll().getBookDTOs().get(0).id();
+    BookDTO updated = new BookDTO(null, "Wildcard Update", 220,
+        LocalDate.of(2025, Month.MARCH, 1), Genre.FANTASY);
+
+    this.restTestClient.put().uri(String.format(this.resourceUrl, id))
+        .contentType(MediaType.APPLICATION_JSON).headers(headers -> {
+          this.retrieveHttpHeaders(this.validToken).accept(headers);
+          headers.add(HttpHeaders.IF_MATCH, "*");
         }).body(updated).exchange().expectStatus().isOk();
   }
 

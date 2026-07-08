@@ -16,6 +16,7 @@ import jakarta.validation.Validator;
 import com.personal.springlessons.component.mapper.IBooksMapper;
 import com.personal.springlessons.config.AppPropertiesConfig;
 import com.personal.springlessons.exception.ConcurrentUpdateException;
+import com.personal.springlessons.exception.PreconditionFailedException;
 import com.personal.springlessons.exception.SpringLessonsApplicationException;
 import com.personal.springlessons.model.dto.BookDTO;
 import com.personal.springlessons.model.dto.platformhistory.GetBookHistoryRequest;
@@ -91,6 +92,38 @@ class BooksServiceUnitTest {
 
     assertThrows(ConcurrentUpdateException.class,
         () -> booksService.update(idValue, bookDTO, Channel.POSTMAN, "\"0\""));
+  }
+
+  @Test
+  void givenStaleEtag_whenDelete_thenThrowPreconditionFailedException() {
+    UUID id = UUID.randomUUID();
+    BooksEntity entity = new BooksEntity();
+    entity.setId(id);
+    entity.setVersion(0L);
+
+    String idValue = id.toString();
+    when(booksRepository.findById(id)).thenReturn(Optional.of(entity));
+
+    assertThrows(PreconditionFailedException.class,
+        () -> booksService.delete(idValue, "\"999\""));
+  }
+
+  @Test
+  void givenStaleEtag_whenUpdate_thenThrowPreconditionFailedException() {
+    UUID id = UUID.randomUUID();
+    BooksEntity entity = new BooksEntity();
+    entity.setId(id);
+    entity.setVersion(0L);
+
+    BookDTO bookDTO = new BookDTO(null, "New Title", 100, LocalDate.now(), Genre.NOIR);
+
+    String idValue = id.toString();
+    when(booksRepository.findById(id)).thenReturn(Optional.of(entity));
+    when(booksRepository.findByNameAndPublicationDateAndNumberOfPages(any(), any(), any()))
+        .thenReturn(Optional.empty());
+
+    assertThrows(PreconditionFailedException.class,
+        () -> booksService.update(idValue, bookDTO, Channel.POSTMAN, "\"999\""));
   }
 
   @Test
