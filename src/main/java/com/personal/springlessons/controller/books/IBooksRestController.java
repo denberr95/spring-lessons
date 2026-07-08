@@ -54,6 +54,10 @@ public interface IBooksRestController {
       content = {@Content(array = @ArraySchema(schema = @Schema(implementation = BookDTO.class)))})
   @ApiResponse(responseCode = "204", description = "No Content",
       content = {@Content(schema = @Schema(implementation = Void.class))})
+  @ApiResponse(responseCode = "401", description = "Unauthorized",
+      content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
+  @ApiResponse(responseCode = "403", description = "Forbidden",
+      content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
   @ApiResponse(responseCode = "500", description = "Internal Server Error",
       content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
   ResponseEntity<List<BookDTO>> getAll();
@@ -65,6 +69,10 @@ public interface IBooksRestController {
       content = {@Content(schema = @Schema(implementation = BookDTO.class))})
   @ApiResponse(responseCode = "400", description = "Bad Request",
       content = {@Content(schema = @Schema(implementation = InvalidUUIDResponseDTO.class))})
+  @ApiResponse(responseCode = "401", description = "Unauthorized",
+      content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
+  @ApiResponse(responseCode = "403", description = "Forbidden",
+      content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
   @ApiResponse(responseCode = "404", description = "Not Found",
       content = {@Content(schema = @Schema(implementation = BookNotFoundResponseDTO.class))})
   @ApiResponse(responseCode = "500", description = "Internal Server Error",
@@ -81,6 +89,10 @@ public interface IBooksRestController {
       content = {@Content(schema = @Schema(oneOf = {InvalidUUIDResponseDTO.class,
           MissingHttpRequestHeaderResponseDTO.class, InvalidArgumentTypeResponseDTO.class,
           ValidationRequestErrorResponseDTO.class, NotReadableBodyRequestResponseDTO.class}))})
+  @ApiResponse(responseCode = "401", description = "Unauthorized",
+      content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
+  @ApiResponse(responseCode = "403", description = "Forbidden",
+      content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
   @ApiResponse(responseCode = "409", description = "Conflict",
       content = {@Content(schema = @Schema(implementation = DuplicatedBookResponseDTO.class))})
   @ApiResponse(responseCode = "500", description = "Internal Server Error",
@@ -97,6 +109,10 @@ public interface IBooksRestController {
       content = {@Content(schema = @Schema(oneOf = {InvalidUUIDResponseDTO.class,
           MissingHttpRequestHeaderResponseDTO.class, InvalidArgumentTypeResponseDTO.class,
           ValidationRequestErrorResponseDTO.class, NotReadableBodyRequestResponseDTO.class}))})
+  @ApiResponse(responseCode = "401", description = "Unauthorized",
+      content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
+  @ApiResponse(responseCode = "403", description = "Forbidden",
+      content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
   @ApiResponse(responseCode = "404", description = "Not Found",
       content = {@Content(schema = @Schema(implementation = BookNotFoundResponseDTO.class))})
   @ApiResponse(responseCode = "409", description = "Conflict",
@@ -116,6 +132,10 @@ public interface IBooksRestController {
       content = {@Content(schema = @Schema(oneOf = {InvalidUUIDResponseDTO.class,
           MissingHttpRequestHeaderResponseDTO.class, InvalidArgumentTypeResponseDTO.class,
           ValidationRequestErrorResponseDTO.class, NotReadableBodyRequestResponseDTO.class}))})
+  @ApiResponse(responseCode = "401", description = "Unauthorized",
+      content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
+  @ApiResponse(responseCode = "403", description = "Forbidden",
+      content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
   @ApiResponse(responseCode = "404", description = "Not Found",
       content = {@Content(schema = @Schema(implementation = BookNotFoundResponseDTO.class))})
   @ApiResponse(responseCode = "409", description = "Conflict",
@@ -133,6 +153,12 @@ public interface IBooksRestController {
   @ApiResponse(responseCode = "200", description = "OK",
       content = {@Content(schema = @Schema(implementation = byte.class),
           mediaType = MediaType.APPLICATION_OCTET_STREAM_VALUE)})
+  @ApiResponse(responseCode = "401", description = "Unauthorized",
+      content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class),
+          mediaType = MediaType.APPLICATION_JSON_VALUE)})
+  @ApiResponse(responseCode = "403", description = "Forbidden",
+      content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class),
+          mediaType = MediaType.APPLICATION_JSON_VALUE)})
   @ApiResponse(responseCode = "500", description = "Internal Server Error",
       content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class),
           mediaType = MediaType.APPLICATION_JSON_VALUE)})
@@ -147,6 +173,10 @@ public interface IBooksRestController {
   @ApiResponse(responseCode = "400", description = "Bad Request",
       content = {@Content(schema = @Schema(
           oneOf = {InvalidFileTypeResponseDTO.class, InvalidCSVContentResponseDTO.class}))})
+  @ApiResponse(responseCode = "401", description = "Unauthorized",
+      content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
+  @ApiResponse(responseCode = "403", description = "Forbidden",
+      content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
   @ApiResponse(responseCode = "500", description = "Internal Server Error",
       content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
   ResponseEntity<Void> upload(@RequestHeader final Channel channel,

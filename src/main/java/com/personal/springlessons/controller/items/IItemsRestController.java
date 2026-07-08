@@ -44,6 +44,10 @@ public interface IItemsRestController {
   @ApiResponse(responseCode = "400", description = "Bad Request",
       content = {@Content(schema = @Schema(oneOf = {ValidationRequestErrorResponseDTO.class,
           InvalidArgumentTypeResponseDTO.class, NotReadableBodyRequestResponseDTO.class}))})
+  @ApiResponse(responseCode = "401", description = "Unauthorized",
+      content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
+  @ApiResponse(responseCode = "403", description = "Forbidden",
+      content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
   @ApiResponse(responseCode = "500", description = "Internal Server Error",
       content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
   ResponseEntity<OrderItemsDTO> upload(@Valid @RequestBody final OrderItemsDTO order,
@@ -57,6 +61,10 @@ public interface IItemsRestController {
   @ApiResponse(responseCode = "400", description = "Bad Request",
       content = {@Content(schema = @Schema(oneOf = {ValidationRequestErrorResponseDTO.class,
           InvalidArgumentTypeResponseDTO.class, NotReadableBodyRequestResponseDTO.class}))})
+  @ApiResponse(responseCode = "401", description = "Unauthorized",
+      content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
+  @ApiResponse(responseCode = "403", description = "Forbidden",
+      content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
   @ApiResponse(responseCode = "500", description = "Internal Server Error",
       content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
   ResponseEntity<Void> delete(@Valid @RequestBody final OrderItemsDTO order,
@@ -70,6 +78,10 @@ public interface IItemsRestController {
           array = @ArraySchema(schema = @Schema(implementation = OrderItemsWrapperDTO.class)))})
   @ApiResponse(responseCode = "204", description = "No Content",
       content = {@Content(schema = @Schema(implementation = Void.class))})
+  @ApiResponse(responseCode = "401", description = "Unauthorized",
+      content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
+  @ApiResponse(responseCode = "403", description = "Forbidden",
+      content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
   @ApiResponse(responseCode = "500", description = "Internal Server Error",
       content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
   ResponseEntity<OrderItemsWrapperDTO> getAll(@ParameterObject Pageable pageable);

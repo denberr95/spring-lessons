@@ -12,6 +12,8 @@ import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
+import io.micrometer.observation.annotation.Observed;
+
 @Endpoint
 public class PlatformHistoryEndpoint {
 
@@ -22,6 +24,7 @@ public class PlatformHistoryEndpoint {
     this.bookService = bookService;
   }
 
+  @Observed(name = "soap.history", contextualName = "get-book-history-soap")
   @PayloadRoot(namespace = Constants.S_XML_NAMESPACE_PLATFORM_HISTORY,
       localPart = "GetBookHistoryRequest")
   @ResponsePayload
