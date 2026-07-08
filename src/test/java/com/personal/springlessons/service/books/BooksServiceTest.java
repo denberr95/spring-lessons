@@ -11,8 +11,8 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.UUID;
 
-import com.personal.springlessons.exception.ConcurrentUpdateException;
 import com.personal.springlessons.exception.InvalidUUIDException;
+import com.personal.springlessons.exception.PreconditionFailedException;
 import com.personal.springlessons.exception.books.BookNotFoundException;
 import com.personal.springlessons.exception.books.CSVContentValidationException;
 import com.personal.springlessons.exception.books.DuplicatedBookException;
@@ -128,12 +128,12 @@ class BooksServiceTest {
   }
 
   @Test
-  void givenEtagMismatch_whenDelete_thenThrowConcurrentUpdateException() {
+  void givenEtagMismatch_whenDelete_thenThrowPreconditionFailedException() {
     BooksWrapperDTO saved =
         this.booksService.save(this.createValidBookDTO("ETag Book"), Channel.NA);
     String id = saved.getBookDTO().id();
 
-    assertThrows(ConcurrentUpdateException.class, () -> this.booksService.delete(id, "999"));
+    assertThrows(PreconditionFailedException.class, () -> this.booksService.delete(id, "999"));
   }
 
   @Test

@@ -6,6 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigDecimal;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+
 import com.personal.springlessons.model.entity.items.ItemsEntity;
 import com.personal.springlessons.model.entity.items.OrderItemsEntity;
 import com.personal.springlessons.model.lov.Channel;
@@ -17,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 class IOrderItemsRepositoryTest {
@@ -26,6 +30,9 @@ class IOrderItemsRepositoryTest {
 
   @Autowired
   private IItemsRepository itemsRepository;
+
+  @PersistenceContext
+  private EntityManager entityManager;
 
   private static final int TOTAL = 5;
 
@@ -53,7 +60,8 @@ class IOrderItemsRepositoryTest {
   }
 
   @Test
-  void givenOrderWithItems_whenFindAll_thenItemsEagerlyLoaded() {
+  @Transactional
+  void givenOrderWithItems_whenFindAllWithinTransaction_thenItemsLoaded() {
     OrderItemsEntity order =
         this.orderItemsRepository.findAll(PageRequest.of(0, 1)).getContent().getFirst();
     ItemsEntity item = new ItemsEntity();
@@ -62,6 +70,7 @@ class IOrderItemsRepositoryTest {
     item.setPrice(new BigDecimal("9.99"));
     item.setOrderItemsEntity(order);
     this.itemsRepository.saveAndFlush(item);
+    this.entityManager.clear();
 
     Page<OrderItemsEntity> page = this.orderItemsRepository.findAll(PageRequest.of(0, TOTAL));
     OrderItemsEntity loaded = page.getContent().stream()
@@ -73,7 +82,9 @@ class IOrderItemsRepositoryTest {
   }
 
   @Test
+  @Transactional
   void givenOrderWithNoItems_whenFindAll_thenItemsListIsEmpty() {
+    this.entityManager.clear();
     Page<OrderItemsEntity> page = this.orderItemsRepository.findAll(PageRequest.of(0, TOTAL));
     assertTrue(page.getContent().stream().allMatch(o -> o.getItems().isEmpty()));
   }
