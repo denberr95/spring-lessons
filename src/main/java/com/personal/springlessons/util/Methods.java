@@ -60,6 +60,9 @@ public final class Methods {
   public static DomainCategory retrieveDomainCategory(String uri) {
     log.debug("Check Domain Category from uri: '{}'", uri);
     DomainCategory result = DomainCategory.NA;
+    if (uri == null) {
+      return result;
+    }
     String lowerUri = uri.toLowerCase(Locale.ROOT);
     for (DomainCategory e : DomainCategory.values()) {
       if (lowerUri.contains(e.getValue().toLowerCase(Locale.ROOT))) {

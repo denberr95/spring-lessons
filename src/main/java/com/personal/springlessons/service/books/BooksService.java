@@ -159,8 +159,10 @@ public class BooksService {
     BooksEntity bookEntity = this.bookRepository.findById(Methods.idValidation(id))
         .orElseThrow(() -> new BookNotFoundException(id));
 
+    final UUID currentId = bookEntity.getId();
     this.bookRepository.findByNameAndPublicationDateAndNumberOfPages(bookDTO.name(),
-        bookDTO.publicationDate(), bookDTO.numberOfPages()).ifPresent(book -> {
+        bookDTO.publicationDate(), bookDTO.numberOfPages())
+        .filter(book -> !book.getId().equals(currentId)).ifPresent(book -> {
           throw new DuplicatedBookException(book.getName(), book.getId().toString());
         });
 
@@ -274,7 +276,9 @@ public class BooksService {
 
         item.setBookId(booksEntity.getId().toString());
         item.setBookName(booksEntity.getName());
-        item.setChannel(booksEntity.getChannel().toString());
+        if (booksEntity.getChannel() != null) {
+          item.setChannel(booksEntity.getChannel().toString());
+        }
         item.setNumberOfPages(booksEntity.getNumberOfPages());
         item.setPublicationDate(booksEntity.getPublicationDate());
         item.setCreatedAt(Methods.convertInstantToOffsetDateTime(booksEntity.getCreatedAt()));
