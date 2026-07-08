@@ -19,6 +19,7 @@ import jakarta.persistence.Table;
 import com.personal.springlessons.model.lov.Channel;
 import com.personal.springlessons.util.Constants;
 
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -56,6 +57,7 @@ public class OrderItemsEntity {
   private Channel channel;
 
   @ToString.Exclude
+  @BatchSize(size = 100)
   @OneToMany(mappedBy = "orderItemsEntity", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<ItemsEntity> items;
 }
