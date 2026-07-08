@@ -4,6 +4,9 @@ services:
     image: quay.io/keycloak/keycloak:${IMAGE_KEYCLOAK}
     restart: "no"
     hostname: keycloak-export
+    # In rootless podman container root maps to the host user that owns
+    # ./keycloak/export, so the realm export can be written back to the repo.
+    user: root
     environment:
       - TZ=${TZ}
     command:
