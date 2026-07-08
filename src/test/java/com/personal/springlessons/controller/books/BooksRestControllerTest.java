@@ -1,6 +1,7 @@
 package com.personal.springlessons.controller.books;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -140,7 +141,7 @@ class BooksRestControllerTest {
   }
 
   @Test
-  void givenInvalidAccessToken_whenCallAPI_thenReturnForbidden() {
+  void givenInvalidAccessToken_whenGetAll_thenReturnForbidden() {
     this.restTestClient.get().uri(this.baseUrl).headers(this.retrieveHttpHeaders(this.invalidToken))
         .exchange().expectStatus().isForbidden();
   }
@@ -149,6 +150,49 @@ class BooksRestControllerTest {
   void givenWithoutAccessToken_whenCallAPI_thenReturnUnauthorized() {
     this.restTestClient.get().uri(this.baseUrl).headers(this.retrieveHttpHeaders(null)).exchange()
         .expectStatus().isUnauthorized();
+  }
+
+  @Test
+  void givenInvalidAccessToken_whenSave_thenReturnForbidden() {
+    BookDTO newBook = new BookDTO(null, "Forbidden Book", 100, LocalDate.now(), Genre.NA);
+    this.restTestClient.post().uri(this.baseUrl).contentType(MediaType.APPLICATION_JSON)
+        .headers(this.retrieveHttpHeaders(this.invalidToken)).body(newBook).exchange()
+        .expectStatus().isForbidden();
+  }
+
+  @Test
+  void givenInvalidAccessToken_whenDelete_thenReturnForbidden() {
+    this.restTestClient.delete().uri(this.fakeResourceUrl).headers(headers -> {
+      this.retrieveHttpHeaders(this.invalidToken).accept(headers);
+      headers.add(HttpHeaders.IF_MATCH, "\"0\"");
+    }).exchange().expectStatus().isForbidden();
+  }
+
+  @Test
+  void givenInvalidAccessToken_whenUpdate_thenReturnForbidden() {
+    BookDTO dto = new BookDTO(null, "Forbidden Update", 100, LocalDate.now(), Genre.NA);
+    this.restTestClient.put().uri(this.fakeResourceUrl).contentType(MediaType.APPLICATION_JSON)
+        .headers(headers -> {
+          this.retrieveHttpHeaders(this.invalidToken).accept(headers);
+          headers.add(HttpHeaders.IF_MATCH, "\"0\"");
+        }).body(dto).exchange().expectStatus().isForbidden();
+  }
+
+  @Test
+  void givenInvalidAccessToken_whenDownload_thenReturnForbidden() {
+    this.restTestClient.get().uri(this.downloadUrl)
+        .headers(this.retrieveHttpHeaders(this.invalidToken)).exchange().expectStatus()
+        .isForbidden();
+  }
+
+  @Test
+  void givenInvalidAccessToken_whenUpload_thenReturnForbidden() {
+    org.springframework.http.client.MultipartBodyBuilder builder =
+        new org.springframework.http.client.MultipartBodyBuilder();
+    builder.part("file", this.validFileContent);
+    this.restTestClient.post().uri(this.uploadUrl)
+        .headers(this.retrieveHttpHeaders(this.invalidToken)).body(builder.build()).exchange()
+        .expectStatus().isForbidden();
   }
 
   @Test
@@ -193,7 +237,7 @@ class BooksRestControllerTest {
   @Test
   void givenNewBook_whenSave_thenBookIsCreated() {
     BookDTO newBook =
-        new BookDTO(null, "Brand New Book", 300, LocalDate.of(2024, 6, 1), Genre.MYSTERY);
+        new BookDTO(null, "Brand New Book", 300, LocalDate.of(2024, Month.JUNE, 1), Genre.MYSTERY);
 
     this.restTestClient.post().uri(this.baseUrl).contentType(MediaType.APPLICATION_JSON)
         .headers(this.retrieveHttpHeaders(this.validToken)).body(newBook).exchange().expectStatus()
@@ -237,7 +281,8 @@ class BooksRestControllerTest {
     String id = this.bookService.getAll().getBookDTOs().get(0).id();
     String etag = this.bookService.getById(id).getHttpHeaders().getFirst("ETag");
     BookDTO updated =
-        new BookDTO(null, "Updated Controller Book", 200, LocalDate.of(2025, 1, 1), Genre.FANTASY);
+        new BookDTO(null, "Updated Controller Book", 200, LocalDate.of(2025, Month.JANUARY, 1),
+            Genre.FANTASY);
 
     this.restTestClient.put().uri(String.format(this.resourceUrl, id))
         .contentType(MediaType.APPLICATION_JSON).headers(headers -> {
@@ -248,7 +293,8 @@ class BooksRestControllerTest {
 
   @Test
   void givenNonExistingId_whenUpdate_thenReturnBookNotFound() {
-    BookDTO dto = new BookDTO(null, "Some Book", 100, LocalDate.of(2024, 1, 1), Genre.NOIR);
+    BookDTO dto = new BookDTO(null, "Some Book", 100, LocalDate.of(2024, Month.JANUARY, 1),
+        Genre.NOIR);
 
     this.restTestClient.put().uri(this.fakeResourceUrl).contentType(MediaType.APPLICATION_JSON)
         .headers(headers -> {
@@ -276,7 +322,8 @@ class BooksRestControllerTest {
 
   @Test
   void givenInvalidBookId_whenUpdate_thenReturnInvalidUUID() {
-    BookDTO dto = new BookDTO(null, "Some Book", 100, LocalDate.of(2024, 1, 1), Genre.NOIR);
+    BookDTO dto = new BookDTO(null, "Some Book", 100, LocalDate.of(2024, Month.JANUARY, 1),
+        Genre.NOIR);
 
     this.restTestClient.put().uri(String.format(this.resourceUrl, "not-a-uuid"))
         .contentType(MediaType.APPLICATION_JSON).headers(headers -> {

@@ -65,11 +65,12 @@ class BooksServiceUnitTest {
     entity.setId(id);
     entity.setVersion(0L);
 
+    String idValue = id.toString();
     when(booksRepository.findById(id)).thenReturn(Optional.of(entity));
     doThrow(OptimisticLockingFailureException.class).when(booksRepository).delete(entity);
 
     assertThrows(ConcurrentUpdateException.class,
-        () -> booksService.delete(id.toString(), "\"0\""));
+        () -> booksService.delete(idValue, "\"0\""));
   }
 
   @Test
@@ -81,14 +82,15 @@ class BooksServiceUnitTest {
 
     BookDTO bookDTO = new BookDTO(null, "New Title", 100, LocalDate.now(), Genre.NOIR);
 
+    String idValue = id.toString();
     when(booksRepository.findById(id)).thenReturn(Optional.of(entity));
     when(booksRepository.findByNameAndPublicationDateAndNumberOfPages(any(), any(), any()))
         .thenReturn(Optional.empty());
-    when(booksMapper.update(any(), any(), any(), any())).thenReturn(entity);
+    when(booksMapper.update(any(), any(), any())).thenReturn(entity);
     when(booksRepository.saveAndFlush(entity)).thenThrow(OptimisticLockException.class);
 
     assertThrows(ConcurrentUpdateException.class,
-        () -> booksService.update(id.toString(), bookDTO, Channel.POSTMAN, "\"0\""));
+        () -> booksService.update(idValue, bookDTO, Channel.POSTMAN, "\"0\""));
   }
 
   @Test

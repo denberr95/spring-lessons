@@ -156,7 +156,7 @@ class ItemsRestControllerTest {
   }
 
   @Test
-  void givenInvalidAccessToken_whenCallAPI_thenReturnForbidden() {
+  void givenInvalidAccessToken_whenGetAll_thenReturnForbidden() {
     this.restTestClient.get().uri(this.buildUrl("/v1/items"))
         .headers(this.retrieveHttpHeaders(this.invalidToken)).exchange().expectStatus()
         .isForbidden();
@@ -166,6 +166,39 @@ class ItemsRestControllerTest {
   void givenWithoutAccessToken_whenCallAPI_thenReturnUnauthorized() {
     this.restTestClient.get().uri(this.buildUrl("/v1/items"))
         .headers(this.retrieveHttpHeaders(null)).exchange().expectStatus().isUnauthorized();
+  }
+
+  @Test
+  void givenInvalidAccessToken_whenUpload_thenReturnForbidden() {
+    com.personal.springlessons.model.dto.OrderItemsDTO order =
+        new com.personal.springlessons.model.dto.OrderItemsDTO();
+    ItemDTO item = new ItemDTO();
+    item.setName("Forbidden Item");
+    item.setBarcode("CTRL-FRB001");
+    item.setPrice(new BigDecimal("9.99"));
+    order.setItems(List.of(item));
+
+    this.restTestClient.post().uri(this.buildUrl("/v1/items"))
+        .contentType(MediaType.APPLICATION_JSON)
+        .headers(this.retrieveHttpHeaders(this.invalidToken)).body(order).exchange()
+        .expectStatus().isForbidden();
+  }
+
+  @Test
+  void givenInvalidAccessToken_whenDelete_thenReturnForbidden() {
+    ItemDTO item = new ItemDTO();
+    item.setName("Forbidden Delete Item");
+    item.setBarcode("CTRL-FRB002");
+    item.setPrice(new BigDecimal("1.00"));
+
+    com.personal.springlessons.model.dto.OrderItemsDTO order =
+        new com.personal.springlessons.model.dto.OrderItemsDTO();
+    order.setItems(List.of(item));
+
+    this.restTestClient.method(org.springframework.http.HttpMethod.DELETE)
+        .uri(this.buildUrl("/v1/items")).contentType(MediaType.APPLICATION_JSON)
+        .headers(this.retrieveHttpHeaders(this.invalidToken)).body(order).exchange()
+        .expectStatus().isForbidden();
   }
 
   @Test
