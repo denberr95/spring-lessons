@@ -1,3 +1,2 @@
-DROP SCHEMA IF EXISTS history CASCADE;
 DROP SEQUENCE IF EXISTS history.revinfo_seq;
 DROP TABLE IF EXISTS history.revinfo;
