@@ -42,6 +42,8 @@ public class AccountsRunner implements ApplicationRunner {
       accounts.forEach(this.emailService::sendEmail);
     }
     log.info("Application runner execution completed");
-    currentSpan.event("Application runner executed");
+    if (currentSpan != null) {
+      currentSpan.event("Application runner executed");
+    }
   }
 }

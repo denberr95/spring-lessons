@@ -165,11 +165,17 @@ public class BooksService {
           throw new DuplicatedBookException(book.getName(), book.getId().toString());
         });
 
+    boolean etagMatches = bookEntity.getVersion() != null
+        && bookEntity.getVersion().toString().equals(Methods.getEtag(ifMatch));
+
+    if (!etagMatches) {
+      throw new ConcurrentUpdateException(id, ifMatch);
+    }
+
     try {
-      String version = Methods.getEtag(ifMatch);
-      bookEntity = this.bookMapper.update(bookDTO, channel, bookEntity, version);
+      bookEntity = this.bookMapper.update(bookDTO, channel, bookEntity);
       bookEntity = this.bookRepository.saveAndFlush(bookEntity);
-    } catch (NumberFormatException | OptimisticLockingFailureException | OptimisticLockException _) {
+    } catch (OptimisticLockingFailureException | OptimisticLockException _) {
       throw new ConcurrentUpdateException(id, ifMatch);
     }
 

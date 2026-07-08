@@ -28,7 +28,7 @@ public final class AppPropertiesConfig {
   private static final Logger log = LoggerFactory.getLogger(AppPropertiesConfig.class);
 
   /** This property is used to set the base directory for the application. */
-  private String baseDir;
+  @NotBlank(message = "Base directory property cannot be null or empty") private String baseDir;
 
   @NotNull(message = "API Documentation properties cannot be null") @Valid private ApiDocumentation apiDocumentation;
 
@@ -120,7 +120,7 @@ public final class AppPropertiesConfig {
      * Base path to exclude from http server logs
      */
     private List<@NotBlank(message = "Base path cannot be null or blank") @Pattern(
-        regexp = "^/([a-zA-Z0-9-]+)(/[a-zA-Z0-9-]+)*$",
+        regexp = "^(?:/[a-zA-Z0-9-]++)++$",
         message = "Path must be in the form /base-path/service-url") String> excludePath;
   }
 
