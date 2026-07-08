@@ -2,12 +2,14 @@
     "java.test.config": [
         {
             "name": "linux",
+            "envFile": "${workspaceFolder}/collections/.env",
             "vmArgs": [
                 "-Dspring.profiles.active=default,linux"
             ]
         },
         {
             "name": "windows",
+            "envFile": "${workspaceFolder}/collections/.env",
             "vmArgs": [
                 "-Dspring.profiles.active=default,windows"
             ]
