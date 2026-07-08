@@ -26,6 +26,7 @@ import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import com.personal.springlessons.component.mapper.IBooksMapper;
 import com.personal.springlessons.config.AppPropertiesConfig;
 import com.personal.springlessons.exception.ConcurrentUpdateException;
+import com.personal.springlessons.exception.PreconditionFailedException;
 import com.personal.springlessons.exception.SpringLessonsApplicationException;
 import com.personal.springlessons.exception.books.BookNotFoundException;
 import com.personal.springlessons.exception.books.CSVContentValidationException;
@@ -53,6 +54,7 @@ import com.personal.springlessons.util.Methods;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.data.history.Revisions;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -134,17 +136,13 @@ public class BooksService {
     return result;
   }
 
+  @Transactional
   @Observed(name = "books.delete", contextualName = "delete-book")
   public void delete(final String id, final String ifMatch) {
     BooksEntity bookEntity = this.bookRepository.findById(Methods.idValidation(id))
         .orElseThrow(() -> new BookNotFoundException(id));
 
-    boolean etagMatches = bookEntity.getVersion() != null
-        && bookEntity.getVersion().toString().equals(Methods.getEtag(ifMatch));
-
-    if (!etagMatches) {
-      throw new ConcurrentUpdateException(id, ifMatch);
-    }
+    this.verifyIfMatch(bookEntity, id, ifMatch);
 
     try {
       this.bookRepository.delete(bookEntity);
@@ -154,6 +152,7 @@ public class BooksService {
     }
   }
 
+  @Transactional
   @Observed(name = "books.update", contextualName = "update-book")
   public BooksWrapperDTO update(final String id, final BookDTO bookDTO, final Channel channel,
       final String ifMatch) {
@@ -165,12 +164,7 @@ public class BooksService {
           throw new DuplicatedBookException(book.getName(), book.getId().toString());
         });
 
-    boolean etagMatches = bookEntity.getVersion() != null
-        && bookEntity.getVersion().toString().equals(Methods.getEtag(ifMatch));
-
-    if (!etagMatches) {
-      throw new ConcurrentUpdateException(id, ifMatch);
-    }
+    this.verifyIfMatch(bookEntity, id, ifMatch);
 
     try {
       bookEntity = this.bookMapper.update(bookDTO, channel, bookEntity);
@@ -315,6 +309,18 @@ public class BooksService {
       throw new SpringLessonsApplicationException(e.getMessage(), e);
     }
     return result;
+  }
+
+  private void verifyIfMatch(final BooksEntity bookEntity, final String id, final String ifMatch) {
+    String requestedVersion = Methods.getEtag(ifMatch);
+    boolean wildcard = Constants.S_ASTERISK.equals(requestedVersion);
+    boolean versionMatches = bookEntity.getVersion() != null
+        && bookEntity.getVersion().toString().equals(requestedVersion);
+    if (!wildcard && !versionMatches) {
+      String currentVersion =
+          bookEntity.getVersion() != null ? bookEntity.getVersion().toString() : null;
+      throw new PreconditionFailedException(id, currentVersion);
+    }
   }
 
   private void persistCsvContent(final Channel channel, List<BookDTO> booksDTO) {

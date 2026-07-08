@@ -66,6 +66,7 @@ public class ItemsService {
   }
 
   @Observed(name = "items.delete", contextualName = "delete-order-items")
+  @Transactional
   public void delete(final OrderItemsDTO order, final Channel channel) {
     Observation current = this.observationRegistry.getCurrentObservation();
     if (current != null) {

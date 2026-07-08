@@ -63,6 +63,7 @@ public final class Constants {
   // Other Values
   public static final String S_EMPTY = "";
   public static final String S_DOT = ".";
+  public static final String S_ASTERISK = "*";
   public static final String S_DOUBLE_QUOTE = "\"";
   public static final String S_REGEX_ANY_SPACE = "\\s+";
   public static final String S_CSV = "csv";
