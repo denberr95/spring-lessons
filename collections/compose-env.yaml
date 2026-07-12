@@ -183,6 +183,8 @@ services:
     build:
       context: .
       dockerfile: wiremock/Containerfile
+      args:
+        IMAGE_WIREMOCK: ${IMAGE_WIREMOCK}
     image: custom-wiremock:latest
     restart: "no"
     hostname: wiremock

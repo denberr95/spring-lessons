@@ -4,6 +4,8 @@ services:
     build:
       context: ../
       dockerfile: Containerfile
+      args:
+        IMAGE_JRE: ${IMAGE_JRE}
     restart: "no"
     hostname: spring-lessons
     environment:

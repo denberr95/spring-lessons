@@ -1,4 +1,5 @@
-FROM bellsoft/liberica-openjre-alpine:25 AS runtime
+ARG IMAGE_JRE
+FROM bellsoft/liberica-openjre-alpine:${IMAGE_JRE} AS runtime
 
 # Install utilities, update binaries, create user, set permissions and clean up
 RUN apk add --no-cache openssl bash && \
