@@ -1,6 +1,7 @@
 package com.personal.springlessons.component.filter;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -8,7 +9,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
-
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
@@ -16,20 +16,17 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
-
 import com.personal.springlessons.config.AppPropertiesConfig;
-import com.personal.springlessons.util.Constants;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.ContentCachingResponseWrapper;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -54,8 +51,8 @@ public class HttpServerLoggingFilter extends OncePerRequestFilter {
     if (isExcluded) {
       filterChain.doFilter(request, response);
     } else {
-      this.logRequest(requestWrapper);
       filterChain.doFilter(requestWrapper, responseWrapper);
+      this.logRequest(requestWrapper);
       this.logResponse(responseWrapper);
     }
   }
@@ -72,26 +69,30 @@ public class HttpServerLoggingFilter extends OncePerRequestFilter {
         this.logMultipartFiles(request);
       }
       if (request.getContentAsByteArray().length > 0) {
-        log.info("Body: '{}'", new String(request.getContentAsByteArray()));
+        log.info("Body: '{}'", new String(request.getContentAsByteArray(), StandardCharsets.UTF_8));
       }
       log.info("--- HTTP Server Request ---");
     }
   }
 
   private void logResponse(ContentCachingResponseWrapper response) throws IOException {
-    if (log.isInfoEnabled()) {
-      log.info("--- HTTP Server Response ---");
-      log.info("Status Code: '{}'", response.getStatus());
-      log.info("Headers: {}",
-          this.getHeadersAsString(response.getHeaderNames(), response::getHeader));
-      if (this.downloadedFile(response)) {
-        this.logDownloadFile(response);
+    try {
+      if (log.isInfoEnabled()) {
+        log.info("--- HTTP Server Response ---");
+        log.info("Status Code: '{}'", response.getStatus());
+        log.info("Headers: {}",
+            this.getHeadersAsString(response.getHeaderNames(), response::getHeader));
+        if (this.downloadedFile(response)) {
+          this.logDownloadFile(response);
+        }
+        if (response.getContentAsByteArray().length > 0) {
+          log.info("Body: '{}'",
+              new String(response.getContentAsByteArray(), StandardCharsets.UTF_8));
+        }
+        log.info("--- HTTP Server Response ---");
       }
-      if (response.getContentAsByteArray().length > 0) {
-        log.info("Body: '{}'", new String(response.getContentAsByteArray()));
-      }
+    } finally {
       response.copyBodyToResponse();
-      log.info("--- HTTP Server Response ---");
     }
   }
 
@@ -114,9 +115,11 @@ public class HttpServerLoggingFilter extends OncePerRequestFilter {
 
   private void logDownloadFile(ContentCachingResponseWrapper response) {
     String contentDisposition = response.getHeader(HttpHeaders.CONTENT_DISPOSITION);
-    if (contentDisposition != null && contentDisposition.contains("filename")) {
-      String fileName = contentDisposition.substring(contentDisposition.indexOf("filename=") + 9)
-          .replace(Constants.S_DOUBLE_QUOTE, Constants.S_EMPTY);
+    if (contentDisposition == null) {
+      return;
+    }
+    String fileName = ContentDisposition.parse(contentDisposition).getFilename();
+    if (fileName != null) {
       log.info("Downloaded File Name: '{}'", fileName);
     }
   }
