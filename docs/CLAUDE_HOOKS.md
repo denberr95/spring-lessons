@@ -12,7 +12,7 @@ Hooks are shell commands executed automatically by the Claude Code harness in re
 
 ## Project Hooks
 
-**Source:** `.claude/settings.json`
+**Source:** `.claude/settings.local.json`
 
 > No project-level hooks are currently configured.
 

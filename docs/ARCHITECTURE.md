@@ -256,7 +256,10 @@ Global `@RestControllerAdvice` maps exceptions to standard HTTP responses:
 | `ConstraintViolationException` | 400 Bad Request |
 | `HttpMessageNotReadableException` | 400 Bad Request |
 | `MethodArgumentTypeMismatchException` | 400 Bad Request |
+| `MissingServletRequestPartException` | 400 Bad Request |
 | `BookNotFoundException` | 404 Not Found |
+| `MaxUploadSizeExceededException` | 413 Payload Too Large |
+| `PreconditionFailedException` | 412 Precondition Failed |
 | `ConcurrentUpdateException` | 409 Conflict |
 | `DuplicatedBookException` | 409 Conflict |
 | `InvalidFileTypeException` | 400 Bad Request |
