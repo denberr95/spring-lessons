@@ -6,12 +6,11 @@ set -euo pipefail
 # Global Variables
 # =============================================================================
 : "${JAVA_OTHER_OPTIONS:=}"
-: "${DEBUG_PORT:=5500}"
 : "${IMPORT_SSL_CERTIFICATE:=0}"
 : "${REMOTE_SERVICES:=}"
 : "${TRUSTSTORE_PASSWORD:=changeit}"
 : "${JAVA_CACERTS_PASSWORD:=changeit}"
-: "${RUN_MODE:=jvm}"
+: "${RUN_MODE:=jvm}" # jvm | native
 
 TRUSTSTORE_FILE="/app/truststore.jks"
 JAVA_OPTS=(
@@ -19,6 +18,7 @@ JAVA_OPTS=(
     -XX:+UseStringDeduplication
     -XX:+OptimizeStringConcat
     -XX:+UseContainerSupport
+    -XX:MinRAMPercentage=10.0
     -XX:InitialRAMPercentage=25.0
     -XX:MaxRAMPercentage=85.0
     -XX:+PrintFlagsFinal
@@ -27,7 +27,13 @@ JAVA_OPTS=(
     -XshowSettings:vm
 )
 JAVA_CMD=()
-JAVA_DEBUG_OPTS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:$DEBUG_PORT"
+NATIVE_OPTS=(
+    -XX:+UseContainerSupport
+    -XX:MinRAMPercentage=10.0
+    -XX:InitialRAMPercentage=25.0
+    -XX:MaxRAMPercentage=85.0
+)
+NATIVE_CMD=()
 
 # =============================================================================
 # Logging functions
@@ -59,9 +65,11 @@ print_java_version() {
     "$JAVA_HOME/bin/java" -version
 }
 
+# =============================================================================
+# Build run commands functions
+# =============================================================================
 build_java_cmd() {
     JAVA_CMD=("$JAVA_HOME/bin/java" "${JAVA_OPTS[@]}")
-    [ "$RUN_MODE" = "debug" ] && JAVA_CMD+=("$JAVA_DEBUG_OPTS")
     if [ "${IMPORT_SSL_CERTIFICATE:-0}" != "0" ]; then
         JAVA_CMD+=("-Djavax.net.ssl.trustStore=$TRUSTSTORE_FILE")
         JAVA_CMD+=("-Djavax.net.ssl.trustStorePassword=$TRUSTSTORE_PASSWORD")
@@ -71,6 +79,19 @@ build_java_cmd() {
         JAVA_CMD+=("${extra_opts[@]}")
     fi
     log_info "Constructed JAVA_CMD: ${JAVA_CMD[*]}"
+}
+
+build_native_cmd() {
+    NATIVE_CMD=(/app/app "${NATIVE_OPTS[@]}")
+    if [ "${IMPORT_SSL_CERTIFICATE:-0}" != "0" ]; then
+        NATIVE_CMD+=("-Djavax.net.ssl.trustStore=$TRUSTSTORE_FILE")
+        NATIVE_CMD+=("-Djavax.net.ssl.trustStorePassword=$TRUSTSTORE_PASSWORD")
+    fi
+    if [ -n "$JAVA_OTHER_OPTIONS" ]; then
+        read -ra extra_opts <<< "$JAVA_OTHER_OPTIONS"
+        NATIVE_CMD+=("${extra_opts[@]}")
+    fi
+    log_info "Constructed NATIVE_CMD: ${NATIVE_CMD[*]}"
 }
 
 # =============================================================================
@@ -188,29 +209,31 @@ import_ssl_certificates() {
 # =============================================================================
 # Run functions
 # =============================================================================
-run_app() {
-    log_info "Selected run mode: $RUN_MODE"
-    case "$RUN_MODE" in
-        jvm)
-            log_info "Starting application..."
-            exec "${JAVA_CMD[@]}" -jar app.jar
-            ;;
-        debug)
-            log_info "Starting application in debug mode on port $DEBUG_PORT..."
-            exec "${JAVA_CMD[@]}" -jar app.jar
-            ;;
-        *)
-            log_error "Invalid RUN_MODE '$RUN_MODE'. Allowed values: jvm, debug"
-            exit 1
-            ;;
-    esac
+run_jvm() {
+    verify_java_home
+    print_java_version
+    import_ssl_certificates
+    build_java_cmd
+    log_info "Starting application in JVM mode..."
+    exec "${JAVA_CMD[@]}" -jar app.jar
+}
+
+run_native() {
+    import_ssl_certificates
+    build_native_cmd
+    log_info "Starting application in native mode..."
+    exec "${NATIVE_CMD[@]}"
 }
 
 # =============================================================================
 # Main program
 # =============================================================================
-verify_java_home
-print_java_version
-build_java_cmd
-import_ssl_certificates
-run_app
+log_info "Selected run mode: $RUN_MODE"
+case "$RUN_MODE" in
+    jvm)    run_jvm    ;;
+    native) run_native ;;
+    *)
+        log_error "Invalid RUN_MODE '$RUN_MODE'. Allowed values: jvm, native"
+        exit 1
+        ;;
+esac
