@@ -13,6 +13,7 @@ import jakarta.validation.Path;
 
 import com.personal.springlessons.exception.ConcurrentUpdateException;
 import com.personal.springlessons.exception.InvalidUUIDException;
+import com.personal.springlessons.exception.PreconditionFailedException;
 import com.personal.springlessons.exception.SpringLessonsApplicationException;
 import com.personal.springlessons.model.lov.Channel;
 
@@ -28,6 +29,8 @@ import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
 class CommonRestControllerAdviceTest {
 
@@ -154,5 +157,29 @@ class CommonRestControllerAdviceTest {
         new ConstraintViolationException(violations), this.createWebRequest());
 
     assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+  }
+
+  @Test
+  void givenPreconditionFailedException_whenHandleException_thenReturnPreconditionFailed() {
+    ResponseEntity<?> response = this.advice.handlePreconditionFailedException(
+        new PreconditionFailedException("some-id", "\"1\""), this.createWebRequest());
+
+    assertEquals(HttpStatus.PRECONDITION_FAILED, response.getStatusCode());
+  }
+
+  @Test
+  void givenMissingServletRequestPartException_whenHandleException_thenReturnBadRequest() {
+    ResponseEntity<?> response = this.advice.handleMissingServletRequestPartException(
+        new MissingServletRequestPartException("file"), this.createWebRequest());
+
+    assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+  }
+
+  @Test
+  void givenMaxUploadSizeExceededException_whenHandleException_thenReturnPayloadTooLarge() {
+    ResponseEntity<?> response = this.advice.handleMaxUploadSizeExceededException(
+        new MaxUploadSizeExceededException(1024L), this.createWebRequest());
+
+    assertEquals(HttpStatus.CONTENT_TOO_LARGE, response.getStatusCode());
   }
 }
