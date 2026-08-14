@@ -258,7 +258,7 @@ Global `@RestControllerAdvice` maps exceptions to standard HTTP responses:
 | `MethodArgumentTypeMismatchException` | 400 Bad Request |
 | `MissingServletRequestPartException` | 400 Bad Request |
 | `BookNotFoundException` | 404 Not Found |
-| `MaxUploadSizeExceededException` | 413 Payload Too Large |
+| `MaxUploadSizeExceededException` | 413 Content Too Large |
 | `PreconditionFailedException` | 412 Precondition Failed |
 | `ConcurrentUpdateException` | 409 Conflict |
 | `DuplicatedBookException` | 409 Conflict |
@@ -289,13 +289,13 @@ Client ──── Bearer JWT ────► Spring Security Filter Chain
                               e.g. hasAuthority('SCOPE_books:get')
 ```
 
-**Key configuration (`SecurityConfig.java`):**
+**Key configuration:**
 
-- Session policy: `STATELESS`
-- CSRF: disabled
-- Authentication: `oauth2ResourceServer().jwt()`
-- Method security: `@EnableMethodSecurity` → `@PreAuthorize` on every endpoint
-- Custom handlers:
+- Session policy: `STATELESS` (`SecurityConfig.java`)
+- CSRF: disabled (`SecurityConfig.java`)
+- Authentication: `oauth2ResourceServer().jwt()` (`SecurityConfig.java`)
+- Method security: `@EnableMethodSecurity` on `SpringLessonsApplication.java` → `@PreAuthorize` on every controller method
+- Custom handlers (`SecurityConfig.java`):
   - `CustomAuthenticationEntryPoint` → 401 responses
   - `CustomAccessDeniedHandler` → 403 responses
 - `DefaultAuthenticationEventPublisher` for auth event propagation
@@ -477,7 +477,7 @@ Spring App
 │         ├── Traces  ──► Jaeger     (localhost:16686)
 │         ├── Metrics ──► Prometheus (localhost:9090)
 │         │                    └──► Grafana (localhost:3000)
-│         └── Logs   ──► Loki       (localhost:3100)
+│         └── Logs   ──► Loki       (internal:3100)
 │                              └──► Grafana (localhost:3000)
 │
 └── /actuator/prometheus (localhost:8889)
@@ -551,7 +551,7 @@ Image versions are pinned in `collections/.env` via `IMAGE_*` variables and refe
 | `jaeger` | `jaegertracing/jaeger:${IMAGE_JAEGER}` | 16686 | Distributed tracing UI | — |
 | `prometheus` | `prom/prometheus:${IMAGE_PROMETHEUS}` | 9090 | Metrics storage | — |
 | `grafana` | `grafana/grafana-enterprise:${IMAGE_GRAFANA}` | 3000 | Metrics + logs dashboards | — |
-| `loki` | `grafana/loki:${IMAGE_LOKI}` | 3100 | Log aggregation | — |
+| `loki` | `grafana/loki:${IMAGE_LOKI}` | 3100 (internal only) | Log aggregation | — |
 
 ### Service Credentials
 
@@ -605,7 +605,7 @@ A separate `collections/compose-app.yaml` runs the app container alongside the e
 | **Structured exception handling** | `@RestControllerAdvice` hierarchy |
 | **DTO separation** | MapStruct mappers, no entities exposed directly |
 | **Stateless API** | No sessions, JWT on every request |
-| **Graceful shutdown** | `server.shutdown=graceful` with 20s timeout |
+| **Graceful shutdown** | `server.shutdown=graceful`; 5s locally (`application.properties`), 20s in container (`compose-app.yaml` env override) |
 | **CSV bulk import/export** | Books upload/download endpoints |
 | **Message filtering** | Kafka `RecordFilterStrategy` per consumer group |
 

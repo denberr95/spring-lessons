@@ -154,7 +154,8 @@ Once started:
 | Profile | File | Purpose |
 | --- | --- | --- |
 | `default` | `application.properties` | Main configuration |
-| `linux` / `windows` | `application-runtime.properties` | OS-specific overrides (paths, etc.) |
+| `linux` / `windows` | `application.properties` (multi-doc `#---` sections) | OS-specific path override (`app-config.base-dir`) |
+| `runtime` | `application-runtime.properties` | Container mode: all config from env vars (used by `compose-app.yaml`) |
 
 ---
 
