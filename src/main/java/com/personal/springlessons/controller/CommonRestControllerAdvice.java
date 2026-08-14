@@ -12,8 +12,6 @@ import com.personal.springlessons.exception.PreconditionFailedException;
 import com.personal.springlessons.exception.SpringLessonsApplicationException;
 import com.personal.springlessons.model.dto.response.ConcurrentUpdateAdditionalDetailsDTO;
 import com.personal.springlessons.model.dto.response.ConcurrentUpdateResponseDTO;
-import com.personal.springlessons.model.dto.response.PreconditionFailedAdditionalDetailsDTO;
-import com.personal.springlessons.model.dto.response.PreconditionFailedResponseDTO;
 import com.personal.springlessons.model.dto.response.GenericErrorAdditionalDetailsDTO;
 import com.personal.springlessons.model.dto.response.GenericErrorResponseDTO;
 import com.personal.springlessons.model.dto.response.InvalidArgumentTypeAdditionalDetailsDTO;
@@ -22,12 +20,14 @@ import com.personal.springlessons.model.dto.response.InvalidUUIDAdditionalDetail
 import com.personal.springlessons.model.dto.response.InvalidUUIDResponseDTO;
 import com.personal.springlessons.model.dto.response.MaxUploadSizeAdditionalDetailsDTO;
 import com.personal.springlessons.model.dto.response.MaxUploadSizeResponseDTO;
-import com.personal.springlessons.model.dto.response.MissingRequestPartAdditionalDetailsDTO;
-import com.personal.springlessons.model.dto.response.MissingRequestPartResponseDTO;
 import com.personal.springlessons.model.dto.response.MissingHttpRequestHeaderAdditionalDetailsDTO;
 import com.personal.springlessons.model.dto.response.MissingHttpRequestHeaderResponseDTO;
+import com.personal.springlessons.model.dto.response.MissingRequestPartAdditionalDetailsDTO;
+import com.personal.springlessons.model.dto.response.MissingRequestPartResponseDTO;
 import com.personal.springlessons.model.dto.response.NotReadableBodyRequestAdditionalDetailsDTO;
 import com.personal.springlessons.model.dto.response.NotReadableBodyRequestResponseDTO;
+import com.personal.springlessons.model.dto.response.PreconditionFailedAdditionalDetailsDTO;
+import com.personal.springlessons.model.dto.response.PreconditionFailedResponseDTO;
 import com.personal.springlessons.model.dto.response.ValidationRequestAdditionalDetailsDTO;
 import com.personal.springlessons.model.dto.response.ValidationRequestErrorResponseDTO;
 import com.personal.springlessons.util.Constants;
@@ -52,10 +52,10 @@ public class CommonRestControllerAdvice {
 
   private static final Logger log = LoggerFactory.getLogger(CommonRestControllerAdvice.class);
 
-  @ExceptionHandler(value = {InvalidUUIDException.class})
+  @ExceptionHandler(InvalidUUIDException.class)
   public ResponseEntity<InvalidUUIDResponseDTO> handleInvalidUUIDException(
       InvalidUUIDException exception, WebRequest webRequest) {
-    log.error(exception.getMessage(), exception);
+    log.error("Invalid UUID exception", exception);
     InvalidUUIDResponseDTO result = new InvalidUUIDResponseDTO();
     InvalidUUIDAdditionalDetailsDTO details = new InvalidUUIDAdditionalDetailsDTO();
     result.setCategory(Methods.retrieveDomainCategory(webRequest.getDescription(false)));
@@ -65,10 +65,10 @@ public class CommonRestControllerAdvice {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
   }
 
-  @ExceptionHandler(value = {SpringLessonsApplicationException.class})
+  @ExceptionHandler(SpringLessonsApplicationException.class)
   public ResponseEntity<GenericErrorResponseDTO> handleSpringLessonsApplicationException(
       SpringLessonsApplicationException exception, WebRequest webRequest) {
-    log.error(exception.getMessage(), exception);
+    log.error("Application exception", exception);
     GenericErrorResponseDTO result = new GenericErrorResponseDTO();
     GenericErrorAdditionalDetailsDTO details = new GenericErrorAdditionalDetailsDTO();
     result.setCategory(Methods.retrieveDomainCategory(webRequest.getDescription(false)));
@@ -79,10 +79,10 @@ public class CommonRestControllerAdvice {
     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(result);
   }
 
-  @ExceptionHandler(value = {MethodArgumentNotValidException.class})
+  @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseEntity<ValidationRequestErrorResponseDTO> handleMethodArgumentNotValidException(
       MethodArgumentNotValidException exception, WebRequest webRequest) {
-    log.error(exception.getMessage(), exception);
+    log.error("Method argument not valid exception", exception);
     ValidationRequestErrorResponseDTO result = new ValidationRequestErrorResponseDTO();
     List<ValidationRequestAdditionalDetailsDTO> details = new ArrayList<>();
     result.setCategory(Methods.retrieveDomainCategory(webRequest.getDescription(false)));
@@ -97,10 +97,10 @@ public class CommonRestControllerAdvice {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
   }
 
-  @ExceptionHandler(value = {MissingRequestHeaderException.class})
+  @ExceptionHandler(MissingRequestHeaderException.class)
   public ResponseEntity<MissingHttpRequestHeaderResponseDTO> handleMissingRequestHeaderException(
       MissingRequestHeaderException exception, WebRequest webRequest) {
-    log.error(exception.getMessage(), exception);
+    log.error("Missing request header exception", exception);
     MissingHttpRequestHeaderResponseDTO result = new MissingHttpRequestHeaderResponseDTO();
     MissingHttpRequestHeaderAdditionalDetailsDTO details =
         new MissingHttpRequestHeaderAdditionalDetailsDTO();
@@ -111,18 +111,20 @@ public class CommonRestControllerAdvice {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
   }
 
-  @ExceptionHandler(value = {MethodArgumentTypeMismatchException.class})
+  @ExceptionHandler(MethodArgumentTypeMismatchException.class)
   public ResponseEntity<InvalidArgumentTypeResponseDTO> handleMethodArgumentTypeMismatchException(
       MethodArgumentTypeMismatchException exception, WebRequest webRequest) {
-    log.error(exception.getMessage(), exception);
+    log.error("Method argument type mismatch exception", exception);
     InvalidArgumentTypeResponseDTO result = new InvalidArgumentTypeResponseDTO();
     InvalidArgumentTypeAdditionalDetailsDTO details = new InvalidArgumentTypeAdditionalDetailsDTO();
     result.setCategory(Methods.retrieveDomainCategory(webRequest.getDescription(false)));
     result.setMessage("Invalid data type !");
     details.setField(exception.getName());
-    details.setValue(exception.getValue() != null ? exception.getValue().toString() : null);
-    if (exception.getRequiredType() != null && exception.getRequiredType().isEnum()) {
-      Object[] enumValues = exception.getRequiredType().getEnumConstants();
+    Object value = exception.getValue();
+    details.setValue(value != null ? value.toString() : null);
+    Class<?> requiredType = exception.getRequiredType();
+    if (requiredType != null && requiredType.isEnum()) {
+      Object[] enumValues = requiredType.getEnumConstants();
       if (enumValues != null) {
         List<String> enumValueStrings = Arrays.stream(enumValues).map(Object::toString).toList();
         details.setPickList(enumValueStrings);
@@ -132,10 +134,10 @@ public class CommonRestControllerAdvice {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
   }
 
-  @ExceptionHandler(value = {ConstraintViolationException.class})
+  @ExceptionHandler(ConstraintViolationException.class)
   public ResponseEntity<ValidationRequestErrorResponseDTO> handleConstraintViolationException(
       ConstraintViolationException exception, WebRequest webRequest) {
-    log.error(exception.getMessage(), exception);
+    log.error("Constraint violation exception", exception);
     ValidationRequestErrorResponseDTO result = new ValidationRequestErrorResponseDTO();
     List<ValidationRequestAdditionalDetailsDTO> details = new ArrayList<>();
     result.setCategory(Methods.retrieveDomainCategory(webRequest.getDescription(false)));
@@ -159,10 +161,10 @@ public class CommonRestControllerAdvice {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
   }
 
-  @ExceptionHandler(value = {HttpMessageNotReadableException.class})
+  @ExceptionHandler(HttpMessageNotReadableException.class)
   public ResponseEntity<NotReadableBodyRequestResponseDTO> handleHttpMessageNotReadableException(
       HttpMessageNotReadableException exception, WebRequest webRequest) {
-    log.error(exception.getMessage(), exception);
+    log.error("Http message not readable exception", exception);
     NotReadableBodyRequestResponseDTO result = new NotReadableBodyRequestResponseDTO();
     NotReadableBodyRequestAdditionalDetailsDTO details =
         new NotReadableBodyRequestAdditionalDetailsDTO();
@@ -175,10 +177,10 @@ public class CommonRestControllerAdvice {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
   }
 
-  @ExceptionHandler(value = {ConcurrentUpdateException.class})
+  @ExceptionHandler(ConcurrentUpdateException.class)
   public ResponseEntity<ConcurrentUpdateResponseDTO> handleConcurrentUpdateException(
       ConcurrentUpdateException exception, WebRequest webRequest) {
-    log.error(exception.getMessage(), exception);
+    log.error("Concurrent update exception", exception);
     ConcurrentUpdateResponseDTO result = new ConcurrentUpdateResponseDTO();
     ConcurrentUpdateAdditionalDetailsDTO details = new ConcurrentUpdateAdditionalDetailsDTO();
     result.setCategory(Methods.retrieveDomainCategory(webRequest.getDescription(false)));
@@ -189,10 +191,10 @@ public class CommonRestControllerAdvice {
     return ResponseEntity.status(HttpStatus.CONFLICT).body(result);
   }
 
-  @ExceptionHandler(value = {PreconditionFailedException.class})
+  @ExceptionHandler(PreconditionFailedException.class)
   public ResponseEntity<PreconditionFailedResponseDTO> handlePreconditionFailedException(
       PreconditionFailedException exception, WebRequest webRequest) {
-    log.error(exception.getMessage(), exception);
+    log.error("Precondition failed exception", exception);
     PreconditionFailedResponseDTO result = new PreconditionFailedResponseDTO();
     PreconditionFailedAdditionalDetailsDTO details = new PreconditionFailedAdditionalDetailsDTO();
     result.setCategory(Methods.retrieveDomainCategory(webRequest.getDescription(false)));
@@ -203,10 +205,10 @@ public class CommonRestControllerAdvice {
     return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).body(result);
   }
 
-  @ExceptionHandler(value = {MissingServletRequestPartException.class})
+  @ExceptionHandler(MissingServletRequestPartException.class)
   public ResponseEntity<MissingRequestPartResponseDTO> handleMissingServletRequestPartException(
       MissingServletRequestPartException exception, WebRequest webRequest) {
-    log.error(exception.getMessage(), exception);
+    log.error("Missing servlet request part exception", exception);
     MissingRequestPartResponseDTO result = new MissingRequestPartResponseDTO();
     MissingRequestPartAdditionalDetailsDTO details = new MissingRequestPartAdditionalDetailsDTO();
     result.setCategory(Methods.retrieveDomainCategory(webRequest.getDescription(false)));
@@ -216,10 +218,10 @@ public class CommonRestControllerAdvice {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
   }
 
-  @ExceptionHandler(value = {MaxUploadSizeExceededException.class})
+  @ExceptionHandler(MaxUploadSizeExceededException.class)
   public ResponseEntity<MaxUploadSizeResponseDTO> handleMaxUploadSizeExceededException(
       MaxUploadSizeExceededException exception, WebRequest webRequest) {
-    log.error(exception.getMessage(), exception);
+    log.error("Max upload size exceeded exception", exception);
     MaxUploadSizeResponseDTO result = new MaxUploadSizeResponseDTO();
     MaxUploadSizeAdditionalDetailsDTO details = new MaxUploadSizeAdditionalDetailsDTO();
     result.setCategory(Methods.retrieveDomainCategory(webRequest.getDescription(false)));
@@ -227,6 +229,6 @@ public class CommonRestControllerAdvice {
     long maxUploadSize = exception.getMaxUploadSize();
     details.setMaxUploadSize(maxUploadSize >= 0 ? String.valueOf(maxUploadSize) : null);
     result.setAdditionalData(details);
-    return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE).body(result);
+    return ResponseEntity.status(HttpStatus.CONTENT_TOO_LARGE).body(result);
   }
 }

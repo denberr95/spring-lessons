@@ -27,10 +27,10 @@ public class BooksRestControllerAdvice {
 
   private static final Logger log = LoggerFactory.getLogger(BooksRestControllerAdvice.class);
 
-  @ExceptionHandler(value = {BookNotFoundException.class})
+  @ExceptionHandler(BookNotFoundException.class)
   public ResponseEntity<BookNotFoundResponseDTO> handleBookNotFoundException(
       BookNotFoundException exception) {
-    log.error(exception.getMessage(), exception);
+    log.error("Book not found exception", exception);
     BookNotFoundResponseDTO result = new BookNotFoundResponseDTO();
     BookNotFoundAdditionalDetailsDTO details = new BookNotFoundAdditionalDetailsDTO();
     details.setId(exception.getId());
@@ -40,10 +40,10 @@ public class BooksRestControllerAdvice {
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(result);
   }
 
-  @ExceptionHandler(value = {DuplicatedBookException.class})
+  @ExceptionHandler(DuplicatedBookException.class)
   public ResponseEntity<DuplicatedBookResponseDTO> handleDuplicatedBookException(
       DuplicatedBookException exception) {
-    log.error(exception.getMessage(), exception);
+    log.error("Duplicated book exception", exception);
     DuplicatedBookResponseDTO result = new DuplicatedBookResponseDTO();
     DuplicatedBookAdditionalDetailsDTO details = new DuplicatedBookAdditionalDetailsDTO();
     result.setCategory(DomainCategory.BOOKS);
@@ -53,10 +53,10 @@ public class BooksRestControllerAdvice {
     return ResponseEntity.status(HttpStatus.CONFLICT).body(result);
   }
 
-  @ExceptionHandler(value = {InvalidFileTypeException.class})
+  @ExceptionHandler(InvalidFileTypeException.class)
   public ResponseEntity<InvalidFileTypeResponseDTO> handleInvalidFileTypeException(
       InvalidFileTypeException exception, WebRequest webRequest) {
-    log.error(exception.getMessage(), exception);
+    log.error("Invalid file type exception", exception);
     InvalidFileTypeResponseDTO result = new InvalidFileTypeResponseDTO();
     InvalidFileTypeAdditionalDetailsDTO details = new InvalidFileTypeAdditionalDetailsDTO();
     result.setCategory(DomainCategory.BOOKS);
@@ -67,10 +67,10 @@ public class BooksRestControllerAdvice {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
   }
 
-  @ExceptionHandler(value = {CSVContentValidationException.class})
+  @ExceptionHandler(CSVContentValidationException.class)
   public ResponseEntity<InvalidCSVContentResponseDTO> handleCSVContentValidationException(
       CSVContentValidationException exception, WebRequest webRequest) {
-    log.error(exception.getMessage(), exception);
+    log.error("CSV content validation exception", exception);
     InvalidCSVContentResponseDTO result = new InvalidCSVContentResponseDTO();
     InvalidCSVContentAdditionalDetailsDTO details = new InvalidCSVContentAdditionalDetailsDTO();
     result.setCategory(DomainCategory.BOOKS);
