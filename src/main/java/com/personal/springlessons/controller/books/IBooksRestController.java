@@ -184,7 +184,7 @@ public interface IBooksRestController {
       content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
   @ApiResponse(responseCode = "403", description = "Forbidden",
       content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
-  @ApiResponse(responseCode = "413", description = "Payload Too Large",
+  @ApiResponse(responseCode = "413", description = "Content Too Large",
       content = {@Content(schema = @Schema(implementation = MaxUploadSizeResponseDTO.class))})
   @ApiResponse(responseCode = "500", description = "Internal Server Error",
       content = {@Content(schema = @Schema(implementation = GenericErrorResponseDTO.class))})
