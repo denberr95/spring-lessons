@@ -18,9 +18,7 @@ The message MUST follow this exact format:
 ```
 
 **Valid scopes** (only these are accepted by the hook): `api`, `setup`, `docs`, `tests`, `deploy`, `script`, `report`, `database`, `code`
-
 **Valid types**: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `chore`, `ci`, `build`, `revert`
-
 **Language**: `<description>` MUST always be in **English**, regardless of the language used by the user.
 
 ## Procedure
@@ -42,9 +40,7 @@ The message MUST follow this exact format:
      - `ci` → CI/CD pipeline files
 
 4. Write a concise description in English (imperative mood, lowercase, no trailing period, max 72 characters including the prefix).
-
 5. If there are untracked files to include, stage them explicitly with `git add <file>` before committing. Never use `git add -A` or `git add .`.
-
 6. Create the commit:
 
 ```bash
