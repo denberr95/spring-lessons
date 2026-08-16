@@ -1,60 +1,60 @@
 ---
 name: commit-conventional
-description: Create a git commit following Conventional Commits format with project-defined scopes (api, setup, docs, tests, deploy, script, report, database, code) and strict English descriptions. Use when the user asks to commit changes, save changes to git, finishes a feature or fix and wants to persist it, or requests a properly formatted commit message.
+description: Create a git commit following Conventional Commits format with project-defined scopes (api, setup, docs, tests, deploy, script, report, database, code). Use when the user asks to commit changes, save changes to git, finishes a feature or fix and wants to persist it, or requests a properly formatted commit message.
 disable-model-invocation: true
 ---
 
 # Commit Conventional
 
-Crea un git commit seguendo le regole di Conventional Commits definite in `.pre-commit-config.yaml`.
+Create a git commit following the Conventional Commits rules defined in `.pre-commit-config.yaml`.
 
-## Regole obbligatorie
+## Mandatory rules
 
-Il commit-msg hook usa `conventional-pre-commit` con `--strict` e `--force-scope`.
-Il messaggio DEVE rispettare il formato esatto:
+The `commit-msg` hook uses `conventional-pre-commit` with `--strict` and `--force-scope`.
+The message MUST follow this exact format:
 
 ```text
 <type>(<scope>): <description>
 ```
 
-**Scopes validi** (unici accettati dall'hook): `api`, `setup`, `docs`, `tests`, `deploy`, `script`, `report`, `database`, `code`
+**Valid scopes** (only these are accepted by the hook): `api`, `setup`, `docs`, `tests`, `deploy`, `script`, `report`, `database`, `code`
 
-**Tipi validi**: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `chore`, `ci`, `build`, `revert`
+**Valid types**: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `chore`, `ci`, `build`, `revert`
 
-**Lingua**: la `<description>` DEVE essere sempre in **inglese**, indipendentemente dalla lingua usata dall'utente.
+**Language**: `<description>` MUST always be in **English**, regardless of the language used by the user.
 
-## Procedura
+## Procedure
 
-1. Esegui `git status` per vedere i file modificati, staged e untracked.
-2. Esegui `git diff HEAD` per analizzare le modifiche nel dettaglio.
-3. In base alle modifiche, scegli:
-   - Il **tipo** più appropriato (feat per nuove funzionalità, fix per bug, docs per documentazione, refactor per refactoring, chore per manutenzione, ecc.)
-   - Lo **scope** corretto tra quelli validi:
-     - `api` → modifiche a controller, DTO, endpoint REST/SOAP, OpenAPI
-     - `code` → modifiche a service, component, config, model, repository, util, exception
-     - `database` → modifiche a migration Flyway (`src/main/resources/db/`), entità JPA, schema, file sql
-     - `docs` → modifiche a file `.md`, documentazione
-     - `tests` → modifiche a test (`src/test/`)
-     - `setup` → modifiche a `pom.xml`, `settings.xml`, `.pre-commit-config.yaml`, `.vscode/`
-     - `deploy` → modifiche a `collections/compose-*.yaml`, `Containerfile`, `Dockerfile`
-     - `script` → modifiche a script shell, o batch, (es: `entrypoint.sh`)
-     - `report` → modifiche a configurazioni di osservabilità (Prometheus, Grafana, Loki)
-     - `ci` → modifiche a pipeline CI/CD
+1. Run `git status` to inspect modified, staged, and untracked files.
+2. Run `git diff HEAD` to analyze the changes in detail.
+3. Based on the changes, select:
+   - The most appropriate **type** (`feat` for new features, `fix` for bugs, `docs` for documentation, `refactor` for refactoring, `chore` for maintenance, etc.)
+   - The correct **scope** from the valid list:
+     - `api` → controllers, DTOs, REST/SOAP endpoints, OpenAPI specs
+     - `code` → services, components, configuration, models, repositories, utils, exceptions
+     - `database` → Flyway migrations (`src/main/resources/db/`), JPA entities, schema, SQL files
+     - `docs` → `.md` files, project documentation
+     - `tests` → test files under `src/test/`
+     - `setup` → `pom.xml`, `settings.xml`, `.pre-commit-config.yaml`, `.vscode/`
+     - `deploy` → `collections/compose-*.yaml`, `Containerfile`, `Dockerfile`
+     - `script` → shell or batch scripts (e.g. `entrypoint.sh`)
+     - `report` → observability configuration (Prometheus, Grafana, Loki)
+     - `ci` → CI/CD pipeline files
 
-4. Redigi una descrizione concisa in inglese (imperativo, minuscolo, senza punto finale, max 72 caratteri incluso il prefisso).
+4. Write a concise description in English (imperative mood, lowercase, no trailing period, max 72 characters including the prefix).
 
-5. Se ci sono file untracked da includere, aggiungili con `git add <file>` prima del commit. Non usare mai `git add -A` o `git add .`.
+5. If there are untracked files to include, stage them explicitly with `git add <file>` before committing. Never use `git add -A` or `git add .`.
 
-6. Crea il commit con:
+6. Create the commit:
 
-   ```bash
+```bash
    git commit -m "<type>(<scope>): <description>"
-   ```
+```
 
-7. Se il pre-commit hook fallisce:
-   - Leggi l'errore per capire quale hook ha fallito.
-   - Correggi il problema (es. `spotless:apply` per la formattazione Java, fix del file YAML/JSON, ecc.).
-   - Re-esegui lo stage dei file corretti e crea un **nuovo** commit (mai `--amend`).
-   - Ripeti finché il commit non viene accettato.
+7. If the pre-commit hook fails:
+   - Read the error output to identify which hook failed.
+   - Fix the issue (e.g. run `spotless:apply` for Java formatting, fix malformed YAML/JSON, etc.).
+   - Re-stage the corrected files and create a **new** commit — never use `--amend`.
+   - Repeat until the commit is accepted.
 
-8. Al termine mostra il risultato di `git log -1 --oneline`.
+8. On success, display the result of `git log -1 --oneline`.

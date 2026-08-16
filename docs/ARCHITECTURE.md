@@ -1,92 +1,10 @@
-# Architecture Documentation — Spring Lessons
+# Architecture
 
-- [Overview](#overview)
-- [Technology Stack](#technology-stack)
 - [Project Structure](#project-structure)
-- [Domain Model](#domain-model)
-- [REST API](#rest-api)
 - [Security](#security)
-- [Kafka — Event-Driven Flow](#kafka--event-driven-flow)
 - [Database](#database)
 - [Audit Trail](#audit-trail)
 - [Observability](#observability)
-- [Email](#email)
-- [SOAP Endpoint](#soap-endpoint)
-- [Infrastructure](#infrastructure)
-- [Architectural Patterns](#architectural-patterns)
-
----
-
-## Overview
-
-See [README.md](../README.md) for a full project description.
-
-The application exposes REST APIs for two domains — **Books** and **Items** — with asynchronous item processing through Kafka and a complete audit history via Hibernate Envers.
-
-```text
-┌─────────────────────────────────────────────────────┐
-│                     Client                          │
-└────────────────────┬────────────────────────────────┘
-                     │ HTTP + JWT Bearer Token
-                     ▼
-┌─────────────────────────────────────────────────────┐
-│           Spring Boot App  :8888                    │
-│                                                     │
-│  ┌──────────────┐      ┌──────────────────────┐     │
-│  │ Books API    │      │ Items API            │     │
-│  │ /v1/books    │      │ /v1/items            │     │
-│  └──────┬───────┘      └──────────┬───────────┘     │
-│         │                         │                 │
-│  ┌──────▼───────┐      ┌──────────▼───────────┐     │
-│  │ BooksService │      │ ItemsService         │     │
-│  └──────┬───────┘      └──────────┬───────────┘     │
-│         │                         │                 │
-│         │              ┌──────────▼───────────┐     │
-│         │              │ Kafka Producer       │     │
-│         │              │ topic: topic-items   │     │
-│         │              └──────────────────────┘     │
-│         │                                           │
-│  ┌──────▼───────────────────────────────────────┐   │
-│  │              PostgreSQL (JPA + Envers)       │   │
-│  │  schema: spring_app  |  audit: history       │   │
-│  └──────────────────────────────────────────────┘   │
-└─────────────────────────────────────────────────────┘
-         ▲
-         │ Kafka Consumer
-         │ topic: topic-items
-┌────────┴────────────────────────────────────────────┐
-│              ItemsKafkaListener                     │
-│   upload-items.group  |  delete-items.group         │
-└─────────────────────────────────────────────────────┘
-```
-
----
-
-## Technology Stack
-
-| Layer | Technology |
-| --- | --- |
-| Framework | Spring Boot 4.1.0 |
-| Language | Java 25 |
-| Web Server | Jetty (replaces Tomcat) |
-| Security | Spring Security — OAuth2 Resource Server + JWT |
-| Identity Provider | Keycloak |
-| Database | PostgreSQL |
-| ORM | Spring Data JPA + Hibernate |
-| Audit | Hibernate Envers |
-| DB Migrations | Flyway |
-| Messaging | Apache Kafka |
-| DTO Mapping | MapStruct 1.6.3 |
-| API Documentation | OpenAPI 3 (SpringDoc — Swagger UI + Scalar) |
-| Observability | Micrometer + OpenTelemetry + Prometheus + Grafana + Jaeger |
-| Logging | Logback (JSON) + Loki |
-| Email | JavaMail + Mailpit |
-| HTTP Client | Apache HttpClient 5 |
-| SOAP | Spring-WS + JAXB (XSD-generated) |
-| Build | Maven |
-| Code Quality | Spotless (Google Java Style) |
-| SBOM | CycloneDX Maven Plugin |
-| Containerization | Podman + Containerfile |
 
 ---
 
@@ -135,139 +53,6 @@ src/main/java/com/personal/springlessons/
 
 ---
 
-## Domain Model
-
-### Entities
-
-```mermaid
-erDiagram
-    direction LR
-
-    BOOKS {
-        uuid        id              PK
-        varchar     name            "not null"
-        date        publication_date "not null"
-        integer     number_of_pages "not null"
-        varchar     channel         "not null (POSTMAN|INSOMNIA|SOAPUI|NA)"
-        varchar     genre           "not null (NOIR|FANTASY|SCIENCE_FICTION|MYSTERY|ROMANCE|NA)"
-        timestamptz created_at      "DB-generated, not updatable"
-        timestamptz updated_at      "DB-generated, nullable"
-        bigint      version         "optimistic locking"
-    }
-
-    ORDER_ITEMS {
-        uuid        id          PK
-        varchar     channel     "not null (POSTMAN|INSOMNIA|SOAPUI|NA)"
-        timestamptz created_at  "DB-generated, not updatable"
-    }
-
-    ITEMS {
-        uuid        id              PK
-        varchar     name            "not null"
-        varchar     barcode         "not null, unique, not updatable"
-        decimal     price           "not null (6,2)"
-        timestamptz created_at      "DB-generated, not updatable"
-        uuid        order_items_id  FK
-    }
-
-    BOOKS_AUDIT {
-        integer     rev         FK
-        varchar     revtype     "ADD|MOD|DEL"
-        uuid        id
-        varchar     name
-        date        publication_date
-        integer     number_of_pages
-        varchar     channel
-        varchar     genre
-        timestamptz created_at
-        timestamptz updated_at
-        bigint      version
-    }
-
-    REVINFO {
-        integer     rev         PK
-        bigint      revtstmp    "revision timestamp"
-        varchar     ip_address
-        varchar     client_id
-        varchar     username
-        text        request_uri
-        varchar     http_method
-    }
-
-    ORDER_ITEMS ||--o{ ITEMS : "contains (cascade ALL, orphanRemoval)"
-    REVINFO     ||--o{ BOOKS_AUDIT : "tracks"
-```
-
-> Schemas: `spring_app` → BOOKS, ORDER\_ITEMS, ITEMS &nbsp;|&nbsp; `history` → REVINFO, BOOKS\_AUDIT
-
-**Unique constraint on BOOKS:** `(name, publication_date, number_of_pages)`
-
-### Enums (List of Values)
-
-| Enum | Values |
-| --- | --- |
-| `Channel` | POSTMAN, INSOMNIA, SOAPUI, NA |
-| `Genre` | NOIR, FANTASY, SCIENCE_FICTION, MYSTERY, ROMANCE, NA |
-| `ItemStatus` | UPLOAD, DELETE (used as Kafka message routing key), NA |
-| `DomainCategory` | BOOKS, ITEMS, NA |
-
----
-
-## REST API
-
-Base path: `/spring-app` (configured via `spring.mvc.servlet.path`).
-API version prefix: `/v1/`.
-
-### Books API — `/v1/books`
-
-| Method | Path | Scope | Description |
-| --- | --- | --- | --- |
-| GET | `/v1/books` | `books:get` | Retrieve all books. Returns 204 if empty |
-| GET | `/v1/books/{id}` | `books:get` | Retrieve book by UUID |
-| POST | `/v1/books` | `books:save` | Create a new book |
-| PUT | `/v1/books/{id}` | `books:update` | Update book (requires `If-Match` header) |
-| DELETE | `/v1/books/{id}` | `books:delete` | Delete book (requires `If-Match` header) |
-| GET | `/v1/books/download` | `books:download` | Download all books as CSV |
-| POST | `/v1/books/upload` | `books:upload` | Bulk import books from CSV (multipart/form-data) |
-
-- PUT and DELETE use `If-Match` (ETag) for **optimistic concurrency control**.
-- Each endpoint is annotated with `@Observed` for OpenTelemetry tracing.
-
-### Items API — `/v1/items`
-
-| Method | Path | Scope | Description |
-| --- | --- | --- | --- |
-| GET | `/v1/items` | `items:get` | Retrieve all orders with items (paginated) |
-| POST | `/v1/items` | `items:upload` | Submit items for async processing (Kafka) |
-| DELETE | `/v1/items` | `items:delete` | Request item deletion via Kafka |
-
-- POST and DELETE publish a message to Kafka; actual DB persistence is asynchronous.
-- GET supports Spring Data `Pageable` (page, size, sort).
-
-### Exception Handling
-
-Global `@RestControllerAdvice` maps exceptions to standard HTTP responses:
-
-| Exception | HTTP Status |
-| --- | --- |
-| `InvalidUUIDException` | 400 Bad Request |
-| `MethodArgumentNotValidException` | 400 Bad Request |
-| `MissingRequestHeaderException` | 400 Bad Request |
-| `ConstraintViolationException` | 400 Bad Request |
-| `HttpMessageNotReadableException` | 400 Bad Request |
-| `MethodArgumentTypeMismatchException` | 400 Bad Request |
-| `MissingServletRequestPartException` | 400 Bad Request |
-| `BookNotFoundException` | 404 Not Found |
-| `MaxUploadSizeExceededException` | 413 Content Too Large |
-| `PreconditionFailedException` | 412 Precondition Failed |
-| `ConcurrentUpdateException` | 409 Conflict |
-| `DuplicatedBookException` | 409 Conflict |
-| `InvalidFileTypeException` | 400 Bad Request |
-| `CSVContentValidationException` | 400 Bad Request |
-| `SpringLessonsApplicationException` | 500 Internal Server Error |
-
----
-
 ## Security
 
 **Strategy:** Stateless OAuth2 Resource Server. No sessions, no CSRF.
@@ -280,7 +65,6 @@ Client ──── Bearer JWT ────► Spring Security Filter Chain
                                         │
                               ┌─────────▼──────────┐
                               │   Keycloak realm   │
-                              │ localhost:8080      │
                               └────────────────────┘
                                         │
                                   JWT claims extracted
@@ -288,23 +72,6 @@ Client ──── Bearer JWT ────► Spring Security Filter Chain
                               @PreAuthorize scope check
                               e.g. hasAuthority('SCOPE_books:get')
 ```
-
-**Key configuration:**
-
-- Session policy: `STATELESS` (`SecurityConfig.java`)
-- CSRF: disabled (`SecurityConfig.java`)
-- Authentication: `oauth2ResourceServer().jwt()` (`SecurityConfig.java`)
-- Method security: `@EnableMethodSecurity` on `SpringLessonsApplication.java` → `@PreAuthorize` on every controller method
-- Custom handlers (`SecurityConfig.java`):
-  - `CustomAuthenticationEntryPoint` → 401 responses
-  - `CustomAccessDeniedHandler` → 403 responses
-- `DefaultAuthenticationEventPublisher` for auth event propagation
-
-**OAuth2 endpoints (Keycloak):**
-
-- Issuer URI: `http://localhost:8080/realms/master`
-- JWK Set URI: `http://localhost:8080/realms/master/protocol/openid-connect/certs`
-- Token URL: `http://localhost:8080/realms/master/protocol/openid-connect/token`
 
 ### Roles × Scopes Matrix
 
@@ -333,70 +100,9 @@ Client ──── Bearer JWT ────► Spring Security Filter Chain
 
 ---
 
-## Kafka — Event-Driven Flow
-
-### Topic
-
-- **Name:** `topic-items`
-- **Message type:** `KafkaMessageItemDTO` (JSON serialized)
-- **Routing key:** `ItemStatus` field (`UPLOAD` or `DELETE`)
-
-### Producer Flow
-
-```text
-ItemsRestController
-     │
-     ▼
-ItemsService.upload() / .delete()
-     │
-     ▼
-KafkaTemplate.send("topic-items", KafkaMessageItemDTO)
-     │
-     ├── ItemStatus = UPLOAD  ──► OrderItemsDTO persisted
-     └── ItemStatus = DELETE  ──► OrderItemsEntity deleted
-```
-
-### Consumer — ItemsKafkaListener
-
-Two consumer groups share the same topic, each filtered to its own `ItemStatus`:
-
-```text
-topic-items
-     │
-     ├── uploadItemsRecordFilter (ItemStatus == UPLOAD)
-     │        └── group: upload-items.group
-     │                 └── ItemsKafkaListener.upload()
-     │                          ├── Check barcode uniqueness
-     │                          ├── Publish DuplicatedBarcodeEvent (if duplicate)
-     │                          └── Save ItemsEntity → OrderItemsEntity
-     │
-     └── deleteItemsRecordFilter (ItemStatus == DELETE)
-              └── group: delete-items.group
-                       └── ItemsKafkaListener.delete()
-                                ├── Remove ItemsEntity from order
-                                └── Delete OrderItemsEntity if empty (orphan removal)
-```
-
-**Reliability settings:**
-
-| Setting | Value |
-| --- | --- |
-| `enable-auto-commit` | false (manual ack) |
-| `max-poll-records` | 1 (one record per poll) |
-| `auto-offset-reset` | earliest |
-| `@RetryableTopic(attempts)` | 1 |
-| `@RetryableTopic(exclude)` | `DuplicatedBarcodeException` (upload group only) |
-| `dltStrategy` | NO_DLT |
-| `concurrency` | 1 |
-
-**Tracing:** each listener creates a Micrometer `Span` (`process-kafka-upload`, `process-kafka-delete`) with tags (`barcode`, `id_items`, `id_order_items`).
-
----
-
 ## Database
 
 **Engine:** PostgreSQL
-**Connection:** `jdbc:postgresql://localhost:5432/spring`
 
 ### Schema Layout
 
@@ -409,22 +115,6 @@ topic-items
 ### Flyway Migrations
 
 Managed via `spring.flyway.*`. Scripts live in `src/main/resources/db/`.
-
-| Setting | Value |
-| --- | --- |
-| Default schema | flyway |
-| App schema | spring_app |
-| DDL auto | validate (no auto DDL) |
-| Connect retries | 3 (interval 10s) |
-
-### JPA Settings
-
-| Setting | Value |
-| --- | --- |
-| Default schema | spring_app |
-| Batch size | 1000 |
-| Fetch size | 1000 |
-| DDL auto | validate |
 
 ---
 
@@ -472,142 +162,17 @@ Spring App
 │   OpenTelemetry SDK
 │         │
 │         ▼
-│   OTLP Collector  (localhost:4318)
+│   OTLP Collector
 │         │
-│         ├── Traces  ──► Jaeger     (localhost:16686)
-│         ├── Metrics ──► Prometheus (localhost:9090)
-│         │                    └──► Grafana (localhost:3000)
-│         └── Logs   ──► Loki       (internal:3100)
-│                              └──► Grafana (localhost:3000)
+│         ├── Traces  ──► Jaeger
+│         ├── Metrics ──► Prometheus
+│         │                    └──► Grafana
+│         └── Logs    ──► Loki
+│                          └──► Grafana
 │
-└── /actuator/prometheus (localhost:8889)
+└── /actuator/prometheus
           └──► Prometheus scrape
 ```
-
-### OTLP Endpoints
-
-| Signal | Endpoint |
-| --- | --- |
-| Metrics | `http://localhost:4318/v1/metrics` |
-| Traces | `http://localhost:4318/v1/traces` |
-| Logs | `http://localhost:4318/v1/logs` |
-
-**Tracing sampling probability:** 100% (`management.tracing.sampling.probability=1.0`)
-**Metrics export interval:** 10 seconds
-
-### Actuator
-
-Management port: `8889` (separate from application port `8888`).
-
-Exposed endpoints: `info`, `beans`, `env`, `health`, `metrics`, `prometheus`, `sbom`, `mappings`, `scalar`.
-
-Health groups: `liveness` and `readiness` (Kubernetes-ready).
-
----
-
-## Email
-
-**Library:** JavaMail
-**Local SMTP server:** Mailpit (captures outgoing emails for development inspection)
-
-| Setting | Value |
-| --- | --- |
-| Host | localhost |
-| SMTP port | 1025 |
-| UI | <http://localhost:8025> |
-| POP3 port | 1026 |
-| Prometheus (Mailpit) | localhost:9091 |
-
-Email sending is handled by `EmailService`. Events (e.g., `DuplicatedBarcodeEvent`) can trigger notification emails.
-
----
-
-## SOAP Endpoint
-
-A SOAP web service endpoint (`PlatformHistoryEndpoint`) is exposed alongside the REST APIs.
-
-- **Schema:** `src/main/resources/schemas/PlatformHistory.xsd`
-- **Binding:** JAXB classes generated at build time from the XSD via `jaxb2-maven-plugin`
-- **Framework:** Spring-WS
-
----
-
-## Infrastructure
-
-All external services run as containers via Podman Compose (`collections/compose-env.yaml`).
-
-Image versions are pinned in `collections/.env` via `IMAGE_*` variables and referenced in compose files as `${IMAGE_*}`. To update all images to their latest stable releases, use `/update-docker-images`.
-
-### Services
-
-| Service | Image | Port(s) | Role | Health check |
-| --- | --- | --- | --- | --- |
-| `springdb` | `postgres:${IMAGE_POSTGRES}` | 5432 | Application database | `pg_isready` |
-| `kafka` | `apache/kafka:${IMAGE_KAFKA}` | 29092 | Message broker | `kafka-broker-api-versions.sh` |
-| `keycloak` | `quay.io/keycloak/keycloak:${IMAGE_KEYCLOAK}` | 8080 | OAuth2 / OIDC provider | `/realms/master` HTTP 200 |
-| `mailpit` | `axllent/mailpit:${IMAGE_MAILPIT}` | 1025 (SMTP), 8025 (UI) | Email capture | — |
-| `wiremock` | `custom-wiremock` (built from `${IMAGE_WIREMOCK}`) | 9998, 9999 | HTTP API mocking | — |
-| `otelcol` | `otel/opentelemetry-collector:${IMAGE_OTELCOL}` | 4317, 4318 | Telemetry aggregator | — |
-| `jaeger` | `jaegertracing/jaeger:${IMAGE_JAEGER}` | 16686 | Distributed tracing UI | — |
-| `prometheus` | `prom/prometheus:${IMAGE_PROMETHEUS}` | 9090 | Metrics storage | — |
-| `grafana` | `grafana/grafana-enterprise:${IMAGE_GRAFANA}` | 3000 | Metrics + logs dashboards | — |
-| `loki` | `grafana/loki:${IMAGE_LOKI}` | 3100 (internal only) | Log aggregation | — |
-
-### Service Credentials
-
-| Service | URL | Username | Password | Notes |
-| --- | --- | --- | --- | --- |
-| **Keycloak** | <http://localhost:8080> | `admin` | *(see export)* | Admin user from `master-users-0.json` |
-| **Keycloak** | <http://localhost:8080> | `kcuser` | *(see export)* | Admin user from `master-users-0.json` |
-| **Grafana** | <http://localhost:3000> | `admin` | `admin` | Default — change on first login |
-| **PostgreSQL** | `localhost:5432` | `admin` | `adminpwd` | DB: `spring`, schema: `spring_app` |
-| **Mailpit UI** | <http://localhost:8025> | — | — | No authentication required |
-| **Mailpit SMTP** | `localhost:1025` | `grafana_sa` | `grafana_sa_password` | Used by Grafana to send alerts |
-| **Mailpit SMTP** | `localhost:1025` | `springapp_sa` | `springapp_password` | Used by Spring Boot to send emails |
-| **Prometheus** | <http://localhost:9090> | — | — | No authentication required |
-| **Jaeger** | <http://localhost:16686> | — | — | No authentication required |
-| **Wiremock** | <http://localhost:9998> | — | — | No authentication required |
-
-> **Keycloak passwords:** stored only in `collections/keycloak/export/master-users-0.json` as bcrypt hashes — not recoverable in plain text. Use the Keycloak admin console to reset them if forgotten.
-
-**Network:** `spring-lessons` (bridge)
-
-**Service dependency order** (→ means "waits for"):
-
-```text
-app → springdb (healthy), kafka (healthy), keycloak (healthy)
-app → jaeger, loki, prometheus, grafana, otelcol, wiremock, mailpit (started)
-prometheus → otelcol (started)
-grafana → prometheus, jaeger, loki, springdb (started)
-otelcol → jaeger (started)
-```
-
-Services with a health check (`springdb`, `kafka`, `keycloak`) use `condition: service_healthy` in the app's `depends_on`; all others use `condition: service_started`.
-
-### Application Container
-
-The application itself can be containerized via `Containerfile` (Podman).
-A separate `collections/compose-app.yaml` runs the app container alongside the environment.
-
----
-
-## Architectural Patterns
-
-| Pattern | Where applied |
-| --- | --- |
-| **REST API versioning** | URL prefix `/v1/` on all endpoints |
-| **Event-driven (async)** | Items upload/delete via Kafka |
-| **Spring Application Events** | `DuplicatedBarcodeEvent`, `DiscardedItemCsv` |
-| **Optimistic locking** | `If-Match` ETag header + `@Version` on BooksEntity |
-| **Audit trail** | Hibernate Envers on BooksEntity |
-| **Method-level security** | `@PreAuthorize("hasAuthority('SCOPE_*')")` |
-| **Distributed tracing** | `@Observed` + manual Micrometer spans |
-| **Structured exception handling** | `@RestControllerAdvice` hierarchy |
-| **DTO separation** | MapStruct mappers, no entities exposed directly |
-| **Stateless API** | No sessions, JWT on every request |
-| **Graceful shutdown** | `server.shutdown=graceful`; 5s locally (`application.properties`), 20s in container (`compose-app.yaml` env override) |
-| **CSV bulk import/export** | Books upload/download endpoints |
-| **Message filtering** | Kafka `RecordFilterStrategy` per consumer group |
 
 ---
 

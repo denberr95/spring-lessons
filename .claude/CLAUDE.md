@@ -1,135 +1,99 @@
-# CLAUDE.md
+# Spring Boot 4 Project Guidance
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to Claude Code (claude.ai/code) when working with code with Spring Boot 4.
 
-Full documentation lives in [`docs/`](../docs/): [Architecture](../docs/ARCHITECTURE.md) · [Setup](../docs/SETUP.md) · [Skills](../docs/CLAUDE_SKILLS.md) · [Agents](../docs/CLAUDE_AGENTS.md) · [Hooks](../docs/CLAUDE_HOOKS.md).
+---
+
+## Stack
+
+- **Framework:** Spring Boot 4.x
+- **Language:** Java 25
+- **Web Server:** Jetty (replaces Tomcat)
+- **Security:** Spring Security — OAuth2 Resource Server + JWT
+- **Identity Provider:** Keycloak
+- **Database:** PostgreSQL
+- **ORM:** Spring Data JPA + Hibernate
+- **Audit:** Hibernate Envers
+- **DB Migrations:** Flyway
+- **Messaging:** Apache Kafka
+- **DTO Mapping:** MapStruct 1.6.3
+- **API Documentation:** OpenAPI 3 (SpringDoc — Swagger UI + Scalar)
+- **Observability:** Micrometer + OpenTelemetry + Prometheus + Grafana + Jaeger
+- **Logging:** Logback (JSON) + Loki
+- **Email:** JavaMail + Mailpit
+- **HTTP Client:** Apache HttpClient 5
+- **SOAP:** Spring-WS + JAXB (XSD-generated)
+- **Build:** Maven 3.9+
+- **Code Quality:** Spotless (Google Java Style)
+- **SBOM:** CycloneDX Maven Plugin
+- **Containerization:** Podman + Containerfile
 
 ---
 
 ## Commands
 
-Every `mvn` command requires `--settings settings.xml` (custom Maven settings at project root).
+### Application
 
-```bash
-# Run application (macOS/Linux)
-mvn spring-boot:run --file pom.xml --settings settings.xml -Dspring-boot.run.profiles=default,linux
+- **Maven Clean:** `mvn clean --file pom.xml --settings.xml`
+- **Run (macOS/Linux):** `mvn spring-boot:run --file pom.xml --settings settings.xml -Dspring-boot.run.profiles=default,linux`
+- **Run (Windows):** `mvn spring-boot:run --file pom.xml --settings settings.xml -Dspring-boot.run.profiles=default,windows`
+- **Build JAR (skip tests):** `mvn package --file pom.xml --settings settings.xml -DskipTests=true`
+- **Build JAR:** `mvn package --file pom.xml --settings settings.xml` (Infrastructure must be running before executing integration tests)
 
-# Build JAR (skip tests)
-mvn package --file pom.xml --settings settings.xml -DskipTests=true
+### Testing
 
-# Run all tests (infrastructure must be running — see below)
-set -a && . collections/.env && set +a
-mvn test --file pom.xml --settings settings.xml
+- **Load env vars (required before running tests):** `set -a && . collections/.env && set +a`
+- **Run all tests:** `mvn test --file pom.xml --settings settings.xml`
+- **Run a single test class:** `mvn test --file pom.xml --settings settings.xml -Dtest=<TestClassName>`
+- **Generate test coverage report:** `mvn verify --file pom.xml --settings settings.xml`
 
-# Run a single test class
-mvn test --file pom.xml --settings settings.xml -Dtest=BooksServiceTest
+## Precommit
 
-# Apply Google Java code formatting (required before commit)
-mvn spotless:apply --file pom.xml --settings settings.xml
+- **Install hooks:** `pre-commit install`
+- **Autoupdate:** `pre-commit autoupdate`
+- **Run All Hooks:** `pre-commit run --all-files`
 
-# Start infrastructure (PostgreSQL, Kafka, Keycloak, observability stack)
-podman compose --project spring-lessons --env-file ./collections/.env \
-  --file ./collections/compose-env.yaml up --force-recreate --remove-orphans --detach
-```
+### Code Quality
 
----
+- **Apply Google Java code formatting:** `mvn spotless:apply --file pom.xml --settings settings.xml`
 
-## Architecture
+### Local Infrastructure
 
-### Request flow
+- **Start:** `podman compose --project spring-lessons --env-file ./collections/.env --file ./collections/compose-env.yaml up --force-recreate --remove-orphans --detach`
+- **Stop:** `podman compose --project spring-lessons --file ./collections/compose-env.yaml down`
+- **Cleanup Containers**: `podman container rm --all --force`
+- **Cleanup Images**: `podman image rm --all --force`
+- **Cleanup Volumes**: `podman volume rm --all --force`
+- **System Prune**: `podman system prune --force --all --volumes`
 
-```text
-Client (JWT Bearer)
-  → Spring Security (OAuth2 Resource Server, stateless, no sessions)
-  → @PreAuthorize scope check (e.g. hasAuthority('SCOPE_books:get'))
-  → Controller interface (OpenAPI annotations only)
-  → Controller impl (business delegation)
-  → Service (@Observed, @Transactional)
-  → Repository (JPA) → PostgreSQL
-```
+### Specific Container Service
 
-**Controller pattern:** every controller is split into an interface (`IBooksRestController`) carrying all `@Operation`/`@ApiResponse` annotations, and an implementation (`BooksRestController`) with `@PreAuthorize` and the actual delegation. Never put OpenAPI annotations on the implementation class.
-
-**Exception handling:** two `@RestControllerAdvice` layers — `CommonRestControllerAdvice` (global, all domains) and `BooksRestControllerAdvice` (Books-only, scoped via `assignableTypes`). Each handler uses `@ExceptionHandler(X.class)` (no `value = {X.class}` array form — SonarQube S3878). Log with a literal string: `log.error("Book not found exception", exception)`, not `log.error(exception.getMessage(), exception)` (SonarQube S2629).
-
-### Items — async Kafka flow
-
-Items upload and delete are fire-and-forget via Kafka. The REST endpoint publishes a `KafkaMessageItemDTO` to `topic-items`; actual DB persistence happens in `ItemsKafkaListener`. Two consumer groups share the topic, routed by `RecordFilterStrategy`:
-
-- `upload-items.group` → `UploadItemsRecordFilter` (ItemStatus == UPLOAD)
-- `delete-items.group` → `DeleteItemsRecordFilter` (ItemStatus == DELETE)
-
-**Critical:** `spring.json.trusted.packages` must include `com.personal.springlessons.model.dto.response` (not just `.model.dto`) because `KafkaMessageItemDTO` lives in the `response` sub-package. Spring Kafka does exact package matching, not prefix matching.
-
-### Optimistic locking — Books
-
-Two distinct failure modes with separate HTTP codes:
-
-- **412 Precondition Failed** → `PreconditionFailedException`: the `If-Match` header value doesn't match the current `ETag`. Raised in `BooksService.verifyIfMatch()` before the DB write. Wildcard `If-Match: *` bypasses this check.
-- **409 Conflict** → `ConcurrentUpdateException`: `If-Match` matched, but another transaction committed between the read and the write (JPA `OptimisticLockException`). Raised at flush time.
-
-ETag format: `W/"<version>"`. Stored as `@Version long` on `BooksEntity`.
-
-### Audit trail (Hibernate Envers)
-
-`BooksEntity` is `@Audited`. `CustomRevisionEntity` extends Envers `DefaultRevisionEntity` with five extra fields captured by `CustomRevisionEntityListener` from the current `SecurityContext` and `HttpServletRequest`: `ipAddress`, `clientId`, `username`, `requestUri`, `httpMethod`. Schema: `history` (tables: `revinfo`, `books_audit`).
-
-### Security
-
-`SecurityConfig` is stateless OAuth2 Resource Server. Keycloak issuer: `http://localhost:8080/realms/master`. Six Keycloak client applications map to six roles, each granting a subset of `books:*` / `items:*` scopes. Full role × scope matrix in [`docs/ARCHITECTURE.md`](../docs/ARCHITECTURE.md#security).
+- **Export Keycloack Local Configuration:** `podman compose --project spring-lessons --env-file ./collections/.env --file ./collections compose-keycloak-export.yaml up --abort-on-container-exit --remove-orphans`
 
 ---
 
-## Key conventions
+## Skills
 
-**Code style:** Google Java Style enforced by Spotless. Run `mvn spotless:apply` before committing; the pre-commit hook will reject non-formatted code.
+Use matching skill files under `.claude/skills/`. Each skill encodes a repeatable workflow; invoke them by name when the task matches.
 
-**Commits:** Conventional Commits format enforced by pre-commit. Use `/commit-conventional` skill to generate the commit message.
-
-**Spring profiles:**
-
-- Development: `default,linux` (macOS/Linux) or `default,windows`
-- Container runtime: `runtime` (all config from env vars)
-- AOT / native-image build: `aot` (H2 in-memory, Flyway off, Kafka off — avoids external connections during `process-aot`)
-
-**JaCoCo exclusions:** `SpringLessonsApplication`, `component/mapper/**`, `config/**`, `model/**`.
-
-**HTTP status codes:** use `HttpStatus.CONTENT_TOO_LARGE` (not deprecated `PAYLOAD_TOO_LARGE`) for 413 responses — Spring Framework 7 / RFC 9110.
+- **`/commit-conventional`**: Generates a Conventional Commits-compliant commit message based on staged changes.
+- **`/update-maven-deps`**: Updates Maven dependencies to their latest compatible versions and verifies the build is not broken.
+- **`/update-docker-images`**: Updates container image tags in Podman Compose files to their latest available versions and verifies the local infrastructure starts correctly.
 
 ---
 
-## Testing gotchas
+## Conventions
 
-Integration tests (`@SpringBootTest`) connect to real PostgreSQL, Kafka, and Keycloak. Before running from CLI, load the env vars:
-
-```bash
-set -a && . collections/.env && set +a
-```
-
-VS Code loads them automatically via `envFile` in `.vscode/settings.json` → `java.test.config`.
-
-The Kafka topic (`topic-items`) accumulates messages between test runs. If a poison message is stuck at offset 0 and blocks a partition, recreate the broker:
-
-```bash
-podman compose --project spring-lessons --env-file ./collections/.env \
-  --file ./collections/compose-env.yaml up --force-recreate --detach kafka
-```
-
----
-
-## Infrastructure image versions
-
-All container image tags are pinned in `collections/.env` as `IMAGE_*` variables. To update them, use the `/update-docker-images` skill.
-
----
-
-## Custom skills
-
-Project-specific skills in `.claude/skills/`:
-
-| Skill | Purpose |
-| --- | --- |
-| `/commit-conventional` | Git commit following Conventional Commits |
-| `/document-code-md` | Keep `docs/*.md` in sync with the source code |
-| `/update-docker-images` | Bump pinned container image versions in `.env` |
-| `/update-maven-deps` | Scan Maven dependencies and plugins for available upgrades |
+- **Code style:** Google Java Style enforced by Spotless. Run the [Apply Google Java code formatting](#code-quality) command before committing; the pre-commit hook will reject non-formatted code.
+- **Commits:** Conventional Commits format enforced by pre-commit. Use `/commit-conventional` skill to generate the commit message.
+- **Spring Profiles:** Use OS-specific profiles for local development and testing. Always combine with `default`. See [Run commands](#application).
+  - **MacOS/Linux:** `-Dspring-boot.run.profiles=default,linux`
+  - **Windows:** `-Dspring-boot.run.profiles=default,windows`
+  - **Container/CI:** `-Dspring-boot.run.profiles=runtime` (all config injected via env vars)
+- **Test coverage:** JaCoCo measures test coverage at build time. See [Generate test coverage report](#testing). The build fails if coverage thresholds are not met — do not disable or bypass them. Report available at `target/site/jacoco/index.html`.
+- **Local infrastructure:** Podman Compose manages all required services (PostgreSQL, Kafka, Keycloak, observability stack). Infrastructure must be running before executing integration tests. See [Local Infrastructure commands](#local-infrastructure).
+- **Project layout — special folders:** The following directories have a specific role and must be used consistently:
+  - **`bin/`**: Stores compiled binaries (JAR or native image). Never commit its contents.
+  - **`logs/`**: Stores application logs generated during local testing. Never commit its contents.
+  - **`docs/`**: Contains project documentation. Must be updated whenever a new feature is developed.
+  - **`collections/`**: Contains Podman Compose files, `.env` files, and Postman collections. Required for local infrastructure and API testing.
