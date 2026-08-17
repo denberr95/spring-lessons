@@ -31,18 +31,40 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.ContentCachingResponseWrapper;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
 @ConditionalOnProperty(prefix = "app-config.logging-filter", name = "enable-http-server",
     havingValue = "true", matchIfMissing = false)
-@EqualsAndHashCode(callSuper = false)
-@Data
 @Component
 public class HttpServerLoggingFilter extends OncePerRequestFilter {
 
   private static final Logger log = LoggerFactory.getLogger(HttpServerLoggingFilter.class);
   private final AppPropertiesConfig appPropertiesConfig;
+
+  HttpServerLoggingFilter(AppPropertiesConfig appPropertiesConfig) {
+    this.appPropertiesConfig = appPropertiesConfig;
+  }
+
+  public AppPropertiesConfig getAppPropertiesConfig() {
+    return this.appPropertiesConfig;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o)
+      return true;
+    if (!(o instanceof HttpServerLoggingFilter that))
+      return false;
+    return java.util.Objects.equals(this.appPropertiesConfig, that.appPropertiesConfig);
+  }
+
+  @Override
+  public int hashCode() {
+    return java.util.Objects.hash(this.appPropertiesConfig);
+  }
+
+  @Override
+  public String toString() {
+    return "HttpServerLoggingFilter{appPropertiesConfig=" + this.appPropertiesConfig + '}';
+  }
 
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
@@ -113,7 +135,12 @@ public class HttpServerLoggingFilter extends OncePerRequestFilter {
   private void logMultipartFiles(HttpServletRequest request) throws ServletException, IOException {
     for (Part p : request.getParts()) {
       log.info("Uploaded File Name: '{}'", p.getSubmittedFileName());
-      log.info("File Size: '{}'", p.getSize());
+      try {
+        log.info("File Size: '{}'", p.getSize());
+      } catch (NullPointerException _) {
+        // Jetty in-memory parts may have a null path; size cannot be determined
+        log.info("File Size: unknown");
+      }
       log.info("Content Type: '{}'", p.getContentType());
     }
   }

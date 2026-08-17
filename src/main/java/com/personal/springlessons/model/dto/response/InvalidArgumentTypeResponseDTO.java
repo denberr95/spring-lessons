@@ -1,15 +1,40 @@
 package com.personal.springlessons.model.dto.response;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import java.util.Objects;
 
-@Data
-@NoArgsConstructor
-@ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = false)
 public class InvalidArgumentTypeResponseDTO extends BaseErrorResponseDTO {
 
   private InvalidArgumentTypeAdditionalDetailsDTO additionalData;
+
+  public InvalidArgumentTypeResponseDTO() {
+    // no-args constructor for Jackson deserialization
+  }
+
+  public InvalidArgumentTypeAdditionalDetailsDTO getAdditionalData() {
+    return this.additionalData;
+  }
+
+  public void setAdditionalData(InvalidArgumentTypeAdditionalDetailsDTO additionalData) {
+    this.additionalData = additionalData;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o)
+      return true;
+    if (!(o instanceof InvalidArgumentTypeResponseDTO that))
+      return false;
+    return Objects.equals(this.additionalData, that.additionalData);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(this.additionalData);
+  }
+
+  @Override
+  public String toString() {
+    return "InvalidArgumentTypeResponseDTO{" + super.toString() + ", additionalData="
+        + this.additionalData + '}';
+  }
 }

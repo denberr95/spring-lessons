@@ -1,24 +1,70 @@
 package com.personal.springlessons.model.dto.wrapper;
 
 import java.util.List;
+import java.util.Objects;
 
 import com.personal.springlessons.model.dto.BookDTO;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.util.MultiValueMap;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@NoArgsConstructor
 public class BooksWrapperDTO {
 
   private BookDTO bookDTO;
   private List<BookDTO> bookDTOs;
   private MultiValueMap<String, String> httpHeaders;
 
+  public BooksWrapperDTO() {
+    // no-args constructor for MapStruct
+  }
+
+  public BookDTO getBookDTO() {
+    return this.bookDTO;
+  }
+
+  public void setBookDTO(BookDTO bookDTO) {
+    this.bookDTO = bookDTO;
+  }
+
+  public List<BookDTO> getBookDTOs() {
+    return this.bookDTOs;
+  }
+
+  public void setBookDTOs(List<BookDTO> bookDTOs) {
+    this.bookDTOs = bookDTOs;
+  }
+
+  public MultiValueMap<String, String> getHttpHeaders() {
+    return this.httpHeaders;
+  }
+
+  public void setHttpHeaders(MultiValueMap<String, String> httpHeaders) {
+    this.httpHeaders = httpHeaders;
+  }
+
   public HttpHeaders convertHttpHeaders() {
     return this.httpHeaders != null ? new HttpHeaders(this.httpHeaders) : HttpHeaders.EMPTY;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o)
+      return true;
+    if (!(o instanceof BooksWrapperDTO that))
+      return false;
+    return Objects.equals(this.bookDTO, that.bookDTO)
+        && Objects.equals(this.bookDTOs, that.bookDTOs)
+        && Objects.equals(this.httpHeaders, that.httpHeaders);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(this.bookDTO, this.bookDTOs, this.httpHeaders);
+  }
+
+  @Override
+  public String toString() {
+    return "BooksWrapperDTO{" + "bookDTO=" + this.bookDTO + ", bookDTOs=" + this.bookDTOs
+        + ", httpHeaders=" + this.httpHeaders + '}';
   }
 }

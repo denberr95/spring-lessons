@@ -1,15 +1,40 @@
 package com.personal.springlessons.model.dto.response;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import java.util.Objects;
 
-@Data
-@NoArgsConstructor
-@ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = false)
 public class GenericErrorResponseDTO extends BaseErrorResponseDTO {
 
   private GenericErrorAdditionalDetailsDTO additionalData;
+
+  public GenericErrorResponseDTO() {
+    // no-args constructor for Jackson deserialization
+  }
+
+  public GenericErrorAdditionalDetailsDTO getAdditionalData() {
+    return this.additionalData;
+  }
+
+  public void setAdditionalData(GenericErrorAdditionalDetailsDTO additionalData) {
+    this.additionalData = additionalData;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o)
+      return true;
+    if (!(o instanceof GenericErrorResponseDTO that))
+      return false;
+    return Objects.equals(this.additionalData, that.additionalData);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(this.additionalData);
+  }
+
+  @Override
+  public String toString() {
+    return "GenericErrorResponseDTO{" + super.toString() + ", additionalData=" + this.additionalData
+        + '}';
+  }
 }

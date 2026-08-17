@@ -1,11 +1,39 @@
 package com.personal.springlessons.model.dto.response;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.util.Objects;
 
-@Data
-@NoArgsConstructor
 public class BookNotFoundAdditionalDetailsDTO {
 
   private String id;
+
+  public BookNotFoundAdditionalDetailsDTO() {
+    // no-args constructor for Jackson deserialization
+  }
+
+  public String getId() {
+    return this.id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o)
+      return true;
+    if (!(o instanceof BookNotFoundAdditionalDetailsDTO that))
+      return false;
+    return Objects.equals(this.id, that.id);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(this.id);
+  }
+
+  @Override
+  public String toString() {
+    return "BookNotFoundAdditionalDetailsDTO{id='" + this.id + "'}";
+  }
 }
