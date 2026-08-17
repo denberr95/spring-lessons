@@ -160,8 +160,9 @@ public class BooksService {
         .orElseThrow(() -> new BookNotFoundException(id));
 
     final UUID currentId = bookEntity.getId();
-    this.bookRepository.findByNameAndPublicationDateAndNumberOfPages(bookDTO.name(),
-        bookDTO.publicationDate(), bookDTO.numberOfPages())
+    this.bookRepository
+        .findByNameAndPublicationDateAndNumberOfPages(bookDTO.name(), bookDTO.publicationDate(),
+            bookDTO.numberOfPages())
         .filter(book -> !book.getId().equals(currentId)).ifPresent(book -> {
           throw new DuplicatedBookException(book.getName(), book.getId().toString());
         });

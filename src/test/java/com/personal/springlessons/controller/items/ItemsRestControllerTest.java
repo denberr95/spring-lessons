@@ -180,8 +180,8 @@ class ItemsRestControllerTest {
 
     this.restTestClient.post().uri(this.buildUrl("/v1/items"))
         .contentType(MediaType.APPLICATION_JSON)
-        .headers(this.retrieveHttpHeaders(this.invalidToken)).body(order).exchange()
-        .expectStatus().isForbidden();
+        .headers(this.retrieveHttpHeaders(this.invalidToken)).body(order).exchange().expectStatus()
+        .isForbidden();
   }
 
   @Test
@@ -197,8 +197,8 @@ class ItemsRestControllerTest {
 
     this.restTestClient.method(org.springframework.http.HttpMethod.DELETE)
         .uri(this.buildUrl("/v1/items")).contentType(MediaType.APPLICATION_JSON)
-        .headers(this.retrieveHttpHeaders(this.invalidToken)).body(order).exchange()
-        .expectStatus().isForbidden();
+        .headers(this.retrieveHttpHeaders(this.invalidToken)).body(order).exchange().expectStatus()
+        .isForbidden();
   }
 
   @Test

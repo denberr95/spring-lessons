@@ -70,8 +70,7 @@ class BooksServiceUnitTest {
     when(booksRepository.findById(id)).thenReturn(Optional.of(entity));
     doThrow(OptimisticLockingFailureException.class).when(booksRepository).delete(entity);
 
-    assertThrows(ConcurrentUpdateException.class,
-        () -> booksService.delete(idValue, "\"0\""));
+    assertThrows(ConcurrentUpdateException.class, () -> booksService.delete(idValue, "\"0\""));
   }
 
   @Test
@@ -104,8 +103,7 @@ class BooksServiceUnitTest {
     String idValue = id.toString();
     when(booksRepository.findById(id)).thenReturn(Optional.of(entity));
 
-    assertThrows(PreconditionFailedException.class,
-        () -> booksService.delete(idValue, "\"999\""));
+    assertThrows(PreconditionFailedException.class, () -> booksService.delete(idValue, "\"999\""));
   }
 
   @Test

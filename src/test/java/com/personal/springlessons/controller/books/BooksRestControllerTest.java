@@ -300,9 +300,8 @@ class BooksRestControllerTest {
   void givenExistingId_whenUpdate_thenBookIsUpdated() {
     String id = this.bookService.getAll().getBookDTOs().get(0).id();
     String etag = this.bookService.getById(id).getHttpHeaders().getFirst("ETag");
-    BookDTO updated =
-        new BookDTO(null, "Updated Controller Book", 200, LocalDate.of(2025, Month.JANUARY, 1),
-            Genre.FANTASY);
+    BookDTO updated = new BookDTO(null, "Updated Controller Book", 200,
+        LocalDate.of(2025, Month.JANUARY, 1), Genre.FANTASY);
 
     this.restTestClient.put().uri(String.format(this.resourceUrl, id))
         .contentType(MediaType.APPLICATION_JSON).headers(headers -> {
@@ -327,8 +326,8 @@ class BooksRestControllerTest {
   @Test
   void givenWildcardIfMatch_whenUpdate_thenBookIsUpdated() {
     String id = this.bookService.getAll().getBookDTOs().get(0).id();
-    BookDTO updated = new BookDTO(null, "Wildcard Update", 220,
-        LocalDate.of(2025, Month.MARCH, 1), Genre.FANTASY);
+    BookDTO updated = new BookDTO(null, "Wildcard Update", 220, LocalDate.of(2025, Month.MARCH, 1),
+        Genre.FANTASY);
 
     this.restTestClient.put().uri(String.format(this.resourceUrl, id))
         .contentType(MediaType.APPLICATION_JSON).headers(headers -> {
@@ -339,8 +338,8 @@ class BooksRestControllerTest {
 
   @Test
   void givenNonExistingId_whenUpdate_thenReturnBookNotFound() {
-    BookDTO dto = new BookDTO(null, "Some Book", 100, LocalDate.of(2024, Month.JANUARY, 1),
-        Genre.NOIR);
+    BookDTO dto =
+        new BookDTO(null, "Some Book", 100, LocalDate.of(2024, Month.JANUARY, 1), Genre.NOIR);
 
     this.restTestClient.put().uri(this.fakeResourceUrl).contentType(MediaType.APPLICATION_JSON)
         .headers(headers -> {
@@ -368,8 +367,8 @@ class BooksRestControllerTest {
 
   @Test
   void givenInvalidBookId_whenUpdate_thenReturnInvalidUUID() {
-    BookDTO dto = new BookDTO(null, "Some Book", 100, LocalDate.of(2024, Month.JANUARY, 1),
-        Genre.NOIR);
+    BookDTO dto =
+        new BookDTO(null, "Some Book", 100, LocalDate.of(2024, Month.JANUARY, 1), Genre.NOIR);
 
     this.restTestClient.put().uri(String.format(this.resourceUrl, "not-a-uuid"))
         .contentType(MediaType.APPLICATION_JSON).headers(headers -> {

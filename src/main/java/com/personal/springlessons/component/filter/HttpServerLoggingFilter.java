@@ -9,6 +9,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
@@ -16,7 +17,9 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
+
 import com.personal.springlessons.config.AppPropertiesConfig;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -27,6 +30,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.ContentCachingResponseWrapper;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -97,7 +101,8 @@ public class HttpServerLoggingFilter extends OncePerRequestFilter {
   }
 
   private boolean isMultipart(String contentType) {
-    return contentType != null && contentType.startsWith(MediaType.MULTIPART_FORM_DATA_VALUE);
+    return Optional.ofNullable(contentType)
+        .map(ct -> ct.startsWith(MediaType.MULTIPART_FORM_DATA_VALUE)).orElse(false);
   }
 
   private boolean downloadedFile(ContentCachingResponseWrapper response) {
