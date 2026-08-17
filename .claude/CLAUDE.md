@@ -77,6 +77,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 Use matching skill files under `.claude/skills/`. Each skill encodes a repeatable workflow; invoke them by name when the task matches.
 
 - **`/commit-conventional`**: Generates a Conventional Commits-compliant commit message based on staged changes.
+- **`/spring-boot-4-null-safety`**: Sets up JSpecify-based null safety — adds `@NullMarked` to all packages via `package-info.java`, adds the JSpecify dependency to `pom.xml`, and migrates any legacy null annotations to `org.jspecify.annotations`.
 - **`/update-maven-deps`**: Updates Maven dependencies to their latest compatible versions and verifies the build is not broken.
 - **`/update-docker-images`**: Updates container image tags in Podman Compose files to their latest available versions and verifies the local infrastructure starts correctly.
 - **`/update-precommit-hooks`**: Updates all pre-commit hook revisions to their latest versions, verifies Python compatibility for Python-based hooks, and reverts incompatible updates to the highest compatible revision.
