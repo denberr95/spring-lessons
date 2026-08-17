@@ -1,59 +1,59 @@
 ---
 name: update-maven-deps
-description: Scan Maven dependencies and plugins for available stable updates and produce a categorized report (Parent BOM, properties, dependencies, plugins). Excludes pre-release versions (alpha, beta, RC, SNAPSHOT) and vendor-specific builds. Use when the user asks about dependency updates, wants to check for outdated Maven libraries, is preparing a maintenance release, or needs a dependency health report.
+description: Scan Maven dependencies and plugins for available stable updates and produce a categorized report (Parent BOM, properties, dependencies, plugins). Excludes pre-release versions (alpha, beta, RC, SNAPSHOT) and vendor-specific builds. Use this skill whenever the user asks about dependency updates, wants to check for outdated Maven libraries, mentions pom.xml health, is preparing a maintenance release, or needs a dependency audit — even if they don't explicitly say "Maven" or "update report". Trigger also when the user asks things like "are my libs up to date?", "what needs upgrading?", or "check my Java dependencies".
 disable-model-invocation: true
 ---
 
 # Update Maven Dependencies
 
-Analizza le dipendenze e i plugin Maven del progetto e produce un report degli aggiornamenti disponibili a versioni stable.
+Analyze the project's Maven dependencies and plugins and produce a report of available updates to stable versions.
 
-## Procedura
+## Procedure
 
-### 1. Lettura del progetto
+### 1. Read the project
 
-- Leggi `pom.xml` per identificare:
-  - Parent BOM (es. `spring-boot-starter-parent`) e sua versione
-  - Sezione `<properties>` con le versioni dichiarate esplicitamente
-  - Sezione `<dependencyManagement>` con BOM importati
-  - Sezione `<dependencies>` con tutte le dipendenze dirette
-  - Sezione `<build><plugins>` con tutti i plugin e le loro versioni
-- Se esiste `settings.xml` nella root del progetto, usalo nelle invocazioni Maven con `--settings settings.xml`
-- Se non esiste, ometti il flag `--settings`
+- Read `pom.xml` to identify:
+  - Parent BOM (e.g. `spring-boot-starter-parent`) and its version
+  - `<properties>` section with explicitly declared versions
+  - `<dependencyManagement>` section with imported BOMs
+  - `<dependencies>` section with all direct dependencies
+  - `<build><plugins>` section with all plugins and their versions
+- If `settings.xml` exists in the project root, use it in Maven invocations with `--settings settings.xml`
+- If it does not exist, omit the flag
 
-### 2. Esecuzione della scansione
+### 2. Run the scan
 
-Esegui i seguenti comandi Maven in sequenza. Se un comando fallisce, segnalalo e prosegui con il successivo.
+Execute the following Maven commands in sequence. If a command fails, report it and continue with the next.
 
-**Aggiornamenti dipendenze:**
+**Dependency updates:**
 
 ```bash
 mvn versions:display-dependency-updates --file pom.xml [--settings settings.xml] -DprocessDependencyManagement=true -DprocessDependencies=true 2>&1
 ```
 
-**Aggiornamenti plugin:**
+**Plugin updates:**
 
 ```bash
 mvn versions:display-plugin-updates --file pom.xml [--settings settings.xml] 2>&1
 ```
 
-**Aggiornamenti properties:**
+**Property updates:**
 
 ```bash
 mvn versions:display-property-updates --file pom.xml [--settings settings.xml] 2>&1
 ```
 
-### 3. Analisi dell'output
+### 3. Analyze the output
 
-Filtra i risultati mantenendo **solo gli aggiornamenti a versioni stable**. Escludi:
+Filter results keeping **only updates to stable versions**. Exclude:
 
-- Versioni alpha, beta, milestone, release candidate (`-alpha`, `-beta`, `-M*`, `-RC*`, `-SNAPSHOT`, `-EA`)
-- Versioni identiche a quella corrente
-- Dipendenze gestite dal parent BOM senza versione esplicita nel `pom.xml` (a meno che non ci sia un aggiornamento del BOM stesso disponibile)
+- Alpha, beta, milestone, release candidate versions (`-alpha`, `-beta`, `-M*`, `-RC*`, `-SNAPSHOT`, `-EA`)
+- Versions identical to the current one
+- Dependencies managed by the parent BOM without an explicit version in `pom.xml` (unless a BOM update itself is available)
 
 ### 4. Report
 
-Presenta il risultato organizzato per categoria:
+Present the results organized by category:
 
 ```text
 ## Maven Dependency Update Report
@@ -63,7 +63,7 @@ Presenta il risultato organizzato per categoria:
 |---|---|---|---|
 | spring-boot-starter-parent | x.y.z | x.y.z | ... |
 
-### Properties (versioni esplicite)
+### Properties (explicit versions)
 | Property | Artifact | Current | Latest Stable |
 |---|---|---|---|
 | ... | ... | ... | ... |
@@ -78,19 +78,19 @@ Presenta il risultato organizzato per categoria:
 |---|---|---|
 | ... | ... | ... |
 
-### Nessun aggiornamento disponibile
-- Lista delle dipendenze/plugin già alla versione più recente stable
+### No updates available
+- List of dependencies/plugins already at the latest stable version
 ```
 
-Se non ci sono aggiornamenti disponibili per una categoria, indicalo con `— nessun aggiornamento disponibile`.
+If no updates are available for a category, indicate it with `— no updates available`.
 
-### 5. Indicazioni
+### 5. Guidance
 
-Dopo il report, fornisci indicazioni su:
+After the report, provide guidance on:
 
-- Aggiornamenti ad **alto impatto** (parent BOM, dipendenze core Spring) che potrebbero richiedere verifiche di compatibilità
-- Aggiornamenti **sicuri** (librerie indipendenti, plugin di build) applicabili con rischio basso
-- Eventuali **dipendenze obsolete o deprecate** da considerare per sostituzione
+- **High-impact** updates (parent BOM, core Spring dependencies) that may require compatibility checks
+- **Safe** updates (standalone libraries, build plugins) that can be applied with low risk
+- Any **deprecated or obsolete dependencies** worth considering for replacement
 
-Non applicare alcuna modifica al `pom.xml`. Il report è solo informativo.
-Al termine, se ci sono aggiornamenti da applicare, suggerisci all'utente di modificare il `pom.xml` e usare `/commit-conventional` con scope `setup`.
+Do not apply any changes to `pom.xml`. The report is informational only.
+After the report, if there are updates to apply, suggest the user modify `pom.xml` and use `/commit-conventional` with scope `setup`.
