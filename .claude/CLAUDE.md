@@ -79,6 +79,7 @@ Use matching skill files under `.claude/skills/`. Each skill encodes a repeatabl
 - **`/commit-conventional`**: Generates a Conventional Commits-compliant commit message based on staged changes.
 - **`/update-maven-deps`**: Updates Maven dependencies to their latest compatible versions and verifies the build is not broken.
 - **`/update-docker-images`**: Updates container image tags in Podman Compose files to their latest available versions and verifies the local infrastructure starts correctly.
+- **`/update-precommit-hooks`**: Updates all pre-commit hook revisions to their latest versions, verifies Python compatibility for Python-based hooks, and reverts incompatible updates to the highest compatible revision.
 
 ---
 
