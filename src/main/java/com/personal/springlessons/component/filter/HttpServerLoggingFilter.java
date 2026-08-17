@@ -9,7 +9,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
-
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
@@ -17,9 +16,7 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
-
 import com.personal.springlessons.config.AppPropertiesConfig;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -53,12 +50,12 @@ public class HttpServerLoggingFilter extends OncePerRequestFilter {
       return true;
     if (!(o instanceof HttpServerLoggingFilter that))
       return false;
-    return java.util.Objects.equals(this.appPropertiesConfig, that.appPropertiesConfig);
+    return Objects.equals(this.appPropertiesConfig, that.appPropertiesConfig);
   }
 
   @Override
   public int hashCode() {
-    return java.util.Objects.hash(this.appPropertiesConfig);
+    return Objects.hash(this.appPropertiesConfig);
   }
 
   @Override
@@ -73,7 +70,7 @@ public class HttpServerLoggingFilter extends OncePerRequestFilter {
     ContentCachingResponseWrapper responseWrapper = this.responseWrapper(response);
     List<String> paths = this.appPropertiesConfig.getLoggingFilter().getExcludePath();
     String requestUri = request.getRequestURI();
-    boolean isExcluded = paths != null && paths.stream().anyMatch(requestUri::startsWith);
+    boolean isExcluded = paths.stream().anyMatch(requestUri::startsWith);
     if (isExcluded) {
       filterChain.doFilter(request, response);
     } else {
@@ -137,8 +134,7 @@ public class HttpServerLoggingFilter extends OncePerRequestFilter {
       log.info("Uploaded File Name: '{}'", p.getSubmittedFileName());
       try {
         log.info("File Size: '{}'", p.getSize());
-      } catch (NullPointerException _) {
-        // Jetty in-memory parts may have a null path; size cannot be determined
+      } catch (Exception _) {
         log.info("File Size: unknown");
       }
       log.info("Content Type: '{}'", p.getContentType());
