@@ -178,7 +178,8 @@ import_ssl_certificates() {
     # Import external certificates
     IFS=',' read -ra services <<< "$REMOTE_SERVICES"
     for service in "${services[@]}"; do
-        # fix #8: parameter expansion al posto di subshell con cut
+    
+        # Parameter expansion al posto di subshell con cut
         host="${service%%:*}"
         port="${service##*:}"
         cert_file="/app/${host}_external_certificate.crt"
