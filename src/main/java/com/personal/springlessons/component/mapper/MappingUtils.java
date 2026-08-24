@@ -7,6 +7,7 @@ import java.time.format.DateTimeParseException;
 import com.personal.springlessons.model.lov.Genre;
 import com.personal.springlessons.util.Constants;
 
+import org.jspecify.annotations.Nullable;
 import org.mapstruct.Named;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +15,7 @@ import org.springframework.stereotype.Component;
 public class MappingUtils {
 
   @Named("stringToLocalDate")
-  public LocalDate stringToLocalDate(String dateString) {
+  public @Nullable LocalDate stringToLocalDate(String dateString) {
     if (dateString == null || dateString.isBlank()) {
       return null;
     }
@@ -27,7 +28,7 @@ public class MappingUtils {
   }
 
   @Named("stringToInteger")
-  public Integer stringToInteger(String numberString) {
+  public @Nullable Integer stringToInteger(String numberString) {
     if (numberString == null || numberString.isBlank()) {
       return null;
     }
@@ -39,7 +40,7 @@ public class MappingUtils {
   }
 
   @Named("stringToEnum")
-  public <E extends Enum<E>> E stringToEnum(Class<E> enumClass, String value) {
+  public <E extends Enum<E>> @Nullable E stringToEnum(Class<E> enumClass, String value) {
     if (value == null || value.isEmpty()) {
       return null;
     }
@@ -51,7 +52,7 @@ public class MappingUtils {
   }
 
   @Named("stringToGenre")
-  public Genre stringToGenre(String value) {
+  public @Nullable Genre stringToGenre(String value) {
     return this.stringToEnum(Genre.class, value);
   }
 }

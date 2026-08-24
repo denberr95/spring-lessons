@@ -8,6 +8,7 @@ import com.personal.springlessons.util.Constants;
 import com.personal.springlessons.util.Methods;
 
 import org.hibernate.envers.RevisionListener;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
@@ -67,7 +68,7 @@ public class CustomRevisionEntityListener implements RevisionListener {
     return result;
   }
 
-  private String resolveClientId() {
+  private @Nullable String resolveClientId() {
     String result = null;
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     if (authentication != null && authentication.getPrincipal() instanceof Jwt jwt) {
@@ -78,7 +79,7 @@ public class CustomRevisionEntityListener implements RevisionListener {
     return result;
   }
 
-  private String resolveUsername() {
+  private @Nullable String resolveUsername() {
     String result = null;
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     if (authentication != null && authentication.getPrincipal() instanceof Jwt jwt) {

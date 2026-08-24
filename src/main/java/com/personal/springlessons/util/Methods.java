@@ -16,6 +16,7 @@ import java.util.UUID;
 import com.personal.springlessons.exception.InvalidUUIDException;
 import com.personal.springlessons.model.lov.DomainCategory;
 
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.info.GitProperties;
@@ -136,7 +137,7 @@ public final class Methods {
     return headers;
   }
 
-  public static String getEtag(MultiValueMap<String, String> map) {
+  public static @Nullable String getEtag(MultiValueMap<String, String> map) {
     log.debug("Retrieve ETag value");
     String result = null;
     String etag = map.getFirst(Constants.S_ETAG);
@@ -147,7 +148,7 @@ public final class Methods {
     return result;
   }
 
-  public static String getEtag(String value) {
+  public static @Nullable String getEtag(String value) {
     log.debug("Retrieve ETag value: '{}'", value);
     String result = null;
     if (value != null) {
@@ -157,7 +158,7 @@ public final class Methods {
     return result;
   }
 
-  public static String firstNonBlank(String... values) {
+  public static @Nullable String firstNonBlank(String... values) {
     log.debug("Retrieve first non blank value");
     String result = null;
     if (values != null && values.length > 0) {
@@ -172,7 +173,7 @@ public final class Methods {
     return result;
   }
 
-  public static OffsetDateTime convertInstantToOffsetDateTime(Instant instant) {
+  public static @Nullable OffsetDateTime convertInstantToOffsetDateTime(Instant instant) {
     log.debug("Convert Instant: '{}' to OffsetDateTime", instant);
     OffsetDateTime result = null;
     if (instant != null) {
@@ -182,7 +183,7 @@ public final class Methods {
     return result;
   }
 
-  public static OffsetDateTime convertInstantToOffsetDateTime(Long instantInMillis) {
+  public static @Nullable OffsetDateTime convertInstantToOffsetDateTime(Long instantInMillis) {
     log.debug("Convert Instant: '{}' to OffsetDateTime", instantInMillis);
     OffsetDateTime result = null;
     if (instantInMillis != null) {
