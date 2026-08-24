@@ -8,7 +8,6 @@ test/
 
 # Ignore Other files
 collections/
-lombok.config
 *.port
 *.md
 
