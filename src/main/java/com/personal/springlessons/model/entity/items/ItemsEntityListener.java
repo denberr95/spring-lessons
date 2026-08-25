@@ -12,64 +12,43 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import io.micrometer.tracing.Span;
-import io.micrometer.tracing.Tracer;
-
 @Component
 public class ItemsEntityListener {
 
   private static final Logger log = LoggerFactory.getLogger(ItemsEntityListener.class);
-  private final Tracer tracer;
-
-  public ItemsEntityListener(Tracer tracer) {
-    this.tracer = tracer;
-  }
 
   @PostLoad
   private void postLoad(ItemsEntity entity) {
-    this.logInSpan("postLoad", entity);
+    log.trace("postLoad: '{}' entity: '{}'", entity.getClass().getName(), entity);
   }
 
   @PreUpdate
   private void preUpdate(ItemsEntity entity) {
-    this.logInSpan("preUpdate", entity);
+    log.trace("preUpdate: '{}' entity: '{}'", entity.getClass().getName(), entity);
   }
 
   @PostUpdate
   private void postUpdate(ItemsEntity entity) {
-    this.logInSpan("postUpdate", entity);
+    log.trace("postUpdate: '{}' entity: '{}'", entity.getClass().getName(), entity);
   }
 
   @PrePersist
   private void prePersist(ItemsEntity entity) {
-    this.logInSpan("prePersist", entity);
+    log.trace("prePersist: '{}' entity: '{}'", entity.getClass().getName(), entity);
   }
 
   @PostPersist
   private void postPersist(ItemsEntity entity) {
-    this.logInSpan("postPersist", entity);
+    log.trace("postPersist: '{}' entity: '{}'", entity.getClass().getName(), entity);
   }
 
   @PreRemove
   private void preRemove(ItemsEntity entity) {
-    this.logInSpan("preRemove", entity);
+    log.trace("preRemove: '{}' entity: '{}'", entity.getClass().getName(), entity);
   }
 
   @PostRemove
   private void postRemove(ItemsEntity entity) {
-    this.logInSpan("postRemove", entity);
-  }
-
-  private void logInSpan(String event, ItemsEntity entity) {
-    if (this.tracer.currentSpan() != null) {
-      log.trace("{}: '{}' entity: '{}'", event, entity.getClass().getName(), entity);
-    } else {
-      Span span = this.tracer.nextSpan().name("jpa.entity-listener").start();
-      try (var _ = this.tracer.withSpan(span)) {
-        log.trace("{}: '{}' entity: '{}'", event, entity.getClass().getName(), entity);
-      } finally {
-        span.end();
-      }
-    }
+    log.trace("postRemove: '{}' entity: '{}'", entity.getClass().getName(), entity);
   }
 }
