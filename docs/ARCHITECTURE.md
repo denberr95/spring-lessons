@@ -1,6 +1,7 @@
 # Architecture
 
 - [Project Structure](#project-structure)
+- [API Versioning](#api-versioning)
 - [Security](#security)
 - [Database](#database)
 - [Audit Trail](#audit-trail)
@@ -31,6 +32,7 @@ src/main/java/com/personal/springlessons/
 │   └── filter/             # Servlet filters
 ├── config/
 │   ├── SecurityConfig.java
+│   ├── WebMvcConfig.java
 │   ├── KafkaTopicsConfig.java
 │   ├── AppPropertiesConfig.java
 │   ├── RestClientConfig.java
@@ -49,6 +51,53 @@ src/main/java/com/personal/springlessons/
 ├── endpoint/               # SOAP endpoint (PlatformHistoryEndpoint)
 ├── exception/              # Custom exception hierarchy
 └── util/                   # Utility classes
+```
+
+---
+
+## API Versioning
+
+**Strategy:** Native Spring Framework 7 header-based versioning via `WebMvcConfigurer.configureApiVersioning()`.
+
+All versioned endpoints require the `API-Version` request header. Requests that omit the header receive `400 Bad Request` (`MissingApiVersionException`).
+
+### Configuration
+
+```java
+// WebMvcConfig.java
+configurer.useRequestHeader("API-Version");
+```
+
+### Controller declaration
+
+The version is declared once at the interface level via the `version` attribute on `@RequestMapping`. The path no longer carries a version prefix:
+
+```java
+@RequestMapping(path = "/books", version = "1")
+public interface IBooksRestController { ... }
+```
+
+### Request example
+
+```http
+GET /spring-app/books HTTP/1.1
+Authorization: Bearer <token>
+API-Version: 1
+```
+
+### Version routing flow
+
+```text
+HTTP Request
+     │
+     ▼
+Spring Security Filter Chain  ──► 401 / 403 if unauthenticated/unauthorized
+     │
+     ▼
+DispatcherServlet → HandlerMapping
+     │
+     ├── API-Version header present and valid  ──► route to handler
+     └── API-Version header missing or invalid ──► 400 MissingApiVersionException
 ```
 
 ---

@@ -72,9 +72,19 @@ Tasks are defined in `.vscode/tasks.json`.
 
 ---
 
+### API Versioning
+
+All application API endpoints (`/books`, `/items`) require the `API-Version` header:
+
+```http
+API-Version: 1
+```
+
+Requests that omit this header receive `400 Bad Request`. Actuator endpoints (`/actuator/**`) and OpenAPI endpoints (`/v3/api-docs`, `/swagger-ui/**`, `/scalar`) are unversioned and do not require the header.
+
 ### Postman collection
 
-Import `./collections/postman.json` into Postman for a ready-made request collection covering all API endpoints.
+Import `./collections/postman.json` into Postman for a ready-made request collection covering all API endpoints. The `API-Version: 1` header is pre-configured on every Books and Items request.
 
 ---
 
