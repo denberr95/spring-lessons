@@ -20,7 +20,7 @@
                             "host": [
                                 "localhost"
                             ],
-                            "port": "10001",
+                            "port": "8889",
                             "path": [
                                 "actuator"
                             ]
@@ -39,7 +39,7 @@
                             "host": [
                                 "localhost"
                             ],
-                            "port": "10001",
+                            "port": "8889",
                             "path": [
                                 "actuator",
                                 "prometheus"
@@ -59,7 +59,7 @@
                             "host": [
                                 "localhost"
                             ],
-                            "port": "10001",
+                            "port": "8889",
                             "path": [
                                 "actuator",
                                 "info"
@@ -79,7 +79,7 @@
                             "host": [
                                 "localhost"
                             ],
-                            "port": "10001",
+                            "port": "8889",
                             "path": [
                                 "actuator",
                                 "env"
@@ -99,7 +99,7 @@
                             "host": [
                                 "localhost"
                             ],
-                            "port": "10001",
+                            "port": "8889",
                             "path": [
                                 "actuator",
                                 "metrics"
@@ -119,7 +119,7 @@
                             "host": [
                                 "localhost"
                             ],
-                            "port": "10001",
+                            "port": "8889",
                             "path": [
                                 "actuator",
                                 "beans"
@@ -139,7 +139,7 @@
                             "host": [
                                 "localhost"
                             ],
-                            "port": "10001",
+                            "port": "8889",
                             "path": [
                                 "actuator",
                                 "health"
@@ -162,7 +162,7 @@
                             "host": [
                                 "localhost"
                             ],
-                            "port": "10001",
+                            "port": "8889",
                             "path": [
                                 "actuator",
                                 "sbom"
@@ -185,7 +185,7 @@
                             "host": [
                                 "localhost"
                             ],
-                            "port": "10001",
+                            "port": "8889",
                             "path": [
                                 "actuator",
                                 "sbom",
@@ -245,7 +245,7 @@
                                     "host": [
                                         "localhost"
                                     ],
-                                    "port": "10000",
+                                    "port": "8888",
                                     "path": [
                                         "spring-app",
                                         "books"
@@ -285,7 +285,7 @@
                                     "host": [
                                         "localhost"
                                     ],
-                                    "port": "10000",
+                                    "port": "8888",
                                     "path": [
                                         "spring-app",
                                         "books"
@@ -311,7 +311,7 @@
                                     "host": [
                                         "localhost"
                                     ],
-                                    "port": "10000",
+                                    "port": "8888",
                                     "path": [
                                         "spring-app",
                                         "books",
@@ -349,7 +349,7 @@
                                     "host": [
                                         "localhost"
                                     ],
-                                    "port": "10000",
+                                    "port": "8888",
                                     "path": [
                                         "spring-app",
                                         "books",
@@ -401,7 +401,7 @@
                                     "host": [
                                         "localhost"
                                     ],
-                                    "port": "10000",
+                                    "port": "8888",
                                     "path": [
                                         "spring-app",
                                         "books",
@@ -450,7 +450,7 @@
                                     "host": [
                                         "localhost"
                                     ],
-                                    "port": "10000",
+                                    "port": "8888",
                                     "path": [
                                         "spring-app",
                                         "books",
@@ -477,7 +477,7 @@
                                     "host": [
                                         "localhost"
                                     ],
-                                    "port": "10000",
+                                    "port": "8888",
                                     "path": [
                                         "spring-app",
                                         "books",
@@ -571,7 +571,7 @@
                                     "host": [
                                         "localhost"
                                     ],
-                                    "port": "10000",
+                                    "port": "8888",
                                     "path": [
                                         "spring-app",
                                         "books"
@@ -611,7 +611,7 @@
                                     "host": [
                                         "localhost"
                                     ],
-                                    "port": "10000",
+                                    "port": "8888",
                                     "path": [
                                         "spring-app",
                                         "books"
@@ -637,7 +637,7 @@
                                     "host": [
                                         "localhost"
                                     ],
-                                    "port": "10000",
+                                    "port": "8888",
                                     "path": [
                                         "spring-app",
                                         "books",
@@ -689,7 +689,7 @@
                                     "host": [
                                         "localhost"
                                     ],
-                                    "port": "10000",
+                                    "port": "8888",
                                     "path": [
                                         "spring-app",
                                         "books",
@@ -722,7 +722,7 @@
                                     "host": [
                                         "localhost"
                                     ],
-                                    "port": "10000",
+                                    "port": "8888",
                                     "path": [
                                         "spring-app",
                                         "books",
@@ -764,7 +764,7 @@
                                     "host": [
                                         "localhost"
                                     ],
-                                    "port": "10000",
+                                    "port": "8888",
                                     "path": [
                                         "spring-app",
                                         "books",
@@ -863,7 +863,7 @@
                                     "host": [
                                         "localhost"
                                     ],
-                                    "port": "10000",
+                                    "port": "8888",
                                     "path": [
                                         "spring-app",
                                         "books"
@@ -889,7 +889,7 @@
                                     "host": [
                                         "localhost"
                                     ],
-                                    "port": "10000",
+                                    "port": "8888",
                                     "path": [
                                         "spring-app",
                                         "books",
@@ -922,7 +922,7 @@
                                     "host": [
                                         "localhost"
                                     ],
-                                    "port": "10000",
+                                    "port": "8888",
                                     "path": [
                                         "spring-app",
                                         "books",
@@ -1060,7 +1060,7 @@
                                     "host": [
                                         "localhost"
                                     ],
-                                    "port": "10000",
+                                    "port": "8888",
                                     "path": [
                                         "spring-app",
                                         "items"
@@ -1086,7 +1086,7 @@
                                     "host": [
                                         "localhost"
                                     ],
-                                    "port": "10000",
+                                    "port": "8888",
                                     "path": [
                                         "spring-app",
                                         "items"
@@ -1140,7 +1140,7 @@
                                     "host": [
                                         "localhost"
                                     ],
-                                    "port": "10000",
+                                    "port": "8888",
                                     "path": [
                                         "spring-app",
                                         "items"
@@ -1247,7 +1247,7 @@
                                     "host": [
                                         "localhost"
                                     ],
-                                    "port": "10000",
+                                    "port": "8888",
                                     "path": [
                                         "spring-app",
                                         "items"
@@ -1273,7 +1273,7 @@
                                     "host": [
                                         "localhost"
                                     ],
-                                    "port": "10000",
+                                    "port": "8888",
                                     "path": [
                                         "spring-app",
                                         "items"
@@ -1366,7 +1366,7 @@
                                     "host": [
                                         "localhost"
                                     ],
-                                    "port": "10000",
+                                    "port": "8888",
                                     "path": [
                                         "spring-app",
                                         "items"
@@ -1480,7 +1480,7 @@
                             "host": [
                                 "localhost"
                             ],
-                            "port": "10000",
+                            "port": "8888",
                             "path": [
                                 "spring-app",
                                 "v3",
@@ -1501,7 +1501,7 @@
                             "host": [
                                 "localhost"
                             ],
-                            "port": "10000",
+                            "port": "8888",
                             "path": [
                                 "spring-app",
                                 "swagger-ui",
