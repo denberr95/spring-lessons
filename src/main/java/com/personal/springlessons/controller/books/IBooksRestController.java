@@ -47,7 +47,7 @@ import io.swagger.v3.oas.annotations.tags.Tags;
 
 @Tags(value = {@Tag(name = "Books V1")})
 @Validated
-@RequestMapping(path = "/v1/books")
+@RequestMapping(path = "/books", version = "1")
 public interface IBooksRestController {
 
   @SecurityRequirement(name = "oauth2", scopes = "books:get")

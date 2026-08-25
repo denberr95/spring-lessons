@@ -33,7 +33,7 @@ import io.swagger.v3.oas.annotations.tags.Tags;
 
 @Tags(value = {@Tag(name = "Items V1")})
 @Validated
-@RequestMapping(path = "/v1/items")
+@RequestMapping(path = "/items", version = "1")
 public interface IItemsRestController {
 
   @SecurityRequirement(name = "oauth2", scopes = "items:upload")
