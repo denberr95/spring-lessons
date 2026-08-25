@@ -15,7 +15,7 @@ class CustomAccessDeniedHandlerTest {
 
   @Test
   void givenAccessDeniedException_whenHandle_thenRespondWithForbidden() throws Exception {
-    MockHttpServletRequest request = new MockHttpServletRequest("GET", "/spring-app/v1/books");
+    MockHttpServletRequest request = new MockHttpServletRequest("GET", "/spring-app/books");
     MockHttpServletResponse response = new MockHttpServletResponse();
 
     this.handler.handle(request, response, new AccessDeniedException("Access denied"));

@@ -101,6 +101,7 @@ class ItemsRestControllerTest {
         headers.setBearerAuth(token);
       }
       headers.add("channel", Channel.NA.toString());
+      headers.add("API-Version", "1");
     };
   }
 
@@ -157,14 +158,14 @@ class ItemsRestControllerTest {
 
   @Test
   void givenInvalidAccessToken_whenGetAll_thenReturnForbidden() {
-    this.restTestClient.get().uri(this.buildUrl("/v1/items"))
+    this.restTestClient.get().uri(this.buildUrl("/items"))
         .headers(this.retrieveHttpHeaders(this.invalidToken)).exchange().expectStatus()
         .isForbidden();
   }
 
   @Test
   void givenWithoutAccessToken_whenCallAPI_thenReturnUnauthorized() {
-    this.restTestClient.get().uri(this.buildUrl("/v1/items"))
+    this.restTestClient.get().uri(this.buildUrl("/items"))
         .headers(this.retrieveHttpHeaders(null)).exchange().expectStatus().isUnauthorized();
   }
 
@@ -178,7 +179,7 @@ class ItemsRestControllerTest {
     item.setPrice(new BigDecimal("9.99"));
     order.setItems(List.of(item));
 
-    this.restTestClient.post().uri(this.buildUrl("/v1/items"))
+    this.restTestClient.post().uri(this.buildUrl("/items"))
         .contentType(MediaType.APPLICATION_JSON)
         .headers(this.retrieveHttpHeaders(this.invalidToken)).body(order).exchange().expectStatus()
         .isForbidden();
@@ -196,7 +197,7 @@ class ItemsRestControllerTest {
     order.setItems(List.of(item));
 
     this.restTestClient.method(org.springframework.http.HttpMethod.DELETE)
-        .uri(this.buildUrl("/v1/items")).contentType(MediaType.APPLICATION_JSON)
+        .uri(this.buildUrl("/items")).contentType(MediaType.APPLICATION_JSON)
         .headers(this.retrieveHttpHeaders(this.invalidToken)).body(order).exchange().expectStatus()
         .isForbidden();
   }
@@ -212,7 +213,7 @@ class ItemsRestControllerTest {
         new com.personal.springlessons.model.dto.OrderItemsDTO();
     order.setItems(List.of(item));
 
-    this.restTestClient.post().uri(this.buildUrl("/v1/items"))
+    this.restTestClient.post().uri(this.buildUrl("/items"))
         .contentType(MediaType.APPLICATION_JSON).headers(this.retrieveHttpHeaders(this.validToken))
         .body(order).exchange().expectStatus().isOk();
   }
@@ -235,7 +236,7 @@ class ItemsRestControllerTest {
     order.setItems(items);
 
     this.restTestClient.method(org.springframework.http.HttpMethod.DELETE)
-        .uri(this.buildUrl("/v1/items")).contentType(MediaType.APPLICATION_JSON)
+        .uri(this.buildUrl("/items")).contentType(MediaType.APPLICATION_JSON)
         .headers(this.retrieveHttpHeaders(this.validToken)).body(order).exchange().expectStatus()
         .isNoContent();
   }
@@ -245,13 +246,13 @@ class ItemsRestControllerTest {
     this.cleanupItems();
     this.cleanupOrders();
 
-    this.restTestClient.get().uri(this.buildUrl("/v1/items"))
+    this.restTestClient.get().uri(this.buildUrl("/items"))
         .headers(this.retrieveHttpHeaders(this.validToken)).exchange().expectStatus().isNoContent();
   }
 
   @Test
   void givenItems_whenGetAll_thenItemsRetrieved() {
-    this.restTestClient.get().uri(this.buildUrl("/v1/items"))
+    this.restTestClient.get().uri(this.buildUrl("/items"))
         .headers(this.retrieveHttpHeaders(this.validToken)).exchange().expectStatus().isOk();
   }
 }

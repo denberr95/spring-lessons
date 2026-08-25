@@ -37,7 +37,7 @@ class CommonRestControllerAdviceTest {
   private final CommonRestControllerAdvice advice = new CommonRestControllerAdvice();
 
   private WebRequest createWebRequest() {
-    return new ServletWebRequest(new MockHttpServletRequest("GET", "/spring-app/v1/books"));
+    return new ServletWebRequest(new MockHttpServletRequest("GET", "/spring-app/books"));
   }
 
   @Test

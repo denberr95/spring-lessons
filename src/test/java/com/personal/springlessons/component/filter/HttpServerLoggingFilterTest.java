@@ -30,7 +30,7 @@ class HttpServerLoggingFilterTest {
 
   @Test
   void givenIncludedPath_whenDoFilter_thenLogRequestAndResponse() throws Exception {
-    MockHttpServletRequest request = new MockHttpServletRequest("GET", "/spring-app/v1/books");
+    MockHttpServletRequest request = new MockHttpServletRequest("GET", "/spring-app/books");
     MockHttpServletResponse response = new MockHttpServletResponse();
     MockFilterChain chain = new MockFilterChain();
 
@@ -42,7 +42,7 @@ class HttpServerLoggingFilterTest {
   @Test
   void givenMultipartRequest_whenDoFilter_thenLogMultipartDetails() throws Exception {
     MockHttpServletRequest request =
-        new MockHttpServletRequest("POST", "/spring-app/v1/books/upload");
+        new MockHttpServletRequest("POST", "/spring-app/books/upload");
     request.setContentType("multipart/form-data; boundary=----WebKitFormBoundary");
     MockHttpServletResponse response = new MockHttpServletResponse();
     MockFilterChain chain = new MockFilterChain();
@@ -55,7 +55,7 @@ class HttpServerLoggingFilterTest {
   @Test
   void givenResponseWithAttachment_whenDoFilter_thenLogDownloadedFileName() throws Exception {
     MockHttpServletRequest request =
-        new MockHttpServletRequest("GET", "/spring-app/v1/books/download");
+        new MockHttpServletRequest("GET", "/spring-app/books/download");
     MockHttpServletResponse response = new MockHttpServletResponse();
     response.setHeader("Content-Disposition", "attachment; filename=\"books_20240101.csv\"");
     MockFilterChain chain = new MockFilterChain();
@@ -67,7 +67,7 @@ class HttpServerLoggingFilterTest {
 
   @Test
   void givenPreReadRequestWithBody_whenDoFilter_thenLogBody() throws Exception {
-    MockHttpServletRequest original = new MockHttpServletRequest("POST", "/spring-app/v1/books");
+    MockHttpServletRequest original = new MockHttpServletRequest("POST", "/spring-app/books");
     original.setContent("{\"name\":\"book\"}".getBytes());
     ContentCachingRequestWrapper preRead = new ContentCachingRequestWrapper(original, 1024);
     preRead.getInputStream().readAllBytes();
@@ -81,7 +81,7 @@ class HttpServerLoggingFilterTest {
 
   @Test
   void givenAlreadyWrappedRequest_whenDoFilter_thenUseExistingWrapper() throws Exception {
-    MockHttpServletRequest original = new MockHttpServletRequest("GET", "/spring-app/v1/books");
+    MockHttpServletRequest original = new MockHttpServletRequest("GET", "/spring-app/books");
     ContentCachingRequestWrapper wrapped = new ContentCachingRequestWrapper(original, 1024);
     MockHttpServletResponse response = new MockHttpServletResponse();
     MockFilterChain chain = new MockFilterChain();
@@ -93,7 +93,7 @@ class HttpServerLoggingFilterTest {
 
   @Test
   void givenAlreadyWrappedResponse_whenDoFilter_thenUseExistingWrapper() throws Exception {
-    MockHttpServletRequest request = new MockHttpServletRequest("GET", "/spring-app/v1/books");
+    MockHttpServletRequest request = new MockHttpServletRequest("GET", "/spring-app/books");
     MockHttpServletResponse original = new MockHttpServletResponse();
     ContentCachingResponseWrapper wrapped = new ContentCachingResponseWrapper(original);
     MockFilterChain chain = new MockFilterChain();
