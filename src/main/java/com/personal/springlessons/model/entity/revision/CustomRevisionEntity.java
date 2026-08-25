@@ -13,9 +13,9 @@ import jakarta.persistence.Table;
 import com.personal.springlessons.util.Constants;
 
 import org.hibernate.envers.RevisionEntity;
-import org.jspecify.annotations.Nullable;
 import org.hibernate.envers.RevisionNumber;
 import org.hibernate.envers.RevisionTimestamp;
+import org.jspecify.annotations.Nullable;
 
 @Entity
 @Table(name = CustomRevisionEntity.TABLE_NAME, schema = Constants.DB_SCHEMA_HISTORY)
