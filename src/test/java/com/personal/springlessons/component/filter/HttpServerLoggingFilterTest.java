@@ -41,8 +41,7 @@ class HttpServerLoggingFilterTest {
 
   @Test
   void givenMultipartRequest_whenDoFilter_thenLogMultipartDetails() throws Exception {
-    MockHttpServletRequest request =
-        new MockHttpServletRequest("POST", "/spring-app/books/upload");
+    MockHttpServletRequest request = new MockHttpServletRequest("POST", "/spring-app/books/upload");
     request.setContentType("multipart/form-data; boundary=----WebKitFormBoundary");
     MockHttpServletResponse response = new MockHttpServletResponse();
     MockFilterChain chain = new MockFilterChain();

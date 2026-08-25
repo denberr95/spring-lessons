@@ -165,8 +165,8 @@ class ItemsRestControllerTest {
 
   @Test
   void givenWithoutAccessToken_whenCallAPI_thenReturnUnauthorized() {
-    this.restTestClient.get().uri(this.buildUrl("/items"))
-        .headers(this.retrieveHttpHeaders(null)).exchange().expectStatus().isUnauthorized();
+    this.restTestClient.get().uri(this.buildUrl("/items")).headers(this.retrieveHttpHeaders(null))
+        .exchange().expectStatus().isUnauthorized();
   }
 
   @Test
@@ -179,8 +179,7 @@ class ItemsRestControllerTest {
     item.setPrice(new BigDecimal("9.99"));
     order.setItems(List.of(item));
 
-    this.restTestClient.post().uri(this.buildUrl("/items"))
-        .contentType(MediaType.APPLICATION_JSON)
+    this.restTestClient.post().uri(this.buildUrl("/items")).contentType(MediaType.APPLICATION_JSON)
         .headers(this.retrieveHttpHeaders(this.invalidToken)).body(order).exchange().expectStatus()
         .isForbidden();
   }
@@ -213,9 +212,9 @@ class ItemsRestControllerTest {
         new com.personal.springlessons.model.dto.OrderItemsDTO();
     order.setItems(List.of(item));
 
-    this.restTestClient.post().uri(this.buildUrl("/items"))
-        .contentType(MediaType.APPLICATION_JSON).headers(this.retrieveHttpHeaders(this.validToken))
-        .body(order).exchange().expectStatus().isOk();
+    this.restTestClient.post().uri(this.buildUrl("/items")).contentType(MediaType.APPLICATION_JSON)
+        .headers(this.retrieveHttpHeaders(this.validToken)).body(order).exchange().expectStatus()
+        .isOk();
   }
 
   @Test
