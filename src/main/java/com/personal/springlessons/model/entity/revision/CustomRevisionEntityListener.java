@@ -64,6 +64,9 @@ public class CustomRevisionEntityListener implements RevisionListener {
   private String resolveIpAddress(HttpServletRequest request) {
     String result = Methods.firstNonBlank(request.getHeader(Constants.S_X_FORWARDED_FOR),
         request.getRemoteAddr(), Constants.S_UNKNOWN_IP_ADDRESS);
+    if (result == null) {
+      result = Constants.S_UNKNOWN_IP_ADDRESS;
+    }
     log.debug("Resolved IP address: '{}'", result);
     return result;
   }

@@ -13,6 +13,7 @@ import jakarta.persistence.Table;
 import com.personal.springlessons.util.Constants;
 
 import org.hibernate.envers.RevisionEntity;
+import org.jspecify.annotations.Nullable;
 import org.hibernate.envers.RevisionNumber;
 import org.hibernate.envers.RevisionTimestamp;
 
@@ -43,10 +44,10 @@ public class CustomRevisionEntity {
   private String ipAddress;
 
   @Column(name = "client_id", length = Constants.I_VAL_255)
-  private String clientId;
+  private @Nullable String clientId;
 
   @Column(name = "username", length = Constants.I_VAL_255)
-  private String username;
+  private @Nullable String username;
 
   @Column(name = "request_uri")
   private String requestUri;
@@ -82,19 +83,19 @@ public class CustomRevisionEntity {
     this.ipAddress = ipAddress;
   }
 
-  public String getClientId() {
+  public @Nullable String getClientId() {
     return this.clientId;
   }
 
-  public void setClientId(String clientId) {
+  public void setClientId(@Nullable String clientId) {
     this.clientId = clientId;
   }
 
-  public String getUsername() {
+  public @Nullable String getUsername() {
     return this.username;
   }
 
-  public void setUsername(String username) {
+  public void setUsername(@Nullable String username) {
     this.username = username;
   }
 
