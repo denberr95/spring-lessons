@@ -5,6 +5,7 @@ import java.util.Objects;
 
 import com.personal.springlessons.model.dto.BookDTO;
 
+import org.jspecify.annotations.Nullable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.util.MultiValueMap;
 
@@ -12,7 +13,7 @@ public class BooksWrapperDTO {
 
   private BookDTO bookDTO;
   private List<BookDTO> bookDTOs;
-  private MultiValueMap<String, String> httpHeaders;
+  private @Nullable MultiValueMap<String, String> httpHeaders;
 
   public BooksWrapperDTO() {
     // no-args constructor for MapStruct
@@ -34,11 +35,11 @@ public class BooksWrapperDTO {
     this.bookDTOs = bookDTOs;
   }
 
-  public MultiValueMap<String, String> getHttpHeaders() {
+  public @Nullable MultiValueMap<String, String> getHttpHeaders() {
     return this.httpHeaders;
   }
 
-  public void setHttpHeaders(MultiValueMap<String, String> httpHeaders) {
+  public void setHttpHeaders(@Nullable MultiValueMap<String, String> httpHeaders) {
     this.httpHeaders = httpHeaders;
   }
 

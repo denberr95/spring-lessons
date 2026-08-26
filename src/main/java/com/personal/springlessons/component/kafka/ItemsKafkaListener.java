@@ -109,15 +109,13 @@ public class ItemsKafkaListener {
 
       this.itemRepository.findById(idItem).ifPresent(item -> {
         OrderItemsEntity orderItemsEntity = item.getOrderItemsEntity();
-        if (orderItemsEntity != null) {
-          orderItemsEntity.getItems().remove(item);
-          span.event("Removed item successfully");
-          if (orderItemsEntity.getItems().isEmpty()) {
-            log.info("No more items for OrderItemsEntity '{}' deleting parent",
-                orderItemsEntity.getId());
-            this.iOrderItemsRepository.delete(orderItemsEntity);
-            span.event("Removed order items successfully");
-          }
+        orderItemsEntity.getItems().remove(item);
+        span.event("Removed item successfully");
+        if (orderItemsEntity.getItems().isEmpty()) {
+          log.info("No more items for OrderItemsEntity '{}' deleting parent",
+              orderItemsEntity.getId());
+          this.iOrderItemsRepository.delete(orderItemsEntity);
+          span.event("Removed order items successfully");
         }
       });
     } finally {

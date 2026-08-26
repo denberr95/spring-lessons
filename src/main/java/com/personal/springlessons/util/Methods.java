@@ -117,7 +117,7 @@ public final class Methods {
     log.debug("Check if file: '{}' is valid respect to available file types: '{}'", fileName,
         fileTypes);
     boolean result = false;
-    if (fileName != null && !fileName.isBlank() && fileTypes != null && !fileTypes.isEmpty()) {
+    if (!fileName.isBlank() && !fileTypes.isEmpty()) {
       result = fileTypes.stream().anyMatch(fileName::endsWith);
     }
     return result;
@@ -148,12 +148,9 @@ public final class Methods {
     return result;
   }
 
-  public static @Nullable String getEtag(String value) {
+  public static String getEtag(String value) {
     log.debug("Retrieve ETag value: '{}'", value);
-    String result = null;
-    if (value != null) {
-      result = value.replace(Constants.S_DOUBLE_QUOTE, Constants.S_EMPTY);
-    }
+    String result = value.replace(Constants.S_DOUBLE_QUOTE, Constants.S_EMPTY);
     log.debug("ETag value retrieved: '{}'", result);
     return result;
   }
@@ -161,7 +158,7 @@ public final class Methods {
   public static @Nullable String firstNonBlank(String... values) {
     log.debug("Retrieve first non blank value");
     String result = null;
-    if (values != null && values.length > 0) {
+    if (values.length > 0) {
       for (String value : values) {
         if (value != null && !value.isBlank()) {
           result = value;

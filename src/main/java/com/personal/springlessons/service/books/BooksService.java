@@ -277,17 +277,13 @@ public class BooksService {
 
         item.setBookId(booksEntity.getId().toString());
         item.setBookName(booksEntity.getName());
-        if (booksEntity.getChannel() != null) {
-          item.setChannel(booksEntity.getChannel().toString());
-        }
+        item.setChannel(booksEntity.getChannel().toString());
         item.setNumberOfPages(booksEntity.getNumberOfPages());
         item.setPublicationDate(booksEntity.getPublicationDate());
         item.setCreatedAt(Methods.convertInstantToOffsetDateTime(booksEntity.getCreatedAt()));
         item.setUpdatedAt(Methods.convertInstantToOffsetDateTime(booksEntity.getUpdatedAt()));
 
-        if (booksEntity.getGenre() != null) {
-          item.setGenre(booksEntity.getGenre().toString());
-        }
+        item.setGenre(booksEntity.getGenre().toString());
 
         item.setVersion(booksEntity.getVersion());
         item.setRevisionId(customRevisionEntity.getRev());
@@ -319,12 +315,9 @@ public class BooksService {
   private void verifyIfMatch(final BooksEntity bookEntity, final String id, final String ifMatch) {
     String requestedVersion = Methods.getEtag(ifMatch);
     boolean wildcard = Constants.S_ASTERISK.equals(requestedVersion);
-    boolean versionMatches = bookEntity.getVersion() != null
-        && bookEntity.getVersion().toString().equals(requestedVersion);
+    boolean versionMatches = bookEntity.getVersion().toString().equals(requestedVersion);
     if (!wildcard && !versionMatches) {
-      String currentVersion =
-          bookEntity.getVersion() != null ? bookEntity.getVersion().toString() : null;
-      throw new PreconditionFailedException(id, currentVersion);
+      throw new PreconditionFailedException(id, bookEntity.getVersion().toString());
     }
   }
 
