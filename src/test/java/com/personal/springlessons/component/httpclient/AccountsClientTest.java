@@ -17,7 +17,7 @@ import org.springframework.web.client.RestClient;
 class AccountsClientTest {
 
   @Autowired
-  private AccountsClient accountsClient;
+  private IAccountsClient accountsClient;
 
   @BeforeEach
   void init() {

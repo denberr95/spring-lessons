@@ -3,6 +3,7 @@ package com.personal.springlessons.config;
 import java.nio.charset.Charset;
 import java.util.concurrent.TimeUnit;
 
+import com.personal.springlessons.component.httpclient.IAccountsClient;
 import com.personal.springlessons.component.interceptor.HttpClientInterceptor;
 
 import org.apache.hc.client5.http.config.ConnectionConfig;
@@ -23,11 +24,20 @@ import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestClient;
+import org.springframework.web.client.support.RestClientAdapter;
+import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
 import io.micrometer.observation.ObservationRegistry;
 
 @Configuration(proxyBeanMethods = false)
 public class RestClientConfig {
+
+  @Bean
+  IAccountsClient accountsClient(RestClient restClient) {
+    RestClientAdapter adapter = RestClientAdapter.create(restClient);
+    HttpServiceProxyFactory factory = HttpServiceProxyFactory.builderFor(adapter).build();
+    return factory.createClient(IAccountsClient.class);
+  }
 
   @Bean
   RestClient restClient(HttpClientInterceptor httpClientInterceptor,
