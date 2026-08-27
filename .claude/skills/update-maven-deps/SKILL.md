@@ -93,4 +93,4 @@ After the report, provide guidance on:
 - Any **deprecated or obsolete dependencies** worth considering for replacement
 
 Do not apply any changes to `pom.xml`. The report is informational only.
-After the report, if there are updates to apply, suggest the user modify `pom.xml` and use `/commit-conventional` with scope `setup`.
+After the report, if there are updates to apply, suggest the user modify `pom.xml`.

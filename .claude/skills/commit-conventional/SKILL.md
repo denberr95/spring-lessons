@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # Commit Conventional
 
-Create a git commit following the Conventional Commits rules defined in `.pre-commit-config.yaml`.
+Create a git commit following the Conventional Commits rules.
 
 ## Mandatory rules
 
@@ -17,7 +17,7 @@ The message MUST follow this exact format:
 <type>(<scope>): <description>
 ```
 
-**Valid scopes** (only these are accepted by the hook): `api`, `setup`, `docs`, `tests`, `deploy`, `script`, `report`, `database`, `code`
+**Valid scopes** (only these are accepted by the hook): `api`, `setup`, `docs`, `tests`, `deploy`, `script`, `report`, `database`, `code`, `event`
 **Valid types**: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `chore`, `ci`, `build`, `revert`
 **Language**: `<description>` MUST always be in **English**, regardless of the language used by the user.
 
@@ -28,16 +28,17 @@ The message MUST follow this exact format:
 3. Based on the changes, select:
    - The most appropriate **type** (`feat` for new features, `fix` for bugs, `docs` for documentation, `refactor` for refactoring, `chore` for maintenance, etc.)
    - The correct **scope** from the valid list:
-     - `api` → controllers, DTOs, REST/SOAP endpoints, OpenAPI specs
-     - `code` → services, components, configuration, models, repositories, utils, exceptions
-     - `database` → Flyway migrations (`src/main/resources/db/`), JPA entities, schema, SQL files
-     - `docs` → `.md` files, project documentation
-     - `tests` → test files under `src/test/`
-     - `setup` → `pom.xml`, `settings.xml`, `.pre-commit-config.yaml`, `.vscode/`
-     - `deploy` → `collections/compose-*.yaml`, `Containerfile`, `Dockerfile`
-     - `script` → shell or batch scripts (e.g. `entrypoint.sh`)
-     - `report` → observability configuration (Prometheus, Grafana, Loki)
-     - `ci` → CI/CD pipeline files
+     - `api`: controllers, DTOs, REST/SOAP endpoints, OpenAPI specs
+     - `code`: services, components, configuration, models, repositories, utils, exceptions
+     - `database`: Flyway migrations, JPA entities, schema, SQL files
+     - `docs`: `.md` files, project documentation
+     - `tests`: test files under `src/test/`
+     - `setup`: `pom.xml`, `settings.xml`, `.pre-commit-config.yaml`, `.vscode/`
+     - `deploy`: `collections/compose-*.yaml`, `Containerfile`, `Dockerfile`
+     - `script`: shell or batch scripts (e.g. `entrypoint.sh`)
+     - `report`: observability configuration (Prometheus, Grafana, Loki, OTEL)
+     - `ci`: CI/CD pipeline files
+     - `event`: event handling, listeners, publishers
 
 4. Write a concise description in English (imperative mood, lowercase, no trailing period, max 72 characters including the prefix).
 5. If there are untracked files to include, stage them explicitly with `git add <file>` before committing. Never use `git add -A` or `git add .`.
