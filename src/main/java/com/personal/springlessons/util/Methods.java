@@ -37,7 +37,7 @@ public final class Methods {
   public static UUID idValidation(String id) {
     log.debug("UUID to validate: '{}'", id);
     UUID result = null;
-    if (id == null || id.isBlank()) {
+    if (id.isBlank()) {
       throw new InvalidUUIDException(id);
     }
     try {

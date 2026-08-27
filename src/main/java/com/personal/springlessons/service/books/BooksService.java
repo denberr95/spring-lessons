@@ -369,7 +369,9 @@ public class BooksService {
       if (!invalidCsvDTO.isEmpty()) {
         obs.highCardinalityKeyValue(Constants.SPAN_KEY_TOTAL_INVALID_ROWS,
             String.valueOf(invalidCsvDTO.size()));
-        throw new CSVContentValidationException(multipartFile.getOriginalFilename(), invalidCsvDTO);
+        String originalFilename =
+            Optional.ofNullable(multipartFile.getOriginalFilename()).orElse("unknown");
+        throw new CSVContentValidationException(originalFilename, invalidCsvDTO);
       }
     } catch (Exception e) {
       obs.error(e);
