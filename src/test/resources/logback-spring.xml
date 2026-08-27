@@ -23,13 +23,11 @@
         <captureExperimentalAttributes>true</captureExperimentalAttributes>
         <captureCodeAttributes>false</captureCodeAttributes>
         <captureMarkerAttribute>true</captureMarkerAttribute>
-        <captureKeyValuePairAttributes>true</captureKeyValuePairAttributes>
-        <captureLoggerContext>true</captureLoggerContext>
+        <keyValuePairAttributesIncluded>*</keyValuePairAttributesIncluded>
+        <loggerContextAttributesIncluded>*</loggerContextAttributesIncluded>
         <captureTemplate>false</captureTemplate>
         <captureArguments>false</captureArguments>
-        <captureLogstashMarkerAttributes>false</captureLogstashMarkerAttributes>
-        <captureLogstashStructuredArguments>false</captureLogstashStructuredArguments>
-        <captureMdcAttributes>*</captureMdcAttributes>
+        <mdcAttributesIncluded>*</mdcAttributesIncluded>
         <numLogsCapturedBeforeOtelInstall>1000</numLogsCapturedBeforeOtelInstall>
     </appender>
 
