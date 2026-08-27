@@ -25,6 +25,7 @@ import io.micrometer.observation.Observation;
 import io.micrometer.observation.ObservationRegistry;
 import io.micrometer.observation.annotation.Observed;
 
+@Transactional
 @Service
 public class ItemsService {
 
@@ -41,7 +42,6 @@ public class ItemsService {
   }
 
   @Observed(name = "items.upload", contextualName = "upload-order-items")
-  @Transactional
   public OrderItemsDTO upload(final OrderItemsDTO order, final Channel channel) {
     Observation current = this.observationRegistry.getCurrentObservation();
     if (current != null) {
@@ -66,7 +66,6 @@ public class ItemsService {
   }
 
   @Observed(name = "items.delete", contextualName = "delete-order-items")
-  @Transactional
   public void delete(final OrderItemsDTO order, final Channel channel) {
     Observation current = this.observationRegistry.getCurrentObservation();
     if (current != null) {

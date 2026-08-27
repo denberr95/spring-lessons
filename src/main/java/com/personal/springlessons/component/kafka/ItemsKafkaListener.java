@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import io.micrometer.tracing.Span;
 import io.micrometer.tracing.Tracer;
 
+@Transactional
 @Component
 public class ItemsKafkaListener {
 
@@ -42,7 +43,6 @@ public class ItemsKafkaListener {
     this.tracer = tracer;
   }
 
-  @Transactional
   @RetryableTopic(attempts = Constants.S_VAL_1, dltStrategy = DltStrategy.NO_DLT,
       exclude = DuplicatedBarcodeException.class)
   @KafkaListener(groupId = "upload-items.group", topics = Constants.TOPIC_ITEMS,
@@ -91,7 +91,6 @@ public class ItemsKafkaListener {
     }
   }
 
-  @Transactional
   @RetryableTopic(attempts = Constants.S_VAL_1, dltStrategy = DltStrategy.NO_DLT)
   @KafkaListener(groupId = "delete-items.group", topics = Constants.TOPIC_ITEMS,
       filter = "deleteItemsRecordFilter", concurrency = Constants.S_VAL_1)

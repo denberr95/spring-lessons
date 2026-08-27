@@ -62,6 +62,7 @@ import io.micrometer.observation.Observation;
 import io.micrometer.observation.ObservationRegistry;
 import io.micrometer.observation.annotation.Observed;
 
+@Transactional
 @Service
 public class BooksService {
 
@@ -81,6 +82,7 @@ public class BooksService {
     this.observationRegistry = observationRegistry;
   }
 
+  @Transactional(readOnly = true)
   @Observed(name = "books.retrieval", contextualName = "get-all-books")
   public BooksWrapperDTO getAll() {
     List<BooksEntity> bookEntities = this.bookRepository.findAll();
@@ -99,6 +101,7 @@ public class BooksService {
     return result;
   }
 
+  @Transactional(readOnly = true)
   @Observed(name = "books.retrieval", contextualName = "get-book-by-id")
   public BooksWrapperDTO getById(final String id) {
     BooksEntity bookEntity = this.bookRepository.findById(Methods.idValidation(id))
@@ -136,7 +139,6 @@ public class BooksService {
     return result;
   }
 
-  @Transactional
   @Observed(name = "books.delete", contextualName = "delete-book")
   public void delete(final String id, final String ifMatch) {
     BooksEntity bookEntity = this.bookRepository.findById(Methods.idValidation(id))
@@ -152,7 +154,6 @@ public class BooksService {
     }
   }
 
-  @Transactional
   @Observed(name = "books.update", contextualName = "update-book")
   public BooksWrapperDTO update(final String id, final BookDTO bookDTO, final Channel channel,
       final String ifMatch) {
@@ -185,6 +186,7 @@ public class BooksService {
     return result;
   }
 
+  @Transactional(readOnly = true)
   @Observed(name = "books.download", contextualName = "download-books")
   public DownloadFileDTO download() {
     DownloadFileDTO result = new DownloadFileDTO();
@@ -254,6 +256,7 @@ public class BooksService {
     }
   }
 
+  @Transactional(readOnly = true)
   @Observed(name = "books.history", contextualName = "get-book-history")
   public GetBookHistoryResponse getBookHistory(GetBookHistoryRequest getBookHistoryRequest) {
     GetBookHistoryResponse result = new GetBookHistoryResponse();
