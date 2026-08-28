@@ -9,41 +9,43 @@ import jakarta.validation.constraints.Size;
 
 import com.personal.springlessons.util.Constants;
 
+import org.jspecify.annotations.Nullable;
+
 public class OrderItemsDTO {
 
-  private String id;
+  private @Nullable String id;
 
-  private Integer quantity;
+  private @Nullable Integer quantity;
 
   @Size(min = Constants.I_VAL_1, max = Constants.I_VAL_100,
       message = Constants.ERROR_MSG_LIST_SIZE_VALIDATION)
-  @NotEmpty(message = Constants.ERROR_MSG_NOT_BLANK) @Valid private List<ItemDTO> items;
+  @NotEmpty(message = Constants.ERROR_MSG_NOT_BLANK) @Valid private @Nullable List<ItemDTO> items;
 
   public OrderItemsDTO() {
     // no-args constructor for Jackson deserialization
   }
 
-  public String getId() {
+  public @Nullable String getId() {
     return this.id;
   }
 
-  public void setId(String id) {
+  public void setId(@Nullable String id) {
     this.id = id;
   }
 
-  public Integer getQuantity() {
+  public @Nullable Integer getQuantity() {
     return this.quantity;
   }
 
-  public void setQuantity(Integer quantity) {
+  public void setQuantity(@Nullable Integer quantity) {
     this.quantity = quantity;
   }
 
-  public List<ItemDTO> getItems() {
+  public @Nullable List<ItemDTO> getItems() {
     return this.items;
   }
 
-  public void setItems(List<ItemDTO> items) {
+  public void setItems(@Nullable List<ItemDTO> items) {
     this.items = items;
   }
 

@@ -2,19 +2,21 @@ package com.personal.springlessons.model.dto.response;
 
 import java.util.Objects;
 
+import org.jspecify.annotations.Nullable;
+
 public class MissingHttpRequestHeaderAdditionalDetailsDTO {
 
-  private String header;
+  private @Nullable String header;
 
   public MissingHttpRequestHeaderAdditionalDetailsDTO() {
     // no-args constructor for Jackson deserialization
   }
 
-  public String getHeader() {
+  public @Nullable String getHeader() {
     return this.header;
   }
 
-  public void setHeader(String header) {
+  public void setHeader(@Nullable String header) {
     this.header = header;
   }
 

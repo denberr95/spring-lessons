@@ -24,12 +24,14 @@ public class InvalidUUIDResponseDTO extends BaseErrorResponseDTO {
       return true;
     if (!(o instanceof InvalidUUIDResponseDTO that))
       return false;
+    if (!super.equals(o))
+      return false;
     return Objects.equals(this.additionalData, that.additionalData);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(this.additionalData);
+    return Objects.hash(super.hashCode(), this.additionalData);
   }
 
   @Override

@@ -36,24 +36,21 @@ public final class Methods {
 
   public static UUID idValidation(String id) {
     log.debug("UUID to validate: '{}'", id);
-    UUID result = null;
-    if (id.isBlank()) {
+    if (id == null || id.isBlank()) {
       throw new InvalidUUIDException(id);
     }
     try {
-      result = UUID.fromString(id);
+      UUID result = UUID.fromString(id);
+      log.debug("UUID: '{}' is valid", id);
+      return result;
     } catch (IllegalArgumentException _) {
       throw new InvalidUUIDException(id);
     }
-    log.debug("UUID: '{}' is valid", id);
-    return result;
   }
 
   public static String dateTimeFormatter(String format, LocalDateTime localDateTime) {
     log.debug("DateTime to format: '{}' with format: '{}'", localDateTime, format);
-    String result = null;
-    DateTimeFormatter dtf = DateTimeFormatter.ofPattern(format);
-    result = dtf.format(localDateTime);
+    String result = DateTimeFormatter.ofPattern(format).format(localDateTime);
     log.debug("DateTime formatted: '{}'", result);
     return result;
   }
@@ -76,9 +73,9 @@ public final class Methods {
   }
 
   public static Message<Object> createKafkaMessage(Object payload, String topic) {
-    Message<Object> result = null;
     log.debug("Generate kafka message: '{}' to send at topic: '{}'", payload, topic);
-    result = MessageBuilder.withPayload(payload).setHeader(KafkaHeaders.TOPIC, topic).build();
+    Message<Object> result =
+        MessageBuilder.withPayload(payload).setHeader(KafkaHeaders.TOPIC, topic).build();
     log.debug("Kafka Message generated: '{}'", result.getPayload());
     return result;
   }
@@ -99,18 +96,12 @@ public final class Methods {
   }
 
   public static String generateFileName(String name, String fileExtension, boolean useTimestamp) {
-    String result = null;
-    String tms =
-        useTimestamp
-            ? Methods.dateTimeFormatter(Constants.S_DATE_TIME_FORMAT_1,
-                LocalDateTime.now(ZoneOffset.UTC))
-            : null;
-    if (null == tms) {
-      result = name + fileExtension;
-    } else {
-      result = name + Constants.C_UNDERSCORE + tms + fileExtension;
+    if (!useTimestamp) {
+      return name + fileExtension;
     }
-    return result;
+    String tms = Methods.dateTimeFormatter(Constants.S_DATE_TIME_FORMAT_1,
+        LocalDateTime.now(ZoneOffset.UTC));
+    return name + Constants.C_UNDERSCORE + tms + fileExtension;
   }
 
   public static boolean isValidFileType(String fileName, List<String> fileTypes) {
@@ -158,7 +149,7 @@ public final class Methods {
   public static @Nullable String firstNonBlank(String... values) {
     log.debug("Retrieve first non blank value");
     String result = null;
-    if (values.length > 0) {
+    if (values != null && values.length > 0) {
       for (String value : values) {
         if (value != null && !value.isBlank()) {
           result = value;

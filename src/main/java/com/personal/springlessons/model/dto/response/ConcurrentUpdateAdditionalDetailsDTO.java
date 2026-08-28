@@ -2,28 +2,30 @@ package com.personal.springlessons.model.dto.response;
 
 import java.util.Objects;
 
+import org.jspecify.annotations.Nullable;
+
 public class ConcurrentUpdateAdditionalDetailsDTO {
 
-  private String id;
-  private String version;
+  private @Nullable String id;
+  private @Nullable String version;
 
   public ConcurrentUpdateAdditionalDetailsDTO() {
     // no-args constructor for Jackson deserialization
   }
 
-  public String getId() {
+  public @Nullable String getId() {
     return this.id;
   }
 
-  public void setId(String id) {
+  public void setId(@Nullable String id) {
     this.id = id;
   }
 
-  public String getVersion() {
+  public @Nullable String getVersion() {
     return this.version;
   }
 
-  public void setVersion(String version) {
+  public void setVersion(@Nullable String version) {
     this.version = version;
   }
 

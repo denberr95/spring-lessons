@@ -3,28 +3,30 @@ package com.personal.springlessons.model.dto.response;
 import java.util.List;
 import java.util.Objects;
 
+import org.jspecify.annotations.Nullable;
+
 public class InvalidFileTypeAdditionalDetailsDTO {
 
-  private String fileName;
-  private List<String> validFileTypes;
+  private @Nullable String fileName;
+  private @Nullable List<String> validFileTypes;
 
   public InvalidFileTypeAdditionalDetailsDTO() {
     // no-args constructor for Jackson deserialization
   }
 
-  public String getFileName() {
+  public @Nullable String getFileName() {
     return this.fileName;
   }
 
-  public void setFileName(String fileName) {
+  public void setFileName(@Nullable String fileName) {
     this.fileName = fileName;
   }
 
-  public List<String> getValidFileTypes() {
+  public @Nullable List<String> getValidFileTypes() {
     return this.validFileTypes;
   }
 
-  public void setValidFileTypes(List<String> validFileTypes) {
+  public void setValidFileTypes(@Nullable List<String> validFileTypes) {
     this.validFileTypes = validFileTypes;
   }
 

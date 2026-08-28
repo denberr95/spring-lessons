@@ -2,37 +2,39 @@ package com.personal.springlessons.model.dto.response;
 
 import java.util.Objects;
 
+import org.jspecify.annotations.Nullable;
+
 public class ValidationRequestAdditionalDetailsDTO {
 
-  private String field;
-  private String message;
-  private String value;
+  private @Nullable String field;
+  private @Nullable String message;
+  private @Nullable String value;
 
   public ValidationRequestAdditionalDetailsDTO() {
     // no-args constructor for Jackson deserialization
   }
 
-  public String getField() {
+  public @Nullable String getField() {
     return this.field;
   }
 
-  public void setField(String field) {
+  public void setField(@Nullable String field) {
     this.field = field;
   }
 
-  public String getMessage() {
+  public @Nullable String getMessage() {
     return this.message;
   }
 
-  public void setMessage(String message) {
+  public void setMessage(@Nullable String message) {
     this.message = message;
   }
 
-  public String getValue() {
+  public @Nullable String getValue() {
     return this.value;
   }
 
-  public void setValue(String value) {
+  public void setValue(@Nullable String value) {
     this.value = value;
   }
 

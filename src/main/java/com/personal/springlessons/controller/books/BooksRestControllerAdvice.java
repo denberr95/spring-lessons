@@ -48,7 +48,7 @@ public class BooksRestControllerAdvice {
     DuplicatedBookAdditionalDetailsDTO details = new DuplicatedBookAdditionalDetailsDTO();
     result.setCategory(DomainCategory.BOOKS);
     result.setMessage(exception.getMessage());
-    details.setOrinalId(exception.getId());
+    details.setOriginalId(exception.getId());
     result.setAdditionalData(details);
     return ResponseEntity.status(HttpStatus.CONFLICT).body(result);
   }

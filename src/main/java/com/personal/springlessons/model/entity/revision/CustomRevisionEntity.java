@@ -41,7 +41,7 @@ public class CustomRevisionEntity {
   private long revtstmp;
 
   @Column(name = "ip_address", length = Constants.I_VAL_45)
-  private String ipAddress;
+  private @Nullable String ipAddress;
 
   @Column(name = "client_id", length = Constants.I_VAL_255)
   private @Nullable String clientId;
@@ -50,10 +50,10 @@ public class CustomRevisionEntity {
   private @Nullable String username;
 
   @Column(name = "request_uri")
-  private String requestUri;
+  private @Nullable String requestUri;
 
   @Column(name = "http_method", length = Constants.I_VAL_20)
-  private String httpMethod;
+  private @Nullable String httpMethod;
 
   public CustomRevisionEntity() {
     // Required by JPA and Hibernate Envers
@@ -75,11 +75,11 @@ public class CustomRevisionEntity {
     this.revtstmp = revtstmp;
   }
 
-  public String getIpAddress() {
+  public @Nullable String getIpAddress() {
     return this.ipAddress;
   }
 
-  public void setIpAddress(String ipAddress) {
+  public void setIpAddress(@Nullable String ipAddress) {
     this.ipAddress = ipAddress;
   }
 
@@ -99,19 +99,19 @@ public class CustomRevisionEntity {
     this.username = username;
   }
 
-  public String getRequestUri() {
+  public @Nullable String getRequestUri() {
     return this.requestUri;
   }
 
-  public void setRequestUri(String requestUri) {
+  public void setRequestUri(@Nullable String requestUri) {
     this.requestUri = requestUri;
   }
 
-  public String getHttpMethod() {
+  public @Nullable String getHttpMethod() {
     return this.httpMethod;
   }
 
-  public void setHttpMethod(String httpMethod) {
+  public void setHttpMethod(@Nullable String httpMethod) {
     this.httpMethod = httpMethod;
   }
 

@@ -2,28 +2,30 @@ package com.personal.springlessons.model.dto.response;
 
 import java.util.Objects;
 
+import org.jspecify.annotations.Nullable;
+
 public class GenericErrorAdditionalDetailsDTO {
 
-  private String exceptionName;
-  private String exceptionMessage;
+  private @Nullable String exceptionName;
+  private @Nullable String exceptionMessage;
 
   public GenericErrorAdditionalDetailsDTO() {
     // no-args constructor for Jackson deserialization
   }
 
-  public String getExceptionName() {
+  public @Nullable String getExceptionName() {
     return this.exceptionName;
   }
 
-  public void setExceptionName(String exceptionName) {
+  public void setExceptionName(@Nullable String exceptionName) {
     this.exceptionName = exceptionName;
   }
 
-  public String getExceptionMessage() {
+  public @Nullable String getExceptionMessage() {
     return this.exceptionMessage;
   }
 
-  public void setExceptionMessage(String exceptionMessage) {
+  public void setExceptionMessage(@Nullable String exceptionMessage) {
     this.exceptionMessage = exceptionMessage;
   }
 

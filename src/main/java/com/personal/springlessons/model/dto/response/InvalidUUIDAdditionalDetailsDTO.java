@@ -2,19 +2,21 @@ package com.personal.springlessons.model.dto.response;
 
 import java.util.Objects;
 
+import org.jspecify.annotations.Nullable;
+
 public class InvalidUUIDAdditionalDetailsDTO {
 
-  private String invalidId;
+  private @Nullable String invalidId;
 
   public InvalidUUIDAdditionalDetailsDTO() {
     // no-args constructor for Jackson deserialization
   }
 
-  public String getInvalidId() {
+  public @Nullable String getInvalidId() {
     return this.invalidId;
   }
 
-  public void setInvalidId(String invalidId) {
+  public void setInvalidId(@Nullable String invalidId) {
     this.invalidId = invalidId;
   }
 

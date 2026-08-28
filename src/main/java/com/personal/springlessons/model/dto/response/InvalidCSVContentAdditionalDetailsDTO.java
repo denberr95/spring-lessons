@@ -5,19 +5,21 @@ import java.util.Objects;
 
 import com.personal.springlessons.model.dto.InvalidCsvDTO;
 
+import org.jspecify.annotations.Nullable;
+
 public class InvalidCSVContentAdditionalDetailsDTO {
 
-  private List<InvalidCsvDTO> rows;
+  private @Nullable List<InvalidCsvDTO> rows;
 
   public InvalidCSVContentAdditionalDetailsDTO() {
     // no-args constructor for Jackson deserialization
   }
 
-  public List<InvalidCsvDTO> getRows() {
+  public @Nullable List<InvalidCsvDTO> getRows() {
     return this.rows;
   }
 
-  public void setRows(List<InvalidCsvDTO> rows) {
+  public void setRows(@Nullable List<InvalidCsvDTO> rows) {
     this.rows = rows;
   }
 

@@ -2,28 +2,30 @@ package com.personal.springlessons.model.dto.response;
 
 import java.util.Objects;
 
+import org.jspecify.annotations.Nullable;
+
 public class InvalidCSVContentResponseDTO extends BaseErrorResponseDTO {
 
-  private Integer totalRows;
-  private InvalidCSVContentAdditionalDetailsDTO additionalData;
+  private @Nullable Integer totalRows;
+  private @Nullable InvalidCSVContentAdditionalDetailsDTO additionalData;
 
   public InvalidCSVContentResponseDTO() {
     // no-args constructor for Jackson deserialization
   }
 
-  public Integer getTotalRows() {
+  public @Nullable Integer getTotalRows() {
     return this.totalRows;
   }
 
-  public void setTotalRows(Integer totalRows) {
+  public void setTotalRows(@Nullable Integer totalRows) {
     this.totalRows = totalRows;
   }
 
-  public InvalidCSVContentAdditionalDetailsDTO getAdditionalData() {
+  public @Nullable InvalidCSVContentAdditionalDetailsDTO getAdditionalData() {
     return this.additionalData;
   }
 
-  public void setAdditionalData(InvalidCSVContentAdditionalDetailsDTO additionalData) {
+  public void setAdditionalData(@Nullable InvalidCSVContentAdditionalDetailsDTO additionalData) {
     this.additionalData = additionalData;
   }
 
@@ -33,13 +35,15 @@ public class InvalidCSVContentResponseDTO extends BaseErrorResponseDTO {
       return true;
     if (!(o instanceof InvalidCSVContentResponseDTO that))
       return false;
+    if (!super.equals(o))
+      return false;
     return Objects.equals(this.totalRows, that.totalRows)
         && Objects.equals(this.additionalData, that.additionalData);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(this.totalRows, this.additionalData);
+    return Objects.hash(super.hashCode(), this.totalRows, this.additionalData);
   }
 
   @Override

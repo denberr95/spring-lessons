@@ -6,11 +6,13 @@ import java.util.Objects;
 
 import com.personal.springlessons.model.lov.DomainCategory;
 
+import org.jspecify.annotations.Nullable;
+
 public class BaseErrorResponseDTO {
 
   private OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
-  private DomainCategory category;
-  private String message;
+  private @Nullable DomainCategory category;
+  private @Nullable String message;
 
   public BaseErrorResponseDTO() {
     // no-args constructor for Jackson deserialization; timestamp initialised at field declaration
@@ -24,19 +26,19 @@ public class BaseErrorResponseDTO {
     this.timestamp = timestamp;
   }
 
-  public DomainCategory getCategory() {
+  public @Nullable DomainCategory getCategory() {
     return this.category;
   }
 
-  public void setCategory(DomainCategory category) {
+  public void setCategory(@Nullable DomainCategory category) {
     this.category = category;
   }
 
-  public String getMessage() {
+  public @Nullable String getMessage() {
     return this.message;
   }
 
-  public void setMessage(String message) {
+  public void setMessage(@Nullable String message) {
     this.message = message;
   }
 

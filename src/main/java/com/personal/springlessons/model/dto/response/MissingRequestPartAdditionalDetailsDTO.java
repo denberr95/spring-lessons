@@ -2,19 +2,21 @@ package com.personal.springlessons.model.dto.response;
 
 import java.util.Objects;
 
+import org.jspecify.annotations.Nullable;
+
 public class MissingRequestPartAdditionalDetailsDTO {
 
-  private String part;
+  private @Nullable String part;
 
   public MissingRequestPartAdditionalDetailsDTO() {
     // no-args constructor for Jackson deserialization
   }
 
-  public String getPart() {
+  public @Nullable String getPart() {
     return this.part;
   }
 
-  public void setPart(String part) {
+  public void setPart(@Nullable String part) {
     this.part = part;
   }
 

@@ -2,19 +2,21 @@ package com.personal.springlessons.model.dto.response;
 
 import java.util.Objects;
 
+import org.jspecify.annotations.Nullable;
+
 public class BookNotFoundAdditionalDetailsDTO {
 
-  private String id;
+  private @Nullable String id;
 
   public BookNotFoundAdditionalDetailsDTO() {
     // no-args constructor for Jackson deserialization
   }
 
-  public String getId() {
+  public @Nullable String getId() {
     return this.id;
   }
 
-  public void setId(String id) {
+  public void setId(@Nullable String id) {
     this.id = id;
   }
 

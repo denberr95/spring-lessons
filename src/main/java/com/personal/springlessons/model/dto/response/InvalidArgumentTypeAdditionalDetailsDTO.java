@@ -3,37 +3,39 @@ package com.personal.springlessons.model.dto.response;
 import java.util.List;
 import java.util.Objects;
 
+import org.jspecify.annotations.Nullable;
+
 public class InvalidArgumentTypeAdditionalDetailsDTO {
 
-  private String field;
-  private String value;
-  private List<String> pickList;
+  private @Nullable String field;
+  private @Nullable String value;
+  private @Nullable List<String> pickList;
 
   public InvalidArgumentTypeAdditionalDetailsDTO() {
     // no-args constructor for Jackson deserialization
   }
 
-  public String getField() {
+  public @Nullable String getField() {
     return this.field;
   }
 
-  public void setField(String field) {
+  public void setField(@Nullable String field) {
     this.field = field;
   }
 
-  public String getValue() {
+  public @Nullable String getValue() {
     return this.value;
   }
 
-  public void setValue(String value) {
+  public void setValue(@Nullable String value) {
     this.value = value;
   }
 
-  public List<String> getPickList() {
+  public @Nullable List<String> getPickList() {
     return this.pickList;
   }
 
-  public void setPickList(List<String> pickList) {
+  public void setPickList(@Nullable List<String> pickList) {
     this.pickList = pickList;
   }
 

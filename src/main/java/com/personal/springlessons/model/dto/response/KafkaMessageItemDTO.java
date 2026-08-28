@@ -5,28 +5,30 @@ import java.util.Objects;
 import com.personal.springlessons.model.dto.ItemDTO;
 import com.personal.springlessons.model.lov.ItemStatus;
 
+import org.jspecify.annotations.Nullable;
+
 public class KafkaMessageItemDTO extends ItemDTO {
 
-  private String idOrderItems;
-  private ItemStatus itemStatus;
+  private @Nullable String idOrderItems;
+  private @Nullable ItemStatus itemStatus;
 
   public KafkaMessageItemDTO() {
     // no-args constructor for Jackson deserialization
   }
 
-  public String getIdOrderItems() {
+  public @Nullable String getIdOrderItems() {
     return this.idOrderItems;
   }
 
-  public void setIdOrderItems(String idOrderItems) {
+  public void setIdOrderItems(@Nullable String idOrderItems) {
     this.idOrderItems = idOrderItems;
   }
 
-  public ItemStatus getItemStatus() {
+  public @Nullable ItemStatus getItemStatus() {
     return this.itemStatus;
   }
 
-  public void setItemStatus(ItemStatus itemStatus) {
+  public void setItemStatus(@Nullable ItemStatus itemStatus) {
     this.itemStatus = itemStatus;
   }
 
@@ -36,13 +38,15 @@ public class KafkaMessageItemDTO extends ItemDTO {
       return true;
     if (!(o instanceof KafkaMessageItemDTO that))
       return false;
+    if (!super.equals(o))
+      return false;
     return Objects.equals(this.idOrderItems, that.idOrderItems)
         && Objects.equals(this.itemStatus, that.itemStatus);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(this.idOrderItems, this.itemStatus);
+    return Objects.hash(super.hashCode(), this.idOrderItems, this.itemStatus);
   }
 
   @Override

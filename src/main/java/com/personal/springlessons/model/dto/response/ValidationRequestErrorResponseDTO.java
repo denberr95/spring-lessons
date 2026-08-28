@@ -3,19 +3,22 @@ package com.personal.springlessons.model.dto.response;
 import java.util.List;
 import java.util.Objects;
 
+import org.jspecify.annotations.Nullable;
+
 public class ValidationRequestErrorResponseDTO extends BaseErrorResponseDTO {
 
-  private List<ValidationRequestAdditionalDetailsDTO> additionalData;
+  private @Nullable List<ValidationRequestAdditionalDetailsDTO> additionalData;
 
   public ValidationRequestErrorResponseDTO() {
     // no-args constructor for Jackson deserialization
   }
 
-  public List<ValidationRequestAdditionalDetailsDTO> getAdditionalData() {
+  public @Nullable List<ValidationRequestAdditionalDetailsDTO> getAdditionalData() {
     return this.additionalData;
   }
 
-  public void setAdditionalData(List<ValidationRequestAdditionalDetailsDTO> additionalData) {
+  public void setAdditionalData(
+      @Nullable List<ValidationRequestAdditionalDetailsDTO> additionalData) {
     this.additionalData = additionalData;
   }
 
@@ -25,12 +28,14 @@ public class ValidationRequestErrorResponseDTO extends BaseErrorResponseDTO {
       return true;
     if (!(o instanceof ValidationRequestErrorResponseDTO that))
       return false;
+    if (!super.equals(o))
+      return false;
     return Objects.equals(this.additionalData, that.additionalData);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(this.additionalData);
+    return Objects.hash(super.hashCode(), this.additionalData);
   }
 
   @Override

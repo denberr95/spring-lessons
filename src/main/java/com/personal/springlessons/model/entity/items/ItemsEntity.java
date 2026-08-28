@@ -2,7 +2,6 @@ package com.personal.springlessons.model.entity.items;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.Objects;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -24,6 +23,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.SourceType;
 import org.hibernate.generator.EventType;
+import org.jspecify.annotations.Nullable;
 
 @Entity
 @DynamicInsert
@@ -37,11 +37,11 @@ public class ItemsEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   @Column(name = "id", updatable = false, nullable = false)
-  private UUID id;
+  private @Nullable UUID id;
 
   @CurrentTimestamp(source = SourceType.DB, event = EventType.INSERT)
   @Column(name = "created_at", nullable = false, updatable = false)
-  private Instant createdAt;
+  private @Nullable Instant createdAt;
 
   @Column(name = "price", precision = Constants.I_VAL_6, scale = Constants.I_VAL_2,
       nullable = false)
@@ -60,23 +60,24 @@ public class ItemsEntity {
       foreignKey = @ForeignKey(name = "fk_order_items_id"))
   private OrderItemsEntity orderItemsEntity;
 
+  @SuppressWarnings("java:S2637")
   public ItemsEntity() {
     // Required by JPA
   }
 
-  public UUID getId() {
+  public @Nullable UUID getId() {
     return this.id;
   }
 
-  public void setId(UUID id) {
+  public void setId(@Nullable UUID id) {
     this.id = id;
   }
 
-  public Instant getCreatedAt() {
+  public @Nullable Instant getCreatedAt() {
     return this.createdAt;
   }
 
-  public void setCreatedAt(Instant createdAt) {
+  public void setCreatedAt(@Nullable Instant createdAt) {
     this.createdAt = createdAt;
   }
 
@@ -118,12 +119,12 @@ public class ItemsEntity {
       return true;
     if (!(o instanceof ItemsEntity that))
       return false;
-    return Objects.equals(this.id, that.id);
+    return this.id != null && this.id.equals(that.id);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(this.id);
+    return getClass().hashCode();
   }
 
   @Override

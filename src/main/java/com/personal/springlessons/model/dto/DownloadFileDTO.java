@@ -3,29 +3,31 @@ package com.personal.springlessons.model.dto;
 import java.util.Arrays;
 import java.util.Objects;
 
+import org.jspecify.annotations.Nullable;
+
 public class DownloadFileDTO {
 
-  private String fileName;
-  private byte[] content;
+  private @Nullable String fileName;
+  private byte @Nullable [] content;
 
   public DownloadFileDTO() {
     // no-args constructor for MapStruct
   }
 
-  public String getFileName() {
+  public @Nullable String getFileName() {
     return this.fileName;
   }
 
-  public void setFileName(String fileName) {
+  public void setFileName(@Nullable String fileName) {
     this.fileName = fileName;
   }
 
-  public byte[] getContent() {
-    return this.content;
+  public byte @Nullable [] getContent() {
+    return this.content == null ? null : this.content.clone();
   }
 
-  public void setContent(byte[] content) {
-    this.content = content;
+  public void setContent(byte @Nullable [] content) {
+    this.content = content == null ? null : content.clone();
   }
 
   @Override

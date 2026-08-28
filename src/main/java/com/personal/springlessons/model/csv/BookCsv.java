@@ -4,53 +4,55 @@ import java.util.Objects;
 
 import com.opencsv.bean.CsvBindByName;
 
+import org.jspecify.annotations.Nullable;
+
 public class BookCsv {
 
   @CsvBindByName(column = "name")
-  private String name;
+  private @Nullable String name;
 
   @CsvBindByName(column = "number_of_pages")
-  private String numberOfPages;
+  private @Nullable String numberOfPages;
 
   @CsvBindByName(column = "publication_date")
-  private String publicationDate;
+  private @Nullable String publicationDate;
 
   @CsvBindByName(column = "genre")
-  private String genre;
+  private @Nullable String genre;
 
   public BookCsv() {
     // Required by opencsv for reflection-based bean instantiation
   }
 
-  public String getName() {
+  public @Nullable String getName() {
     return this.name;
   }
 
-  public void setName(String name) {
+  public void setName(@Nullable String name) {
     this.name = name;
   }
 
-  public String getNumberOfPages() {
+  public @Nullable String getNumberOfPages() {
     return this.numberOfPages;
   }
 
-  public void setNumberOfPages(String numberOfPages) {
+  public void setNumberOfPages(@Nullable String numberOfPages) {
     this.numberOfPages = numberOfPages;
   }
 
-  public String getPublicationDate() {
+  public @Nullable String getPublicationDate() {
     return this.publicationDate;
   }
 
-  public void setPublicationDate(String publicationDate) {
+  public void setPublicationDate(@Nullable String publicationDate) {
     this.publicationDate = publicationDate;
   }
 
-  public String getGenre() {
+  public @Nullable String getGenre() {
     return this.genre;
   }
 
-  public void setGenre(String genre) {
+  public void setGenre(@Nullable String genre) {
     this.genre = genre;
   }
 

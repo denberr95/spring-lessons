@@ -11,27 +11,27 @@ import org.springframework.util.MultiValueMap;
 
 public class BooksWrapperDTO {
 
-  private BookDTO bookDTO;
-  private List<BookDTO> bookDTOs;
+  private @Nullable BookDTO bookDTO;
+  private @Nullable List<BookDTO> bookDTOs;
   private @Nullable MultiValueMap<String, String> httpHeaders;
 
   public BooksWrapperDTO() {
     // no-args constructor for MapStruct
   }
 
-  public BookDTO getBookDTO() {
+  public @Nullable BookDTO getBookDTO() {
     return this.bookDTO;
   }
 
-  public void setBookDTO(BookDTO bookDTO) {
+  public void setBookDTO(@Nullable BookDTO bookDTO) {
     this.bookDTO = bookDTO;
   }
 
-  public List<BookDTO> getBookDTOs() {
+  public @Nullable List<BookDTO> getBookDTOs() {
     return this.bookDTOs;
   }
 
-  public void setBookDTOs(List<BookDTO> bookDTOs) {
+  public void setBookDTOs(@Nullable List<BookDTO> bookDTOs) {
     this.bookDTOs = bookDTOs;
   }
 

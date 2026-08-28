@@ -4,18 +4,18 @@ import java.util.Objects;
 
 public class DuplicatedBookAdditionalDetailsDTO {
 
-  private String orinalId;
+  private String originalId;
 
   public DuplicatedBookAdditionalDetailsDTO() {
     // no-args constructor for Jackson deserialization
   }
 
-  public String getOrinalId() {
-    return this.orinalId;
+  public String getOriginalId() {
+    return this.originalId;
   }
 
-  public void setOrinalId(String orinalId) {
-    this.orinalId = orinalId;
+  public void setOriginalId(String originalId) {
+    this.originalId = originalId;
   }
 
   @Override
@@ -24,16 +24,16 @@ public class DuplicatedBookAdditionalDetailsDTO {
       return true;
     if (!(o instanceof DuplicatedBookAdditionalDetailsDTO that))
       return false;
-    return Objects.equals(this.orinalId, that.orinalId);
+    return Objects.equals(this.originalId, that.originalId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(this.orinalId);
+    return Objects.hash(this.originalId);
   }
 
   @Override
   public String toString() {
-    return "DuplicatedBookAdditionalDetailsDTO{orinalId='" + this.orinalId + "'}";
+    return "DuplicatedBookAdditionalDetailsDTO{originalId='" + this.originalId + "'}";
   }
 }

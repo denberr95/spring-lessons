@@ -12,9 +12,11 @@ import jakarta.validation.constraints.Size;
 
 import com.personal.springlessons.util.Constants;
 
+import org.jspecify.annotations.Nullable;
+
 public class ItemDTO {
 
-  private String id;
+  private @Nullable String id;
 
   @NotNull(message = Constants.ERROR_MSG_NOT_BLANK) @Positive(message = Constants.ERROR_MSG_POSITIVE_VALUE) @DecimalMin(value = Constants.S_VAL_0_01, inclusive = true,
       message = Constants.ERROR_MSG_MIN_VALUE)
@@ -34,11 +36,11 @@ public class ItemDTO {
     // no-args constructor for Jackson deserialization and subclass use
   }
 
-  public String getId() {
+  public @Nullable String getId() {
     return this.id;
   }
 
-  public void setId(String id) {
+  public void setId(@Nullable String id) {
     this.id = id;
   }
 

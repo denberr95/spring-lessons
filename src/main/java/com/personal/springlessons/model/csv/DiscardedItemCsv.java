@@ -5,75 +5,77 @@ import java.util.Objects;
 
 import com.opencsv.bean.CsvBindByName;
 
+import org.jspecify.annotations.Nullable;
+
 public class DiscardedItemCsv {
 
   @CsvBindByName
-  private String idOrderItems;
+  private @Nullable String idOrderItems;
 
   @CsvBindByName
-  private String idOrderItemsOriginal;
+  private @Nullable String idOrderItemsOriginal;
 
   @CsvBindByName
-  private String idItem;
+  private @Nullable String idItem;
 
   @CsvBindByName
-  private BigDecimal price;
+  private @Nullable BigDecimal price;
 
   @CsvBindByName
-  private String name;
+  private @Nullable String name;
 
   @CsvBindByName
-  private String barcode;
+  private @Nullable String barcode;
 
   public DiscardedItemCsv() {
     // Required by opencsv for reflection-based bean instantiation
   }
 
-  public String getIdOrderItems() {
+  public @Nullable String getIdOrderItems() {
     return this.idOrderItems;
   }
 
-  public void setIdOrderItems(String idOrderItems) {
+  public void setIdOrderItems(@Nullable String idOrderItems) {
     this.idOrderItems = idOrderItems;
   }
 
-  public String getIdOrderItemsOriginal() {
+  public @Nullable String getIdOrderItemsOriginal() {
     return this.idOrderItemsOriginal;
   }
 
-  public void setIdOrderItemsOriginal(String idOrderItemsOriginal) {
+  public void setIdOrderItemsOriginal(@Nullable String idOrderItemsOriginal) {
     this.idOrderItemsOriginal = idOrderItemsOriginal;
   }
 
-  public String getIdItem() {
+  public @Nullable String getIdItem() {
     return this.idItem;
   }
 
-  public void setIdItem(String idItem) {
+  public void setIdItem(@Nullable String idItem) {
     this.idItem = idItem;
   }
 
-  public BigDecimal getPrice() {
+  public @Nullable BigDecimal getPrice() {
     return this.price;
   }
 
-  public void setPrice(BigDecimal price) {
+  public void setPrice(@Nullable BigDecimal price) {
     this.price = price;
   }
 
-  public String getName() {
+  public @Nullable String getName() {
     return this.name;
   }
 
-  public void setName(String name) {
+  public void setName(@Nullable String name) {
     this.name = name;
   }
 
-  public String getBarcode() {
+  public @Nullable String getBarcode() {
     return this.barcode;
   }
 
-  public void setBarcode(String barcode) {
+  public void setBarcode(@Nullable String barcode) {
     this.barcode = barcode;
   }
 

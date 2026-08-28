@@ -2,7 +2,6 @@ package com.personal.springlessons.model.entity.items;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 import jakarta.persistence.CascadeType;
@@ -25,6 +24,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.SourceType;
+import org.jspecify.annotations.Nullable;
 
 @Entity
 @DynamicInsert
@@ -38,53 +38,53 @@ public class OrderItemsEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   @Column(name = "id", updatable = false, nullable = false)
-  private UUID id;
+  private @Nullable UUID id;
 
   @CreationTimestamp(source = SourceType.DB)
   @Column(name = "created_at", nullable = false, updatable = false)
-  private Instant createdAt;
+  private @Nullable Instant createdAt;
 
   @Enumerated(EnumType.STRING)
   @Column(name = "channel", nullable = false)
-  private Channel channel;
+  private @Nullable Channel channel;
 
   @BatchSize(size = 100)
   @OneToMany(mappedBy = "orderItemsEntity", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<ItemsEntity> items;
+  private @Nullable List<ItemsEntity> items;
 
   public OrderItemsEntity() {
     // Required by JPA
   }
 
-  public UUID getId() {
+  public @Nullable UUID getId() {
     return this.id;
   }
 
-  public void setId(UUID id) {
+  public void setId(@Nullable UUID id) {
     this.id = id;
   }
 
-  public Instant getCreatedAt() {
+  public @Nullable Instant getCreatedAt() {
     return this.createdAt;
   }
 
-  public void setCreatedAt(Instant createdAt) {
+  public void setCreatedAt(@Nullable Instant createdAt) {
     this.createdAt = createdAt;
   }
 
-  public Channel getChannel() {
+  public @Nullable Channel getChannel() {
     return this.channel;
   }
 
-  public void setChannel(Channel channel) {
+  public void setChannel(@Nullable Channel channel) {
     this.channel = channel;
   }
 
-  public List<ItemsEntity> getItems() {
+  public @Nullable List<ItemsEntity> getItems() {
     return this.items;
   }
 
-  public void setItems(List<ItemsEntity> items) {
+  public void setItems(@Nullable List<ItemsEntity> items) {
     this.items = items;
   }
 
@@ -94,12 +94,12 @@ public class OrderItemsEntity {
       return true;
     if (!(o instanceof OrderItemsEntity that))
       return false;
-    return Objects.equals(this.id, that.id);
+    return this.id != null && this.id.equals(that.id);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(this.id);
+    return getClass().hashCode();
   }
 
   @Override

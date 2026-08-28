@@ -2,7 +2,6 @@ package com.personal.springlessons.model.entity.books;
 
 import java.time.Instant;
 import java.time.LocalDate;
-import java.util.Objects;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -27,6 +26,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.SourceType;
 import org.hibernate.envers.Audited;
 import org.hibernate.generator.EventType;
+import org.jspecify.annotations.Nullable;
 
 @Entity
 @Audited
@@ -44,19 +44,19 @@ public class BooksEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   @Column(name = "id", updatable = false, nullable = false)
-  private UUID id;
+  private @Nullable UUID id;
 
   @CurrentTimestamp(source = SourceType.DB, event = EventType.INSERT)
   @Column(name = "created_at", nullable = false, updatable = false)
-  private Instant createdAt;
+  private @Nullable Instant createdAt;
 
   @CurrentTimestamp(source = SourceType.DB, event = EventType.UPDATE)
   @Column(name = "updated_at")
-  private Instant updatedAt;
+  private @Nullable Instant updatedAt;
 
   @Version
   @Column(name = "version", nullable = false)
-  private Long version;
+  private @Nullable Long version;
 
   @Column(name = "name", nullable = false, length = Constants.I_VAL_100)
   private String name;
@@ -75,39 +75,40 @@ public class BooksEntity {
   @Column(name = "genre", nullable = false)
   private Genre genre;
 
+  @SuppressWarnings("java:S2637")
   public BooksEntity() {
     // Required by JPA
   }
 
-  public UUID getId() {
+  public @Nullable UUID getId() {
     return this.id;
   }
 
-  public void setId(UUID id) {
+  public void setId(@Nullable UUID id) {
     this.id = id;
   }
 
-  public Instant getCreatedAt() {
+  public @Nullable Instant getCreatedAt() {
     return this.createdAt;
   }
 
-  public void setCreatedAt(Instant createdAt) {
+  public void setCreatedAt(@Nullable Instant createdAt) {
     this.createdAt = createdAt;
   }
 
-  public Instant getUpdatedAt() {
+  public @Nullable Instant getUpdatedAt() {
     return this.updatedAt;
   }
 
-  public void setUpdatedAt(Instant updatedAt) {
+  public void setUpdatedAt(@Nullable Instant updatedAt) {
     this.updatedAt = updatedAt;
   }
 
-  public Long getVersion() {
+  public @Nullable Long getVersion() {
     return this.version;
   }
 
-  public void setVersion(Long version) {
+  public void setVersion(@Nullable Long version) {
     this.version = version;
   }
 
@@ -157,12 +158,12 @@ public class BooksEntity {
       return true;
     if (!(o instanceof BooksEntity that))
       return false;
-    return Objects.equals(this.id, that.id);
+    return this.id != null && this.id.equals(that.id);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(this.id);
+    return getClass().hashCode();
   }
 
   @Override

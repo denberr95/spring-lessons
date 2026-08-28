@@ -2,19 +2,21 @@ package com.personal.springlessons.model.dto.response;
 
 import java.util.Objects;
 
+import org.jspecify.annotations.Nullable;
+
 public class NotReadableBodyRequestAdditionalDetailsDTO {
 
-  private String exception;
+  private @Nullable String exception;
 
   public NotReadableBodyRequestAdditionalDetailsDTO() {
     // no-args constructor for Jackson deserialization
   }
 
-  public String getException() {
+  public @Nullable String getException() {
     return this.exception;
   }
 
-  public void setException(String exception) {
+  public void setException(@Nullable String exception) {
     this.exception = exception;
   }
 

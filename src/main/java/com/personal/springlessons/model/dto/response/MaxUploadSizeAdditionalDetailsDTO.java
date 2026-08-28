@@ -2,19 +2,21 @@ package com.personal.springlessons.model.dto.response;
 
 import java.util.Objects;
 
+import org.jspecify.annotations.Nullable;
+
 public class MaxUploadSizeAdditionalDetailsDTO {
 
-  private String maxUploadSize;
+  private @Nullable String maxUploadSize;
 
   public MaxUploadSizeAdditionalDetailsDTO() {
     // no-args constructor for Jackson deserialization
   }
 
-  public String getMaxUploadSize() {
+  public @Nullable String getMaxUploadSize() {
     return this.maxUploadSize;
   }
 
-  public void setMaxUploadSize(String maxUploadSize) {
+  public void setMaxUploadSize(@Nullable String maxUploadSize) {
     this.maxUploadSize = maxUploadSize;
   }
 

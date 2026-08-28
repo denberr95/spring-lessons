@@ -5,9 +5,11 @@ import java.util.Objects;
 
 import com.personal.springlessons.model.dto.OrderItemsDTO;
 
+import org.jspecify.annotations.Nullable;
+
 public class OrderItemsWrapperDTO {
 
-  private List<OrderItemsDTO> content;
+  private @Nullable List<OrderItemsDTO> content;
   private int page;
   private int size;
   private long totalElements;
@@ -17,11 +19,11 @@ public class OrderItemsWrapperDTO {
     // no-args constructor for MapStruct
   }
 
-  public List<OrderItemsDTO> getContent() {
+  public @Nullable List<OrderItemsDTO> getContent() {
     return this.content;
   }
 
-  public void setContent(List<OrderItemsDTO> content) {
+  public void setContent(@Nullable List<OrderItemsDTO> content) {
     this.content = content;
   }
 

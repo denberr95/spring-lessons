@@ -32,7 +32,7 @@ public class EmailService {
 
     Observation currentObservation = this.observationRegistry.getCurrentObservation();
 
-    if (currentObservation != null) {
+    if (currentObservation != null && accountDTO.email() != null) {
       currentObservation.highCardinalityKeyValue(Constants.SPAN_KEY_EMAIL_TO, accountDTO.email());
     }
 

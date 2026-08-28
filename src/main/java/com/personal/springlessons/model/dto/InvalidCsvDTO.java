@@ -3,28 +3,30 @@ package com.personal.springlessons.model.dto;
 import java.util.List;
 import java.util.Objects;
 
+import org.jspecify.annotations.Nullable;
+
 public class InvalidCsvDTO {
 
-  private Integer row;
-  private List<CsvRowValidationDTO> validations;
+  private @Nullable Integer row;
+  private @Nullable List<CsvRowValidationDTO> validations;
 
   public InvalidCsvDTO() {
     // no-args constructor for MapStruct
   }
 
-  public Integer getRow() {
+  public @Nullable Integer getRow() {
     return this.row;
   }
 
-  public void setRow(Integer row) {
+  public void setRow(@Nullable Integer row) {
     this.row = row;
   }
 
-  public List<CsvRowValidationDTO> getValidations() {
+  public @Nullable List<CsvRowValidationDTO> getValidations() {
     return this.validations;
   }
 
-  public void setValidations(List<CsvRowValidationDTO> validations) {
+  public void setValidations(@Nullable List<CsvRowValidationDTO> validations) {
     this.validations = validations;
   }
 

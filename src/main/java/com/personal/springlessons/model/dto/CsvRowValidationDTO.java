@@ -2,37 +2,39 @@ package com.personal.springlessons.model.dto;
 
 import java.util.Objects;
 
+import org.jspecify.annotations.Nullable;
+
 public class CsvRowValidationDTO {
 
-  private String field;
-  private Object value;
-  private String message;
+  private @Nullable String field;
+  private @Nullable Object value;
+  private @Nullable String message;
 
   public CsvRowValidationDTO() {
     // no-args constructor for MapStruct
   }
 
-  public String getField() {
+  public @Nullable String getField() {
     return this.field;
   }
 
-  public void setField(String field) {
+  public void setField(@Nullable String field) {
     this.field = field;
   }
 
-  public Object getValue() {
+  public @Nullable Object getValue() {
     return this.value;
   }
 
-  public void setValue(Object value) {
+  public void setValue(@Nullable Object value) {
     this.value = value;
   }
 
-  public String getMessage() {
+  public @Nullable String getMessage() {
     return this.message;
   }
 
-  public void setMessage(String message) {
+  public void setMessage(@Nullable String message) {
     this.message = message;
   }
 

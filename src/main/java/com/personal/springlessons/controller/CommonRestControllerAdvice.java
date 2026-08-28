@@ -33,6 +33,7 @@ import com.personal.springlessons.model.dto.response.ValidationRequestErrorRespo
 import com.personal.springlessons.util.Constants;
 import com.personal.springlessons.util.Methods;
 
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -144,7 +145,7 @@ public class CommonRestControllerAdvice {
     result.setMessage("Validation request not passed !");
     exception.getConstraintViolations().forEach(constraintViolation -> {
       ValidationRequestAdditionalDetailsDTO detail = new ValidationRequestAdditionalDetailsDTO();
-      String propertyPath = constraintViolation.getPropertyPath() != null
+      @Nullable String propertyPath = constraintViolation.getPropertyPath() != null
           ? constraintViolation.getPropertyPath().toString()
           : null;
       if (propertyPath != null && propertyPath.contains(Constants.S_DOT)) {
