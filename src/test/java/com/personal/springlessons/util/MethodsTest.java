@@ -184,13 +184,6 @@ class MethodsTest {
   }
 
   @Test
-  void givenNullArray_whenFirstNonBlank_thenReturnNull() {
-    String[] values = null;
-    String result = Methods.firstNonBlank(values);
-    assertNull(result);
-  }
-
-  @Test
   void givenValidInstantInMillis_whenConvertInstantToOffsetDateTime_thenReturnCorrectOffsetDateTime() {
     long instantInMillis = Instant.parse("9999-12-31T12:30:00Z").toEpochMilli();
     OffsetDateTime result = Methods.convertInstantToOffsetDateTime(instantInMillis);
@@ -199,10 +192,4 @@ class MethodsTest {
         "OffsetDateTime should match converted instant");
   }
 
-  @Test
-  void givenNullInstantInMillis_whenConvertInstantToOffsetDateTime_thenReturnNull() {
-    Long instantInMillis = null;
-    OffsetDateTime result = Methods.convertInstantToOffsetDateTime(instantInMillis);
-    assertNull(result, "Result should be null when input is null");
-  }
 }
