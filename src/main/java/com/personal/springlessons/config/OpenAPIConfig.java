@@ -87,6 +87,8 @@ public class OpenAPIConfig {
     scopes.addString("books:save", "Save new book");
     scopes.addString("books:delete", "Delete a book");
     scopes.addString("books:update", "Update book");
+    scopes.addString("books:download", "Download books as CSV");
+    scopes.addString("books:upload", "Upload books from CSV");
     scopes.addString("items:get", "Retrieve items");
     scopes.addString("items:upload", "Upload items");
     scopes.addString("items:delete", "Delete items");
