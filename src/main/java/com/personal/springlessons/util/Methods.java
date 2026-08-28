@@ -34,7 +34,7 @@ public final class Methods {
     throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
   }
 
-  public static UUID idValidation(String id) {
+  public static UUID idValidation(@Nullable String id) {
     log.debug("UUID to validate: '{}'", id);
     if (id == null || id.isBlank()) {
       throw new InvalidUUIDException(id);
@@ -55,7 +55,7 @@ public final class Methods {
     return result;
   }
 
-  public static DomainCategory retrieveDomainCategory(String uri) {
+  public static DomainCategory retrieveDomainCategory(@Nullable String uri) {
     log.debug("Check Domain Category from uri: '{}'", uri);
     DomainCategory result = DomainCategory.NA;
     if (uri == null) {
@@ -146,22 +146,20 @@ public final class Methods {
     return result;
   }
 
-  public static @Nullable String firstNonBlank(String... values) {
+  public static @Nullable String firstNonBlank(@Nullable String... values) {
     log.debug("Retrieve first non blank value");
     String result = null;
-    if (values != null && values.length > 0) {
-      for (String value : values) {
-        if (value != null && !value.isBlank()) {
-          result = value;
-          break;
-        }
+    for (@Nullable String value : values) {
+      if (value != null && !value.isBlank()) {
+        result = value;
+        break;
       }
     }
     log.debug("First non blank value retrieved: '{}'", result);
     return result;
   }
 
-  public static @Nullable OffsetDateTime convertInstantToOffsetDateTime(Instant instant) {
+  public static @Nullable OffsetDateTime convertInstantToOffsetDateTime(@Nullable Instant instant) {
     log.debug("Convert Instant: '{}' to OffsetDateTime", instant);
     OffsetDateTime result = null;
     if (instant != null) {
@@ -171,12 +169,9 @@ public final class Methods {
     return result;
   }
 
-  public static @Nullable OffsetDateTime convertInstantToOffsetDateTime(Long instantInMillis) {
+  public static OffsetDateTime convertInstantToOffsetDateTime(long instantInMillis) {
     log.debug("Convert Instant: '{}' to OffsetDateTime", instantInMillis);
-    OffsetDateTime result = null;
-    if (instantInMillis != null) {
-      result = Instant.ofEpochMilli(instantInMillis).atOffset(ZoneOffset.UTC);
-    }
+    OffsetDateTime result = Instant.ofEpochMilli(instantInMillis).atOffset(ZoneOffset.UTC);
     log.debug("OffsetDateTime converted: '{}'", result);
     return result;
   }
